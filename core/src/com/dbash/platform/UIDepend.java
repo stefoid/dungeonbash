@@ -1,0 +1,33 @@
+package com.dbash.platform;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
+// This is here to wrap up dependencies on the gdx libraries
+// The Presenters should have no such dependencies.  But they will be required to pass this
+// down to Views.
+// Only Views need to look inside to get what they need to talk to libgdx.
+public class UIDepend {
+
+	public SpriteManager spriteManager;
+	public CameraViewPort cameraViewPort;
+	public ArrayList<SmoothBitmapFont> fonts;
+	public BitmapFont numberFont;
+	public SizeCalculator sizeCalculator;
+	public Audio audio;
+	
+	public UIDepend() {
+		
+	}
+	
+	public UIDepend(UIDepend u)
+	{
+		spriteManager = u.spriteManager;
+		cameraViewPort  = u.cameraViewPort;
+		fonts = u.fonts;
+		numberFont = u.numberFont;
+		sizeCalculator = u.sizeCalculator;
+		audio = u.audio;
+	}
+}

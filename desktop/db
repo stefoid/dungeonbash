@@ -1,0 +1,3 @@
+java -cp libs/gdx-backend-gwt.jar:../dbash-desktop/bin:../dbash-core/bin:../dbash-core/libs/gdx.jar:../dbash-core/ivylib/jars/picocontainer-2.10.jar:../dbash-core/libs/tween-engine-api.jar:../dbash-core/ivylib/jars/javax.inject-1.jar:../dbash-core/ivylib/jars/jsr250-api-1.0.jar:../dbash-desktop/libs/gdx-backend-lwjgl.jar:../dbash-desktop/libs/gdx-backend-lwjgl-natives.jar:../dbash-desktop/libs/gdx-natives.jar:../dbash-desktop/libs/gdx-tools.jar com.me.mygdxgame.Main
+
+
