@@ -74,15 +74,20 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		
 		// the dungeon area only takes up the left part of the screen
 		this.dungeonArea = new Rect(screenArea);
-		dungeonArea.width = screenArea.height;  // dungeon area is a square
+		
+		final float DAM = 0.5f;  // data area modifier
+		// We want the ideal data area to be 55% of the dungeon width.  If there isnt enought screen space, we
+		// will shrink the dungeon area.  dw + dw*.55 = sw    
+		dungeonArea.width = screenArea.width / (1f + DAM);
+		if (dungeonArea.width > screenArea.height) {
+			dungeonArea.width = screenArea.height;
+		}
+		dungeonArea.height = dungeonArea.width; // dungeon area is a square
 		CameraViewPort dungeonViewPort = new CameraViewPort(dungeonArea);
 		
 		dataArea.x += dungeonArea.width; // data area fills area that dungeon does not use
-		float idealDataAreaWidth = dungeonArea.width * 0.55f;
-		dataArea.width = screenArea.width - dungeonArea.width;
-		if (dataArea.width > idealDataAreaWidth) {
-			dataArea.width = idealDataAreaWidth;
-		}
+		dataArea.width = dungeonArea.width * DAM;
+		dataArea.height = dungeonArea.height;
 		dataAreaPresenter = new TabbedDataAreaPresenter(gui, model, this, dataArea);  // the area passed to the presenter is the area it draws in the 'world'
 		
 		// By creating the dungeon area after the tabbed data area, it will process touch events first which will be more efficient

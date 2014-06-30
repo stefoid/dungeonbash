@@ -71,54 +71,54 @@ public class Audio {
 		musicVolumeListeners = new UIInfoListenerBag();
 		fxVolumeListeners = new UIInfoListenerBag();
 		sounds = new HashMap<String, Sound>();
-//		addSound(BAD_EFFECT);
-//		addSound(GOOD_EFFECT);
-//		addSound(CHEMICAL_BURST);
-//		addSound(CHEMICAL_HIT);
-//		addSound(CLICK);
-//		addSound(DEATH);
-//		addSound(ENERGY_BURST);
-//		addSound(ENERGY_HIT);
-//		addSound(HARD_BURST);
-//		addSound(HARD_HIT);
-//		addSound(ITEM_DROP);	
-//		addSound(ITEM_PICKUP);
-//		addSound(ITEM_SELECT_ACC);
-//		addSound(ITEM_SELECT_MELEE);
-//		addSound(ITEM_SELECT_PROJ);
-//		addSound(MISS);
-//		addSound(NEGATIVE);
-//		addSound(RESIST);
-//		addSound(RANGED_ATTACK);
-//		addSound(SHARP_BURST);
-//		addSound(SHARP_HIT);
-//		addSound(DROP_IN);
-//		addSound(STAIR_DOWN);
-//		addSound(GAME_OVER_TUNE);
-//		addSound(ZAP);
+		addSound(BAD_EFFECT);
+		addSound(GOOD_EFFECT);
+		addSound(CHEMICAL_BURST);
+		addSound(CHEMICAL_HIT);
+		addSound(CLICK);
+		addSound(DEATH);
+		addSound(ENERGY_BURST);
+		addSound(ENERGY_HIT);
+		addSound(HARD_BURST);
+		addSound(HARD_HIT);
+		addSound(ITEM_DROP);	
+		addSound(ITEM_PICKUP);
+		addSound(ITEM_SELECT_ACC);
+		addSound(ITEM_SELECT_MELEE);
+		addSound(ITEM_SELECT_PROJ);
+		addSound(MISS);
+		addSound(NEGATIVE);
+		addSound(RESIST);
+		addSound(RANGED_ATTACK);
+		addSound(SHARP_BURST);
+		addSound(SHARP_HIT);
+		addSound(DROP_IN);
+		addSound(STAIR_DOWN);
+		addSound(GAME_OVER_TUNE);
+		addSound(ZAP);
 		
 		music = new HashMap<String, Song>();
-//		addMusic(BATTLE_THEME);
-//		addMusic(MOVING_THEME);
+		addMusic(BATTLE_THEME);
+		addMusic(MOVING_THEME);
 		
 		setMusicVolume(1f);
 		setFxVolume(1f);
 }
 	
 	protected void addSound(String name) {
-		Sound sound = Gdx.audio.newSound(Gdx.files.internal("res/dbash2/fx/" + name + ".ogg"));
+		Sound sound = Gdx.audio.newSound(Gdx.files.internal("res/dbash2/fx/" + name + ".mp3"));
 		sounds.put(name,  sound);
 	}
 
 	protected void addMusic(String name) {
-		Music themeMusic = Gdx.audio.newMusic(Gdx.files.internal("res/dbash2/music/" + name + ".ogg"));
+		Music themeMusic = Gdx.audio.newMusic(Gdx.files.internal("res/dbash2/music/" + name + ".mp3"));
 		themeMusic.setLooping(true);
 		Song song = new Song(themeMusic);
 		music.put(name,  song);
 	}
 	
 	public void playSound(String sound) {
-		//sounds.get(sound).play(fxVolume);
+		sounds.get(sound).play(fxVolume);
 	}
 	
 	/*
@@ -131,15 +131,15 @@ public class Audio {
 	}
 	
 	public void playMusic(String name, boolean fade) {
-//		Song theme = music.get(name);
-//		
-//		for (Song song : music.values()) {
-//			if (song != theme) {
-//				song.stop(fade);
-//			} else {
-//				song.play(fade);
-//			}
-//		}
+		Song theme = music.get(name);
+		
+		for (Song song : music.values()) {
+			if (song != theme) {
+				song.stop(fade);
+			} else {
+				song.play(fade);
+			}
+		}
 	}
 	
 	public void setMusicVolume(float volume) {
