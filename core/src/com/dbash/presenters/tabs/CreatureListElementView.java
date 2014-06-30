@@ -43,7 +43,7 @@ public class CreatureListElementView implements IListElement {
 	public CreatureListElementView(UIDepend gui, CreatureStats stats, Rect area) {
 		this.area = new Rect(area);
 		//this.area.y -= area.height * 2;
-		this.area.height *= 3;
+		//this.area.height *= 3;
 		this.stats = stats;
 		String imageName = stats.name.replace(" ","_");
 		float BOTTOM = .5f;

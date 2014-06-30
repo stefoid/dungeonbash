@@ -48,11 +48,16 @@ public class EyeDetailListPresenter extends ListPresenter{
 		Creature creature = model.presenterDungeon.getCreatureAtEyePos();
 		dungeonItemList = model.presenterDungeon.getItemsAtEyepos();
 		
+		int extraElements = (int) (gui.sizeCalculator.ELEMENTS_PER_SCREEN/2);
+		
 		// Add creature details elements, plus empty list elements to act as spacers..
 		if (creature != null) {
-			elements.add(new IListElement.EmptyListElement(gui, null, elementArea));
-			elements.add(new IListElement.EmptyListElement(gui, null, elementArea));
-			CreatureListElementView creatureElement = new CreatureListElementView(gui, creature.getCreatureStats(), elementArea);
+			for (int i=0; i<extraElements; i++) {
+				elements.add(new IListElement.EmptyListElement(gui, null, elementArea));
+			}
+			Rect creatureArea = new Rect(elementArea);
+			creatureArea.height *= (extraElements+1);
+			CreatureListElementView creatureElement = new CreatureListElementView(gui, creature.getCreatureStats(), creatureArea);
 			elements.add(creatureElement);
 		}
 		

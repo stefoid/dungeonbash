@@ -47,7 +47,7 @@ public class Dbash implements ApplicationListener {
 		spriteBatch = new SpriteBatch();
 		UIDepend gui = new UIDepend();
 		
-		int[] fontSizes = {48, 40, 32, 26, 21, 17};
+		int[] fontSizes = {82, 64, 48, 40, 32, 26, 21, 17};
 		gui.fonts = new ArrayList<SmoothBitmapFont>();
 		for (int fontSize : fontSizes) {
 			gui.fonts.add(new SmoothBitmapFont(fontSize));
