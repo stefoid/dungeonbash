@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 import com.dbash.util.Randy;
@@ -501,6 +502,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		// as long as selecting it didnt destroy it (oneshot).
 		// if it is a setter, it should update stats  TODO
 		if (abilityWasSetter) {
+			trySetDefaultMelee();
 			updateStats(null, null);  // this will update the character stats and effects due to the selection change
 			//effectListListeners.alertListeners();
 		} else {
@@ -722,9 +724,29 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 	}
 	
+	protected void trySetDefaultMelee() {
+		Ability defaultMelee = null;
+		boolean meleeEquiped = false;
+		for (Ability ability : abilities) {
+			if (ability.getAbilityType() == AbilityType.WEAPON) {
+				if (defaultMelee == null) {
+					defaultMelee = ability;
+				}
+				if (ability.set) {
+					meleeEquiped = true;
+				}
+			}
+		}
+		
+		if (meleeEquiped == false && defaultMelee != null ){
+			defaultMelee.abilitySelected(this);
+		}
+	}
+	
 	@Override
 	public void itemDropSelected(Ability ability) {
 		dropObject(ability);
+		trySetDefaultMelee();
 		itemListListeners.alertListeners();
 		
 		// if the item dropped was equipped, it could affect headline stats and highlighted ability

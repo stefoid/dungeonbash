@@ -8,6 +8,7 @@ import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.Audio;
+import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.ButtonView;
@@ -31,6 +32,7 @@ import com.dbash.util.Rect;
 		private Rect bodyArea;
 		UIDepend gui;
 		TouchEventProvider touchEventProvider;
+		protected ImagePatchView border;
 		
 		public MenuTab(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 			super(model, gui, touchEventProvider, tabArea, bodyArea);
@@ -41,6 +43,8 @@ import com.dbash.util.Rect;
 			menuTabImage = new ImageView(gui, "MENU_TAB_IMAGE", tabArea);
 			backImageCurrent = new ImageView(gui, "MENU_TAB_ON_IMAGE", tabArea);
 			backImageNotCurrent = new ImageView(gui, "MENU_TAB_OFF_IMAGE", tabArea);
+			
+			border = new ImagePatchView(gui, "9patchlistsides", bodyArea); 
 			
 			Rect sliderRect1 = new Rect(bodyArea, .55f, .1f, .05f, .4f);
 			fxSlider = new SliderView(gui, touchEventProvider, sliderRect1, "VOLUME_SLIDER_IMAGE", "VOLUME_SLIDER_KNOB");
@@ -155,6 +159,7 @@ import com.dbash.util.Rect;
 				spriteBatch.flush();   // cause the list to be drawn within the clipping window.
 				ScissorStack.popScissors();  // remove the clipping window for further drawing.
 			}
+			border.draw(spriteBatch);
 		}
 		
 		@Override
