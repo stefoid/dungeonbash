@@ -27,6 +27,8 @@ public class Location {
 		NO_FACE
 	};
 		
+	public static final float minTint = 0.4f;
+	
 	public Map map;
 	public LocationType locationType;
 	public TileType tileType;
@@ -38,12 +40,14 @@ public class Location {
 	public DungeonPosition position;
 	int x;
 	int y;
+	public float tint;
 	
 	// ShadowMaps in which this Location is visible, and the distance of this location form the center of that shadowmap
 	HashMap<ShadowMap, Character>  shadowMaps;  
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
 	{
+		clearTint();
 		this.map = map;
 		this.x = x;
 		this.y = y;
@@ -101,6 +105,20 @@ public class Location {
 	public void setCreature(Creature creature) {
 		this.creature = creature;
 		map.alertToVisualChangeAtLocation(this);   
+	}
+	
+	// Onlt gets lighter due to, err lights.
+	public void setTint(float newTint) {
+		if (newTint > tint) {  // cant make it darker than it already is
+			tint = newTint;
+			if (tint > 1f) {
+				tint = 1f;  // cant be lighter than this
+			} 
+		}
+	}
+	
+	public void clearTint() {
+		this.tint = minTint;  // darkest tile.  Lights will make it lighter.
 	}
 	
 	public void shadowMapChange(ShadowMap shadowMap, Character character, boolean isVisibleWithin)
@@ -202,10 +220,12 @@ public class Location {
 		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
 		for (ShadowMap shadowMap : shadowMaps.keySet()) {
 			Character character = shadowMaps.get(shadowMap);
-			int d = position.distanceToSpecialSpecial(character.getPosition());
-			if (d < rangeOfClosestChar && character.isAlive()) {
-				rangeOfClosestChar = d;
-				closestVisibleChar = character;
+			if (character != null) {
+				int d = position.distanceToSpecialSpecial(character.getPosition());
+				if (d < rangeOfClosestChar && character.isAlive()) {
+					rangeOfClosestChar = d;
+					closestVisibleChar = character;
+				}
 			}
 		}
 		

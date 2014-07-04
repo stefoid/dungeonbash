@@ -201,7 +201,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		float dx = (float)(toRect.x - fromRect.x)/(float)numberOfDots;
 		float dy = (float)(toRect.y - fromRect.y)/(float)numberOfDots;
 		final String soundEffect;
-		if (abilityType == AbilityType.WAND || abilityType == AbilityType.ABILITY) {
+		if (abilityType == AbilityType.WAND /*|| abilityType == AbilityType.ABILITY*/) {
 			soundEffect = Audio.ZAP;
 		} else {
 			soundEffect = Audio.RANGED_ATTACK;

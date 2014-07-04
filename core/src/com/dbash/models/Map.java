@@ -3,6 +3,7 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import com.dbash.util.Randy;
@@ -22,6 +23,7 @@ public class Map implements IPresenterMap {
 	public DungeonPosition exitPoint;
 	public DungeonPosition[] roomPoints;
 	protected UIInfoListenerBag retainFocusBag;
+	protected ArrayList<Light> lights;
 	
 	private Vector<UILocationInfoListener> locationInfoListeners;
 	private Location solidRock = new Location();
@@ -34,7 +36,7 @@ public class Map implements IPresenterMap {
 		width = 12 + (level * 2) + border*2 - 2;
 		height = width;
 		location = new Location[width][height];
-		
+		lights = new ArrayList<Light>();
 		// initialize array of locations - by default will be WALLS.
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
@@ -277,6 +279,37 @@ public class Map implements IPresenterMap {
 			for (int y=0; y< height; y++) {
 				location(x,y).persistThings(out);
 			}
+		}
+	}
+	
+	public void addLight(Light light) {
+		clearLighting();
+		light.setMap(this);
+		lights.add(light);
+		shineLighting();
+	}
+	
+	public void moveLight(Light light, DungeonPosition newPosition) {
+		clearLighting();
+		light.setPosition(newPosition);
+		shineLighting();
+	}
+	
+	public void removeLight(Light light) {
+		clearLighting();
+		lights.remove(light);
+		shineLighting();
+	}
+	
+	protected void shineLighting() {
+		for (Light light : lights) {
+			light.applyLight();
+		}
+	}
+	
+	protected void clearLighting() {
+		for (Light light : lights) {
+			light.clearLight();
 		}
 	}
 	

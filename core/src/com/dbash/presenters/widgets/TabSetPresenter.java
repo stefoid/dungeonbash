@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
+import com.dbash.models.UIInfoListener;
 import com.dbash.models.TouchEvent.TouchType;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
@@ -60,7 +62,20 @@ public class TabSetPresenter implements TouchEventListener{
 		configTab(new MenuTab(model, gui, touchEventProvider, tabArea, bodyArea));
 		
 		swipedTab = null;
-		setTab(AbilityTab.class);
+		final IPresenterTurnState turnProcessor = model.presenterTurnState;
+		turnProcessor.onChangeToGameInProgress(new UIInfoListener() {
+			public void UIInfoChanged() {
+				if (turnProcessor.gameInProgress() == false) {
+					setTab(MenuTab.class);
+				}
+			}
+		});
+		
+		if (turnProcessor.gameInProgress() == false) {
+			setTab(MenuTab.class);
+		} else {
+			setTab(AbilityTab.class);
+		}
 	}
 	
 

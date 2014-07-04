@@ -3,6 +3,7 @@ package com.dbash.presenters.dungeon;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.Location;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
@@ -42,9 +43,10 @@ public class LocationPresenter {
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
 	public boolean drawTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
 		boolean drawCreature = false;
+		float tint = locationInfo.tint;
 		
 		if (locationInfo.shadowMaps.contains(shadowMap)) {
-			tile.draw(spriteBatch, alpha);
+			tile.drawTinted(spriteBatch, tint, alpha);
 			for (ImageView image : items) {
 				image.draw(spriteBatch);
 			}
@@ -54,7 +56,7 @@ public class LocationPresenter {
 				drawCreature = true;
 			}
 		} else if (locationInfo.isDiscovered) {
-			tile.drawTinted(spriteBatch, alpha);
+			tile.drawTinted(spriteBatch, Location.minTint, alpha);
 		} 
 		else {
 			if (model.presenterTurnState.getUseBlack()) {

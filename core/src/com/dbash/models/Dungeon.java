@@ -39,6 +39,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	TurnProcessor turnProcessor;
 	LinkedList<Monster> mobs;
 	DungeonPosition		eyePos;
+	DungeonPosition currentFocus;
 	IDungeonPresentationEventListener dungeonEventListener;
 	IMapPresentationEventListener mapEventListener;
 	HashMap<Character, ShadowMap> shadowMaps;
@@ -68,6 +69,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		// currently focused character id
 		focusCharId = in.readInt();
 		
+		// read the focus position
+		currentFocus = (DungeonPosition) in.readObject();
+		
 		// Load the map info with Locationtypes.
 		map = new Map(in, this, allCreatures, this, this);
 		
@@ -85,7 +89,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		} else {
 			out.writeInt(currentlyFocussedCharacter.uniqueId);
 		}
-
+		
+		out.writeObject(currentFocus);
 		map.persist(out);
 	}
 
@@ -109,7 +114,13 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		// focus the map on the currently focused character
 		if (focusCharId != TurnProcessor.NO_CURRENT_CREATURE) {
 			currentlyFocussedCharacter = (Character) allCreatures.getCreatureByUniqueId(focusCharId);
-			mapEventListener.setFocusPosition(currentlyFocussedCharacter.mapPosition, currentlyFocussedCharacter.shadowMap);
+			setMapFocus(currentlyFocussedCharacter.mapPosition, currentlyFocussedCharacter.shadowMap);
+		} else {
+			// Create a new shadowmap that sees everything in its range.
+			ShadowMap shadowMap = new ShadowMap();
+			shadowMap.setMap(map, currentFocus, 5);
+			shadowMap.emptyShadowMap(true);
+			setMapFocus(currentFocus, shadowMap);
 		}
 	}
 	
@@ -154,9 +165,13 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 		}
 
-		mapEventListener.setFocusPosition(map.startPoint, null);
+		setMapFocus(map.startPoint, null);
 	}
 	
+	private void setMapFocus(DungeonPosition pos, ShadowMap shadowMap) {
+		currentFocus = new DungeonPosition(pos);
+		mapEventListener.setFocusPosition(pos, shadowMap);
+	}
 	
 	private void placeMonster(DungeonPosition dungeonLocation) {
 		// try to register in that possie, otherwise just return
@@ -290,6 +305,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		fallingCharacter.shadowMap.setMap(map, map.startPoint, 5);
 		fallingCharacter.setPosition(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
+		Light light = new Light(map.startPoint, 5);
+		map.addLight(light);
 		if (dungeonEventListener != null) {
 			System.out.println("SN:"+sequenceNumber + " fallIntoLevel");
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter);
@@ -363,7 +380,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		mapEventListener.retainViewUntilNextFocusChange(deadCharactersMap, new UIInfoListener () {
 			public void UIInfoChanged() {
-				deadCharactersMap.emptyShadowMap();
+				deadCharactersMap.emptyShadowMap(false);
 			}
 		});
 	}

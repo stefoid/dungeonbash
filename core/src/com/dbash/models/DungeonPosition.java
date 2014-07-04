@@ -192,8 +192,35 @@ public class DungeonPosition implements Comparable, Serializable {
 		return distance;
 	}
 
-
+	static float[][] distances;
 	
+	public float getTrueDistance(DungeonPosition position) {
+		return getTrueDistance(position.x, position.y);
+	}
+	
+	public float getTrueDistance(int x, int y) {
+		if (distances == null) {
+			calcDistances();
+		}
+		
+		int posX = Math.abs(this.x - x);
+		int posY = Math.abs(this.y - y);
+		return distances[posX][posY];
+	}
+	
+	protected void calcDistances() {
+		distances = new float[6][6];
+		for (int x=0; x<6; x++) {
+			for (int y=0; y<6; y++) {
+				float d = (float) x*x+y*y;
+				if (d == 0f) {
+					distances[x][y] = 0f;
+				} else {
+					distances[x][y] = (float) Math.sqrt(d);
+				}
+			}
+		}
+	}
 	@Override
 	public boolean equals(Object obj) {
 		DungeonPosition p = (DungeonPosition) obj;

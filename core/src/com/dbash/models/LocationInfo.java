@@ -11,6 +11,7 @@ public class LocationInfo {
 	public boolean isDiscovered;
 	public Set<ShadowMap> shadowMaps;
 	public ItemList itemList;
+	public float tint; // how dark should this tile be?
 	
 	public LocationInfo(Location location)
 	{
@@ -19,5 +20,6 @@ public class LocationInfo {
 		this.isDiscovered = location.isDiscovered;
 		this.shadowMaps = location.shadowMaps.keySet();
 		this.itemList = location.getItemList();
+		this.tint = location.tint;
 	}
 }

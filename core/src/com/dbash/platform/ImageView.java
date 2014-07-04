@@ -49,8 +49,8 @@ public class ImageView {
 		sprite.setColor(Color.WHITE);
 	}
 	
-	public void drawTinted(SpriteBatch spriteBatch, float alpha) {
-		sprite.setColor(.5f, .5f, .5f, alpha);
+	public void drawTinted(SpriteBatch spriteBatch, float tint, float alpha) {
+		sprite.setColor(tint, tint, tint, alpha);
 		draw(spriteBatch);
 		sprite.setColor(Color.WHITE);
 	}

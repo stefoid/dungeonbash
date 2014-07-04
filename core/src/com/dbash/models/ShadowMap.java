@@ -12,22 +12,22 @@ import java.util.Vector;
 // Therefore to identify if a particular location is visible within a shadowmap, you just need to find out if the Location exists with
 // the map.
 public class ShadowMap {
-
+	
 	// so a RayPos is just a DungeonPosition with one extra parameter - distance from the center point.
 	// the idea being that the 'rays' are generated only once at startup, and each point can store how far it is from the
 	// center, and then a shadowmap can use that info to efficiently generate an *ordered set* of Locations sorted according to proximity.
 	// therefore to find the closest creature, or all creatures in a certain range is just a linear search.
 	protected class RayPos extends DungeonPosition {
-		public int distance;
-		
+		public int distance;  // square radus
+		public float trueDistance;  // circular radius
 		public RayPos(int x, int y) {
 			super(x,y);
 		}
 
-		// this is not a true distance, but a tile-based count (i.e. radius is a square, not a circle)
+		// 'distance' a true distance, but a tile-based count (i.e. radius is a square, not a circle)
 		public void setDistance(DungeonPosition centrePos) {
 			distance = distanceTo(centrePos);
-		}
+		}	
 	}
 	
 	
@@ -53,7 +53,7 @@ public class ShadowMap {
 	
 	// Make a shadowmap with a certain range form the centrePos.
 	public void setMap(Map map, DungeonPosition centerPos, int range)
-	{
+	{	
 		this.centerPos = centerPos;
 		this.range = range;
 		this.map = map;
@@ -76,9 +76,9 @@ public class ShadowMap {
 	
 	// An owning character would call this on its own shadowmap when it dies or goes down stairs
 	// so that monsters dont think it is stil there when they look through shadowmaps belonging to characters.
-	public void emptyShadowMap() {
+	public void emptyShadowMap(boolean setVisible) {
 		for (Location location : locations) {
-			location.shadowMapChange(this, null, false);
+			location.shadowMapChange(this, null, setVisible);
 		}
 	}
 	

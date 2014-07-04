@@ -297,7 +297,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		if (shadowMap != null) {
 			previousShadowMap = currentShadowMap;
 			currentShadowMap = shadowMap;
-		}
+		} 
+		
 		LocationPresenter centerLocation = locationPresenter(focusPosition);
 		moveView(centerLocation.getScreenCenterPoint());
 	}
