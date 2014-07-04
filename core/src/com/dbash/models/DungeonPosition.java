@@ -212,12 +212,7 @@ public class DungeonPosition implements Comparable, Serializable {
 		distances = new float[6][6];
 		for (int x=0; x<6; x++) {
 			for (int y=0; y<6; y++) {
-				float d = (float) x*x+y*y;
-				if (d == 0f) {
-					distances[x][y] = 0f;
-				} else {
-					distances[x][y] = (float) Math.sqrt(d);
-				}
+				distances[x][y] = (float) Math.sqrt((float) x*x+y*y);
 			}
 		}
 	}

@@ -95,6 +95,7 @@ public class Map implements IPresenterMap {
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
 		retainFocusBag = new UIInfoListenerBag();
 		locationInfoListeners = new Vector<UILocationInfoListener>();
+		lights = new ArrayList<Light>();
 		width = in.readInt();
 		height = in.readInt();
 		startPoint = (DungeonPosition) in.readObject();

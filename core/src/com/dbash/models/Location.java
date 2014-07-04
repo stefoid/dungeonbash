@@ -27,7 +27,7 @@ public class Location {
 		NO_FACE
 	};
 		
-	public static final float minTint = 0.4f;
+	public static final float minTint = 0.3f;
 	
 	public Map map;
 	public LocationType locationType;
@@ -109,11 +109,12 @@ public class Location {
 	
 	// Onlt gets lighter due to, err lights.
 	public void setTint(float newTint) {
+		if (newTint > 1f) {
+			newTint = 1f;
+		}
 		if (newTint > tint) {  // cant make it darker than it already is
 			tint = newTint;
-			if (tint > 1f) {
-				tint = 1f;  // cant be lighter than this
-			} 
+			map.alertToVisualChangeAtLocation(this);
 		}
 	}
 	
