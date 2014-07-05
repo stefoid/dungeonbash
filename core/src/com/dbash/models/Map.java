@@ -284,22 +284,30 @@ public class Map implements IPresenterMap {
 	}
 	
 	public void addLight(Light light) {
-		clearLighting();
-		light.setMap(this);
-		lights.add(light);
-		shineLighting();
+		if (lights.contains(light) == false) {
+			clearLighting();
+			light.setMap(this);
+			lights.add(light);
+			shineLighting();
+		}
 	}
 	
 	public void moveLight(Light light, DungeonPosition newPosition) {
 		clearLighting();
+		if (lights.contains(light) == false) {
+			lights.add(light);
+			light.setMap(this);
+		} 
 		light.setPosition(newPosition);
 		shineLighting();
 	}
 	
 	public void removeLight(Light light) {
-		clearLighting();
-		lights.remove(light);
-		shineLighting();
+		if (lights.contains(light)) {
+			clearLighting();
+			lights.remove(light);
+			shineLighting();
+		}
 	}
 	
 	protected void shineLighting() {

@@ -8,6 +8,7 @@ import com.dbash.models.Character;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
 import com.dbash.models.IMapPresentationEventListener;
+import com.dbash.models.Light;
 import com.dbash.models.Location;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.Map;
@@ -308,6 +309,18 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	public void retainViewUntilNextFocusChange(ShadowMap focussedCharacterMap, UIInfoListener nextFocusChangeListener) {
 		retainFocusBag.add(nextFocusChangeListener);
 		deadCharactersShadowmap.add(focussedCharacterMap);
+	}
+	
+	public void addLight(Light light) {
+		map.addLight(light);
+	}
+	
+	public void moveLight(Light light, DungeonPosition newPosition) {
+		map.moveLight(light, newPosition);
+	}
+	
+	public void removeLight(Light light) {
+		map.removeLight(light);
 	}
 	
 //	@Override

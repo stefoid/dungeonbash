@@ -305,8 +305,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		fallingCharacter.shadowMap.setMap(map, map.startPoint, 5);
 		fallingCharacter.setPosition(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
-		Light light = new Light(map.startPoint, 5);
-		map.addLight(light);
 		if (dungeonEventListener != null) {
 			System.out.println("SN:"+sequenceNumber + " fallIntoLevel");
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter);

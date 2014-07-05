@@ -9,6 +9,7 @@ import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
 import com.dbash.models.IPresenterCreature;
 import com.dbash.models.IPresenterCreature.HighlightStatus;
+import com.dbash.models.Light;
 import com.dbash.models.Monster;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.UIInfoListener;
@@ -75,6 +76,7 @@ public class CreaturePresenter {
 	private String name;
 	private ImageView highlightImage;
 	private AnimationView myPreviousAnim;
+	private Light light;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
@@ -85,6 +87,7 @@ public class CreaturePresenter {
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.WAITING_TO_FALL;
+			light = new Light(creature.getPosition(), 5); // Characters have lights.
 		} else {
 			this.visualState = VisualState.STATIONARY;
 		}
@@ -110,6 +113,7 @@ public class CreaturePresenter {
 	
 	public void resume() {
 		this.visualState = VisualState.STATIONARY;
+		mapPresenter.addLight(light);
 	}
 	
 	private void updateHighlightAnimation() {
@@ -198,7 +202,7 @@ public class CreaturePresenter {
 	// preceding one that sets the source position to its own source position.
 	int moves_waiting = 0;
 	
-	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener animCompleteListener) {
+	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener animCompleteListener) {
 		final CreaturePresenter selfi = this;
 		final DungeonPosition newSourcePos = fromPosition;
 		//System.out.printlnln(this+" command to move with moves waiting " + moves_waiting++ +" and state "+visualState.toString());
@@ -242,6 +246,9 @@ public class CreaturePresenter {
 				setStaticImage(dir);
 				if (tpListen != null) {
 					tpListen.animEvent(); // tell anyone who cares
+				}
+				if (light != null) {
+					mapPresenter.moveLight(light, toPosition);
 				}
 			}
 		});
@@ -306,7 +313,7 @@ public class CreaturePresenter {
 	
 	// when falling into a level, we dont have anywhere visible to come from, so we turn off static drawing of this
 	// creature as soon as we get this event, then turn it back on again after the animation is completed.
-	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter) {
+	public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter) {
 		myPreviousAnim = null;  // if we are falling, then there was no previous move command.
 		visualState = VisualState.WAITING_TO_FALL;
 		Rect toRect = makeDrawingRectFromPosition(fallingCharacter.getPosition());
@@ -319,6 +326,7 @@ public class CreaturePresenter {
 			public void animEvent() {
 				visualState = VisualState.STATIONARY;  // we assume stationary.
 				setStaticImage(dir);
+				mapPresenter.moveLight(light, fallingCharacter.getPosition());
 			}
 		});
 
@@ -352,6 +360,7 @@ public class CreaturePresenter {
 				if (tpListen != null) {
 					tpListen.animEvent(); // tell anyone who cares
 				}
+				mapPresenter.removeLight(light);
 			}
 		});
 		

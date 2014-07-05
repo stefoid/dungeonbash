@@ -1,1 +1,1 @@
-cp bin/res/dbash2/pngs-packed/* ../dbash-android/assets/res/dbash2/pngs-packed
+cp bin/res/dbash2/pngs-packed/* ../android/assets/res/dbash2/pngs-packed
