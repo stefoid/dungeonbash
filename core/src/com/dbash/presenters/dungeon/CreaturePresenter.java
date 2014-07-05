@@ -87,7 +87,7 @@ public class CreaturePresenter {
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.WAITING_TO_FALL;
-			light = new Light(creature.getPosition(), 5); // Characters have lights.
+			light = new Light(creature.getPosition(), 5, false); // Characters have lights.
 		} else {
 			this.visualState = VisualState.STATIONARY;
 		}
@@ -422,6 +422,7 @@ public class CreaturePresenter {
 				if (tpListen != null) {
 					tpListen.animEvent(); // tell anyone who cares
 				}
+				mapPresenter.removeLight(light);
 			}
 		});
 		

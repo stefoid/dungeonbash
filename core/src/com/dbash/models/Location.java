@@ -41,13 +41,13 @@ public class Location {
 	int x;
 	int y;
 	public float tint;
+	public float permTint;
 	
 	// ShadowMaps in which this Location is visible, and the distance of this location form the center of that shadowmap
 	HashMap<ShadowMap, Character>  shadowMaps;  
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
 	{
-		clearTint();
 		this.map = map;
 		this.x = x;
 		this.y = y;
@@ -59,6 +59,8 @@ public class Location {
 		isDiscovered = false;
 		tileName = "CLEAR_FLOOR_IMAGE";
 		shadowMaps = new HashMap<ShadowMap, Character>();  // the set of shadowmaps (and hence characters) this Location is visible to.
+		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
+		clearTint();
 	}
 	
 	public Location() {
@@ -78,6 +80,8 @@ public class Location {
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
+		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
+		clearTint();
 	}
 	
 	public void load(ObjectInputStream in, Map map, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -118,8 +122,19 @@ public class Location {
 		}
 	}
 	
+	// Only gets lighter due to, err lights.
+	public void setPermTint(float newTint) {
+		if (newTint > 1f) {
+			newTint = 1f;
+		}
+		if (newTint > permTint) {  // cant make it darker than it already is
+			permTint = newTint;
+			setTint(permTint);
+		}
+	}
+	
 	public void clearTint() {
-		this.tint = minTint;  // darkest tile.  Lights will make it lighter.
+		tint = permTint;  // darkest tile.  Lights will make it lighter.
 	}
 	
 	public void shadowMapChange(ShadowMap shadowMap, Character character, boolean isVisibleWithin)

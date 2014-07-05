@@ -116,11 +116,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			currentlyFocussedCharacter = (Character) allCreatures.getCreatureByUniqueId(focusCharId);
 			setMapFocus(currentlyFocussedCharacter.mapPosition, currentlyFocussedCharacter.shadowMap);
 		} else {
-			// Create a new shadowmap that sees everything in its range.
+			// Create a new shadowmap that sees everything in its range, and a light to see with.
 			ShadowMap shadowMap = new ShadowMap();
 			shadowMap.setMap(map, currentFocus, 5);
 			shadowMap.emptyShadowMap(true);
 			setMapFocus(currentFocus, shadowMap);
+			map.addLight(new Light(currentFocus, 5, false));
 		}
 	}
 	
@@ -394,6 +395,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void gameOver() {
 		dungeonEventListener.gameOver();
+		map.addLight(new Light(currentFocus, 5, false));
 	}
 	
 	@Override

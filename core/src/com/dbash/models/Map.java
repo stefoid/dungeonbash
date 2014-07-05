@@ -23,7 +23,8 @@ public class Map implements IPresenterMap {
 	public DungeonPosition exitPoint;
 	public DungeonPosition[] roomPoints;
 	protected UIInfoListenerBag retainFocusBag;
-	protected ArrayList<Light> lights;
+	protected ArrayList<Light> tempLights;
+	protected ArrayList<Light> permLights;
 	
 	private Vector<UILocationInfoListener> locationInfoListeners;
 	private Location solidRock = new Location();
@@ -36,7 +37,6 @@ public class Map implements IPresenterMap {
 		width = 12 + (level * 2) + border*2 - 2;
 		height = width;
 		location = new Location[width][height];
-		lights = new ArrayList<Light>();
 		// initialize array of locations - by default will be WALLS.
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
@@ -90,12 +90,13 @@ public class Map implements IPresenterMap {
 				location(x,y).setTileName();
 			}
 		}
+		
+		setupLighting();
 	}
 	
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
 		retainFocusBag = new UIInfoListenerBag();
 		locationInfoListeners = new Vector<UILocationInfoListener>();
-		lights = new ArrayList<Light>();
 		width = in.readInt();
 		height = in.readInt();
 		startPoint = (DungeonPosition) in.readObject();
@@ -107,6 +108,8 @@ public class Map implements IPresenterMap {
 				location[x][y] = new Location(in, this, allCreatures, dungeonEvents, dungeonQuery);
 			}
 		}
+		
+		setupLighting();
 	}
 	
 	public void load(ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -116,6 +119,13 @@ public class Map implements IPresenterMap {
 				location[x][y].load(in, this, allCreatures, dungeonEvents, dungeonQuery);
 			}
 		}
+	}
+	
+	protected void setupLighting() {
+		tempLights = new ArrayList<Light>();
+		permLights = new ArrayList<Light>();
+		Light exitLight = new Light(exitPoint, 1, true);  // low level light - permanent
+		addLight(exitLight);
 	}
 	
 	// Called by Locations - the dungeonmap is one such subscriber and it posts the locationInfo to the 
@@ -284,40 +294,53 @@ public class Map implements IPresenterMap {
 	}
 	
 	public void addLight(Light light) {
-		if (lights.contains(light) == false) {
-			clearLighting();
-			light.setMap(this);
-			lights.add(light);
-			shineLighting();
+		if (light.permanent){
+			if (permLights.contains(light) == false) {
+				clearTempLighting();
+				light.setMap(this);
+				permLights.add(light);
+				light.applyLight();  // permanent lights apply their effects once only and it sticks.
+				shineTempLighting();
+			}
+		} else {
+			if (tempLights.contains(light) == false) {
+				clearTempLighting();
+				light.setMap(this);
+				tempLights.add(light);
+				shineTempLighting();
+			}
 		}
 	}
 	
 	public void moveLight(Light light, DungeonPosition newPosition) {
-		clearLighting();
-		if (lights.contains(light) == false) {
-			lights.add(light);
+		clearTempLighting();
+		if (tempLights.contains(light) == false) {
+			tempLights.add(light);
 			light.setMap(this);
 		} 
 		light.setPosition(newPosition);
-		shineLighting();
+		shineTempLighting();
 	}
 	
+	// remove the effects of temp lighting, returning tile to its base level of permanent lighting.
 	public void removeLight(Light light) {
-		if (lights.contains(light)) {
-			clearLighting();
-			lights.remove(light);
-			shineLighting();
+		if (tempLights.contains(light)) {
+			clearTempLighting();
+			tempLights.remove(light);
+			shineTempLighting();
 		}
 	}
 	
-	protected void shineLighting() {
-		for (Light light : lights) {
+	// Adds temporary lighting
+	protected void shineTempLighting() {
+		for (Light light : tempLights) {
 			light.applyLight();
 		}
 	}
 	
-	protected void clearLighting() {
-		for (Light light : lights) {
+	// removes the effect of any temporary lighting, returning locations to base permanent lighting levels
+	protected void clearTempLighting() {
+		for (Light light : tempLights) {
 			light.clearLight();
 		}
 	}

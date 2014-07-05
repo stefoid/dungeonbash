@@ -95,7 +95,6 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		if (previousShadowMap != currentShadowMap && previousShadowMap != null) {
 			curAlpha = currentShadowMapTween.getValue();
 		}
-
 		
 		// draw the tiles that could be visible (pre-calculated when moveView is called)
 		for (int x=minTileX; x<=maxTileX; x++) {

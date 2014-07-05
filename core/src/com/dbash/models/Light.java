@@ -6,12 +6,14 @@ public class Light {
 	protected float fStrength;
 	protected ShadowMap shadowMap;
 	protected Map map;
-
-	public Light (DungeonPosition position, int strength) {
+	public boolean permanent;
+	
+	public Light (DungeonPosition position, int strength, boolean permanent) {
 		this.position = new DungeonPosition(position);
 		this.strength = strength;
 		this.fStrength = (float) strength / 2.6f;
 		this.shadowMap = new ShadowMap();
+		this.permanent = permanent;
 	}
 	
 	// Work out a shadowmap for this light, and then illuminate the Locations in it according to their distance
@@ -30,7 +32,11 @@ public class Light {
 	// Shine its light on the Locations it can see, according to their distance.
 	public void applyLight() {
 		for (Location location : shadowMap.locations) {
-			location.setTint(fStrength/(location.getPosition().getTrueDistance(position)));
+			if (permanent) {
+				location.setPermTint(fStrength/(location.getPosition().getTrueDistance(position)));
+			} else {
+				location.setTint(fStrength/(location.getPosition().getTrueDistance(position)));
+			}
 		}
 	}
 	
