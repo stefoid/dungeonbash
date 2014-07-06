@@ -21,7 +21,6 @@ import com.dbash.platform.CachedSpriteManager;
 import com.dbash.platform.FatOutlineFont;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.SmoothBitmapFont;
-import com.dbash.platform.SplashScreen;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.RootPresenter;
 
