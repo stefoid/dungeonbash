@@ -60,11 +60,11 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	private void init() {	
 		screenArea = new Rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		// the data area takes up the whole screen area, even though we just draw on the right side.
-		// only reason is we can use its viewport to draw also popups which do take up a big chunk of the screen.
-		// We could make the dataArea viewport only draw on its side of the screen and pass a 3rd whole-screen sized viewport to the popup presenter to draw on
-		// maybe latter if required...  theoretically, using the same cameraViewport is more efficient because you avoid a flush when switching viewports.
+		// We create three viewports so that we can the dungeon map and data area can be moved around just by adjusting the Viewport x and y offsets.
+		// Means we can swap them for lefties...
+		// The third viewport is the entire screen for popups.
 		this.dataArea = new Rect(screenArea);
+		CameraViewPort popupViewport = new CameraViewPort(screenArea);
 		CameraViewPort dataViewPort = new CameraViewPort(dataArea);
 		dataViewPort.moveCamera(dataArea.width/2, dataArea.height/2); // this camera stays put in the center of the screen
 		
@@ -92,12 +92,17 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		float totalWidth = dungeonArea.width + dataArea.width;
 		float xOffset = (screenArea.width-totalWidth)/2;	
 		float yOffset = (screenArea.height-dungeonArea.height)/2;
-		dungeonArea.x += xOffset;
-		dungeonArea.y += yOffset;
-		dataArea.x += xOffset;
-		dataArea.y += yOffset;
+//		dungeonArea.x += xOffset;
+//		dungeonArea.y += yOffset;
+//		dataArea.x += xOffset;
+//		dataArea.y += yOffset;
 		
-		CameraViewPort dungeonViewPort = new CameraViewPort(dungeonArea);
+		// Dungeon Area Viewport can move according to offset and nothing else has to change.
+		Rect dungeonAreaViewPort = new Rect(dungeonArea);
+		dungeonAreaViewPort.x += xOffset;
+		dungeonAreaViewPort.y += yOffset;
+		CameraViewPort dungeonViewPort = new CameraViewPort(dungeonAreaViewPort);
+		
 		dataAreaPresenter = new TabbedDataAreaPresenter(gui, model, this, dataArea);  // the area passed to the presenter is the area it draws in the 'world'
 		
 		// By creating the dungeon area after the tabbed data area, it will process touch events first which will be more efficient
