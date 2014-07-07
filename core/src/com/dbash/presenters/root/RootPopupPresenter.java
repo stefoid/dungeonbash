@@ -32,7 +32,7 @@ public class RootPopupPresenter implements IPopupController {
 	
 	
 	public RootPopupPresenter(UIDepend gui, TouchEventProvider touchEventProvider, Rect screenArea) {
-		this.gui = gui;
+		this.gui = new UIDepend(gui);
 		this.touchEventProvider = touchEventProvider;
 		this.screenArea = screenArea;
 		this.area = new Rect(screenArea, 0.2f, 0.2f, 0.2f, 0.2f);

@@ -63,20 +63,15 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		// We create three viewports so that we can the dungeon map and data area can be moved around just by adjusting the Viewport x and y offsets.
 		// Means we can swap them for lefties...
 		// The third viewport is the entire screen for popups.
-		this.dataArea = new Rect(screenArea);
-		CameraViewPort popupViewport = new CameraViewPort(screenArea);
-		CameraViewPort dataViewPort = new CameraViewPort(dataArea);
-		dataViewPort.moveCamera(dataArea.width/2, dataArea.height/2); // this camera stays put in the center of the screen
-		
-		gui.cameraViewPort = dataViewPort;
+		CameraViewPort wholeScreenViewPort = new CameraViewPort(screenArea);
+		gui.cameraViewPort = wholeScreenViewPort;
 		popupController = new RootPopupPresenter(gui, this, screenArea);  // the area passed to the presenter is the area it draws in the 'world'
 		model.popupController = popupController;
 		
 		// the dungeon area only takes up the left part of the screen
+		final float DAM = 0.5f;  // data area modifier (percentage of dungeon map width)
 		this.dungeonArea = new Rect(screenArea);
-		
-		final float DAM = 0.5f;  // data area modifier
-		// We want the ideal data area to be 55% of the dungeon width.  If there isnt enought screen space, we
+		// We want the ideal data area to be 50% of the dungeon width.  If there isnt enought screen space, we
 		// will shrink the dungeon area.  dw + dw*.55 = sw    
 		dungeonArea.width = screenArea.width / (1f + DAM);
 		if (dungeonArea.width > screenArea.height) {
@@ -84,29 +79,30 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		}
 		dungeonArea.height = dungeonArea.width; // dungeon area is a square
 		
-		dataArea.x += dungeonArea.width; // data area fills area that dungeon does not use
+		// data area.
+		this.dataArea = new Rect(screenArea);
 		dataArea.width = dungeonArea.width * DAM;
 		dataArea.height = dungeonArea.height;
 		
-		// center dungeon and data areas on physical screen.
+		// find Viewport offsets to center dungeon and data areas on physical screen.
 		float totalWidth = dungeonArea.width + dataArea.width;
 		float xOffset = (screenArea.width-totalWidth)/2;	
 		float yOffset = (screenArea.height-dungeonArea.height)/2;
-//		dungeonArea.x += xOffset;
-//		dungeonArea.y += yOffset;
-//		dataArea.x += xOffset;
-//		dataArea.y += yOffset;
 		
+		Rect dataAreaViewPort = new Rect(dataArea);
+		dataAreaViewPort.x += xOffset + dungeonArea.width;
+		dataAreaViewPort.y += yOffset;
+		CameraViewPort dataViewPort = new CameraViewPort(dataAreaViewPort);
+		gui.cameraViewPort = dataViewPort;
+		dataAreaPresenter = new TabbedDataAreaPresenter(gui, model, this, dataArea);  // the area passed to the presenter is the area it draws in the 'world'
+		
+		// By creating the dungeon area after the tabbed data area, it will process touch events first which will be more efficient
+		// than having to check the touch areas of the entire tabbed data area before trying the dungeon area, for clicks inside the dungeon area.
 		// Dungeon Area Viewport can move according to offset and nothing else has to change.
 		Rect dungeonAreaViewPort = new Rect(dungeonArea);
 		dungeonAreaViewPort.x += xOffset;
 		dungeonAreaViewPort.y += yOffset;
 		CameraViewPort dungeonViewPort = new CameraViewPort(dungeonAreaViewPort);
-		
-		dataAreaPresenter = new TabbedDataAreaPresenter(gui, model, this, dataArea);  // the area passed to the presenter is the area it draws in the 'world'
-		
-		// By creating the dungeon area after the tabbed data area, it will process touch events first which will be more efficient
-		// than having to check the touch areas of the entire tabbed data aera before trying the dungeon area, for clicks inside the dungeon area.
 		gui.cameraViewPort = dungeonViewPort;
 		dungeonAreaPresenter = new DungeonAreaPresenter(gui, model, this, dungeonArea);	 // the area passed to the presenter is the area it draws in the 'world'
 	}

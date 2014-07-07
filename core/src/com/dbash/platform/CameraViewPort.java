@@ -38,6 +38,7 @@ public class CameraViewPort extends OrthographicCamera {
 		super(viewPort.width, viewPort.height);
 		vp = new Rectangle();
 		moveViewport(viewPort);
+		moveCamera(viewPort.width/2, viewPort.height/2);  // auto center on the middle of the viewport for convenience
 	}
 	
 	
