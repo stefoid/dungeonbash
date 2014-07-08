@@ -2,6 +2,7 @@ package com.dbash.platform;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 // This is here to wrap up dependencies on the gdx libraries
@@ -16,6 +17,7 @@ public class UIDepend {
 	public BitmapFont numberFont;
 	public SizeCalculator sizeCalculator;
 	public Audio audio;
+	public AssetManager assetManager;
 	
 	public UIDepend() {
 		
@@ -29,5 +31,6 @@ public class UIDepend {
 		numberFont = u.numberFont;
 		sizeCalculator = u.sizeCalculator;
 		audio = u.audio;
+		assetManager = u.assetManager;
 	}
 }
