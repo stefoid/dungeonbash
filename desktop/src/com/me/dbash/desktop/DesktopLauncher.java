@@ -82,11 +82,11 @@ public class DesktopLauncher {
 		//config.width = 480;
 		//config.height = 320;
 		
-		//config.width = 1280;
-		//config.height = 720;
+		config.width = 1280;
+		config.height = 720;
 		
-		config.width = 800;
-		config.height = 480;
+		//config.width = 800;
+		//config.height = 480;
 		
 		new LwjglApplication(new Dbash(), config);
 	}
