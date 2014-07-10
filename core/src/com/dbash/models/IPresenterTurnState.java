@@ -19,6 +19,7 @@ public interface IPresenterTurnState {
 	public void startGameSelected();
 	public boolean gameInProgress();
 	public void onChangeToGameInProgress(UIInfoListener listener); 
+	public void quitSelected();
 	
 	// Current character related
 	public void onChangeToCurrentCharacter(UIInfoListener listener);

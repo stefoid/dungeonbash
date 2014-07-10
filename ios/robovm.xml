@@ -17,8 +17,11 @@
       <directory>data</directory>
     </resource>
   </resources>
-  <forceLinkClasses>
-    <pattern>com.badlogic.gdx.scenes.scene2d.ui.*</pattern>
+  <forceLinkClasses>   
+    <pattern>com.android.org.conscrypt.OpenSSLProvider</pattern>
+    <pattern>com.android.org.conscrypt.OpenSSLMessageDigestJDK$SHA1</pattern>
+    <pattern>com.android.org.conscrypt.JSSEProvider</pattern>
+    <pattern>org.apache.harmony.security.provider.crypto.SHA1_MessageDigestImpl</pattern>
     <pattern>org.apache.harmony.xnet.provider.jsse.OpenSSLProvider</pattern>
     <pattern>org.apache.harmony.security.provider.cert.DRLCertFactory</pattern>
     <pattern>com.android.org.bouncycastle.jce.provider.BouncyCastleProvider</pattern>

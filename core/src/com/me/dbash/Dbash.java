@@ -54,7 +54,7 @@ public class Dbash implements ApplicationListener {
 		UIDepend gui = new UIDepend();
 		gui.assetManager = new AssetManager();
 		dungeon = new Dungeon(true);
-		turnProcessor = new TurnProcessor(dungeon, dungeon, dungeon);
+		turnProcessor = new TurnProcessor(dungeon, dungeon, dungeon, this);
 		
 		int[] fontSizes = {82, 64, 48, 40, 32, 26, 21, 17};
 		gui.fonts = new ArrayList<SmoothBitmapFont>();
@@ -77,6 +77,7 @@ public class Dbash implements ApplicationListener {
 
 		// load previously saved game, if it exists.
 		FileHandle fl = Gdx.files.local("gamedata.dat");
+		System.out.println("LOADING GAMEDATA");
 		if (fl.exists() == true) {
 			newGame = false;
 			ObjectInputStream in = null;
@@ -114,6 +115,10 @@ public class Dbash implements ApplicationListener {
 	
 	@Override
 	public void pause() {
+		if (quitted) {
+			return;
+		}
+		
 		System.out.println("SAVING GAMEDATA");
 		FileHandle fl = Gdx.files.local("gamedata.dat");
 		ObjectOutputStream out = null;
@@ -135,7 +140,7 @@ public class Dbash implements ApplicationListener {
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
-		
+		System.out.println("DISPOSE CALLED");
 	}
 
 	@Override
@@ -187,7 +192,14 @@ public class Dbash implements ApplicationListener {
 
 	@Override
 	public void resume() {
+		System.out.println("RESUME CALLED");
+	}
 	
+	boolean quitted = false;
+	public void quit() {
+		pause();
+		quitted = true;
+		Gdx.app.exit();
 	}
 	
 }

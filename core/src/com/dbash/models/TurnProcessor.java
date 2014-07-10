@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import com.dbash.models.Creature.CreatureType;
 import com.dbash.util.SequenceNumber;
+import com.me.dbash.Dbash;
 
 public class TurnProcessor implements IPresenterTurnState {
 	
@@ -30,6 +31,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean gameInProgress;
 	private boolean usingEye;
 	public static final int NO_CURRENT_CREATURE = -1;
+	private Dbash app;
 	
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character.  We iterate over this list to give everything a chance to act.
@@ -43,11 +45,12 @@ public class TurnProcessor implements IPresenterTurnState {
 	public Vector<Character> charactersFallingIn;
 	public Vector<Character> charactersFallingOut;
 	
-	public TurnProcessor(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery, IDungeonControl dungeon) {
+	public TurnProcessor(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery, IDungeonControl dungeon, Dbash dbash) {
 		initOneTime(dungeonEvents, dungeonQuery, dungeon);
 		setGameInProgress(false);
 		currentCharacter = nobody;
 		leaderStatus = LeaderStatus.NONE;
+		this.app= dbash;
 	}
 	
 	public void startNewGame() {
@@ -655,6 +658,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		} else {
 			out.writeInt(currentLeader.uniqueId);
 		}
+	}
+
+	@Override
+	public void quitSelected() {
+		app.quit();
 	}
 
 

@@ -34,7 +34,7 @@ import com.dbash.util.Rect;
 		TouchEventProvider touchEventProvider;
 		protected ImagePatchView border;
 		
-		public MenuTab(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
+		public MenuTab(final PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 			super(model, gui, touchEventProvider, tabArea, bodyArea);
 			this.model = model;
 			this.touchEventProvider = touchEventProvider;
@@ -97,7 +97,7 @@ import com.dbash.util.Rect;
 					"QUIT_BUTTON_IMAGE", "QUIT_BUTTON_IMAGE");
 			quitButton.onClick( new IClickListener() {
 				public void processClick() {
-					Gdx.app.exit();
+					model.presenterTurnState.quitSelected();
 				}
 			});
 			
