@@ -47,7 +47,7 @@ import com.dbash.util.Rect;
 			border = new ImagePatchView(gui, "9patchlistsides", bodyArea); 
 			
 			Rect sliderRect1 = new Rect(bodyArea, .55f, .1f, .05f, .4f);
-			fxSlider = new SliderView(gui, touchEventProvider, sliderRect1, "VOLUME_SLIDER_IMAGE", "MUSIC_SLIDER_BUTTON");
+			fxSlider = new SliderView(gui, touchEventProvider, sliderRect1, "VOLUME_SLIDER_IMAGE", "FX_SLIDER_BUTTON");
 			gui.audio.fxVolumeListeners.add(new UIInfoListener() {
 				public void UIInfoChanged() {
 					fxSlider.setSliderPosition(audio.getFxVolume()*100f);
@@ -61,7 +61,7 @@ import com.dbash.util.Rect;
 			});
 			
 			Rect sliderRect2 = new Rect(bodyArea, .1f, .55f, .05f, .4f);
-			musicSlider = new SliderView(gui, touchEventProvider, sliderRect2, "VOLUME_SLIDER_IMAGE", "FX_SLIDER_BUTTON");
+			musicSlider = new SliderView(gui, touchEventProvider, sliderRect2, "VOLUME_SLIDER_IMAGE", "MUSIC_SLIDER_BUTTON");
 			gui.audio.musicVolumeListeners.add(new UIInfoListener() {
 				public void UIInfoChanged() {
 					musicSlider.setSliderPosition(audio.getMusicVolume()*100f);
