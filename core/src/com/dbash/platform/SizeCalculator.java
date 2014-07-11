@@ -40,7 +40,7 @@ public class SizeCalculator {
 	private void setListHeight(float height, float ppcy) {
 
 		float cms = height/ppcy;
-		ELEMENTS_PER_SCREEN = Math.round(cms/1.1f);
+		ELEMENTS_PER_SCREEN = Math.round(cms/1.5f);
 		if (ELEMENTS_PER_SCREEN < 4.0f) {
 			ELEMENTS_PER_SCREEN = 4.0f;
 		}

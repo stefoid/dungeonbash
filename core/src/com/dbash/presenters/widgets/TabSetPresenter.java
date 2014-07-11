@@ -37,12 +37,15 @@ public class TabSetPresenter implements TouchEventListener{
 	private float swipePosX;
 	private float swipeVelocity;
 	private Rect bodyArea;
+	private float swipeAmount;
 	
 	public void create(PresenterDepend model,  UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 
 		// The tab keys take 15% of the bottom of the entire area
 		Rect tabArea = new Rect(area, 0, 0, SizeCalculator.LIST_AREA_SCALE, 0);
 		tabArea.width = area.width / 5;
+		
+		this.swipeAmount = gui.sizeCalculator.MIN_DRAG_PIXELS*3f;  // 6mm
 		
 		// the tab pane area takes up the remaining 85%
 		bodyArea = new Rect(area, 0, 0, 0, SizeCalculator.TAB_BUTTON_SCALE);
@@ -166,12 +169,12 @@ public class TabSetPresenter implements TouchEventListener{
 	public boolean touchEvent(TouchEvent event) {
 		if (swipeState == SwipeState.NONE) {
 			if (event.getTouchType() == TouchType.MOVE) {
-				if (event.dx < -30) {
+				if (event.dx < -swipeAmount) {
 					swipeState = SwipeState.LEFT;
 					startSwipe();
 				}
 				
-				if (event.dx > 30) {
+				if (event.dx > swipeAmount) {
 					swipeState = SwipeState.RIGHT;
 					startSwipe();
 				}

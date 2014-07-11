@@ -118,7 +118,7 @@ public class Audio {
 	}
 	
 	public void playSound(String sound) {
-		sounds.get(sound).play(fxVolume);
+		sounds.get(sound).play(fxVolume*fxVolume);  // squared for better sensitivity at low volumes
 	}
 	
 	/*
@@ -143,9 +143,9 @@ public class Audio {
 	}
 	
 	public void setMusicVolume(float volume) {
-		musicVolume = volume;
+		musicVolume = volume;   // square it to give it more sensitivity at low volumes
 		for (Song song : music.values()) {
-			song.setMasterVolume(volume);
+			song.setMasterVolume(volume*volume);
 		}
 	}
 	
