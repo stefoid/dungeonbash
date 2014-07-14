@@ -17,7 +17,7 @@
       <directory>data</directory>
     </resource>
   </resources>
-  <forceLinkClasses>   
+  <forceLinkClasses>
     <pattern>com.android.org.conscrypt.OpenSSLProvider</pattern>
     <pattern>com.android.org.conscrypt.OpenSSLMessageDigestJDK$SHA1</pattern>
     <pattern>com.android.org.conscrypt.JSSEProvider</pattern>

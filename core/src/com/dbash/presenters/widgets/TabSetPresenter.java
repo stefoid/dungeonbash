@@ -45,7 +45,7 @@ public class TabSetPresenter implements TouchEventListener{
 		Rect tabArea = new Rect(area, 0, 0, SizeCalculator.LIST_AREA_SCALE, 0);
 		tabArea.width = area.width / 5;
 		
-		this.swipeAmount = gui.sizeCalculator.MIN_DRAG_PIXELS*3f;  // 6mm
+		this.swipeAmount = gui.sizeCalculator.MIN_DRAG_PIXELS*2f;  // 4mm
 		
 		// the tab pane area takes up the remaining 85%
 		bodyArea = new Rect(area, 0, 0, 0, SizeCalculator.TAB_BUTTON_SCALE);
