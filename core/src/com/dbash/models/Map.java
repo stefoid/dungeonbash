@@ -84,14 +84,15 @@ public class Map implements IPresenterMap {
 			}
 		}
 		
+		setupLighting();
+		
 		// Then make secondary pass to determine tile names
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
 				location(x,y).setTileName();
 			}
 		}
-		
-		setupLighting();
+		addExitLight();
 	}
 	
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -102,14 +103,16 @@ public class Map implements IPresenterMap {
 		startPoint = (DungeonPosition) in.readObject();
 		exitPoint = (DungeonPosition) in.readObject();
 		location = new Location[width][height];
+		
+		setupLighting();
+		
 		// read the locations
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
 				location[x][y] = new Location(in, this, allCreatures, dungeonEvents, dungeonQuery);
 			}
 		}
-		
-		setupLighting();
+		addExitLight();
 	}
 	
 	public void load(ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -124,7 +127,10 @@ public class Map implements IPresenterMap {
 	protected void setupLighting() {
 		tempLights = new ArrayList<Light>();
 		permLights = new ArrayList<Light>();
-		Light exitLight = new Light(exitPoint, 1, true);  // low level light - permanent
+	}
+	
+	protected void addExitLight() {
+		Light exitLight = new Light(exitPoint, 0, 1f, true);  // low level light - permanent
 		addLight(exitLight);
 	}
 	

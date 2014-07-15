@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import com.dbash.models.IDungeonQuery.AtLocation;
+import com.dbash.util.Randy;
 
 
 
@@ -42,6 +43,7 @@ public class Location {
 	int y;
 	public float tint;
 	public float permTint;
+	public boolean torch;
 	
 	// ShadowMaps in which this Location is visible, and the distance of this location form the center of that shadowmap
 	HashMap<ShadowMap, Character>  shadowMaps;  
@@ -51,6 +53,7 @@ public class Location {
 		this.map = map;
 		this.x = x;
 		this.y = y;
+		torch = false;
 		position = new DungeonPosition(x,y);
 		locationType = LocationType.WALL;  // defaults to wall
 		itemList = new Vector<Ability>();  // no items
@@ -80,8 +83,16 @@ public class Location {
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
+		torch = (Boolean) in.readObject();
 		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		clearTint();
+	}
+	
+	private void addtorch() {
+		torch = true;
+		DungeonPosition torchPosition = new DungeonPosition(position);
+		torchPosition.y--;  // light doesnt work inside walls very well
+		map.addLight(new Light(torchPosition, 5, Light.WALL_TORCH_STRENGTH, true));
 	}
 	
 	public void load(ObjectInputStream in, Map map, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -97,6 +108,10 @@ public class Location {
 		int items = in.readInt();
 		for (int i=0;i<items;i++) {
 			itemList.add(new Ability(in, null, dungeonEvents, dungeonQuery));
+		}
+		
+		if (torch) {
+			addtorch();
 		}
 		
 		map.alertToVisualChangeAtLocation(this);
@@ -290,6 +305,10 @@ public class Location {
 	// then iterate across it again to setTileName which can be used to work out the sprite to draw this location with.
 	public void setTileName() {
 		tileName = calculateTileName();
+		if (tileType == TileType.FRONT_FACE && Randy.getRand(1,  10) == 1) {
+			addtorch();
+		}
+		
 		if (tileName == null) {
 			System.out.println("*****");
 		}
@@ -445,6 +464,8 @@ public class Location {
 		out.writeInt(creatureFacingDir); 
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(isDiscovered);
+		out.writeObject(torch);
+		
 	}
 	
 	public void persistThings(ObjectOutputStream out) throws IOException {

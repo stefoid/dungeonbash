@@ -87,7 +87,7 @@ public class CreaturePresenter {
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.WAITING_TO_FALL;
-			light = new Light(creature.getPosition(), 5, false); // Characters have lights.
+			light = new Light(creature.getPosition(), 5, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
 		} else {
 			this.visualState = VisualState.STATIONARY;
 		}

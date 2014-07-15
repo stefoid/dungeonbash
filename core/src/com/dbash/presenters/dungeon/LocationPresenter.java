@@ -27,8 +27,8 @@ public class LocationPresenter {
 	private MapPresenter dungeonPresenter;
 	private Vector<ImageView> items;
 	private AnimationView eyeAnimation = null;
+	private AnimationView torchAnimation = null;
 	private boolean drawEye = false;
-	//private ImageView shadow;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter dungeonPresenter) {
 		this.area = new Rect(area);
@@ -36,39 +36,32 @@ public class LocationPresenter {
 		this.model = model;
 		this.dungeonPresenter = dungeonPresenter;
 		this.items = new Vector<ImageView>();
-//		model.presenterTurnState.setAlpha(BLACKNESS_ALPHA);
-//		model.presenterTurnState.setRange(BLACKNESS_SIZE);
 	}
 	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
 	public boolean drawTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
-		boolean drawCreature = false;
+		boolean drawOverlay = false;
 		float tint = locationInfo.tint;
 		
 		if (locationInfo.shadowMaps.contains(shadowMap)) {
 			tile.drawTinted(spriteBatch, tint, alpha);
+			if (torchAnimation != null) {
+				torchAnimation.draw(spriteBatch);
+			}
 			for (ImageView image : items) {
 				image.draw(spriteBatch);
 			}
 			
 			// does this tile need to draw a creature or eye overlay?.
 			if (creaturePresenter != null || drawEye) {
-				drawCreature = true;
+				drawOverlay = true;
 			}
 		} else if (locationInfo.isDiscovered) {
 			tile.drawTinted(spriteBatch, Location.minTint, alpha);
 		} 
-//		else {
-//			if (model.presenterTurnState.getUseBlack()) {
-//				drawCreature = true;
-//			}
-//		}
-		
-		return drawCreature;
+
+		return drawOverlay;
 	}
-	
-	private /*final*/ float BLACKNESS_SIZE = 3.6f;
-	private /*final*/ float BLACKNESS_ALPHA = 1.0f;
 	
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
 		
@@ -78,37 +71,23 @@ public class LocationPresenter {
 
 		if (drawEye) {
 			eyeAnimation.draw(spriteBatch);
-		}	
+		}
 		
-//		if (model.presenterTurnState.getRange() != BLACKNESS_ALPHA) {
-//			BLACKNESS_ALPHA = model.presenterTurnState.getRange();
-//			shadow.setArea(new Rect(area, BLACKNESS_ALPHA));
-//		}
-//		if (locationInfo.shadowMaps.contains(shadowMap) == false && locationInfo.isDiscovered == false) {
-//			BLACKNESS_ALPHA = model.presenterTurnState.getAlpha();
-//			if (model.presenterTurnState.getUseBlack()) {
-//				shadow.draw(spriteBatch,BLACKNESS_ALPHA);
-//			}
-//		} else {
-//			if (creaturePresenter != null) {
-//				creaturePresenter.draw(spriteBatch, alpha);
-//			}
-//
-//			if (drawEye) {
-//				eyeAnimation.draw(spriteBatch);
-//			}	
-//		}
 	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
 		this.locationInfo = locationInfo;
 		
+		// Done once at setup.
 		if (tile == null) {
 			String tileName = "sw_";
 			tileName = tileName.concat(locationInfo.tileName);
 			this.tile = new ImageView(gui, tileName, area); 
-//			BLACKNESS_SIZE = model.presenterTurnState.getRange();
-//			shadow = new ImageView(gui, "blacktile", new Rect(area, BLACKNESS_SIZE)); 
+			Rect torchArea = new Rect(area, .6f);
+			if (locationInfo.torch) {
+				torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+				torchAnimation.startPlaying();
+			}
 		}
 		
 		// set a creature presenter if there is a creature at this location.

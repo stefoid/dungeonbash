@@ -121,7 +121,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			shadowMap.setMap(map, currentFocus, 5);
 			shadowMap.emptyShadowMap(true);
 			setMapFocus(currentFocus, shadowMap);
-			map.addLight(new Light(currentFocus, 5, false));
+			map.addLight(new Light(currentFocus, 5, Light.CHAR_LIGHT_STRENGTH, false));
 		}
 	}
 	
@@ -395,7 +395,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void gameOver() {
 		dungeonEventListener.gameOver();
-		map.addLight(new Light(currentFocus, 5, false));
+		map.addLight(new Light(currentFocus, 5, Light.CHAR_LIGHT_STRENGTH, false));
 	}
 	
 	@Override

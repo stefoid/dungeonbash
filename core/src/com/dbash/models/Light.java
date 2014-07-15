@@ -1,17 +1,21 @@
 package com.dbash.models;
 
 public class Light {
+	
+	public static float CHAR_LIGHT_STRENGTH = 2f;
+	public static float WALL_TORCH_STRENGTH = 1f;
+	
 	public DungeonPosition position;
-	public int strength;
+	public int range;
 	protected float fStrength;
 	protected ShadowMap shadowMap;
 	protected Map map;
 	public boolean permanent;
 	
-	public Light (DungeonPosition position, int strength, boolean permanent) {
+	public Light (DungeonPosition position, int range, float strength, boolean permanent) {
 		this.position = new DungeonPosition(position);
-		this.strength = strength;
-		this.fStrength = (float) strength / 2.6f;
+		this.range = range;
+		this.fStrength = strength;
 		this.shadowMap = new ShadowMap();
 		this.permanent = permanent;
 	}
@@ -21,21 +25,22 @@ public class Light {
 	// pretty easy.
 	public void setMap(Map map) {
 		this.map = map;
-		shadowMap.setMap(map, position, strength);
+		shadowMap.setMap(map, position, range);
 	}
 	
 	public void setPosition(DungeonPosition position) {
 		this.position = new DungeonPosition(position);
-		shadowMap.setMap(map, position, (int)strength);
+		shadowMap.setMap(map, position, (int)range);
 	}
 	
 	// Shine its light on the Locations it can see, according to their distance.
 	public void applyLight() {
 		for (Location location : shadowMap.locations) {
+			float div = location.getPosition().getTrueDistance(position)+.2f;
 			if (permanent) {
-				location.setPermTint(fStrength/(location.getPosition().getTrueDistance(position)));
+				location.setPermTint(fStrength/div);
 			} else {
-				location.setTint(fStrength/(location.getPosition().getTrueDistance(position)));
+				location.setTint(fStrength/div);
 			}
 		}
 	}

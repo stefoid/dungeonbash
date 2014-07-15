@@ -12,6 +12,7 @@ public class LocationInfo {
 	public Set<ShadowMap> shadowMaps;
 	public ItemList itemList;
 	public float tint; // how dark should this tile be?
+	public boolean torch;
 	
 	public LocationInfo(Location location)
 	{
@@ -21,5 +22,6 @@ public class LocationInfo {
 		this.shadowMaps = location.shadowMaps.keySet();
 		this.itemList = location.getItemList();
 		this.tint = location.tint;
+		this.torch = location.torch;
 	}
 }
