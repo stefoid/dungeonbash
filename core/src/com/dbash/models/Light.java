@@ -2,7 +2,7 @@ package com.dbash.models;
 
 public class Light {
 	
-	public static float CHAR_LIGHT_STRENGTH = 2f;
+	public static float CHAR_LIGHT_STRENGTH = 2.2f;
 	public static float WALL_TORCH_STRENGTH = 1f;
 	
 	public DungeonPosition position;
@@ -43,6 +43,13 @@ public class Light {
 				location.setTint(fStrength/div);
 			}
 		}
+	}
+	
+	protected float getLightDivisor(float distance) {
+		if (distance < 2.1f) {
+			return distance*.8f; 
+		}
+		else return distance;
 	}
 	
 	public void clearLight() {

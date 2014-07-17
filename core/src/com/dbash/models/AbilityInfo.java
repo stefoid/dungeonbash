@@ -22,6 +22,8 @@ public class AbilityInfo implements Comparable<AbilityInfo>{
 	public boolean 		currentySelected = false;
 	public int 			creates = -1;  // Does this ability crete another?
 	public boolean oneShot;
+	public boolean isStat = false;
+	public int	statValue = 0;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -68,6 +70,13 @@ public class AbilityInfo implements Comparable<AbilityInfo>{
 		name = text;
 	}
 
+	// constructor for stat listing
+	public AbilityInfo(String text, int value) {
+		name = text;
+		statValue = value;
+		isStat = true;
+	}
+	
 	@Override
 	public int compareTo(AbilityInfo o) {
 		return (this.sortValue - o.sortValue);

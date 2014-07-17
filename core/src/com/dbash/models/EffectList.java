@@ -1,6 +1,8 @@
 package com.dbash.models;
 import java.util.ArrayList;
 
+import com.dbash.models.Ability.AbilityType;
+
 
 //each Character has a AbilitySelectionList that has the following responsibilities.
 //
@@ -21,8 +23,8 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		super();
 		
 		this.owner = owner;
+		
 		for (Ability ability : owner.abilities) {
-			
 			// Effects are anything that that currently has an effect on the character, such as a non-physical, non-selectable
 			// ability, or a currently-equipped item that has intrinsic effects of its own, such as armor.
 			AbilityInfo info = new AbilityInfo(ability, owner);
@@ -40,6 +42,38 @@ public class EffectList extends ArrayList<AbilityInfo>{
 				}
 			}
 		}
+		
+		if (owner.getNameUnderscore().equals("nobody") == false) {
+		
+			// We add character stats
+			int as = owner.calculateAttackSkill();
+			AbilityInfo attack = new AbilityInfo("ATTACK SKILL : "+as, as);
+			add(attack);
+			
+			int ds = owner.calculateDefenceSkill();
+			AbilityInfo defence = new AbilityInfo("DEFENCE SKILL : "+ds, ds);
+			add(defence);
+			
+			int ss = owner.calculateSpeed();
+			AbilityInfo speed = new AbilityInfo("SPEED : "+ss, ss);
+			add(speed);
+			
+			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
+			AbilityInfo hp = new AbilityInfo("HARD PROTECT : "+hpv+"%", hpv );
+			add(hp);
+			
+			int spv = owner.calcProtection(AbilityCommand.RESIST_SHARP);
+			AbilityInfo sp = new AbilityInfo("SHARP PROTECT : "+spv+"%", spv );
+			add(sp);
+			
+			int epv = owner.calcProtection(AbilityCommand.RESIST_ENERGY);
+			AbilityInfo ep = new AbilityInfo("ENERGY PROTECT : "+epv+"%", epv );
+			add(ep);
+			
+			int cpv = owner.calcProtection(AbilityCommand.RESIST_CHEMICAL);
+			AbilityInfo cp = new AbilityInfo("CHEMICAL PROTECT : "+cpv+"%", cpv );
+			add(cp);
+			}
 		
 		// Now sort the list according to usageCount and that is the order presented to the player.
 		//Collections.sort(this);

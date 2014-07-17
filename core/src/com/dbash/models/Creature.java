@@ -231,7 +231,7 @@ public abstract class Creature implements IPresenterCreature
 
 	public boolean isReadyForTurn()
 	{
-		int speedCheck = modifyValue(AbilityCommand.MODIFY_SPEED, speed) + missedTurns; 
+		int speedCheck = calculateSpeed() + missedTurns; 
 
 		// every time this creature misses a turn, it is more likely to get a turn next time.
 		// this is to help prevent randomness depriving a creature of a turn for an undesirably long time
@@ -246,6 +246,10 @@ public abstract class Creature implements IPresenterCreature
         	missedTurns += 2;
         	return false;
         }
+	}
+	
+	public int calculateSpeed() {
+		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
 	}
 	
 	// these are for a CreaturePresenter to observe changes to the highlight status of the creature.
@@ -502,7 +506,7 @@ public abstract class Creature implements IPresenterCreature
 
 			if (abilityCommand != AbilityCommand.NO_PHYSICAL_ATTACK) {
 				// reduce damage by any ability which reduces damage of that type
-				newDamage = (newDamage * (100 - modifyValue(abilityCommand, 0))) / 100;
+				newDamage = reduceDamage(abilityCommand, newDamage);
 			} 
 
 			if (newDamage < 1) {
@@ -957,6 +961,18 @@ public abstract class Creature implements IPresenterCreature
 		return command.value;
 	}
 
+	protected int reduceDamage(int damageType, int damageValue) {
+		int damage = damageValue * (100 - modifyValue(damageType, 0)) / 100;
+		return damage;
+	}
+	
+	// To calculate current protection values
+	public int calcProtection(int damageType) {		
+		return 100-reduceDamage(damageType, 100);
+	}
+	
+	
+	
 	protected static int calcLevel(int id)
 	{
 		Data cd = (Data) creatureData.elementAt(id);

@@ -694,7 +694,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		for (AbilityInfo abilityInfo : effects) {
 			// select the last added non-temporary ability
-			if (countDown == 1000) {
+			if (countDown == 1000 && abilityInfo.isStat == false) {
 				highlightAbility = abilityInfo; 
 			}
 			

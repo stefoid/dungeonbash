@@ -48,6 +48,7 @@ public class LocationPresenter {
 			if (torchAnimation != null) {
 				torchAnimation.draw(spriteBatch);
 			}
+			
 			for (ImageView image : items) {
 				image.draw(spriteBatch);
 			}
