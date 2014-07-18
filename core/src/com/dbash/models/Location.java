@@ -28,6 +28,13 @@ public class Location {
 		NO_FACE
 	};
 		
+	public enum TorchType {
+		NONE,
+		FRONT,
+		EAST,
+		WEST
+	}
+	
 	public static final float minTint = 0.3f;
 	
 	public Map map;
@@ -43,7 +50,7 @@ public class Location {
 	int y;
 	public float tint;
 	public float permTint;
-	public boolean torch;
+	public TorchType torch = TorchType.NONE;
 	
 	// ShadowMaps in which this Location is visible, and the distance of this location form the center of that shadowmap
 	HashMap<ShadowMap, Character>  shadowMaps;  
@@ -53,7 +60,6 @@ public class Location {
 		this.map = map;
 		this.x = x;
 		this.y = y;
-		torch = false;
 		position = new DungeonPosition(x,y);
 		locationType = LocationType.WALL;  // defaults to wall
 		itemList = new Vector<Ability>();  // no items
@@ -83,15 +89,25 @@ public class Location {
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
-		torch = (Boolean) in.readObject();
+		torch = (TorchType) in.readObject();
 		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		clearTint();
 	}
 	
 	private void addtorch() {
-		torch = true;
 		DungeonPosition torchPosition = new DungeonPosition(position);
-		torchPosition.y--;  // light doesnt work inside walls very well
+		switch (torch) {
+		case FRONT:
+			torchPosition.y--;  // light doesnt work inside walls very well
+			break;
+		case EAST:
+			torchPosition.x++;  // light doesnt work inside walls very well
+			break;
+		case WEST:
+			torchPosition.x--;  // light doesnt work inside walls very well
+			break;
+		}
+		
 		map.addLight(new Light(torchPosition, 5, Light.WALL_TORCH_STRENGTH, true));
 	}
 	
@@ -110,7 +126,7 @@ public class Location {
 			itemList.add(new Ability(in, null, dungeonEvents, dungeonQuery));
 		}
 		
-		if (torch) {
+		if (torch != TorchType.NONE) {
 			addtorch();
 		}
 		
@@ -305,12 +321,17 @@ public class Location {
 	// then iterate across it again to setTileName which can be used to work out the sprite to draw this location with.
 	public void setTileName() {
 		tileName = calculateTileName();
-		if (tileType == TileType.FRONT_FACE && Randy.getRand(1,  10) == 1) {
-			addtorch();
-		}
-		
-		if (tileName == null) {
-			System.out.println("*****");
+		if (Randy.getRand(1,  30) == 1) {
+			if (tileType == TileType.FRONT_FACE) {
+				torch = TorchType.FRONT;
+				addtorch();
+			} else if (tileName.startsWith("VertWest")) {
+				torch = TorchType.WEST;
+				addtorch();
+			} else if (tileName.startsWith("VertEast")) {
+				torch = TorchType.EAST;
+				addtorch();
+			}
 		}
 	}
 	

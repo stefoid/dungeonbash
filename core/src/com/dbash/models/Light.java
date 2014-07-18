@@ -2,8 +2,8 @@ package com.dbash.models;
 
 public class Light {
 	
-	public static float CHAR_LIGHT_STRENGTH = 2.2f;
-	public static float WALL_TORCH_STRENGTH = 1f;
+	public static float CHAR_LIGHT_STRENGTH = 2.5f;
+	public static float WALL_TORCH_STRENGTH = 1.75f;
 	
 	public DungeonPosition position;
 	public int range;
@@ -36,7 +36,7 @@ public class Light {
 	// Shine its light on the Locations it can see, according to their distance.
 	public void applyLight() {
 		for (Location location : shadowMap.locations) {
-			float div = location.getPosition().getTrueDistance(position)+.2f;
+			float div = location.getPosition().getTrueDistance(position);
 			if (permanent) {
 				location.setPermTint(fStrength/div);
 			} else {
@@ -46,10 +46,11 @@ public class Light {
 	}
 	
 	protected float getLightDivisor(float distance) {
-		if (distance < 2.1f) {
-			return distance*.8f; 
-		}
-		else return distance;
+//		if (distance > 1f) {
+//			return distance*.8f; 
+//		}
+//		else 
+			return distance;
 	}
 	
 	public void clearLight() {

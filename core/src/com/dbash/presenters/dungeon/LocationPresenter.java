@@ -85,9 +85,21 @@ public class LocationPresenter {
 			tileName = tileName.concat(locationInfo.tileName);
 			this.tile = new ImageView(gui, tileName, area); 
 			Rect torchArea = new Rect(area, .6f);
-			if (locationInfo.torch) {
+			switch (locationInfo.torch) {
+			case FRONT:
 				torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 				torchAnimation.startPlaying();
+				break;
+			case WEST:
+				torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+				torchAnimation.startPlaying();
+				break;
+			case EAST:
+				torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+				torchAnimation.startPlaying();
+				break;
+			default:
+				break;
 			}
 		}
 		

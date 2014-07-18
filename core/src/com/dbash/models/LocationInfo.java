@@ -12,7 +12,7 @@ public class LocationInfo {
 	public Set<ShadowMap> shadowMaps;
 	public ItemList itemList;
 	public float tint; // how dark should this tile be?
-	public boolean torch;
+	public Location.TorchType torch;
 	
 	public LocationInfo(Location location)
 	{
