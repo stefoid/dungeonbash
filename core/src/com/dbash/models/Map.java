@@ -84,15 +84,22 @@ public class Map implements IPresenterMap {
 			}
 		}
 		
-		setupLighting();
-		
 		// Then make secondary pass to determine tile names
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
 				location(x,y).setTileName();
 			}
 		}
+		
+		setupLighting();
+		// Then make the last pass to determine post process the whole map with appropriae tilenames
+		for (int x=0; x<width; x++) {
+			for (int y=0; y< height; y++) {
+				location(x,y).doPostMapGenerationPrcessing();
+			}
+		}
 		addExitLight();
+		
 	}
 	
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {

@@ -94,20 +94,14 @@ public class Location {
 		clearTint();
 	}
 	
-	private void addtorch() {
+	public void addtorch(TorchType torch) {
+		this.torch = torch;
 		DungeonPosition torchPosition = new DungeonPosition(position);
-		switch (torch) {
-		case FRONT:
-			torchPosition.y--;  // light doesnt work inside walls very well
-			break;
-		case EAST:
-			torchPosition.x++;  // light doesnt work inside walls very well
-			break;
-		case WEST:
-			torchPosition.x--;  // light doesnt work inside walls very well
-			break;
-		}
 		
+		// Front facing torches cast their light in front of them
+		if (torch == TorchType.FRONT) {
+			torchPosition.y--;
+		} 
 		map.addLight(new Light(torchPosition, 5, Light.WALL_TORCH_STRENGTH, true));
 	}
 	
@@ -127,7 +121,7 @@ public class Location {
 		}
 		
 		if (torch != TorchType.NONE) {
-			addtorch();
+			addtorch(torch);
 		}
 		
 		map.alertToVisualChangeAtLocation(this);
@@ -321,16 +315,21 @@ public class Location {
 	// then iterate across it again to setTileName which can be used to work out the sprite to draw this location with.
 	public void setTileName() {
 		tileName = calculateTileName();
-		if (Randy.getRand(1,  30) == 1) {
+	}
+	
+	/**
+	 * Once all the tileNames have been identified, we can do things like factor in terrain, torches and 
+	 * whatnot.
+	 */
+	public void doPostMapGenerationPrcessing() {
+		// torches
+		if (Randy.getRand(1,  10) == 1) {
 			if (tileType == TileType.FRONT_FACE) {
-				torch = TorchType.FRONT;
-				addtorch();
+				addtorch(TorchType.FRONT);
 			} else if (tileName.startsWith("VertWest")) {
-				torch = TorchType.WEST;
-				addtorch();
+				map.location[x-1][y].addtorch(TorchType.WEST);
 			} else if (tileName.startsWith("VertEast")) {
-				torch = TorchType.EAST;
-				addtorch();
+				map.location[x+1][y].addtorch(TorchType.EAST);
 			}
 		}
 	}
