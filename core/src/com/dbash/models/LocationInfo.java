@@ -13,6 +13,7 @@ public class LocationInfo {
 	public ItemList itemList;
 	public float tint; // how dark should this tile be?
 	public Location.TorchType torch;
+	public boolean isShadowedFloor;
 	
 	public LocationInfo(Location location)
 	{
@@ -23,5 +24,12 @@ public class LocationInfo {
 		this.itemList = location.getItemList();
 		this.tint = location.tint;
 		this.torch = location.torch;
+		if (location.locationType == Location.LocationType.FLOOR) {
+			if (location.tileName.equals("CLEAR_FLOOR_IMAGE") == false) {
+				isShadowedFloor = true;
+			} else {
+				isShadowedFloor = false;
+			}
+		}
 	}
 }

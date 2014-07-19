@@ -3,6 +3,7 @@ package com.dbash.presenters.dungeon;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.dbash.models.Location;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
@@ -29,6 +30,7 @@ public class LocationPresenter {
 	private AnimationView eyeAnimation = null;
 	private AnimationView torchAnimation = null;
 	private boolean drawEye = false;
+	private ImageView shadow = null;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter dungeonPresenter) {
 		this.area = new Rect(area);
@@ -45,6 +47,10 @@ public class LocationPresenter {
 		
 		if (locationInfo.shadowMaps.contains(shadowMap)) {
 			tile.drawTinted(spriteBatch, tint, alpha);
+			if (shadow != null) {
+				shadow.drawTinted(spriteBatch, tint, alpha);
+			}
+			
 			if (torchAnimation != null) {
 				torchAnimation.draw(spriteBatch);
 			}
@@ -82,8 +88,15 @@ public class LocationPresenter {
 		// Done once at setup.
 		if (tile == null) {
 			String tileName = "sw_";
-			tileName = tileName.concat(locationInfo.tileName);
+			if (locationInfo.isShadowedFloor) {
+				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
+				shadow = new ImageView(gui, locationInfo.tileName, area); 
+			} else {
+				tileName = tileName.concat(locationInfo.tileName);
+			}
+
 			this.tile = new ImageView(gui, tileName, area); 
+			
 			Rect torchArea; 
 			switch (locationInfo.torch) {
 			case FRONT:

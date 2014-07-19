@@ -21,7 +21,7 @@ public class Location {
 		FLOOR,
 		EXIT};
 		
-	private enum TileType {
+	public enum TileType {
 		CLEAR, 
 		FRONT_FACE,
 		REAR_FACE,
@@ -323,7 +323,7 @@ public class Location {
 	 */
 	public void doPostMapGenerationPrcessing() {
 		// torches
-		if (Randy.getRand(1,  10) == 1) {
+		if (Randy.getRand(1,  30) == 1) {
 			if (tileType == TileType.FRONT_FACE) {
 				addtorch(TorchType.FRONT);
 			} else if (tileName.startsWith("VertWest")) {
