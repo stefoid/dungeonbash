@@ -154,17 +154,17 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 		// TOTO turn off monsters to test character anim for now
 		// add monsters to level
-		for (int i = 0; i < ((map.height - 12) * 3 / 2); i++)
-		{
-			if ((level > 4) && (Randy.getRand(1, 10) == 1))
-			{
-				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)]);
-			}
-			else
-			{
-				placeMonster(map.getRandomPoint(true));
-			}
-		}
+//		for (int i = 0; i < ((map.height - 12) * 3 / 2); i++)
+//		{
+//			if ((level > 4) && (Randy.getRand(1, 10) == 1))
+//			{
+//				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)]);
+//			}
+//			else
+//			{
+//				placeMonster(map.getRandomPoint(true));
+//			}
+//		}
 
 		setMapFocus(map.startPoint, null);
 	}

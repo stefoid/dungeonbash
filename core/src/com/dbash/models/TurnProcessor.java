@@ -383,8 +383,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		retval.clear();
 		p.level = 20;
 		retval.add(new Character(29, p, 1, dungeonEvents, dungeonQuery, this));
-		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
-		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
+//		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
+//		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = retval.get(0);
 		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
 		c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
