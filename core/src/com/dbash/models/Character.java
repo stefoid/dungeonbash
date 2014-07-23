@@ -40,6 +40,26 @@ import com.dbash.util.SequenceNumber;
 
 public class Character extends Creature implements IPresenterCharacter {
 	
+	private class BestDir {
+		public BestDir () {
+			direction = DungeonPosition.NO_DIR;
+		}
+		
+		public void setDirection (int direction) {
+			this.direction = direction;
+			if (direction == DungeonPosition.NO_DIR) {
+				hasFreeOption = false;
+			} else {
+				hasFreeOption = true;
+			}
+		}
+		
+		public boolean hasFreeOption;
+		public boolean didComplain;
+		public int direction;
+		public Character inTheWayCharacter;
+	}
+	
 	//Sprite manSprite = FileManager.createSpriteFromSingleImage("res/fresh/b.png", 1.0f);
 	LinkedList<DungeonPosition> path = new LinkedList<DungeonPosition>();
 	boolean amActiveFollower;
@@ -168,35 +188,82 @@ public class Character extends Creature implements IPresenterCharacter {
 			
 		return madeAutomaticTurn;
 	}
+
+	// Need a function here that takes a target position and returns a direction to move to get to that position
+	// and whether or not it can be reached immediately or requires a complaint to a character in the way.
+	// A path free of other characters is always chosen first.
+	// If a complaint was neccessary, then it will complain.
+	private BestDir calcBestDir(DungeonPosition targetPosition) {
+		BestDir bestDir = new BestDir();
+		bestDir.setDirection(findBestDirection(targetPosition, false));
+		if (bestDir.hasFreeOption == false) {
+			bestDir.setDirection(findBestDirection(targetPosition, true));
+			if (bestDir.hasFreeOption) {
+				// there is a way, but it is occupied by a character.
+				bestDir.hasFreeOption = false; // well, there is a way, but it is blocked, so set this false.
+				DungeonPosition desiredPosition = new DungeonPosition(mapPosition, bestDir.direction);
+				bestDir.inTheWayCharacter = (Character) dungeonQuery.getCreatureAtLocation(desiredPosition);
+				bestDir.inTheWayCharacter.characterIsInWay(bestDir.direction);
+				bestDir.didComplain = true;
+			}
+		}
+		
+		return bestDir;
+	}
 	
-	// OK, so we can do one of three things.
-	// a) walk directly to the leader
-	// b) walk directly to the last known position of the leader, via their path
-	// c) do nothing
+	
+	// OK, so we can do one of three things, in order of preference.
+	// a) respond to a complain from another character to move in a specific direction.
+	// b) walk directly to the leader
+	// c) walk directly to the last known position of the leader, via their path
+	// d) do nothing
 	private void doFollowerProcessing(Character theLeader)
 	{
+		BestDir bestDir = new BestDir();
+		DungeonPosition targetPosition;
+
 		// Tell the leader there is at least one active follower.
 		amActiveFollower = true;
-		int distanceToLeader = mapPosition.distanceTo(theLeader.getPosition());
 		
-		// ask the leader for the nearest position to his current one from his path that can be seen from here 
-		DungeonPosition leaderPos = theLeader.getLatestPathPositionIcanSee(this);
-
-		if ((leaderPos != null) && (distanceToLeader > 1)) {
-			directionToMove = findBestDirection(leaderPos);
-			
-			if (directionToMove != DungeonPosition.NO_DIR) {
-				DungeonPosition newPosition =  new DungeonPosition(mapPosition, directionToMove);
-				updatePath(newPosition);
-				Character releventChar = null;
-				// can the leader see this?
-				// visible to the currently focused character, then there is no need to change focus.
-				if (dungeonQuery.positionIsInLOSOfCharacter(theLeader, mapPosition) ||
-						dungeonQuery.positionIsInLOSOfCharacter(theLeader, newPosition)) {
-					releventChar = theLeader;
-				}
-				dungeonEvents.creatureMove(SequenceNumber.getNext(), releventChar, this, mapPosition, newPosition, directionToMove,  Dungeon.MoveType.FOLLOWER_MOVE, null);
+		// If the character was asked to move, try that first
+		if (askedDirection != DungeonPosition.NO_DIR) {
+			targetPosition = new DungeonPosition(mapPosition, askedDirection);
+			bestDir = calcBestDir(targetPosition);
+			if (bestDir.hasFreeOption) {
+				askedDirection = DungeonPosition.NO_DIR;  // will move to a clear spot, so complaint heeded.
+ 			}
+			if (bestDir.didComplain) {
+				return;  // we have to move in a certain position, but its blocked, so complain and wait.
 			}
+		} 
+
+		// if the character was asked to move, but there is no way, or the character was not asked to move
+		// then set the targetPosition based on the Leader instead, and try to move or complain.
+		if (bestDir.hasFreeOption == false) {
+			int distanceToLeader = mapPosition.distanceTo(theLeader.getPosition());
+			// ask the leader for the nearest position to his current one from his path that can be seen from here 
+			targetPosition = theLeader.getLatestPathPositionIcanSee(this);
+			
+			if (((targetPosition != null) && (distanceToLeader > 1))) {
+				bestDir = calcBestDir(targetPosition);
+				if (bestDir.didComplain) {
+					return;  // we have to move in a certain position, but its blocked, so complain and wait.
+				}
+			}
+		}
+		
+		// Having got to here, we either have a free option, or we cant move at all.
+		if (bestDir.hasFreeOption) {
+			DungeonPosition newPosition =  new DungeonPosition(mapPosition, bestDir.direction);
+			updatePath(newPosition);
+			Character releventChar = null;
+			// can the leader see this?
+			// visible to the currently focused character, then there is no need to change focus.
+			if (dungeonQuery.positionIsInLOSOfCharacter(theLeader, mapPosition) ||
+					dungeonQuery.positionIsInLOSOfCharacter(theLeader, newPosition)) {
+				releventChar = theLeader;
+			}
+			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventChar, this, mapPosition, newPosition, bestDir.direction,  Dungeon.MoveType.FOLLOWER_MOVE, null);
 		} else {
 			amActiveFollower = false;  // no trail to follow.  Im lost.
 		}
@@ -274,7 +341,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	private boolean doLeaderProcessing()
 	{
 		// Leader processing does not occur if the leader is still moving, so we dont get ahead of ourselves.
-		if (leaderFinisedMoving == false) {
+		if (leaderFinishedMoving == false) {
 			return true;
 		}
 		
@@ -303,6 +370,8 @@ public class Character extends Creature implements IPresenterCharacter {
 			madeAutomaticTurn = false;
 		}
 		
+		boolean complained = false;
+		
 		// c. If we are in a position where normally the leader would wait for player input
 		// (made Automatic turn = false) then test
 		// to see whether we can move towards leaderTargetPos instead.
@@ -312,21 +381,33 @@ public class Character extends Creature implements IPresenterCharacter {
 			} else {
 				int direction = DungeonPosition.NO_DIR;
 				if (dungeonQuery.positionIsInLOSOfCharacter(this, (leaderTargetPos))) {
-					direction = findBestDirection(leaderTargetPos);
+					direction = findBestDirection(leaderTargetPos, false);
+					if (direction == DungeonPosition.NO_DIR) {
+						direction = findDirectionOfCharacterInWay(leaderTargetPos);
+						if (direction != DungeonPosition.NO_DIR) {
+							// We have just identified that the way home has a character in front of it.
+							turnProcessor.complain(mapPosition, direction);
+							complained = true;
+							madeAutomaticTurn = true;
+						}
+					}
 				}
 				
-				if (direction == DungeonPosition.NO_DIR) {
-					setTargetPosition(null);  // cannot move towards the target any more.
-				} else {
-					DungeonPosition newPos = new DungeonPosition(mapPosition, direction);
-					leaderFinisedMoving = false;
-					dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, newPos, direction, Dungeon.MoveType.LEADER_MOVE,
-							new IAnimListener() {
-								public void animEvent() {
-									leaderFinisedMoving = true;
-								}});
-					updatePath(leaderTargetPos);
-					madeAutomaticTurn = true;
+				// We have either complained, got stuck, or have a way to move.
+				if (complained == false) {
+					if (direction == DungeonPosition.NO_DIR) {
+						setTargetPosition(null);  // cannot move towards the target any more.
+					} else {
+						DungeonPosition newPos = new DungeonPosition(mapPosition, direction);
+						leaderFinishedMoving = false;
+						dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, newPos, direction, Dungeon.MoveType.LEADER_MOVE,
+								new IAnimListener() {
+									public void animEvent() {
+										leaderFinishedMoving = true;
+									}});
+						updatePath(leaderTargetPos);
+						madeAutomaticTurn = true;
+					}
 				}
 			}
 		}
@@ -334,15 +415,12 @@ public class Character extends Creature implements IPresenterCharacter {
 		return madeAutomaticTurn;
 	}
 	
-	@Override
-	public boolean canMove(int intendedDirection)
-	{
-		switch (dungeonQuery.whatIsAtLocation(new DungeonPosition(mapPosition, intendedDirection))) {
-			case FREE:
-				return true;
-			default:
-				return false;		
-		}
+	int askedDirection = DungeonPosition.NO_DIR;
+	/**
+	 * When any character wants to move in a direction, it sends this message to a character in its way.
+	 */
+	public void getOutOfTheWay(int direction) {
+		askedDirection = direction;
 	}
 	
 
@@ -359,8 +437,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	public DungeonPosition leaderPos; // if you are a follower, and you cant see the
 								// leader, this is the postion he was last seen,
 								// so head there
-
-	private int directionToMove;
 
 	//public static SoundControl soundControl;
 
@@ -426,16 +502,9 @@ public class Character extends Creature implements IPresenterCharacter {
 		return result;
 	}
 
-	
-//	public void setTargetPosition(ScreenObject c) {
-//		lastRangedTarget = c;
-//	}
-
 	public boolean giveAbility(Creature target, Ability ab, DungeonPosition pos,
 			int magicCost, Creature giver) {
-		//setDisplayToMe();
 		return super.giveAbility(target, ab, pos, magicCost, giver);
-		// turnState = TURN_NORMAL;
 	}
 
 
@@ -547,11 +616,11 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 
 	/**
-	 * If the character is the leader, then the up position becomes important, as tge leader will try to move directly
+	 * If the character is the leader, then the up position becomes important, as the leader will try to move directly
 	 * to that location.
 	 */
 	DungeonPosition leaderTargetPos = null;
-	boolean leaderFinisedMoving = true;
+	boolean leaderFinishedMoving = true;
 	@Override
 	public void movementGesture(int direction, DungeonPosition targetPosition) {
 		theLeader = turnProcessor.getCurrentLeader();
@@ -560,7 +629,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		if (theLeader == this && targetTileType == AtLocation.FREE) {
 			if (dungeonQuery.positionIsInLOSOfCharacter(this, (targetPosition))) {
-				direction = findBestDirection(targetPosition);
+				direction = findBestDirection(targetPosition, false);
 			}
 		}
 		
@@ -575,11 +644,11 @@ public class Character extends Creature implements IPresenterCharacter {
 					mType = Dungeon.MoveType.LEADER_MOVE;
 					if (targetTileType == AtLocation.FREE) {
 						setTargetPosition(targetPosition);
-						leaderFinisedMoving = false;
+						leaderFinishedMoving = false;
 						//System.out.println("GES leaderFinisedMoving = false;");
 						complete = new IAnimListener() {
 							public void animEvent() {
-								leaderFinisedMoving = true;
+								leaderFinishedMoving = true;
 								//System.out.println("GES leaderFinisedMoving = false;");
 							}};
 					}
@@ -597,6 +666,111 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 	}
 
+	public boolean characterIsInWay(int intendedDirection)
+	{
+		switch (dungeonQuery.whatIsAtLocation(new DungeonPosition(mapPosition, intendedDirection))) {
+			case CHARACTER:
+				return true;
+			default:
+				return false;		
+		}
+	}
+	
+	// First step would be to use findBestDirection to get a free path, and if thats not possible, find out if
+	// there is a character in the way, by calling this, and the direction the character is in.
+	// yes, I know, pass strategy in or whatever,  fuck it Im tired.
+	public int findDirectionOfCharacterInWay(DungeonPosition characterPosition)
+	{
+		int direction = DungeonPosition.NO_DIR;
+
+		// means move up or down.  unless there is something in the way, in which case deviate around it.
+		if (characterPosition.x == mapPosition.x)
+		{
+			if (characterPosition.y > mapPosition.y)
+			{
+				if (characterIsInWay(DungeonPosition.NORTH))
+					direction = DungeonPosition.NORTH;
+				else if (characterIsInWay(DungeonPosition.NORTHWEST))				
+					direction = DungeonPosition.NORTHWEST;
+				else if (characterIsInWay(DungeonPosition.NORTHEAST))
+					direction = DungeonPosition.NORTHEAST;	
+			}
+			else
+			{
+				if (characterIsInWay(DungeonPosition.SOUTH))
+					direction = DungeonPosition.SOUTH;
+				else if (characterIsInWay(DungeonPosition.SOUTHWEST))				
+					direction = DungeonPosition.SOUTHWEST;
+				else if (characterIsInWay(DungeonPosition.SOUTHEAST))
+					direction = DungeonPosition.SOUTHEAST;
+			}
+		}
+		// character is west of current position
+		else if (characterPosition.x < mapPosition.x)
+		{
+			if (characterPosition.y == mapPosition.y)
+			{
+				if (characterIsInWay(DungeonPosition.WEST))
+					direction = DungeonPosition.WEST;
+				else if (characterIsInWay(DungeonPosition.SOUTHWEST))				
+					direction = DungeonPosition.SOUTHWEST;
+				else if (characterIsInWay(DungeonPosition.NORTHWEST))
+					direction = DungeonPosition.NORTHWEST;
+			}
+			else if (characterPosition.y > mapPosition.y)  // character is north of current pos
+			{
+				if (characterIsInWay(DungeonPosition.NORTHWEST))
+					direction = DungeonPosition.NORTHWEST;
+				else if (characterIsInWay(DungeonPosition.WEST))				
+					direction = DungeonPosition.WEST;
+				else if (characterIsInWay(DungeonPosition.NORTH))
+					direction = DungeonPosition.NORTH;
+			}
+			else
+			{
+				if (characterIsInWay(DungeonPosition.SOUTHWEST))
+					direction = DungeonPosition.SOUTHWEST;
+				else if (characterIsInWay(DungeonPosition.WEST))				
+					direction = DungeonPosition.WEST;
+				else if (characterIsInWay(DungeonPosition.SOUTH))
+					direction = DungeonPosition.SOUTH;
+			}
+		}
+		// character is east of current position
+		else if (characterPosition.x > mapPosition.x)
+		{
+			if (characterPosition.y == mapPosition.y)
+			{
+				if (characterIsInWay(DungeonPosition.EAST))
+					direction = DungeonPosition.EAST;
+				else if (characterIsInWay(DungeonPosition.SOUTHEAST))				
+					direction = DungeonPosition.SOUTHEAST;
+				else if (characterIsInWay(DungeonPosition.NORTHEAST))
+					direction = DungeonPosition.NORTHEAST;
+			}
+			else if (characterPosition.y > mapPosition.y)  // character is north of current pos
+			{
+				if (characterIsInWay(DungeonPosition.NORTHEAST))
+					direction = DungeonPosition.NORTHEAST;
+				else if (characterIsInWay(DungeonPosition.NORTH))				
+					direction = DungeonPosition.NORTH;
+				else if (characterIsInWay(DungeonPosition.EAST))
+					direction = DungeonPosition.EAST;
+			}
+			else
+			{
+				if (characterIsInWay(DungeonPosition.SOUTHEAST))
+					direction = DungeonPosition.SOUTHEAST;
+				else if (characterIsInWay(DungeonPosition.SOUTH))				
+					direction = DungeonPosition.SOUTH;
+				else if (characterIsInWay(DungeonPosition.EAST))
+					direction = DungeonPosition.EAST;
+			}
+		}
+
+		return direction;
+	}
+	
 	@Override
 	// called when the eye tab is opened.  character is using eye, but hasnt targeted anything
 	// so eye animation doesnt need to be shown

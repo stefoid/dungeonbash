@@ -30,6 +30,8 @@ public interface IPresenterTurnState {
 	public void passTurnSelected();
 	public void LeaderModeToggleSelected();
 	public void stairDescendSelected();
+	public boolean lederIsSoloing();
+	public void complain(DungeonPosition position, int direction);
 	
 	// Leader mode
 	public void onChangeToLeaderStatus(UIInfoListener listener);
@@ -44,4 +46,5 @@ public interface IPresenterTurnState {
 	public void setRange(float range);
 	public void setAlpha(float alpha);
 	public void setUseBlack(boolean useBlack);
+	
 }

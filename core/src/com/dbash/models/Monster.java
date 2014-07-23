@@ -20,7 +20,6 @@ public class Monster extends Creature
 	private Character			closestCharacter;				// character  to act against
 
 	private DungeonPosition		LastCharacterPos			= new DungeonPosition(0, 0, 0, 0);
-	private DungeonPosition		tempPos 					= new DungeonPosition(0, 0);
 	
 	// this constructor returns a monster that fits a certain level, either of a
 	// type that swarms or a type that doesnt swarm
@@ -149,7 +148,7 @@ public class Monster extends Creature
 			LastCharacterPos = closestCharacter.getPosition();
 
 			// Work out the best direction
-			moveDirection = findBestDirection(LastCharacterPos);
+			moveDirection = findBestDirection(LastCharacterPos, true);
 
 			// if you are almost dead, run away!
 			if ((health < calculateMaxHealth() / 5) ||
@@ -165,10 +164,10 @@ public class Monster extends Creature
 			if (((LastCharacterPos.x == 0) && (LastCharacterPos.y == 0)) || LastCharacterPos.equals(mapPosition)) {
 				LastCharacterPos.x = 0;
 				LastCharacterPos.y = 0;
-				moveDirection = findBestDirection(null);  // random direction
+				moveDirection = findBestDirection(null, true);  // random direction
 			}
 			else {
-				moveDirection = findBestDirection(LastCharacterPos); // towards last known character position
+				moveDirection = findBestDirection(LastCharacterPos, true); // towards last known character position
 			}
 		}
 		
@@ -257,22 +256,6 @@ public class Monster extends Creature
 		else
 			return null;
 	}
-
-	@Override
-	public boolean canMove(int intendedDirection)
-	{
-		tempPos.x = mapPosition.x;  // this fucntion gets called a lot so this is a little efficiency thing.
-		tempPos.y = mapPosition.y;
-		tempPos.applyDirection(tempPos, intendedDirection);
-		
-		switch (dungeonQuery.whatIsAtLocation(tempPos)) {
-			case MONSTER:
-			case WALL:
-				return false;
-			default:
-				return true;		
-		}
-	}
 	
 	// METHODS
 	private int oppositeDirection(int direction)
@@ -308,7 +291,7 @@ public class Monster extends Creature
 		}
 
 		// find the best path to get there
-		return findBestDirection(pos);
+		return findBestDirection(pos, true);
 	}
 
 	// Move or attack, and tell the Dungeon about it.

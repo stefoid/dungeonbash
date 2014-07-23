@@ -383,7 +383,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		retval.clear();
 		p.level = 20;
 		retval.add(new Character(29, p, 1, dungeonEvents, dungeonQuery, this));
-//		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
+		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
 //		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = retval.get(0);
 		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
@@ -439,6 +439,22 @@ public class TurnProcessor implements IPresenterTurnState {
 		leaderStatusListeners.alertListeners();
 	}
 
+	@Override
+	public boolean lederIsSoloing() {
+		return false;
+	}
+	
+	@Override
+	public void complain(DungeonPosition position, int direction) {
+		// Characters complain to each other that they should move
+		DungeonPosition targetChar = new DungeonPosition(position, direction);
+		for (Character character : allCharacters) {
+			if (character.getPosition().equals(targetChar)) {
+				character.getOutOfTheWay(direction);
+			}
+		}
+	}
+	
 	// When a character is having a turn, they will ask this, initiating a leadership validity check.
 	public Character getCurrentLeader()
 	{
