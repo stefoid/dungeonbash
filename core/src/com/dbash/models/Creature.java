@@ -454,6 +454,42 @@ public abstract class Creature implements IPresenterCreature
 
 	}
 
+	protected int oppositeDirection(int direction)
+	{
+		DungeonPosition pos = mapPosition;
+
+		// Identify the exact opposition direction
+		switch (direction) {
+			case DungeonPosition.NORTH:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.SOUTH);
+				break;
+			case DungeonPosition.SOUTH:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.NORTH);
+				break;
+			case DungeonPosition.EAST:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.WEST);
+				break;
+			case DungeonPosition.WEST:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.EAST);
+				break;
+			case DungeonPosition.NORTHEAST:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.SOUTHWEST);
+				break;
+			case DungeonPosition.NORTHWEST:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.SOUTHEAST);
+				break;
+			case DungeonPosition.SOUTHEAST:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.NORTHWEST);
+				break;
+			case DungeonPosition.SOUTHWEST:
+				pos = new DungeonPosition(mapPosition, DungeonPosition.NORTHEAST);
+				break;
+		}
+
+		// find the best path to get there
+		return findBestDirection(pos, true);
+	}
+	
 	@Override
 	public String getNameUnderscore() {
 		String underName = creature.name.replace(" ", "_");

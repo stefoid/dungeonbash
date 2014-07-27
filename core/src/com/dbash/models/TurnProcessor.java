@@ -181,7 +181,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	//
 	//  turn processor calls on those creatures who are able to have their turn, to take their turn
 	//	if a creature doesnt have a turn, it keeps going
-	//	if they do have their turn, they call creature.endTurn() , which amongst other thins calls waitForAnimsToFinish()
+	//	if they do have their turn, they call creature.endTurn() , which amongst other things calls waitForAnimsToFinish()
 	//  at the end of it which sets the turn processor into a wait state, and issues a dummy animation callback to dungeon
 	//	if the creature is a character that has to wait for player input, it calls waitForPlayerInput() at that point
 	private void processNextCreature() 
@@ -384,7 +384,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		p.level = 20;
 		retval.add(new Character(29, p, 1, dungeonEvents, dungeonQuery, this));
 		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
-//		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
+		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = retval.get(0);
 		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
 		c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
@@ -447,12 +447,12 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void complain(DungeonPosition position, int direction) {
 		// Characters complain to each other that they should move
-		DungeonPosition targetChar = new DungeonPosition(position, direction);
-		for (Character character : allCharacters) {
-			if (character.getPosition().equals(targetChar)) {
-				character.getOutOfTheWay(direction);
-			}
-		}
+//		DungeonPosition targetChar = new DungeonPosition(position, direction);
+//		for (Character character : allCharacters) {
+//			if (character.getPosition().equals(targetChar)) {
+//				character.getOutOfTheWay(direction);
+//			}
+//		}
 	}
 	
 	// When a character is having a turn, they will ask this, initiating a leadership validity check.

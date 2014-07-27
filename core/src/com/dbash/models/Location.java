@@ -65,7 +65,7 @@ public class Location {
 		itemList = new Vector<Ability>();  // no items
 		creature = null;   // no creature;
 		tileType = null;  // cant be worked out yet
-		isDiscovered = true;//false;
+		isDiscovered = false;
 		tileName = "CLEAR_FLOOR_IMAGE";
 		shadowMaps = new HashMap<ShadowMap, Character>();  // the set of shadowmaps (and hence characters) this Location is visible to.
 		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
