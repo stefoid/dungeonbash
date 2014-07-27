@@ -405,8 +405,13 @@ public class Character extends Creature implements IPresenterCharacter {
 					dungeonQuery.positionIsInLOSOfCharacter(theLeader, targetPosition)) {
 				releventChar = theLeader;
 			}
-			complaining = false;
-			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventChar, this, mapPosition, targetPosition, bestDir.direction,  Dungeon.MoveType.FOLLOWER_MOVE, null);
+			//complaining = false;
+			finishedAnimatingAutomaticMove = false;
+			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventChar, this, mapPosition, targetPosition, bestDir.direction,  Dungeon.MoveType.FOLLOWER_MOVE, 
+					new IAnimListener() {
+						public void animEvent() {
+							finishedAnimatingAutomaticMove = true;
+					}});
 		} else {
 			amActiveFollower = false;  // no trail to follow.  Im lost.
 		}
@@ -416,13 +421,17 @@ public class Character extends Creature implements IPresenterCharacter {
 	 * The direction of the swipe and target tile that the player raised his finger on is passed in.
 	 * If the current character is the leader, we try and work out a way to navigate to that tagret tile,
 	 * otherwise its just a normal move in the direction passed in.
+	 * 
+	 * If the gesture is valid, characteEndsTurn() must be called.
 	 */
 	boolean finishedAnimatingAutomaticMove = true;
 	@Override
 	public void movementGesture(int direction, DungeonPosition targetPosition) {
 		boolean interpretedAsLeaderGesture = doLeaderGuestureProcessing(direction, targetPosition);
 		
-		if (interpretedAsLeaderGesture == false) {
+		if (interpretedAsLeaderGesture) {
+			turnProcessor.characterEndsTurn(this);
+		} else {
 			// Otherwise just a bog standard move.
 			DungeonPosition position = new DungeonPosition(mapPosition, direction);
 			switch (dungeonQuery.whatIsAtLocation(position))
@@ -482,7 +491,6 @@ public class Character extends Creature implements IPresenterCharacter {
 						finishedAnimatingAutomaticMove = true;
 					}});
 		updatePath(newPos);
-		turnProcessor.characterEndsTurn(this);
 	}
 	/**
 	 * return 0 if there are no characters in LOS
