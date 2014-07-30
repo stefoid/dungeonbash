@@ -237,6 +237,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			
 			// ok, so presumably we can see this move, one way or the other.
 			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, completeListener);
+		} else {
+			// we wont animate, but call things that might be waiting on the animation to compelte anyway.
+			if (completeListener != null) {
+				completeListener.animEvent();
+			}
 		}
 	}
 	

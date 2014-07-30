@@ -263,14 +263,23 @@ public class Character extends Creature implements IPresenterCharacter {
 	private BestDir calcBestDir(DungeonPosition targetPosition) {
 		BestDir bestDir = new BestDir();
 		bestDir.setDirection(findBestDirection(targetPosition, false));
+		
+		// If the target position is the 1 move away and it is occupied by a character,
+		// ignore any free option and  just wait and complain.
+		if (targetPosition.equals(leaderTargetPos) && targetPosition.distanceTo(mapPosition) == 1) {
+			if (dungeonQuery.whatIsAtLocation(targetPosition) == AtLocation.CHARACTER) {
+				bestDir.setDirection(DungeonPosition.NO_DIR);
+				bestDir.didComplain = true;
+				complaining = true;
+				return bestDir;
+			}
+		} 
+
 		if (bestDir.hasFreeOption == false) {
 			bestDir.setDirection(findBestDirection(targetPosition, true));
 			if (bestDir.hasFreeOption) {
 				// there is a way, but it is occupied by a character.
 				bestDir.hasFreeOption = false; // well, there is a way, but it is blocked, so set this false.
-//				DungeonPosition desiredPosition = new DungeonPosition(mapPosition, bestDir.direction);
-//				bestDir.inTheWayCharacter = (Character) dungeonQuery.getCreatureAtLocation(desiredPosition);
-//				bestDir.inTheWayCharacter.getOutOfTheWay(bestDir.direction);
 				bestDir.didComplain = true;
 				complaining = true;
 			}
@@ -295,6 +304,13 @@ public class Character extends Creature implements IPresenterCharacter {
 	 * The aim of the automatic decision making is to navigate himself and/or the team (depending on solo-mode)
 	 * to the designated AutomaticLeaderTarget tile.  Once the leader hits that spot, the target tile can be
 	 * cleared and the Leader will wait for player input until there is a new Leader target designated.
+	 * 
+	 * 1) keep chugging towards the target position relentlessly until you get on it, and then wait there, 
+	 * having turns, until there are no active followers.
+	 * 2) if the position you want to move TO is the target position, then complain if there is a character in 
+	 * the way, even if BestDir says there is a free spot.
+	 * 3) In the above situation, ask the character if it is possible for him to move at all.  
+	 * If it gets the answer NO like - 3 times in a row or something, then its time to give up
 	 */
 	private boolean doLeaderProcessing()
 	{		
@@ -346,53 +362,34 @@ public class Character extends Creature implements IPresenterCharacter {
 	// b) walk directly to the leader
 	// c) walk directly to the last known position of the leader, via their path
 	// d) do nothing
+	
+//	1) If the leader is complaining (Or I am in the target position), and I am withing 2 squares of him, then move away from him, otherwise do nothing.  ** done **
+//	2) If I am outside of 2 squares and the leader isnt complaining, then follow.
+//	3) If I cant see the leader or any position in the leaders path, then flag as not active follower and do nothing until the situation resolves.
+//	4) If I am within 2 squares, and the leader ISNT complaining , then become 'not an active follower'.
 	private void doFollowerProcessing(Character theLeader)
 	{
 		DungeonPosition targetPosition = null;
 		int distanceToLeader = mapPosition.distanceTo(theLeader.getPosition());
 		amActiveFollower = true;  // Tell the leader there is at least one active follower.
 		BestDir bestDir = calcBestDir(theLeader.getPosition());
-		
+		boolean iAmOnLeaderTarget = mapPosition.equals(leaderTargetPos);
 		
 		// is the leader complaining?  handle that as a priority.
 		// if I am close, try to run away from the leader.
-		if (theLeader.isComplaining()) {
-			if (distanceToLeader <=2) {
-				targetPosition = getOutOfTheWay(theLeader.getPosition());
+		if (theLeader.isComplaining() || iAmOnLeaderTarget) {
+			if (distanceToLeader <= 2 || iAmOnLeaderTarget) {
+				targetPosition = getOutOfTheWay(theLeader.getPosition(), theLeader.getAutomaticLeaderTarget());
 			} 
 		} else {
-			int d = findBestDirection(theLeader.getPosition(), false);
-			if (d != DungeonPosition.NO_DIR) {
-				targetPosition = new DungeonPosition(mapPosition, d);
-			}
+			int distance = mapPosition.distanceTo(theLeader.getPosition());
+			if (distance > 1) {
+				int d = findBestDirection(theLeader.getPosition(), false);
+				if (d != DungeonPosition.NO_DIR) {
+					targetPosition = new DungeonPosition(mapPosition, d);
+				}
+			} 
 		}
-
-//		
-//		// If the character was asked to move, try that first
-//		if (askedDirection != DungeonPosition.NO_DIR) {
-//			targetPosition = new DungeonPosition(mapPosition, askedDirection);
-//			bestDir = calcBestDir(targetPosition);
-//			if (bestDir.hasFreeOption) {
-//				askedDirection = DungeonPosition.NO_DIR;  // will move to a clear spot, so complaint heeded.
-// 			}
-//			if (bestDir.didComplain) {
-//				return;  // we have to move in a certain position, but its blocked, so complain and wait.
-//			}
-//		} 
-//
-//		// if the character was asked to move, but there is no way, or the character was not asked to move
-//		// then set the targetPosition based on the Leader instead, and try to move or complain.
-//		if (bestDir.hasFreeOption == false) {
-//			// ask the leader for the nearest position to his current one from his path that can be seen from here 
-//			targetPosition = theLeader.getLatestPathPositionIcanSee(this);
-//			
-//			if (((targetPosition != null) && (distanceToLeader > 1))) {
-//				bestDir = calcBestDir(targetPosition);
-//				if (bestDir.didComplain) {
-//					return;  // we have to move in a certain position, but its blocked, so complain and wait.
-//				}
-//			}
-//		}
 		
 		// Having got to here, we either have a free option, or we cant move at all.
 		if (targetPosition != null) {
@@ -413,7 +410,7 @@ public class Character extends Creature implements IPresenterCharacter {
 							finishedAnimatingAutomaticMove = true;
 					}});
 		} else {
-			amActiveFollower = false;  // no trail to follow.  Im lost.
+			amActiveFollower = false;  // no trail to follow.  Im lost.  Or close enough.
 		}
 	}
 	
@@ -514,30 +511,47 @@ public class Character extends Creature implements IPresenterCharacter {
 	// Given the leader position, work out the best free place to move to, to be out of the leaders way
 	// return null if you cant.  The best way to do that is to work out the opposite direction to the leader
 	// and make that as the place you want to move to.
-	protected DungeonPosition getOutOfTheWay(DungeonPosition leaderPosition) {
-		DungeonPosition targetPosition = null;
-		// find best direction to get to leader that isnt blocked by a wall.
-		int direction = findBestDirection(leaderPosition, true);	
+	protected DungeonPosition getOutOfTheWay(DungeonPosition leaderPosition, DungeonPosition leaderTarget) {
+		DungeonPosition targetPosition = null;	
+		DungeonPosition oppPosition = null;
 		
-		// find the direction to move that is free and in the opposite direction to that just calcualted.
-		direction = oppositeDirection(direction);
-		if (direction != DungeonPosition.NO_DIR){
-			targetPosition = new DungeonPosition(mapPosition, direction);
+		// find best direction to get to leader that isnt blocked by a wall.
+		int direction = findBestDirection(leaderPosition, true);
+		// find the direction to move that is free and in the opposite direction to that just calculated.
+		direction = oppositeDirection(direction); 
+		if (direction != DungeonPosition.NO_DIR) {
+			oppPosition = new DungeonPosition(mapPosition, direction);
+		} 
+		
+		// How many free spaces are there? assign targetPostiion in order of least preference first.
+		ArrayList<DungeonPosition> freespots = new ArrayList<DungeonPosition>();
+		boolean addFreeSpot = true;
+		for (int i=0; i<8; i++) {
+			if (canMove(i, false)) {
+				DungeonPosition freePos = new DungeonPosition(mapPosition, i);
+				if (freePos.equals(leaderTarget)) {
+					targetPosition = leaderTarget;
+					addFreeSpot = false;
+				} 
+				if (freePos.equals(oppPosition)) {
+					targetPosition = oppPosition;
+					addFreeSpot = false;
+				} 	
+				if (addFreeSpot) {
+					freespots.add(freePos);
+				}
+			}
+		}
+		
+		// the list now contains spots that arent the opposite direction or the proposed leader target
+		// so take one of those in preference.
+		int size = freespots.size();
+		if (size>0) {
+			int randomSpot = Randy.getRand(0, freespots.size()-1);
+			targetPosition = freespots.get(randomSpot);
 		}
 		
 		return targetPosition;
-		
-//		ArrayList<Integer> freespots = new ArrayList<Integer>();	
-//		for (int i=0; i<8; i++) {
-//			if (canMove(i, false)) {
-//				freespots.add(i);
-//			}
-//		}
-//		
-//		int size = freespots.size();
-		
-
-		
 	}
 	
 	DungeonPosition leaderTargetPos = null;
@@ -564,6 +578,10 @@ public class Character extends Creature implements IPresenterCharacter {
 		} else {
 			return true;
 		}
+	}
+	
+	public DungeonPosition getAutomaticLeaderTarget() {
+		return leaderTargetPos;
 	}
 	
 	
