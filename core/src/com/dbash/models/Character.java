@@ -58,7 +58,34 @@ public class Character extends Creature implements IPresenterCharacter {
 		public boolean hasFreeOption;
 		public boolean didComplain;
 		public int direction;
-		public Character inTheWayCharacter;
+	}
+	
+	private class Complaint {
+		public int complaints = 0;
+		
+		public void complain() {
+			complaints++;
+		}
+		
+		public void stopComplaining() {
+			complaints = 0;
+		}
+		
+		public boolean isComplaining() {
+			if (complaints > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		public boolean isFedUp() {
+			if (complaints > 5) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 	
 	//Sprite manSprite = FileManager.createSpriteFromSingleImage("res/fresh/b.png", 1.0f);
@@ -68,13 +95,13 @@ public class Character extends Creature implements IPresenterCharacter {
 	// This characters personal shadowmap.
 	public ShadowMap shadowMap;
 	boolean isAlive = true;
+	private Complaint mood = new Complaint();
 	
 	// INTERFACE
 	public Character(int creatureId, DungeonPosition p, int charNumber, IDungeonEvents dungeonEvents, 
 			IDungeonQuery dungeonQuery, TurnProcessor turnProcessor) {
 		super(creatureId, p, dungeonEvents, dungeonQuery, turnProcessor); // this calls the constructor of the Creature class
 		
-		this.displayedNumber = charNumber;
 		amActiveFollower = false;
 		initChar(turnProcessor);
 	}
@@ -210,7 +237,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 	}
 	
-	private static final int pathLength = 20;
+	private static final int pathLength = 32;
 	
 	// Each character keeps a list of positions of the path it has traveled, so followers can track it down.
 	private void updatePath(DungeonPosition position)
@@ -262,6 +289,11 @@ public class Character extends Creature implements IPresenterCharacter {
 	// If a complaint was neccessary, then it will complain.
 	private BestDir calcBestDir(DungeonPosition targetPosition) {
 		BestDir bestDir = new BestDir();
+		
+		if (mapPosition.equals(targetPosition)) {
+			return bestDir;
+		}
+		
 		bestDir.setDirection(findBestDirection(targetPosition, false));
 		
 		// If the target position is the 1 move away and it is occupied by a character,
@@ -270,7 +302,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			if (dungeonQuery.whatIsAtLocation(targetPosition) == AtLocation.CHARACTER) {
 				bestDir.setDirection(DungeonPosition.NO_DIR);
 				bestDir.didComplain = true;
-				complaining = true;
+				mood.complain();
 				return bestDir;
 			}
 		} 
@@ -281,18 +313,16 @@ public class Character extends Creature implements IPresenterCharacter {
 				// there is a way, but it is occupied by a character.
 				bestDir.hasFreeOption = false; // well, there is a way, but it is blocked, so set this false.
 				bestDir.didComplain = true;
-				complaining = true;
+				mood.complain();
 			}
 		}
 		
 		return bestDir;
 	}
 	
-	public boolean complaining = false;
 	public boolean isComplaining() {
-		return complaining;
+		return mood.isComplaining();
 	}
-	
 	
 	/**
 	 * The Leader can basically do anything - move, complain, wait.  If one of these automatic leader decisions 
@@ -315,42 +345,39 @@ public class Character extends Creature implements IPresenterCharacter {
 	private boolean doLeaderProcessing()
 	{		
 		boolean giveUpAndWaitForPlayerInput = false;
-		 
-		int greatestDistance = distanceToFurthestCharacterInLOS();
-		
-		// There are no active followers out there, so no need to wait, because nothing will happen. 
-//		if (turnProcessor.anyActiveFollowers() == false) {
-//			giveUpAndWaitForPlayerInput = true;
-//		}
-		
-		// b.  If there are, are they close?  If all followers are <= 2 tiles away then wait for player input (return false)
-//		if ((greatestDistance > 0) && (greatestDistance < 3) && (leaderTargetPos == null)) { 
-//			giveUpAndWaitForPlayerInput = true;
-//		}
-		
-		// c. If we are in a position where normally the leader would wait for player input
-		// (made Automatic turn = false) then test
-		// to see whether we can move towards leaderTargetPos instead.
 		BestDir bestDir = new BestDir();
+		
+		// First step is o decide whether to wait, move or give up.
 		if  (isThereAnAutomaticLeaderTarget()) {
 			if (mapPosition.equals(leaderTargetPos)) {
-				clearAutomaticLeaderTarget();
-				giveUpAndWaitForPlayerInput = true;
+				if (turnProcessor.anyActiveFollowers() == false) {
+					// give up
+					giveUpAndWaitForPlayerInput = true;
+					clearAutomaticLeaderTarget();
+				}
 			} else {
 				if (dungeonQuery.positionIsInLOSOfCharacter(this, (leaderTargetPos))) {
 					bestDir = calcBestDir(leaderTargetPos);
 				}
 				
+				// If we have been stuck waiting on followers to get out of the way a lot, give up.
+				if (mood.isFedUp()) {
+					giveUpAndWaitForPlayerInput = true;
+					clearAutomaticLeaderTarget();
+				}
+				
 				// Is there somewhere to move to?
 				if (bestDir.hasFreeOption) {
 					performLeaderMovement(new DungeonPosition(mapPosition, bestDir.direction), bestDir.direction);
-					complaining = false;
+					mood.stopComplaining();
 				} else {
 					if (bestDir.didComplain == false) {
 						clearAutomaticLeaderTarget();
 					}
 				}
 			}
+		} else {
+			giveUpAndWaitForPlayerInput = true;
 		}
 		
 		return !giveUpAndWaitForPlayerInput;
@@ -358,7 +385,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	// OK, so we can do one of three things, in order of preference.
 	// a) respond to a complain from the leader to get out of the way if within 2 squares radius
-	//    or if the leader is complaing and you are outside of 2 squares radius.  sit still until he stops complaining
+	//    or if the leader is complaining and you are outside of 2 squares radius.  sit still until he stops complaining
 	// b) walk directly to the leader
 	// c) walk directly to the last known position of the leader, via their path
 	// d) do nothing
@@ -402,7 +429,7 @@ public class Character extends Creature implements IPresenterCharacter {
 					dungeonQuery.positionIsInLOSOfCharacter(theLeader, targetPosition)) {
 				releventChar = theLeader;
 			}
-			//complaining = false;
+
 			finishedAnimatingAutomaticMove = false;
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventChar, this, mapPosition, targetPosition, bestDir.direction,  Dungeon.MoveType.FOLLOWER_MOVE, 
 					new IAnimListener() {
@@ -489,24 +516,6 @@ public class Character extends Creature implements IPresenterCharacter {
 					}});
 		updatePath(newPos);
 	}
-	/**
-	 * return 0 if there are no characters in LOS
-	 * otherwise return the distance to the one that is furthest away
-	 */
-	private int distanceToFurthestCharacterInLOS() {
-		List<Creature> creaturesInSight = dungeonQuery.getCreaturesVisibleFrom(mapPosition, 5);  
-		int greatestDistance = 0;
-		for (Creature creature : creaturesInSight ) {
-			if ((creature instanceof Character) && (creature != this)) { // we have another character in sight
-				// Work out which visible characters are farthest away.
-				int distance = mapPosition.distanceTo(creature.getPosition());
-				if (distance > greatestDistance) {
-					greatestDistance = distance;
-				}
-			}
-		}
-		return greatestDistance;
-	}
 	
 	// Given the leader position, work out the best free place to move to, to be out of the leaders way
 	// return null if you cant.  The best way to do that is to work out the opposite direction to the leader
@@ -585,126 +594,16 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 	
 	
-	// First step would be to use findBestDirection to get a free path, and if thats not possible, find out if
-	// there is a character in the way, by calling this, and the direction the character is in.
-	// yes, I know, pass strategy in or whatever,  fuck it Im tired.
-	public int findDirectionOfCharacterInWay(DungeonPosition characterPosition)
-	{
-		int direction = DungeonPosition.NO_DIR;
 
-		// means move up or down.  unless there is something in the way, in which case deviate around it.
-		if (characterPosition.x == mapPosition.x)
-		{
-			if (characterPosition.y > mapPosition.y)
-			{
-				if (characterIsInWay(DungeonPosition.NORTH))
-					direction = DungeonPosition.NORTH;
-				else if (characterIsInWay(DungeonPosition.NORTHWEST))				
-					direction = DungeonPosition.NORTHWEST;
-				else if (characterIsInWay(DungeonPosition.NORTHEAST))
-					direction = DungeonPosition.NORTHEAST;	
-			}
-			else
-			{
-				if (characterIsInWay(DungeonPosition.SOUTH))
-					direction = DungeonPosition.SOUTH;
-				else if (characterIsInWay(DungeonPosition.SOUTHWEST))				
-					direction = DungeonPosition.SOUTHWEST;
-				else if (characterIsInWay(DungeonPosition.SOUTHEAST))
-					direction = DungeonPosition.SOUTHEAST;
-			}
-		}
-		// character is west of current position
-		else if (characterPosition.x < mapPosition.x)
-		{
-			if (characterPosition.y == mapPosition.y)
-			{
-				if (characterIsInWay(DungeonPosition.WEST))
-					direction = DungeonPosition.WEST;
-				else if (characterIsInWay(DungeonPosition.SOUTHWEST))				
-					direction = DungeonPosition.SOUTHWEST;
-				else if (characterIsInWay(DungeonPosition.NORTHWEST))
-					direction = DungeonPosition.NORTHWEST;
-			}
-			else if (characterPosition.y > mapPosition.y)  // character is north of current pos
-			{
-				if (characterIsInWay(DungeonPosition.NORTHWEST))
-					direction = DungeonPosition.NORTHWEST;
-				else if (characterIsInWay(DungeonPosition.WEST))				
-					direction = DungeonPosition.WEST;
-				else if (characterIsInWay(DungeonPosition.NORTH))
-					direction = DungeonPosition.NORTH;
-			}
-			else
-			{
-				if (characterIsInWay(DungeonPosition.SOUTHWEST))
-					direction = DungeonPosition.SOUTHWEST;
-				else if (characterIsInWay(DungeonPosition.WEST))				
-					direction = DungeonPosition.WEST;
-				else if (characterIsInWay(DungeonPosition.SOUTH))
-					direction = DungeonPosition.SOUTH;
-			}
-		}
-		// character is east of current position
-		else if (characterPosition.x > mapPosition.x)
-		{
-			if (characterPosition.y == mapPosition.y)
-			{
-				if (characterIsInWay(DungeonPosition.EAST))
-					direction = DungeonPosition.EAST;
-				else if (characterIsInWay(DungeonPosition.SOUTHEAST))				
-					direction = DungeonPosition.SOUTHEAST;
-				else if (characterIsInWay(DungeonPosition.NORTHEAST))
-					direction = DungeonPosition.NORTHEAST;
-			}
-			else if (characterPosition.y > mapPosition.y)  // character is north of current pos
-			{
-				if (characterIsInWay(DungeonPosition.NORTHEAST))
-					direction = DungeonPosition.NORTHEAST;
-				else if (characterIsInWay(DungeonPosition.NORTH))				
-					direction = DungeonPosition.NORTH;
-				else if (characterIsInWay(DungeonPosition.EAST))
-					direction = DungeonPosition.EAST;
-			}
-			else
-			{
-				if (characterIsInWay(DungeonPosition.SOUTHEAST))
-					direction = DungeonPosition.SOUTHEAST;
-				else if (characterIsInWay(DungeonPosition.SOUTH))				
-					direction = DungeonPosition.SOUTH;
-				else if (characterIsInWay(DungeonPosition.EAST))
-					direction = DungeonPosition.EAST;
-			}
-		}
-
-		return direction;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// ATTRIBUTES
 	public static final int NO_DIR = -1;
-
 	private static final int MAX_ITEMS = 10;
-
 	public Ability		currentSelectedAbility = null;
-	
-
-	private int charId;
 
 	public DungeonPosition leaderPos; // if you are a follower, and you cant see the
 								// leader, this is the postion he was last seen,
 								// so head there
-
-	//public static SoundControl soundControl;
-
-	private int displayedNumber;
 
 	private boolean characterIsUsingEye = false;
 	
@@ -712,10 +611,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	private UIInfoListenerBag effectListListeners;
 	private UIInfoListenerBag characterStatListeners;
 	private UIInfoListenerBag itemListListeners;
-	
-	public int getDisplayedNumber() {
-		return displayedNumber;
-	}
 	
 	// METHODS
 	@Override
@@ -798,10 +693,6 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		super.endTurn();
 		makeNewBagsOfListeners(); // easiest way of throwing away old listeners without concurrency issues.
-	}
-
-	public void setDisplayedNumber(int i) {
-		this.displayedNumber = i;
 	}
 
 	@Override
@@ -1058,3 +949,23 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 
 }
+
+
+///**
+// * return 0 if there are no characters in LOS
+// * otherwise return the distance to the one that is furthest away
+// */
+//private int distanceToFurthestCharacterInLOS() {
+//	List<Creature> creaturesInSight = dungeonQuery.getCreaturesVisibleFrom(mapPosition, 5);  
+//	int greatestDistance = 0;
+//	for (Creature creature : creaturesInSight ) {
+//		if ((creature instanceof Character) && (creature != this)) { // we have another character in sight
+//			// Work out which visible characters are farthest away.
+//			int distance = mapPosition.distanceTo(creature.getPosition());
+//			if (distance > greatestDistance) {
+//				greatestDistance = distance;
+//			}
+//		}
+//	}
+//	return greatestDistance;
+//}
