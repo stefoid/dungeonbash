@@ -19,7 +19,7 @@ public abstract class Creature implements IPresenterCreature
 	public static final int	MAX_SPEED		= 10;
 	
 	public class CanMoveStrategy {
-		public boolean checkMove(int intendedDirection, boolean canBeChar) {
+		public boolean checkMove(int intendedDirection, boolean canBeChar, DungeonPosition targetPos) {
 			return canMove(intendedDirection, canBeChar);
 		}
 	}
@@ -380,29 +380,21 @@ public abstract class Creature implements IPresenterCreature
 		{
 			if (characterPosition.y > mapPosition.y)
 			{
-				if (s.checkMove(DungeonPosition.NORTH, canBeCharacter))
+				if (s.checkMove(DungeonPosition.NORTH, canBeCharacter, characterPosition))
 					direction = DungeonPosition.NORTH;
-				else if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter))				
+				else if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter, characterPosition))				
 					direction = DungeonPosition.NORTHWEST;
-				else if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter))
-					direction = DungeonPosition.NORTHEAST;	
-				else if (s.checkMove(DungeonPosition.WEST, canBeCharacter))
-					direction = DungeonPosition.WEST;	
-				else if (s.checkMove(DungeonPosition.EAST, canBeCharacter))
-					direction = DungeonPosition.EAST;	
+				else if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter, characterPosition))
+					direction = DungeonPosition.NORTHEAST;		
 			}
 			else
 			{
-				if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter))
+				if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter, characterPosition))
 					direction = DungeonPosition.SOUTH;
-				else if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter))			
+				else if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter, characterPosition))			
 					direction = DungeonPosition.SOUTHWEST;
-				else if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.SOUTHEAST;
-				else if (s.checkMove(DungeonPosition.WEST, canBeCharacter))			
-					direction = DungeonPosition.WEST;
-				else if (s.checkMove(DungeonPosition.EAST, canBeCharacter))
-					direction = DungeonPosition.EAST;
 			}
 		}
 		// character is west of current position
@@ -410,42 +402,30 @@ public abstract class Creature implements IPresenterCreature
 		{
 			if (characterPosition.y == mapPosition.y)
 			{
-				if (s.checkMove(DungeonPosition.WEST, canBeCharacter))
+				if (s.checkMove(DungeonPosition.WEST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.WEST;
-				else if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter))				
+				else if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter, characterPosition))				
 					direction = DungeonPosition.SOUTHWEST;
-				else if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.NORTHWEST;
-				else if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter))				
-					direction = DungeonPosition.SOUTH;
-				else if (s.checkMove(DungeonPosition.NORTH, canBeCharacter))
-					direction = DungeonPosition.NORTH;
 			}
 			else if (characterPosition.y > mapPosition.y)  // character is north of current pos
 			{
-				if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter))
+				if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.NORTHWEST;
-				else if (s.checkMove(DungeonPosition.WEST, canBeCharacter))			
+				else if (s.checkMove(DungeonPosition.WEST, canBeCharacter, characterPosition))			
 					direction = DungeonPosition.WEST;
-				else if (s.checkMove(DungeonPosition.NORTH, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.NORTH, canBeCharacter, characterPosition))
 					direction = DungeonPosition.NORTH;
-				else if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter))				
-					direction = DungeonPosition.NORTHEAST;
-				else if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter))
-					direction = DungeonPosition.SOUTHWEST;
 			}
 			else
 			{
-				if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter))
+				if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.SOUTHWEST;
-				else if (s.checkMove(DungeonPosition.WEST, canBeCharacter))				
+				else if (s.checkMove(DungeonPosition.WEST, canBeCharacter, characterPosition))				
 					direction = DungeonPosition.WEST;
-				else if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter, characterPosition))
 					direction = DungeonPosition.SOUTH;
-				else if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter))				
-					direction = DungeonPosition.SOUTHEAST;
-				else if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter))
-					direction = DungeonPosition.NORTHWEST;
 			}
 		}
 		// character is east of current position
@@ -453,42 +433,30 @@ public abstract class Creature implements IPresenterCreature
 		{
 			if (characterPosition.y == mapPosition.y)
 			{
-				if (s.checkMove(DungeonPosition.EAST, canBeCharacter))
+				if (s.checkMove(DungeonPosition.EAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.EAST;
-				else if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter))				
+				else if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter, characterPosition))				
 					direction = DungeonPosition.SOUTHEAST;
-				else if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.NORTHEAST;
-				else if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter))				
-					direction = DungeonPosition.SOUTH;
-				else if (s.checkMove(DungeonPosition.NORTH, canBeCharacter))
-					direction = DungeonPosition.NORTH;
 			}
 			else if (characterPosition.y > mapPosition.y)  // character is north of current pos
 			{
-				if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter))
+				if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.NORTHEAST;
-				else if (s.checkMove(DungeonPosition.NORTH, canBeCharacter))				
+				else if (s.checkMove(DungeonPosition.NORTH, canBeCharacter, characterPosition))				
 					direction = DungeonPosition.NORTH;
-				else if (s.checkMove(DungeonPosition.EAST, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.EAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.EAST;
-				else if (s.checkMove(DungeonPosition.NORTHWEST, canBeCharacter))				
-					direction = DungeonPosition.NORTHWEST;
-				else if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter))
-					direction = DungeonPosition.SOUTHEAST;
 			}
 			else
 			{
-				if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter))
+				if (s.checkMove(DungeonPosition.SOUTHEAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.SOUTHEAST;
-				else if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter))				
+				else if (s.checkMove(DungeonPosition.SOUTH, canBeCharacter, characterPosition))				
 					direction = DungeonPosition.SOUTH;
-				else if (s.checkMove(DungeonPosition.EAST, canBeCharacter))
+				else if (s.checkMove(DungeonPosition.EAST, canBeCharacter, characterPosition))
 					direction = DungeonPosition.EAST;
-				else if (s.checkMove(DungeonPosition.SOUTHWEST, canBeCharacter))				
-					direction = DungeonPosition.SOUTHWEST;
-				else if (s.checkMove(DungeonPosition.NORTHEAST, canBeCharacter))
-					direction = DungeonPosition.NORTHEAST;
 			}
 		}
 
