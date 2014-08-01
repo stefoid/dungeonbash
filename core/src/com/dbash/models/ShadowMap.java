@@ -91,6 +91,10 @@ public class ShadowMap {
 		}
 	}
 	
+	public boolean positionIsVisible(DungeonPosition position) {
+		return locationIsVisible(map.location(position));
+	}
+	
 	public List<Creature> getVisibleCreatures() {
 		LinkedList<Creature> result = new LinkedList<Creature>();
 		for (Location location : locations) {

@@ -374,7 +374,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		   }
 			
 			chr.addExperience(1000, true);
-			chr.setDisplayedNumber(i + 1);
 			teamLevelPoints -= chr.getLevelValue();
 			retval.add(chr);
 		}

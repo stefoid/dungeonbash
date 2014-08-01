@@ -148,7 +148,7 @@ public class Monster extends Creature
 			LastCharacterPos = closestCharacter.getPosition();
 
 			// Work out the best direction
-			moveDirection = findBestDirection(LastCharacterPos, true);
+			moveDirection = findBestDirection(LastCharacterPos, true, canMove);
 
 			// if you are almost dead, run away!
 			if ((health < calculateMaxHealth() / 5) ||
@@ -164,10 +164,10 @@ public class Monster extends Creature
 			if (((LastCharacterPos.x == 0) && (LastCharacterPos.y == 0)) || LastCharacterPos.equals(mapPosition)) {
 				LastCharacterPos.x = 0;
 				LastCharacterPos.y = 0;
-				moveDirection = findBestDirection(null, true);  // random direction
+				moveDirection = findBestDirection(null, true, canMove);  // random direction
 			}
 			else {
-				moveDirection = findBestDirection(LastCharacterPos, true); // towards last known character position
+				moveDirection = findBestDirection(LastCharacterPos, true, canMove); // towards last known character position
 			}
 		}
 		

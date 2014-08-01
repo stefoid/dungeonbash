@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Creature.CanMoveStrategy;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 import com.dbash.util.Randy;
@@ -88,6 +89,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 	}
 	
+	protected ShouldMoveStrategy shouldMove = new ShouldMoveStrategy();
 	//Sprite manSprite = FileManager.createSpriteFromSingleImage("res/fresh/b.png", 1.0f);
 	LinkedList<DungeonPosition> path = new LinkedList<DungeonPosition>();
 	boolean amActiveFollower;
@@ -294,7 +296,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			return bestDir;
 		}
 		
-		bestDir.setDirection(findBestDirection(targetPosition, false));
+		bestDir.setDirection(findBestDirection(targetPosition, false, shouldMove));
 		
 		// If the target position is the 1 move away and it is occupied by a character,
 		// ignore any free option and  just wait and complain.
@@ -308,7 +310,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		} 
 
 		if (bestDir.hasFreeOption == false) {
-			bestDir.setDirection(findBestDirection(targetPosition, true));
+			bestDir.setDirection(findBestDirection(targetPosition, true, shouldMove));
 			if (bestDir.hasFreeOption) {
 				// there is a way, but it is occupied by a character.
 				bestDir.hasFreeOption = false; // well, there is a way, but it is blocked, so set this false.
@@ -411,7 +413,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		} else {
 			int distance = mapPosition.distanceTo(theLeader.getPosition());
 			if (distance > 1) {
-				int d = findBestDirection(theLeader.getPosition(), false);
+				int d = findBestDirection(theLeader.getPosition(), false, canMove);
 				if (d != DungeonPosition.NO_DIR) {
 					targetPosition = new DungeonPosition(mapPosition, d);
 				}
@@ -525,7 +527,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		DungeonPosition oppPosition = null;
 		
 		// find best direction to get to leader that isnt blocked by a wall.
-		int direction = findBestDirection(leaderPosition, true);
+		int direction = findBestDirection(leaderPosition, true, canMove);
 		// find the direction to move that is free and in the opposite direction to that just calculated.
 		direction = oppositeDirection(direction); 
 		if (direction != DungeonPosition.NO_DIR) {
@@ -564,6 +566,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 	
 	DungeonPosition leaderTargetPos = null;
+	ShadowMap leaderTargetShadowMap = null;
 	
 	private void setAutomaticLeaderTargetPosition(DungeonPosition position) {
 		if (leaderTargetPos != null && !leaderTargetPos.equals(position)) {
@@ -572,6 +575,11 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		if (position != null) {
 			dungeonEvents.highlightTile(position, true);
+			Map map = dungeonQuery.getMap();
+			leaderTargetShadowMap = new ShadowMap();
+			leaderTargetShadowMap.setMap(map, position, 5);
+		} else {
+			leaderTargetShadowMap = null;
 		}
 		
 		leaderTargetPos = position;
@@ -593,7 +601,29 @@ public class Character extends Creature implements IPresenterCharacter {
 		return leaderTargetPos;
 	}
 	
+	private DungeonPosition tempPos = new DungeonPosition(0,0);
 	
+	// This uses the canMove strategy , but adds a twist - even if the character could move to the position
+	// if the position isnt visbile from the current position, they they Shouldnt.
+	
+	public class ShouldMoveStrategy extends CanMoveStrategy {
+		
+		public boolean checkMove(int intendedDirection, boolean canBeChar) {
+			tempPos.x = mapPosition.x;  // this function gets called a lot so this is a little efficiency thing.
+			tempPos.y = mapPosition.y;
+			tempPos.applyDirection(tempPos, intendedDirection);
+
+			if (leaderTargetShadowMap != null) {
+				if (leaderTargetShadowMap.positionIsVisible(tempPos)) {
+					return canMove(intendedDirection, canBeChar);
+				} else {
+					return false;
+				}
+			}
+			
+			return canMove(intendedDirection, canBeChar);
+		}
+	}
 
 	
 	// ATTRIBUTES
