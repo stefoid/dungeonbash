@@ -79,7 +79,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		
 		public boolean isFedUp() {
-			if (complaints > 4) {
+			if (complaints > 6) {
 				return true;
 			} else {
 				return false;
@@ -422,9 +422,8 @@ public class Character extends Creature implements IPresenterCharacter {
 				targetPosition = getOutOfTheWay(theLeader.getPosition(), theLeader.getAutomaticLeaderTarget());
 			} 
 		} else {
-			int distance = mapPosition.distanceTo(leaderTrailPos);
-			if (distance > 1) {
-				int d = findBestDirection(leaderTrailPos, false, canMove);
+			if (distanceToLeader > 1) {
+				int d = findBestDirection(leaderTrailPos, false, shouldMove);
 				if (d != DungeonPosition.NO_DIR) {
 					targetPosition = new DungeonPosition(mapPosition, d);
 				}
