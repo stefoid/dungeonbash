@@ -5,10 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.dbash.models.Ability.AbilityType;
-import com.dbash.models.Creature.CanMoveStrategy;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 import com.dbash.util.Randy;
@@ -81,7 +79,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		
 		public boolean isFedUp() {
-			if (complaints > 5) {
+			if (complaints > 4) {
 				return true;
 			} else {
 				return false;
@@ -229,6 +227,10 @@ public class Character extends Creature implements IPresenterCharacter {
 			doFollowerProcessing(theLeader);  // follower processing always ends that characters turn.
 		}
 			
+		if (madeAutomaticTurn == false) {
+			mood.stopComplaining();
+		}
+		
 		return madeAutomaticTurn;
 	}
 	
@@ -288,8 +290,8 @@ public class Character extends Creature implements IPresenterCharacter {
 	// Need a function here that takes a target position and returns a direction to move to get to that position
 	// and whether or not it can be reached immediately or requires a complaint to a character in the way.
 	// A path free of other characters is always chosen first.
-	// If a complaint was neccessary, then it will complain.
-	private BestDir calcBestDir(DungeonPosition targetPosition) {
+	// If a complaint was necessary, then it will complain.
+	private BestDir calcBestDir(DungeonPosition targetPosition, boolean iAmLeader) {
 		BestDir bestDir = new BestDir();
 		
 		if (mapPosition.equals(targetPosition)) {
@@ -303,8 +305,10 @@ public class Character extends Creature implements IPresenterCharacter {
 		if (targetPosition.equals(leaderTargetPos) && targetPosition.distanceTo(mapPosition) == 1) {
 			if (dungeonQuery.whatIsAtLocation(targetPosition) == AtLocation.CHARACTER) {
 				bestDir.setDirection(DungeonPosition.NO_DIR);
-				bestDir.didComplain = true;
-				mood.complain();
+				if (iAmLeader) {
+					bestDir.didComplain = true;
+					mood.complain();
+				}
 				return bestDir;
 			}
 		} 
@@ -314,8 +318,10 @@ public class Character extends Creature implements IPresenterCharacter {
 			if (bestDir.hasFreeOption) {
 				// there is a way, but it is occupied by a character.
 				bestDir.hasFreeOption = false; // well, there is a way, but it is blocked, so set this false.
-				bestDir.didComplain = true;
-				mood.complain();
+				if (iAmLeader) {
+					bestDir.didComplain = true;
+					mood.complain();
+				}
 			}
 		}
 		
@@ -359,7 +365,7 @@ public class Character extends Creature implements IPresenterCharacter {
 				}
 			} else {
 				if (dungeonQuery.positionIsInLOSOfCharacter(this, (leaderTargetPos))) {
-					bestDir = calcBestDir(leaderTargetPos);
+					bestDir = calcBestDir(leaderTargetPos, true);
 				}
 				
 				// If we have been stuck waiting on followers to get out of the way a lot, give up.
@@ -399,9 +405,14 @@ public class Character extends Creature implements IPresenterCharacter {
 	private void doFollowerProcessing(Character theLeader)
 	{
 		DungeonPosition targetPosition = null;
+		DungeonPosition leaderTrailPos = theLeader.getLatestPathPositionIcanSee(this);
+		if (leaderTrailPos == null) {
+			leaderTrailPos = theLeader.getPosition();
+		}
 		int distanceToLeader = mapPosition.distanceTo(theLeader.getPosition());
+		
 		amActiveFollower = true;  // Tell the leader there is at least one active follower.
-		BestDir bestDir = calcBestDir(theLeader.getPosition());
+		BestDir bestDir = calcBestDir(leaderTrailPos, false);
 		boolean iAmOnLeaderTarget = mapPosition.equals(leaderTargetPos);
 		
 		// is the leader complaining?  handle that as a priority.
@@ -411,9 +422,9 @@ public class Character extends Creature implements IPresenterCharacter {
 				targetPosition = getOutOfTheWay(theLeader.getPosition(), theLeader.getAutomaticLeaderTarget());
 			} 
 		} else {
-			int distance = mapPosition.distanceTo(theLeader.getPosition());
+			int distance = mapPosition.distanceTo(leaderTrailPos);
 			if (distance > 1) {
-				int d = findBestDirection(theLeader.getPosition(), false, canMove);
+				int d = findBestDirection(leaderTrailPos, false, canMove);
 				if (d != DungeonPosition.NO_DIR) {
 					targetPosition = new DungeonPosition(mapPosition, d);
 				}
@@ -496,7 +507,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		if (targetTileType == AtLocation.FREE || targetTileType == AtLocation.CHARACTER) {
 			setAutomaticLeaderTargetPosition(targetPosition);
-			bestDir = calcBestDir(targetPosition);
+			bestDir = calcBestDir(targetPosition, true);
 			if (bestDir.hasFreeOption) {
 				int dir = bestDir.direction;
 				DungeonPosition newPos = new DungeonPosition(mapPosition, dir);
