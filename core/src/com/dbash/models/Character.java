@@ -566,6 +566,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 	
 	DungeonPosition leaderTargetPos = null;
+	ShadowMap leaderTargetShadowMap = null;
 	
 	private void setAutomaticLeaderTargetPosition(DungeonPosition position) {
 		if (leaderTargetPos != null && !leaderTargetPos.equals(position)) {
@@ -574,6 +575,11 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		if (position != null) {
 			dungeonEvents.highlightTile(position, true);
+			Map map = dungeonQuery.getMap();
+			leaderTargetShadowMap = new ShadowMap();
+			leaderTargetShadowMap.setMap(map, position, 5);
+		} else {
+			leaderTargetShadowMap = null;
 		}
 		
 		leaderTargetPos = position;
@@ -602,19 +608,20 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	public class ShouldMoveStrategy extends CanMoveStrategy {
 		
-		public boolean checkMove(int intendedDirection, boolean canBeChar, DungeonPosition targetPos) {
+		public boolean checkMove(int intendedDirection, boolean canBeChar) {
+			tempPos.x = mapPosition.x;  // this function gets called a lot so this is a little efficiency thing.
+			tempPos.y = mapPosition.y;
+			tempPos.applyDirection(tempPos, intendedDirection);
 
-			if (canMove(intendedDirection, canBeChar)) {
-				tempPos.x = mapPosition.x;  // this function gets called a lot so this is a little efficiency thing.
-				tempPos.y = mapPosition.y;
-				tempPos.applyDirection(tempPos, intendedDirection);
-				Map map = dungeonQuery.getMap();
-				ShadowMap sm = new ShadowMap();
-				sm.setMap(map, tempPos, 5);
-				return sm.positionIsVisible(targetPos);
-			} else {
-				return false;
+			if (leaderTargetShadowMap != null) {
+				if (leaderTargetShadowMap.positionIsVisible(tempPos)) {
+					return canMove(intendedDirection, canBeChar);
+				} else {
+					return false;
+				}
 			}
+			
+			return canMove(intendedDirection, canBeChar);
 		}
 	}
 
