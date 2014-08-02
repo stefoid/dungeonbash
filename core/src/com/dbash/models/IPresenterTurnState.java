@@ -31,7 +31,6 @@ public interface IPresenterTurnState {
 	public void LeaderModeToggleSelected();
 	public void stairDescendSelected();
 	public boolean lederIsSoloing();
-	public void complain(DungeonPosition position, int direction);
 	
 	// Leader mode
 	public void onChangeToLeaderStatus(UIInfoListener listener);

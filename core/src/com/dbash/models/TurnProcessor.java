@@ -443,17 +443,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		return false;
 	}
 	
-	@Override
-	public void complain(DungeonPosition position, int direction) {
-		// Characters complain to each other that they should move
-//		DungeonPosition targetChar = new DungeonPosition(position, direction);
-//		for (Character character : allCharacters) {
-//			if (character.getPosition().equals(targetChar)) {
-//				character.getOutOfTheWay(direction);
-//			}
-//		}
-	}
-	
 	// When a character is having a turn, they will ask this, initiating a leadership validity check.
 	public Character getCurrentLeader()
 	{
