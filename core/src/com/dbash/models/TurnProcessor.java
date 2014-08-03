@@ -311,7 +311,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		currentCharacterListeners.alertListeners();
 	}
 	
-	// returns true if the character shoulddrop its stuff, false otherwise.
+	// returns true if the character should drop its stuff, false otherwise.
 	public boolean characterDied(Character character)
 	{
 		allCharacters.remove(character);
@@ -413,7 +413,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (acceptInput) {
 			return currentCharacter;
 		} else {
-			return nobody;
+			if (currentLeader != null) {
+				return currentLeader;
+			} else {
+				return nobody;
+			}
 		}
 	}
 	
@@ -668,7 +672,5 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void quitSelected() {
 		app.quit();
 	}
-
-
 
 }

@@ -203,8 +203,12 @@ public class CreaturePresenter {
 	int moves_waiting = 0;
 	
 	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener animCompleteListener) {
-		final CreaturePresenter selfi = this;
+		//final CreaturePresenter selfi = this;
 		final DungeonPosition newSourcePos = fromPosition;
+		float moveTime = DungeonAreaPresenter.walkPeriod;
+		if (moveType == MoveType.FOLLOWER_MOVE || moveType == MoveType.LEADER_MOVE) {
+			moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
+		}
 		//System.out.printlnln(this+" command to move with moves waiting " + moves_waiting++ +" and state "+visualState.toString());
 		// depends on the state as to what we do - can be multiple follower mode moves, falling in etc...
 		// these are the possible states for a single character that has been sent a MOVE command:
@@ -238,7 +242,7 @@ public class CreaturePresenter {
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final IAnimListener tpListen = animCompleteListener;
 		final int dir = direction;
-		final AnimationView moveAnim = new AnimationView(gui, getFullName(name, "walk", direction), fromRect, toRect, 1f, 1f, DungeonAreaPresenter.walkPeriod, 1, new IAnimListener() {
+		final AnimationView moveAnim = new AnimationView(gui, getFullName(name, "walk", direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
 			public void animEvent() {
 				visualState = VisualState.STATIONARY;
 				moves_waiting--;
@@ -296,7 +300,7 @@ public class CreaturePresenter {
 		}
 		
 		// Moving shadow animation
-		final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, 1f, 1f, DungeonAreaPresenter.walkPeriod, 1, null);
+		final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, 1f, 1f, moveTime, 1, null);
 		shadowAnim.staticFrameOnly();
 		model.animQueue.add(shadowAnim, false);
 		shadowAnim.animType = AnimOp.AnimType.SHADOW;

@@ -58,12 +58,17 @@ public class Character extends Creature implements IPresenterCharacter {
 		public boolean didComplain;
 		public int direction;
 	}
+	final Character me = this;
 	
 	private class Complaint {
 		public int complaints = 0;
 		
 		public void complain() {
+
 			complaints++;
+			if (turnProcessor.getCurrentLeader() == me) {
+				System.out.println("COMPLAINT "+complaints);
+			}
 		}
 		
 		public void stopComplaining() {
@@ -79,7 +84,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		
 		public boolean isFedUp() {
-			if (complaints > 6) {
+			if (complaints > 9) {
 				return true;
 			} else {
 				return false;
@@ -792,28 +797,24 @@ public class Character extends Creature implements IPresenterCharacter {
 	// that position.  simple.
 	public void targetTileSelected(DungeonPosition position) {
 		if (dungeonQuery.positionIsInLOSOfCharacter(this, position)) {
-			if (characterIsUsingEye) {
+			if (canSetLeaderModeTarget(position) == false && characterIsUsingEye) {
 				dungeonEvents.setCharacterisUsingEye(true, position, true);  // set the eye position, showing eye animation
-			} else {
-				if ((currentSelectedAbility != null) && (currentSelectedAbility.isEnoughMagic(magic))){
-					currentSelectedAbility.targetSelected(position);
-					turnProcessor.characterEndsTurn(this);
-				}
+			} else if ((currentSelectedAbility != null) && (currentSelectedAbility.isEnoughMagic(magic))){
+				currentSelectedAbility.targetSelected(position);
+				turnProcessor.characterEndsTurn(this);
 			}	
 		}
 	}
-
-	public boolean characterIsInWay(int intendedDirection)
-	{
-		switch (dungeonQuery.whatIsAtLocation(new DungeonPosition(mapPosition, intendedDirection))) {
-			case CHARACTER:
-				return true;
-			default:
-				return false;		
-		}
-	}
 	
-
+	private boolean canSetLeaderModeTarget(DungeonPosition position) {
+		if (isThereAnAutomaticLeaderTarget()) {
+			AtLocation targetTileType = dungeonQuery.whatIsAtLocation(position);
+			if (targetTileType == AtLocation.FREE || targetTileType == AtLocation.CHARACTER) {
+				setAutomaticLeaderTargetPosition(position);
+			}
+		}
+		return false;
+	}
 	
 	@Override
 	// called when the eye tab is opened.  character is using eye, but hasnt targeted anything

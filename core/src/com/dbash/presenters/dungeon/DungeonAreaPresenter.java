@@ -13,6 +13,7 @@ import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
 import com.dbash.models.IDungeonPresentationEventListener;
 import com.dbash.models.IPresenterCharacter;
+import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.IPresenterTurnState.LeaderStatus;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
@@ -43,6 +44,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 
 	public final static float scrollPeriod = 0.5f;
 	public final static float walkPeriod = 0.7f;
+	public final static float leaderModeWalkPeriod = walkPeriod;
 	public final static float attackPeriod = 0.4f;
 	public final static float fallPeriod = 0.3f;
 	public final static float damagePeriod = 0.7f;
@@ -88,14 +90,16 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	// The Dungeon Area presenter's primary job
 	@Override
 	public boolean touchEvent(TouchEvent event) {
+		
 		switch (event.getTouchType()) {
 			case DOWN:
 			case MOVE:
 				break;
 			case CLICK:
 			{
+				IPresenterTurnState tp = model.presenterTurnState;
 				DungeonPosition position = mapPresenter.convertXYToDungeonPosition(event.getX(), event.getY());
-				IPresenterCharacter charPresenter = model.presenterTurnState.getCharacterForTouchEvents();
+				Character charPresenter = tp.getCharacterForTouchEvents();
 				charPresenter.targetTileSelected(position);
 			}
 				break;
@@ -129,8 +133,13 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		
 		// if the focused *character* is actually the one moving, then the focus has to move with it.
 		// this is the only instance of the focus changing without an explicit command from the turn processor.
+		float walkingPeriod = walkPeriod;
+		if (moveType == Dungeon.MoveType.LEADER_MOVE) {
+			walkingPeriod = leaderModeWalkPeriod;
+		}
+		
 		if (actingCreature instanceof Character && moveType != Dungeon.MoveType.FOLLOWER_MOVE) {
-			mapPresenter.performFocusChange(releventCharacter, walkPeriod, true, null);
+			mapPresenter.performFocusChange(releventCharacter, walkingPeriod, true, null);
 		}
 	}
 	
