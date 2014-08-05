@@ -93,8 +93,8 @@ import com.dbash.util.Rect;
 //			});
 			
 			Rect quitRect = new Rect(bodyArea, .55f, .1f, .75f, .05f);
-			quitButton = new ButtonView(gui, touchEventProvider, quitRect, "QUIT_SELECTED_IMAGE", 
-					"QUIT_BUTTON_IMAGE", "QUIT_BUTTON_IMAGE");
+			quitButton = new ButtonView(gui, touchEventProvider, quitRect, "INFO_SELECTED_IMAGE", 
+					"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE");
 			quitButton.onClick( new IClickListener() {
 				public void processClick() {
 					model.presenterTurnState.quitSelected();
