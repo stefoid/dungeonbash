@@ -53,9 +53,11 @@ public class Dbash implements ApplicationListener {
 		turnProcessor = new TurnProcessor(dungeon, dungeon, dungeon, this);
 		
 		int[] fontSizes = {82, 64, 48, 40, 32, 26, 21, 17};
-		gui.fonts = new ArrayList<SmoothBitmapFont>();
+		gui.defaultFonts = new ArrayList<SmoothBitmapFont>();
+		gui.numericalFonts = new ArrayList<SmoothBitmapFont>();
 		for (int fontSize : fontSizes) {
-			gui.fonts.add(new SmoothBitmapFont(fontSize));
+			gui.defaultFonts.add(new SmoothBitmapFont("toontime", fontSize));
+			gui.numericalFonts.add(new SmoothBitmapFont("mistral", fontSize));
 		}
 		
 		gui.spriteManager = spriteManager;

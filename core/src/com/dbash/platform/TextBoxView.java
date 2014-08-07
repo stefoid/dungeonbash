@@ -49,7 +49,7 @@ public class TextBoxView extends TextView {
 			return;
 		}
 		
-		font = gui.fonts.get(2);  // TODO random font for now
+		font = gui.defaultFonts.get(2);  // TODO random font for now
 		
 		// work out vertical alignment w.r.t the bounding box passed in.
 		if (vAlign == Rect.VAlignment.CENTER) {

@@ -73,15 +73,15 @@ public class DataHeaderPresenter {
 		Rect heartArea = new Rect (iconX, iconY, iconSize, iconSize);
 		healthIcon = new ImageView(gui, "HEART_IMAGE", heartArea);
 
-		Rect textArea = new Rect (heartArea, 0f, 0f, .15f, 0.2f);
+		Rect textArea = new Rect (heartArea, 0f, 0f, .015f, 0.15f);
 		textArea.x += heartArea.width * 1.0f;
 		textArea.width *= 2.6f;
-		healthText = new TextView(gui,null, new String(""), textArea, HAlignment.LEFT, VAlignment.CENTER, Color.RED);
+		healthText = new TextView(gui,gui.numericalFonts, new String(""), textArea, HAlignment.CENTER, VAlignment.CENTER, Color.RED);
 		
 		heartArea.x += area.width*.45f;
 		magicIcon = new ImageView(gui, "MAGIC_STAR_IMAGE", heartArea);
 		textArea.x += area.width*.42f;
-		magicText = new TextView(gui,null, new String(""), textArea, HAlignment.LEFT, VAlignment.CENTER, Color.BLUE);
+		magicText = new TextView(gui,gui.numericalFonts, new String(""), textArea, HAlignment.CENTER, VAlignment.CENTER, Color.BLUE);
 		
 		
 		// put the buttons in place.

@@ -13,7 +13,8 @@ public class UIDepend {
 
 	public SpriteManager spriteManager;
 	public CameraViewPort cameraViewPort;
-	public ArrayList<SmoothBitmapFont> fonts;
+	public ArrayList<SmoothBitmapFont> defaultFonts;
+	public ArrayList<SmoothBitmapFont> numericalFonts;
 	public BitmapFont numberFont;
 	public SizeCalculator sizeCalculator;
 	public Audio audio;
@@ -27,7 +28,8 @@ public class UIDepend {
 	{
 		spriteManager = u.spriteManager;
 		cameraViewPort  = u.cameraViewPort;
-		fonts = u.fonts;
+		defaultFonts = u.defaultFonts;
+		numericalFonts = u.numericalFonts;
 		numberFont = u.numberFont;
 		sizeCalculator = u.sizeCalculator;
 		audio = u.audio;
