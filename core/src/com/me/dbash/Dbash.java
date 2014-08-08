@@ -57,7 +57,7 @@ public class Dbash implements ApplicationListener {
 		gui.numericalFonts = new ArrayList<SmoothBitmapFont>();
 		for (int fontSize : fontSizes) {
 			gui.defaultFonts.add(new SmoothBitmapFont("toontime", fontSize));
-			gui.numericalFonts.add(new SmoothBitmapFont("mistral", fontSize));
+			gui.numericalFonts.add(new SmoothBitmapFont("actionman", fontSize));
 		}
 		
 		gui.spriteManager = spriteManager;
