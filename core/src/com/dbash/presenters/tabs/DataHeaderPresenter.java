@@ -40,6 +40,7 @@ public class DataHeaderPresenter {
 	private ButtonView leaderToggleButton;
 	private ButtonView passTurnButton;
 	private ButtonView goDownButton;
+	private ButtonView soloButton;
 	private ImageView background;
 	private TextView healthText;
 	private TextView magicText;
@@ -108,6 +109,14 @@ public class DataHeaderPresenter {
 		goDownButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.stairDescendSelected();
+			}
+		});
+		
+		soloButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
+				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE");
+		goDownButton.onClick( new IClickListener() {
+			public void processClick() {
+				presenterTurnState.soloSelected();
 			}
 		});
 		
@@ -187,7 +196,11 @@ public class DataHeaderPresenter {
 		background.draw(spriteBatch);
 		leaderToggleButton.draw(spriteBatch);
 		passTurnButton.draw(spriteBatch);
-		goDownButton.draw(spriteBatch);
+		if (goDownButton.isEnabled()) {
+			goDownButton.draw(spriteBatch);
+		} else {
+			soloButton.draw(spriteBatch);
+		}
 		healthText.draw(spriteBatch);
 		magicText.draw(spriteBatch);
 		healthIcon.draw(spriteBatch);

@@ -139,6 +139,10 @@ public class TurnProcessor implements IPresenterTurnState {
 		characterEndsTurn(currentCharacter);
 	}
 	
+	@Override public void soloSelected() {
+		
+	}
+	
 	// returns true if the position passed in is far from all characters
 	// and far from the stairs (if a creature skips a turn whilst camping on the stairs, then the next character cannot
 	// fall-in)
@@ -669,8 +673,8 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	@Override
-	public void quitSelected() {
-		app.quit();
+	public void infoSelected() {
+		//app.quit();
 	}
 
 }

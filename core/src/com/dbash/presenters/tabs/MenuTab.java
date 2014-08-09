@@ -97,7 +97,7 @@ import com.dbash.util.Rect;
 					"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE");
 			quitButton.onClick( new IClickListener() {
 				public void processClick() {
-					model.presenterTurnState.quitSelected();
+					model.presenterTurnState.infoSelected();
 				}
 			});
 			

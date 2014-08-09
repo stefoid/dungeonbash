@@ -19,7 +19,7 @@ public interface IPresenterTurnState {
 	public void startGameSelected();
 	public boolean gameInProgress();
 	public void onChangeToGameInProgress(UIInfoListener listener); 
-	public void quitSelected();
+	public void infoSelected();
 	
 	// Current character related
 	public void onChangeToCurrentCharacter(UIInfoListener listener);
@@ -30,6 +30,7 @@ public interface IPresenterTurnState {
 	public void passTurnSelected();
 	public void LeaderModeToggleSelected();
 	public void stairDescendSelected();
+	public void soloSelected();
 	public boolean lederIsSoloing();
 	
 	// Leader mode
