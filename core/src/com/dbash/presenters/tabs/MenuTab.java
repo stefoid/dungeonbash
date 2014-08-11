@@ -46,8 +46,8 @@ import com.dbash.util.Rect;
 			
 			border = new ImagePatchView(gui, "9patchlistsides", bodyArea); 
 			
-			Rect sliderRect1 = new Rect(bodyArea, .55f, .1f, .05f, .4f);
-			fxSlider = new SliderView(gui, touchEventProvider, sliderRect1, "VOLUME_SLIDER_IMAGE", "FX_SLIDER_BUTTON");
+			Rect sliderRect1 = new Rect(bodyArea, .65f, .2f, .05f, .4f);
+			fxSlider = new SliderView(gui, touchEventProvider, sliderRect1, 2f, "VOLUME_SLIDER_IMAGE", "FX_SLIDER_BUTTON");
 			gui.audio.fxVolumeListeners.add(new UIInfoListener() {
 				public void UIInfoChanged() {
 					fxSlider.setSliderPosition(audio.getFxVolume()*100f);
@@ -60,8 +60,8 @@ import com.dbash.util.Rect;
 				}
 			});
 			
-			Rect sliderRect2 = new Rect(bodyArea, .1f, .55f, .05f, .4f);
-			musicSlider = new SliderView(gui, touchEventProvider, sliderRect2, "VOLUME_SLIDER_IMAGE", "MUSIC_SLIDER_BUTTON");
+			Rect sliderRect2 = new Rect(bodyArea, .2f, .65f, .05f, .4f);
+			musicSlider = new SliderView(gui, touchEventProvider, sliderRect2, 2f, "VOLUME_SLIDER_IMAGE", "MUSIC_SLIDER_BUTTON");
 			gui.audio.musicVolumeListeners.add(new UIInfoListener() {
 				public void UIInfoChanged() {
 					musicSlider.setSliderPosition(audio.getMusicVolume()*100f);
@@ -92,7 +92,7 @@ import com.dbash.util.Rect;
 //				}
 //			});
 			
-			Rect quitRect = new Rect(bodyArea, .55f, .1f, .75f, .05f);
+			Rect quitRect = new Rect(bodyArea, .6f, .15f, .75f, .05f);
 			quitButton = new ButtonView(gui, touchEventProvider, quitRect, "INFO_SELECTED_IMAGE", 
 					"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE");
 			quitButton.onClick( new IClickListener() {
@@ -115,7 +115,7 @@ import com.dbash.util.Rect;
 
 		private void doStartButton() 
 		{
-			Rect startRect = new Rect(bodyArea, .1f, .55f, .75f, .05f);
+			Rect startRect = new Rect(bodyArea, .15f, .6f, .75f, .05f);
 			
 			if (model.presenterTurnState.gameInProgress()) {
 				startButton = new ButtonView(gui, touchEventProvider, startRect, "RESTART_SELECTED_IMAGE", 

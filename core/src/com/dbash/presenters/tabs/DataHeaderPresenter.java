@@ -114,14 +114,13 @@ public class DataHeaderPresenter {
 		
 		soloButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
 				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE");
-		goDownButton.onClick( new IClickListener() {
+		soloButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.soloSelected();
 			}
 		});
 		
 		setup();
-		
 	}
 	
 
@@ -145,7 +144,15 @@ public class DataHeaderPresenter {
 			}
 		});
 		
+		// Subscribe to changes in leader status
+		mod.presenterTurnState.onChangeToSoloStatus(new UIInfoListener() {
+			public void UIInfoChanged() {
+				processSoloStatus();
+			}
+		});
+		
 		processLeaderStatus();
+		processSoloStatus();
 	}
 	
 	private void newCharacter(Character character)
@@ -163,7 +170,14 @@ public class DataHeaderPresenter {
 		updateStats(stats);
 		
 		// update button status for this character
-		goDownButton.setEnabled(currentCharacter.isCharacterOnStairs());
+		boolean onStairs = currentCharacter.isCharacterOnStairs();
+		if (onStairs) {
+			soloButton.setEnabled(false);
+			goDownButton.setEnabled(true);
+		} else {
+			soloButton.setEnabled(true);
+			goDownButton.setEnabled(false);
+		}
 	}
 	
 	public void updateStats(CreatureStats stats)
@@ -171,9 +185,13 @@ public class DataHeaderPresenter {
 		healthText.setText(stats.health+"/"+stats.maxHealth);
 		magicText.setText(stats.magic+"/"+stats.maxMagic);
 	}
+	protected void processSoloStatus() {
+		boolean soloStatus = mod.presenterTurnState.getSoloStatus();
+		soloButton.setState(soloStatus);
+	}
 	
 	protected  void processLeaderStatus() {
-		LeaderStatus status = mod.presenterTurnState.getLeaderStatus();
+
 		switch(mod.presenterTurnState.getLeaderStatus()) {
 			case NO_LEADER:
 				leaderToggleButton.setEnabled(true);

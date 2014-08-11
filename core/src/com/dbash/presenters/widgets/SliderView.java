@@ -30,15 +30,15 @@ public class SliderView implements TouchEventListener {
 	// This is a percentage value from 0 to 100.0, with 100 being at the very top, 0 at the very bottom
 	private float sliderPosition;
 	
-	public SliderView(UIDepend gui, TouchEventProvider touchEventProvider, Rect area, String backgroundImage,
+	public SliderView(UIDepend gui, TouchEventProvider touchEventProvider, Rect area, float buttonSize, String backgroundImage,
 			String buttonImage) {
 		this.area = new Rect(area);
 		this.touchEventProvider = touchEventProvider;
 		this.gui = gui;
 		
 		this.buttonArea = new Rect(area);
-		buttonArea.width = area.width * .8f;  // width is 80% of slider width.
-		buttonArea.height = area.height * .15f; // width = 15% of slider height
+		buttonArea.width = buttonSize * area.width * .8f;  // width is 80% of slider width.
+		buttonArea.height = buttonSize * area.height * .15f; // width = 15% of slider height
 		buttonArea.x = (area.x + area.width/2) - (buttonArea.width / 2);  // center the button
 		sliderPosition = 100f;
 		slideHeight = area.height - buttonArea.height; 

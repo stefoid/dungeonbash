@@ -23,6 +23,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private Character currentCharacter;  // the character whose turn is now active
 	private UIInfoListenerBag currentCharacterListeners;
 	private UIInfoListenerBag leaderStatusListeners;
+	private UIInfoListenerBag soloStatusListeners;
 	private UIInfoListenerBag gameInProgressListeners;
 	private LeaderStatus leaderStatus;
 	private boolean pauseTurnProcessing;  
@@ -30,6 +31,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private Character nobody;
 	private boolean gameInProgress;
 	private boolean usingEye;
+	private boolean soloStatus;
 	public static final int NO_CURRENT_CREATURE = -1;
 	private Dbash app;
 	
@@ -107,41 +109,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		getCurrentLeader();  // will update leader status and alert observers
 	}
 	
-	@Override
-	public void stairDescendSelected() {
-		if (acceptInput == false) {  // in case pounding on the descend key.  cheap hack.
-			return;
-		}
-		
-		// adjust the lists
-		allCreatures.remove(currentCharacter);
-		charactersFallingOut.add(currentCharacter);
-
-		// was that character the leader?
-		if (currentLeader == currentCharacter) {
-			currentLeader = null;
-			leaderStatus = LeaderStatus.NO_LEADER;
-			leaderStatusListeners.alertListeners();
-		}
-		
-		acceptInput = false;
-		dungeonEvents.goDownStairs(SequenceNumber.getNext(), currentCharacter, new IAnimListener() {
-			// was that the last character to descend?  If so, go to the next level
-			public void animEvent() {
-				acceptInput = true;
-				if (allCharacters.size() == charactersFallingOut.size()) {
-					level++;
-					startNewLevel(level);
-				}
-			}
-		});
-		
-		characterEndsTurn(currentCharacter);
-	}
-	
-	@Override public void soloSelected() {
-		
-	}
 	
 	// returns true if the position passed in is far from all characters
 	// and far from the stairs (if a creature skips a turn whilst camping on the stairs, then the next character cannot
@@ -432,6 +399,47 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	@Override
+	public void stairDescendSelected() {
+		if (acceptInput == false) {  // in case pounding on the descend key.  cheap hack.
+			return;
+		}
+		
+		// adjust the lists
+		allCreatures.remove(currentCharacter);
+		charactersFallingOut.add(currentCharacter);
+
+		// was that character the leader?
+		if (currentLeader == currentCharacter) {
+			currentLeader = null;
+			leaderStatus = LeaderStatus.NO_LEADER;
+			leaderStatusListeners.alertListeners();
+		}
+		
+		acceptInput = false;
+		dungeonEvents.goDownStairs(SequenceNumber.getNext(), currentCharacter, new IAnimListener() {
+			// was that the last character to descend?  If so, go to the next level
+			public void animEvent() {
+				acceptInput = true;
+				if (allCharacters.size() == charactersFallingOut.size()) {
+					level++;
+					startNewLevel(level);
+				}
+			}
+		});
+		
+		characterEndsTurn(currentCharacter);
+	}
+	
+	@Override public void soloSelected() {
+		if (soloStatus == true) {
+			soloStatus = false;
+		} else {
+			soloStatus = true;
+		}
+		soloStatusListeners.alertListeners();
+	}
+	
+	@Override
 	public void LeaderModeToggleSelected() {
 		if (currentLeader == null) {
 			currentLeader = currentCharacter;
@@ -444,11 +452,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 		
 		leaderStatusListeners.alertListeners();
-	}
-
-	@Override
-	public boolean lederIsSoloing() {
-		return false;
 	}
 	
 	// When a character is having a turn, they will ask this, initiating a leadership validity check.
@@ -482,6 +485,16 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public LeaderStatus getLeaderStatus() {
 		return leaderStatus;
+	}
+	
+	@Override
+	public void onChangeToSoloStatus(UIInfoListener listener) {
+		soloStatusListeners.add(listener);
+	}
+
+	@Override
+	public boolean getSoloStatus() {
+		return soloStatus;
 	}
 
 	@Override
@@ -553,11 +566,13 @@ public class TurnProcessor implements IPresenterTurnState {
 		Creature.initializeData();
 		currentCharacterListeners =  new UIInfoListenerBag();
 		leaderStatusListeners =  new UIInfoListenerBag();
+		soloStatusListeners =  new UIInfoListenerBag();
 		gameInProgressListeners  =  new UIInfoListenerBag();
 		nobody = new NoCharacter();
 		gameInProgress = true;
 		usingEye = false;
 		acceptInput = false;
+		soloStatus = false;
 		this.dungeonEvents = dungeonEvents;
 		this.dungeonQuery = dungeonQuery;
 		this.dungeon = dungeon;

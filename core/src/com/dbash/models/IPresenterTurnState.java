@@ -31,11 +31,13 @@ public interface IPresenterTurnState {
 	public void LeaderModeToggleSelected();
 	public void stairDescendSelected();
 	public void soloSelected();
-	public boolean lederIsSoloing();
 	
 	// Leader mode
 	public void onChangeToLeaderStatus(UIInfoListener listener);
 	public LeaderStatus getLeaderStatus();
+	
+	public void onChangeToSoloStatus(UIInfoListener listener);
+	public boolean getSoloStatus();
 	
 	// eye mode
 	public void usingEye(boolean usingEye);
