@@ -185,6 +185,7 @@ public class DataHeaderPresenter {
 		healthText.setText(stats.health+"/"+stats.maxHealth);
 		magicText.setText(stats.magic+"/"+stats.maxMagic);
 	}
+	
 	protected void processSoloStatus() {
 		boolean soloStatus = mod.presenterTurnState.getSoloStatus();
 		soloButton.setState(soloStatus);

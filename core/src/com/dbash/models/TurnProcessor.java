@@ -33,7 +33,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean usingEye;
 	private boolean soloStatus;
 	public static final int NO_CURRENT_CREATURE = -1;
-	private Dbash app;
 	
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character.  We iterate over this list to give everything a chance to act.
@@ -52,7 +51,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		setGameInProgress(false);
 		currentCharacter = nobody;
 		leaderStatus = LeaderStatus.NONE;
-		this.app= dbash;
 	}
 	
 	public void startNewGame() {
@@ -62,7 +60,9 @@ public class TurnProcessor implements IPresenterTurnState {
 		level = 1;
 		dungeon.restart();
 		startNewLevel(level);
+		setSoloMode(false);
 	}
+	
 	
 	// We set up the lists for this level.
 	private void startNewLevel(int level)
@@ -198,14 +198,27 @@ public class TurnProcessor implements IPresenterTurnState {
 
 		// OK, so now whatever it is can test to have a turn.
     	if (currentCreature.isReadyForTurn()) {  
+    		Character theChar;
     		
-    		// If a lucky falling character is ready and able to fall in, then tell the dungeon about it.
-    		if (canFallIn) {
-    			charactersFallingIn.removeElement(currentCreature);  // no longer falling
-    			dungeonEvents.fallIntoLevel(SequenceNumber.getNext(), (Character)currentCreature); // when a character falls in, it get a chance to act (wait for player control)
-        	}
+    		// at this point, we could be in solo mode, so some tests have to be made.
+    		if (currentCreature instanceof Character) {
+    			theChar = (Character) currentCreature;
+    			
+    			if (needToSetSoloCharacter()) {
+    				theChar.setSolo(true);
+    			}
+    			
+    			// character cant fall in if we are in solo mode and they are not the solo character.
+    			if (soloStatus == false || theChar.getSolo()) {
+            		// If a lucky falling character is ready and able to fall in, then tell the dungeon about it.
+            		if (canFallIn) {
+            			charactersFallingIn.removeElement(currentCreature);  // no longer falling
+            			dungeonEvents.fallIntoLevel(SequenceNumber.getNext(), (Character)currentCreature); // when a character falls in, it get a chance to act (wait for player control)
+                	}
+    			} 
+    		}
     		
-    		currentCreature.processTurn(); //  is this right?
+    		currentCreature.processTurn(); 
     		return;
     	}
     	
@@ -291,6 +304,10 @@ public class TurnProcessor implements IPresenterTurnState {
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
 			leaderStatusListeners.alertListeners();
+		}
+		
+		if (character.getSolo()) {
+			setSoloMode(false);
 		}
 		
 		dungeonEvents.creatureDies(SequenceNumber.getCurrent()+2, character, character);
@@ -404,6 +421,11 @@ public class TurnProcessor implements IPresenterTurnState {
 			return;
 		}
 		
+		// clear that characters solo, but dont clear solo mode if its been on.
+		if (currentCharacter.getSolo()) {
+			currentCharacter.setSolo(false);
+		}
+		
 		// adjust the lists
 		allCreatures.remove(currentCharacter);
 		charactersFallingOut.add(currentCharacter);
@@ -430,13 +452,49 @@ public class TurnProcessor implements IPresenterTurnState {
 		characterEndsTurn(currentCharacter);
 	}
 	
+	/**
+	 * Clear all the characters solo status, then set the solo status for TPaccordingly.
+	 * When a character is about to have a turn, if 'needToSetSoloCharacter' returns true, it will be set at that time.
+	 * The only exception is if the there is a current leader, inwhich case that character is the solo immeidately.
+	 */
 	@Override public void soloSelected() {
-		if (soloStatus == true) {
-			soloStatus = false;
-		} else {
-			soloStatus = true;
+		setSoloMode(!soloStatus);
+	}
+	
+	private void setSoloMode(boolean solo) {
+		
+		soloStatus = solo;
+		
+		for (Character character : allCharacters) {
+			character.setSolo(false);
+		}
+		
+		if (solo == true) {
+			if (currentLeader != null) {
+				currentLeader.setSolo(true);
+			}
+			if (acceptInput && currentCreature instanceof Character) {
+				Character c = (Character) currentCreature;
+				c.setSolo(true);
+			}
 		}
 		soloStatusListeners.alertListeners();
+	}
+	
+	/**
+	 * returns true if solo status is set, but no character is currently marked as the solo character.
+	 */
+	private boolean needToSetSoloCharacter() {
+		if (soloStatus) {
+			for (Character character : allCharacters) {
+				if (character.getSolo()) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		return false;
 	}
 	
 	@Override

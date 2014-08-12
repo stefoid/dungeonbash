@@ -91,6 +91,8 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 		}
 	}
+	boolean amSolo;
+	
 	
 	protected ShouldMoveStrategy shouldMove = new ShouldMoveStrategy();
 	//Sprite manSprite = FileManager.createSpriteFromSingleImage("res/fresh/b.png", 1.0f);
@@ -174,6 +176,14 @@ public class Character extends Creature implements IPresenterCharacter {
 			return;
 		}
 
+		// If solo mode is on, but it aint me, then pass.
+		if (turnProcessor.getSoloStatus()) {
+			if (getSolo() == false) {
+				turnProcessor.characterEndsTurn(this);
+				return;
+			}
+		}
+		
 		// This is only set to true when a character makes an active following move
 		amActiveFollower = false;
 		
@@ -608,6 +618,17 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	public DungeonPosition getAutomaticLeaderTarget() {
 		return leaderTargetPos;
+	}
+	
+	public boolean getSolo() {
+		return amSolo;
+	}
+	
+	public void setSolo(boolean solo) {
+		if (solo == false) {
+			amActiveFollower = false;
+		}
+		amSolo = solo;
 	}
 	
 	private DungeonPosition tempPos = new DungeonPosition(0,0);
