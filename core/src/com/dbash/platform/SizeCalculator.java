@@ -44,8 +44,8 @@ public class SizeCalculator {
 		if (ELEMENTS_PER_SCREEN < 4.0f) {
 			ELEMENTS_PER_SCREEN = 4.0f;
 		}
-		if (ELEMENTS_PER_SCREEN > 8f) {
-			ELEMENTS_PER_SCREEN = 8f;
+		if (ELEMENTS_PER_SCREEN > 7f) {
+			ELEMENTS_PER_SCREEN = 7f;
 		}
 		MIN_ELEMENTS = (int) ELEMENTS_PER_SCREEN;
 	}  
