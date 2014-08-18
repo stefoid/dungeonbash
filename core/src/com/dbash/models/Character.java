@@ -482,6 +482,10 @@ public class Character extends Creature implements IPresenterCharacter {
 	boolean finishedAnimatingAutomaticMove = true;
 	@Override
 	public void movementGesture(int direction, DungeonPosition targetPosition) {
+		if (isThereAnAutomaticLeaderTarget()) {
+			return;
+		}
+		
 		boolean interpretedAsLeaderGesture = doLeaderGuestureProcessing(direction, targetPosition);
 		
 		if (interpretedAsLeaderGesture) {
