@@ -31,75 +31,76 @@ public class Map implements IPresenterMap {
 	
 	private final int border = 2; // how thick the enclosing rock wall is
 	
+	public class MapException extends Exception {
+	}
+	
 	public Map(int level) {
-		retainFocusBag = new UIInfoListenerBag();
-		locationInfoListeners = new Vector<UILocationInfoListener>();
-		width = 12 + (level * 2) + border*2 - 2;
-		height = width;
-		location = new Location[width][height];
-		// initialize array of locations - by default will be WALLS.
-		for (int x=0; x<width; x++) {
-			for (int y=0; y< height; y++) {
-				location[x][y] = new Location(this, x, y);
+		boolean dungeonNotCompleted = true;
+		while (dungeonNotCompleted) {
+			try {
+				retainFocusBag = new UIInfoListenerBag();
+				locationInfoListeners = new Vector<UILocationInfoListener>();
+				width = 12 + (level * 2) + border*2 - 2;
+				height = width;
+				location = new Location[width][height];
+				// initialize array of locations - by default will be WALLS.
+				for (int x=0; x<width; x++) {
+					for (int y=0; y< height; y++) {
+						location[x][y] = new Location(this, x, y);
+					}
+				}
+				
+				startPoint = getRandomPoint(false);
+				location(startPoint).clearLocation();
+				drawSquigglyLine(startPoint);
+
+				for (int i = 0; i < ((height * 2) / 3); i++) {
+					drawSquigglyLine(getRandomPoint(true));
+				}
+				
+				// now draw some rooms based on where the squigley lines have cleared space.
+				roomPoints = new DungeonPosition[height / 8]; 
+
+				for (int i = 0; i < roomPoints.length; i++) {
+					// calculate where to draw the rooms before starting to draw them
+					roomPoints[i] = getRandomPoint(true, 2+ border);
+				}
+
+				for (int i = 0; i < roomPoints.length; i++)
+					// otherwise all the rooms will be most likely drawn together
+					drawRoom(roomPoints[i]);
+				
+				setStartAndExitPoints();
+				
+				// Now make a preliminary pass to determine Tile types
+				for (int x=0; x<width; x++) {
+					for (int y=0; y< height; y++) {
+						location(x,y).setTileType();
+					}
+				}
+				
+				// Then make secondary pass to determine tile names
+				for (int x=0; x<width; x++) {
+					for (int y=0; y< height; y++) {
+						location(x,y).setTileName();
+					}
+				}
+				
+				setupLighting();
+				// Then make the last pass to determine post process the whole map with appropriae tilenames
+				for (int x=0; x<width; x++) {
+					for (int y=0; y< height; y++) {
+						location(x,y).doPostMapGenerationPrcessing();
+					}
+				}
+				addExitLight();
+				
+				dungeonNotCompleted = false;
+			} catch (MapException e) {
+				dungeonNotCompleted = true;
+				System.out.println("TRYING AGAIN!");
 			}
 		}
-		
-		startPoint = getRandomPoint(false);
-		location(startPoint).clearLocation();
-		drawSquigglyLine(startPoint);
-
-		for (int i = 0; i < ((height * 2) / 3); i++) {
-			drawSquigglyLine(getRandomPoint(true));
-		}
-		
-		// now draw some rooms based on where the squigley lines have cleared space.
-		roomPoints = new DungeonPosition[height / 8]; 
-
-		for (int i = 0; i < roomPoints.length; i++) {
-			// calculate where to draw the rooms before starting to draw them
-			roomPoints[i] = getRandomPoint(true, 2+ border);
-		}
-
-		for (int i = 0; i < roomPoints.length; i++)
-			// otherwise all the rooms will be most likely drawn together
-			drawRoom(roomPoints[i]);
-		
-		// Now determine tiles where characters will dorp in, and exit
-		int tries = 0; // just in case it is impossible.
-
-		do
-		{
-			startPoint = getRandomPoint(true);
-			exitPoint = getRandomPoint(true);
-			tries++;
-		} while (((Math.abs(startPoint.x - exitPoint.x) + Math.abs(startPoint.y - exitPoint.y)) < (height / 2)) && (tries < 200));
-		
-		// tell the exit Location 
-		location(exitPoint).setAsExit();
-		
-		// Now make a preliminary pass to determine Tile types
-		for (int x=0; x<width; x++) {
-			for (int y=0; y< height; y++) {
-				location(x,y).setTileType();
-			}
-		}
-		
-		// Then make secondary pass to determine tile names
-		for (int x=0; x<width; x++) {
-			for (int y=0; y< height; y++) {
-				location(x,y).setTileName();
-			}
-		}
-		
-		setupLighting();
-		// Then make the last pass to determine post process the whole map with appropriae tilenames
-		for (int x=0; x<width; x++) {
-			for (int y=0; y< height; y++) {
-				location(x,y).doPostMapGenerationPrcessing();
-			}
-		}
-		addExitLight();
-		
 	}
 	
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -155,16 +156,20 @@ public class Map implements IPresenterMap {
 		location[0][0] = new Location(this, 0, 0);
 	}
 
-	public DungeonPosition getRandomPoint(boolean isFloorRequired) {
+	public DungeonPosition getRandomPoint(boolean isFloorRequired) throws MapException {
 		return getRandomPoint(isFloorRequired, border);
 	}
 	
-	public DungeonPosition getRandomPoint(boolean isFloorRequired, int minDistanceToEdge) {
+	/**
+	 * Returns a random point, or null if it timed out.
+	 */
+	public DungeonPosition getRandomPoint(boolean isFloorRequired, int minDistanceToEdge) throws MapException {
 
 		DungeonPosition l = new DungeonPosition();
-
+		int tries = 0;
 		boolean found = false;
-		while (!found) {
+		while (!found && tries<500) {
+			tries++;
             l.x = Randy.getRand(minDistanceToEdge, width - 1 - minDistanceToEdge);
             l.y = Randy.getRand(minDistanceToEdge, height - 1 - minDistanceToEdge);
             if (isFloorRequired)
@@ -173,9 +178,29 @@ public class Map implements IPresenterMap {
 				found = true;
 		}
 		
-		return l;
+		if (tries < 500) {
+			return l;
+		} else {
+			throw new MapException();
+		}
 	}
 
+	protected void setStartAndExitPoints() throws MapException {
+		int tries = 0; // just in case it is impossible.
+		do
+		{
+			startPoint = getRandomPoint(true);
+			exitPoint = getRandomPoint(true);
+			tries++;
+		} while (((Math.abs(startPoint.x - exitPoint.x) + Math.abs(startPoint.y - exitPoint.y)) < (height / 2)) && (tries < 200));
+		
+		if (tries >= 200) {
+			throw new MapException();
+		}
+		// tell the exit Location 
+		location(exitPoint).setAsExit();
+	}
+	
 	public void drawRoom(DungeonPosition dungeonLocation) {
 		int roomW = Randy.getRand(5, height / 5);
 		int roomH = Randy.getRand(5, height / 5);

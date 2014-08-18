@@ -162,7 +162,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 			else
 			{
-				placeMonster(map.getRandomPoint(true));
+				try {
+					placeMonster(map.getRandomPoint(true));
+				} catch (Map.MapException e) {
+					
+				}
 			}
 		}
 

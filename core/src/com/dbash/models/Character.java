@@ -214,13 +214,17 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	/**
 	 * Characters that are the leader have a special case - the leader shouldnt process his move while he is
-	 * still animating, or everything goes to shit.
+	 * still animating, or everything goes to shit.  However, if leadermode is off because the leader saw a monster,
+	 * the leaders turn should be processed.
 	 */
 	@Override
 	public boolean isReadyForTurn() {
 		if (finishedAnimatingAutomaticMove) {
 			return super.isReadyForTurn();
 		} else {
+			if (turnProcessor.getCurrentLeader() == null) {
+				return super.isReadyForTurn();
+			}
 			return false;
 		}
 	}
@@ -818,23 +822,27 @@ public class Character extends Creature implements IPresenterCharacter {
 	// that position.  simple.
 	public void targetTileSelected(DungeonPosition position) {
 		if (dungeonQuery.positionIsInLOSOfCharacter(this, position)) {
-			if (canSetLeaderModeTarget(position) == false && characterIsUsingEye) {
-				dungeonEvents.setCharacterisUsingEye(true, position, true);  // set the eye position, showing eye animation
-			} else if ((currentSelectedAbility != null) && (currentSelectedAbility.isEnoughMagic(magic))){
-				currentSelectedAbility.targetSelected(position);
-				turnProcessor.characterEndsTurn(this);
+			if (canSetLeaderModeTarget(position) == false ) {
+				if (characterIsUsingEye) {
+					dungeonEvents.setCharacterisUsingEye(true, position, true);  // set the eye position, showing eye animation
+				} else if ((currentSelectedAbility != null) && (currentSelectedAbility.isEnoughMagic(magic))){
+					currentSelectedAbility.targetSelected(position);
+					turnProcessor.characterEndsTurn(this);
+				}
 			}	
 		}
 	}
 	
 	private boolean canSetLeaderModeTarget(DungeonPosition position) {
+		boolean result = false;
 		if (isThereAnAutomaticLeaderTarget()) {
+			result = true;
 			AtLocation targetTileType = dungeonQuery.whatIsAtLocation(position);
 			if (targetTileType == AtLocation.FREE || targetTileType == AtLocation.CHARACTER) {
 				setAutomaticLeaderTargetPosition(position);
 			}
 		}
-		return false;
+		return result;
 	}
 	
 	@Override
@@ -1003,6 +1011,17 @@ public class Character extends Creature implements IPresenterCharacter {
 		creaturePresenter.resume();
 	}
 
+
+	@Override
+	public int respondAttack(AbilityCommand attack, Creature attacker) {
+		int result = super.respondAttack(attack, attacker);
+		
+		if (result >= 0) {
+			characterStatListeners.alertListeners();
+		}
+		
+		return result;
+	}
 }
 
 

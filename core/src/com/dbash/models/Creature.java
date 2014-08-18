@@ -609,6 +609,7 @@ public abstract class Creature implements IPresenterCreature
 			}
 
 			health -= newDamage;
+			
 			if (health < 1) {
 				// give killer the experience for killing you
 				attacker.addExperience(getExpValue(), false);
