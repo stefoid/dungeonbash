@@ -1,9 +1,7 @@
 package com.dbash.presenters.tabs;
 import java.util.ArrayList;
 
-import com.badlogic.gdx.audio.Sound;
 import com.dbash.models.Ability;
-import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
 import com.dbash.models.PresenterDepend;

@@ -3,7 +3,6 @@ package com.dbash.presenters.dungeon;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.dbash.models.Location;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;

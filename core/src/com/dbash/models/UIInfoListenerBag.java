@@ -2,6 +2,7 @@ package com.dbash.models;
 
 import java.util.Vector;
 
+@SuppressWarnings("serial")
 public class UIInfoListenerBag extends Vector<UIInfoListener> {
 
 	public UIInfoListenerBag() {

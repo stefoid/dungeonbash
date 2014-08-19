@@ -376,7 +376,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	// get rid of the current character from the map and the current set of shadowmaps, so it is invisible to monsters
-	// but delay removing the creature fromthe Locations so that the map can snapshot the final view of the dead
+	// but delay removing the creature from the Locations so that the map can snapshot the final view of the dead
 	// character until focus changes to the next character.
 	protected void cleanUpAfterCharacterLeavesMap(Character character) {
 		if (currentlyFocussedCharacter == character) {
@@ -555,55 +555,55 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 
 	
-	private void printAt(AbilityType abilityType) {
-	switch (abilityType) {
-		case WEAPON:
-			System.out.print("WEAPON");
-			break;
-		case AMULET:
-			System.out.print("AMULET");
-			break;
-		case RANGED:
-			System.out.print("RANGED");
-			break;
-		case WAND:
-			System.out.print("WAND");
-			break;
-		case MAGIC_ITEM:
-			System.out.print("MAGIC_ITEM");
-			break;
-		case ABILITY:
-			System.out.print("ABILITY");
-			break;
-		default:
-			System.out.print("something fucked up");
-			break;
-	}
-}
+//	private void printAt(AbilityType abilityType) {
+//	switch (abilityType) {
+//		case WEAPON:
+//			System.out.print("WEAPON");
+//			break;
+//		case AMULET:
+//			System.out.print("AMULET");
+//			break;
+//		case RANGED:
+//			System.out.print("RANGED");
+//			break;
+//		case WAND:
+//			System.out.print("WAND");
+//			break;
+//		case MAGIC_ITEM:
+//			System.out.print("MAGIC_ITEM");
+//			break;
+//		case ABILITY:
+//			System.out.print("ABILITY");
+//			break;
+//		default:
+//			System.out.print("something fucked up");
+//			break;
+//	}
+//}
 
 
-private void printDam(int damType) {
-	switch (damType) {
-		case AbilityCommand.NO_PHYSICAL_ATTACK:
-			System.out.print("MAGICAL");
-			break;
-		case AbilityCommand.CHEMICAL_ATTACK:
-			System.out.print("CHEMICAL");
-			break;
-		case AbilityCommand.ENERGY_ATTACK:
-			System.out.print("ENERGY");
-			break;
-		case AbilityCommand.HARD_ATTACK:
-			System.out.print("HARD");
-			break;
-		case AbilityCommand.SHARP_ATTACK:
-			System.out.print("SHARP");
-			break;
-		default:
-			System.out.print("something fucked up");
-			break;
-	}
-}
+//private void printDam(int damType) {
+//	switch (damType) {
+//		case AbilityCommand.NO_PHYSICAL_ATTACK:
+//			System.out.print("MAGICAL");
+//			break;
+//		case AbilityCommand.CHEMICAL_ATTACK:
+//			System.out.print("CHEMICAL");
+//			break;
+//		case AbilityCommand.ENERGY_ATTACK:
+//			System.out.print("ENERGY");
+//			break;
+//		case AbilityCommand.HARD_ATTACK:
+//			System.out.print("HARD");
+//			break;
+//		case AbilityCommand.SHARP_ATTACK:
+//			System.out.print("SHARP");
+//			break;
+//		default:
+//			System.out.print("something fucked up");
+//			break;
+//	}
+//}
 private void printEff(AbilityEffectType abilityEfectType) {
 	switch (abilityEfectType) {
 		case POISON:

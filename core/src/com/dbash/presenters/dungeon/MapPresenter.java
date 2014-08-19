@@ -217,7 +217,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 
 	@Override
 	// animated scroll to the new focus position.
-	// if we are allready scrolling, chain the next scroll to the when that is completed.
+	// if we are already scrolling, chain the next scroll to the when that is completed.
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
 		this.sequenceNumber = sequenceNumber;
 		this.animType = AnimType.SCROLLING;

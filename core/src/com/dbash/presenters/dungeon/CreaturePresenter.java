@@ -50,7 +50,7 @@ import com.dbash.util.Rect;
 // ANIMATING - display animation instead of static image.
 public class CreaturePresenter {
 	
-	private enum VisualState {
+	public enum VisualState {
 		STATIONARY,
 		WAITING_TO_FALL,
 		WAITING_TO_MOVE, 
@@ -110,6 +110,7 @@ public class CreaturePresenter {
 		updateHighlightAnimation();
 		setStaticImage(DungeonPosition.SOUTH);
 	}
+	public CreaturePresenter(){};
 	
 	public void resume() {
 		this.visualState = VisualState.STATIONARY;
@@ -465,7 +466,7 @@ public class CreaturePresenter {
 	// (the animation complete block will turn on static images again probably (unless the creature dies)
 	// by setting to the appropriate state.
 	private void changeStateToAnimatingWhenStarted(AnimationView animView) {
-		final CreaturePresenter selfi = this;
+		//final CreaturePresenter selfi = this;
 		animView.onStart(new IAnimListener() {
 			public void animEvent() {
 				//System.out.printlnln(selfi+" started anim");

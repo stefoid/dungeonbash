@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
 import com.dbash.models.CreatureStats;
 import com.dbash.models.IPresenterTurnState;
-import com.dbash.models.IPresenterTurnState.LeaderStatus;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;

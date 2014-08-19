@@ -121,6 +121,10 @@ public class SliderView implements TouchEventListener {
 
 			case CLICK:
 				break;
+			case UP:
+				break;
+			case UP_INSIDE:
+				break;
 		}
 
 		return useTouched;  

@@ -2,7 +2,8 @@ package com.dbash.models;
 
 import java.io.Serializable;
 
-public class DungeonPosition implements Comparable, Serializable {
+@SuppressWarnings("serial")
+public class DungeonPosition implements Serializable {
 	
 	// ATTRIBUTES
 	// no point providing set and get methods for these, it will make code look
@@ -150,14 +151,14 @@ public class DungeonPosition implements Comparable, Serializable {
 	}
 
 	
-	@Override
-	public int compareTo(Object arg0) {
-		if (arg0 instanceof DungeonPosition) {
-			DungeonPosition p = (DungeonPosition) arg0;
-			return p.x < x ? -1 : p.x > x ? 1 : p.y < y ? -1 : p.y > y ? 1 : 0;
-		}
-		return 0;
-	}
+//	@Override
+//	public int compareTo(Object arg0) {
+//		if (arg0 instanceof DungeonPosition) {
+//			DungeonPosition p = (DungeonPosition) arg0;
+//			return p.x < x ? -1 : p.x > x ? 1 : p.y < y ? -1 : p.y > y ? 1 : 0;
+//		}
+//		return 0;
+//	}
 
 	public int distanceTo(DungeonPosition p) {
 		int distance;

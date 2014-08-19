@@ -36,6 +36,8 @@ public class TextBoxView extends TextView {
 			case RIGHT:
 				h = BitmapFont.HAlignment.RIGHT;
 				break;
+			case LEFT:
+				break;
 		}
 		
 		// text x,y defined frm bottom left of text box area

@@ -276,6 +276,10 @@ public class Monster extends Creature
 				} 
 				
 				dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
+			break;
+			case MONSTER:
+				break;
+			case WALL:
 				break;
 		}
 	}

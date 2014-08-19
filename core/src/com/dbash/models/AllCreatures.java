@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import com.dbash.models.Creature.CreatureType;
 
+@SuppressWarnings("serial")
 public class AllCreatures extends Vector<Creature> {
 
 	/**

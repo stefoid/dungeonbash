@@ -1,8 +1,6 @@
 package com.dbash.models;
 import java.util.ArrayList;
 
-import com.dbash.models.Ability.AbilityType;
-
 
 //each Character has a AbilitySelectionList that has the following responsibilities.
 //
@@ -14,6 +12,7 @@ import com.dbash.models.Ability.AbilityType;
 
 
 // This list is of the effects currently affecting the character.
+@SuppressWarnings("serial")
 public class EffectList extends ArrayList<AbilityInfo>{
 	
 	public Creature owner;

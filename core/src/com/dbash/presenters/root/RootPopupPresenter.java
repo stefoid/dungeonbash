@@ -62,6 +62,7 @@ public class RootPopupPresenter implements IPopupController {
 		file.writeBytes(dataBucket.toByteArray(), false);  // write the byte array to teh file
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void readHidePopups()
 	{
 		FileHandle file = Gdx.files.local(filename);

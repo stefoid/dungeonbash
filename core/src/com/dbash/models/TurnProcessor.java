@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import com.dbash.models.Creature.CreatureType;
 import com.dbash.util.SequenceNumber;
 import com.me.dbash.Dbash;
 
@@ -417,7 +416,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	@Override
 	public void stairDescendSelected() {
-		if (acceptInput == false) {  // in case pounding on the descend key.  cheap hack.
+		if (acceptInput == false || currentCharacter == nobody) {  // in case pounding on the descend key.  cheap hack.
 			return;
 		}
 		
@@ -688,7 +687,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		// read all Characters falling out
 		int fallOut = in.readInt();
 		for (int i=0; i<fallOut; i++) {
-			Creature.CreatureType t = (CreatureType) in.readObject();  // we know its a character, so read that enumeration first
+			//Creature.CreatureType t = (CreatureType) in.readObject();  // we know its a character, so read that enumeration first
 			Character c = new Character(in, dungeonEvents, dungeonQuery, this);
 			charactersFallingOut.add(c);
 			allCharacters.add(c);

@@ -31,6 +31,7 @@ public class Map implements IPresenterMap {
 	
 	private final int border = 2; // how thick the enclosing rock wall is
 	
+	@SuppressWarnings("serial")
 	public class MapException extends Exception {
 	}
 	

@@ -7,7 +7,7 @@ import com.dbash.models.Ability.AbilityType;
 
 
 // Presentation layer
-public class AbilityInfo implements Comparable<AbilityInfo>{
+public class AbilityInfo implements Comparable<AbilityInfo> {
 	
 	public Ability ability;
 	

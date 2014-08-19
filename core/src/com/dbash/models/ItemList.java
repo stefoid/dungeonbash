@@ -13,6 +13,7 @@ import java.util.List;
 //.  modifies the list according to events from the character such as an ability being acquired, dropped, used, equipped, etc�
 
 // This list is of physical items carried by the creature.
+@SuppressWarnings("serial")
 public class ItemList extends ArrayList<AbilityInfo>{
 	
 	public Character owner;

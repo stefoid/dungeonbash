@@ -67,7 +67,7 @@ public abstract class Creature implements IPresenterCreature
 	public int				state;
 	static boolean			dataInitialized	= false;
 
-	static protected Vector	creatureData	= new Vector(30, 5);
+	static protected Vector<Data>	creatureData	= new Vector<Data>(30, 5);
 
 	public static int uniqueIdCounter = 0;
 	

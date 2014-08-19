@@ -15,6 +15,7 @@ import com.dbash.models.Character;
 //.  registers observers who want to know when the list content changes
 //.  modifies the list according to events from the character such as an ability being acquired, dropped, used, equipped, etc�
 
+@SuppressWarnings("serial")
 public class AbilitySelectionList extends ArrayList<AbilityInfo> {
 	
 	public Character owner;

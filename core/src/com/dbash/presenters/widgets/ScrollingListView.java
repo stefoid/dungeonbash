@@ -160,6 +160,10 @@ public class ScrollingListView implements TouchEventListener {
 				listElements.get(elementIndex).gotSelection(event.getX() - area.x, 0); // TODO y is wrong, but we dont need it yet
 				useTouched = true;
 				break;
+			case UP:
+				break;
+			case UP_INSIDE:
+				break;
 		}
 
 		return useTouched;  

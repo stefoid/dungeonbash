@@ -54,7 +54,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public final static float highlightPeriod = 1.2f;
 	
 	
-	private Rect 					area;
 	private UIDepend				gui;
 	private PresenterDepend 		model;
 	private MapPresenter			mapPresenter;
@@ -117,8 +116,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	public void setDetails(TouchEventProvider touchEventProvider, Rect area) {
-		this.area = new Rect(area);
-		
 		// We are the last port of call for any touches in the data area.  Probably not needed.
 		touchEventProvider.addTouchEventListener(this, area, gui.cameraViewPort.viewPort);
 	}
@@ -522,6 +519,8 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 				break;
 			case LEADER_DISABLED:
 				gui.audio.playMusic(Audio.BATTLE_THEME, true);
+				break;
+			case NONE:
 				break;
 		}
 	}

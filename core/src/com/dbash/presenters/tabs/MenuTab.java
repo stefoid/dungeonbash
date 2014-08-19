@@ -1,6 +1,5 @@
 package com.dbash.presenters.tabs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
@@ -26,8 +25,8 @@ import com.dbash.util.Rect;
 		private ButtonView quitButton;
 		final private SliderView fxSlider;
 		final private SliderView musicSlider;
-		private ButtonView tutorialOnButton;
-		private ButtonView tutorialOffButton;
+//		private ButtonView tutorialOnButton;
+//		private ButtonView tutorialOffButton;
 		private PresenterDepend model;
 		private Rect bodyArea;
 		UIDepend gui;

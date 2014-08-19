@@ -17,6 +17,7 @@ public class ShadowMap {
 	// the idea being that the 'rays' are generated only once at startup, and each point can store how far it is from the
 	// center, and then a shadowmap can use that info to efficiently generate an *ordered set* of Locations sorted according to proximity.
 	// therefore to find the closest creature, or all creatures in a certain range is just a linear search.
+	@SuppressWarnings("serial")
 	protected class RayPos extends DungeonPosition {
 		public int distance;  // square radus
 		public float trueDistance;  // circular radius
