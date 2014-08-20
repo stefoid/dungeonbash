@@ -81,4 +81,21 @@ public class NoCharacter extends Character {
 		return presenter;
 	}
 	
+
+	@Override
+	public boolean abilitySelected(Ability ability) {
+		return false;
+	}
+	
+	
+	@Override
+	public boolean itemPickupSelected(Ability ability) {
+		return false;
+	}
+	
+	@Override
+	public void itemDropSelected(Ability ability) {
+	}
+	
+	
 }

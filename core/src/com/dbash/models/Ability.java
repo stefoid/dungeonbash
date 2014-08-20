@@ -446,13 +446,6 @@ public class Ability
     public void targetSelected(DungeonPosition position)
     {	
 		Creature targCreature = dungeonQuery.getCreatureAtLocation(position);
-
-//		// tell owner the selected creature for it to be recorded
-//		if (targCreature != null)
-//		{
-//			Character o = (Character) owned;
-//			o.setTargetPosition(targCreature);
-//		}
 		
     	// now process the ability on the selected target.  A targetable ability only has an EXECUTE strategy
 		AbilityCommand  command = new AbilityCommand(AbilityCommand.EXECUTE, 0, 1, 1, 1);  // we have already verified that we can use this ability

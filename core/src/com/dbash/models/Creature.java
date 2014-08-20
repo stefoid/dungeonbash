@@ -1069,7 +1069,7 @@ public abstract class Creature implements IPresenterCreature
 	protected void death()
 	{
 		unsetAbilities(false);
-		
+		setDead(true);
 		if (this.myId == 0) // Nashkur the evil wizard is dead!!!
 			;//dungeonQuery.playerWins();
 	}

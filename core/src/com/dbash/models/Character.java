@@ -616,7 +616,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		setAutomaticLeaderTargetPosition(null);  // cannot move towards the target any more.
 	}
 	
-	private boolean isThereAnAutomaticLeaderTarget() {
+	public boolean isThereAnAutomaticLeaderTarget() {
 		if (leaderTargetPos == null) {
 			return false;
 		} else {
@@ -825,19 +825,30 @@ public class Character extends Creature implements IPresenterCharacter {
 	// at that position, otherwise if we have a selected targetable ability that we can use, we use it against
 	// that position.  simple.
 	public void targetTileSelected(DungeonPosition position) {
+		System.out.println("targetTileselected "+isPlayerCharacter());
 		if (dungeonQuery.positionIsInLOSOfCharacter(this, position)) {
 			if (canSetLeaderModeTarget(position) == false ) {
 				if (characterIsUsingEye) {
 					dungeonEvents.setCharacterisUsingEye(true, position, true);  // set the eye position, showing eye animation
 				} else if ((currentSelectedAbility != null) && (currentSelectedAbility.isEnoughMagic(magic))){
-					currentSelectedAbility.targetSelected(position);
-					turnProcessor.characterEndsTurn(this);
+					// unfortuantely it is possible to target a dead creature, so check first
+					boolean canHitTarget = true;
+					Creature targetCreature = dungeonQuery.getCreatureAtLocation(position);
+					if (targetCreature != null && targetCreature.isDead()) {
+						canHitTarget = false;
+					}
+					if (canHitTarget) {
+						currentSelectedAbility.targetSelected(position);
+						turnProcessor.characterEndsTurn(this);
+					} else {
+						System.out.println("WOULD HAVE CRAHSED");
+					}
 				}
 			}	
 		}
 	}
 	
-	private boolean canSetLeaderModeTarget(DungeonPosition position) {
+	public boolean canSetLeaderModeTarget(DungeonPosition position) {
 		boolean result = false;
 		if (isThereAnAutomaticLeaderTarget()) {
 			result = true;

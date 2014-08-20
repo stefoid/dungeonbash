@@ -247,7 +247,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	// this is called to pause turn processing until all animations to do with the current characters turn have finished playing.
 	// We dont want this to happen if we are in leader mode because then the followers will have to wait.
-	// but in that sitaution, we still want input turned off until animations are finished.
+	// but in that situation, we still want input turned off until animations are finished.
 	public void waitForAnimsToFinish() {
 		acceptInput = false; 
 		
@@ -396,11 +396,15 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	@Override
+	/**
+	 * If accept input is off, only return the currentLeader if we are travelling to a waypoint,
+	 * so that we can update the waypoint.
+	 */
 	public Character getCharacterForTouchEvents() {
 		if (acceptInput) {
 			return currentCharacter;
 		} else {
-			if (currentLeader != null) {
+			if (currentLeader != null && currentLeader.isThereAnAutomaticLeaderTarget()) {
 				return currentLeader;
 			} else {
 				return nobody;
