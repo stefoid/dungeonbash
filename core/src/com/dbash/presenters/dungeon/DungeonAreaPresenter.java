@@ -181,10 +181,10 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public void waitingForAnimToComplete(int sequenceNumber, IAnimListener animCompleteListener) {
 		AnimOp animOp = model.animQueue.getLast();
 		if (animOp == null) {
-			//System.out.println(" - empty so calling back now");
+			//if (Logger.DEBUG) Logger.log(" - empty so calling back now");
 			animCompleteListener.animEvent();
 		} else {
-			//System.out.println(" - callback attached to last thing "+animOp.getDesc());
+			//if (Logger.DEBUG) Logger.log(" - callback attached to last thing "+animOp.getDesc());
 			final IAnimListener callback = animCompleteListener;
 			animOp.onComplete(new IAnimListener() {
 				public void animEvent() {

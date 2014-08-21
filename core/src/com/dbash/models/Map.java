@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 
 
@@ -99,7 +100,7 @@ public class Map implements IPresenterMap {
 				dungeonNotCompleted = false;
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
-				System.out.println("TRYING AGAIN!");
+				if (Logger.DEBUG) Logger.log("TRYING AGAIN!");
 			}
 		}
 	}
@@ -388,12 +389,12 @@ public class Map implements IPresenterMap {
 //		// debug print
 //		for (int y=width-1; y>=0; y--) {
 //			for (int x=0; x< height; x++) {
-//				if (location(x,y).isOpaque()) System.out.print('#'); else System.out.print(' ');
+//				if (location(x,y).isOpaque()) if (Logger.DEBUG) Logger.log('#'); else if (Logger.DEBUG) Logger.log(' ');
 //			}
-//			System.out.println();
+//			if (Logger.DEBUG) Logger.log();
 //		}
-//		System.out.println();
-//		System.out.println();
-//		System.out.println();
+//		if (Logger.DEBUG) Logger.log();
+//		if (Logger.DEBUG) Logger.log();
+//		if (Logger.DEBUG) Logger.log();
 //	}
 }

@@ -247,7 +247,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	public void startPlaying() {
 		super.startPlaying();
 		super.animationCycleStarted(currentScrollPeriod);
-		//System.out.println("map anim started");
+		//if (Logger.DEBUG) Logger.log("map anim started");
 	}
 	
 	// animated scroll to the new focus position.  It is not that characters turn, its just scrolling to that character
@@ -325,20 +325,20 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 //	@Override
 //	protected void animationStopped() {
 //		super.animationStopped();
-//		System.out.println("map anim ended");
+//		if (Logger.DEBUG) Logger.log("map anim ended");
 //	}
 //	
 //	@Override
 //	public void onPercentComplete(float percentage, IAnimListener listener) {
 //		super.onPercentComplete(percentage, listener);
-//		System.out.println("listener added to map anim");
+//		if (Logger.DEBUG) Logger.log("listener added to map anim");
 //	}
 //	
 //	@Override
 //	protected void alertPercentageCompleteListeners(float currentPercent) {
 //		if (currentPercent >= nextCompleteTrigger) {
 //			for (PercentCompleteListener pListener : percentCompleteListeners) {
-//				System.out.println("percent listener alerted");
+//				if (Logger.DEBUG) Logger.log("percent listener alerted");
 //			}
 //		}
 //		super.alertPercentageCompleteListeners(currentPercent);

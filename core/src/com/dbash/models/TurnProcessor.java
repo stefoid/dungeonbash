@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dbash.util.Logger;
 import com.dbash.util.SequenceNumber;
 import com.me.dbash.Dbash;
 
@@ -131,7 +132,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void gameLogicLoop()
 	{
 		if (pauseTurnProcessing != lastPause) {
-			//System.out.println("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
+			//if (Logger.DEBUG) Logger.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
 			lastPause = pauseTurnProcessing;
 		}
 		
@@ -262,7 +263,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// characters call this to pause turn processing until player has directed character action.
 	// turn processing will be turned on again by the callback employed by waitForAnimsToFinish
 	public void waitForPlayerInput() {
-		System.out.println("waiting for player input");
+		if (Logger.DEBUG) Logger.log("waiting for player input");
 		pauseTurnProcessing = true;
 		dungeonEvents.waitingForAnimToComplete(SequenceNumber.getNext(), new IAnimListener() {
 			public void animEvent() {
@@ -414,7 +415,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public void passTurnSelected() {
-		System.out.println("Pass turn pressed");
+		if (Logger.DEBUG) Logger.log("Pass turn pressed");
 		characterEndsTurn(currentCharacter);
 	}
 
@@ -475,10 +476,15 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (solo == true) {
 			if (currentLeader != null) {
 				currentLeader.setSolo(true);
+			} else {
+				if (acceptInput && currentCreature instanceof Character) {
+					currentCharacter.setSolo(true);
+					LeaderModeToggleSelected();
+				}
 			}
-			if (acceptInput && currentCreature instanceof Character) {
-				Character c = (Character) currentCreature;
-				c.setSolo(true);
+		} else {
+			if (currentLeader != null) {
+				LeaderModeToggleSelected();
 			}
 		}
 		soloStatusListeners.alertListeners();
@@ -505,15 +511,16 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (currentLeader == null) {
 			currentLeader = currentCharacter;
 			leaderStatus = LeaderStatus.HAVE_LEADER;
-			System.out.println("current leader is "+currentLeader.creature.name);
+			if (Logger.DEBUG) Logger.log("current leader is "+currentLeader.creature.name);
 		} else {
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
-			System.out.println("no current leader");
+			if (Logger.DEBUG) Logger.log("no current leader");
 		}
 		
 		leaderStatusListeners.alertListeners();
 	}
+	
 	
 	// When a character is having a turn, they will ask this, initiating a leadership validity check.
 	public Character getCurrentLeader()

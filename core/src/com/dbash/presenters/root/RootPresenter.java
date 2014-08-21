@@ -16,6 +16,7 @@ import com.dbash.platform.CameraViewPort;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.presenters.tabs.TabbedDataAreaPresenter;
+import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
 
@@ -268,7 +269,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	@Override
 	public boolean keyDown(int keycode) {
 		// a=29, z = 54,    r=46, z=34,   x=52
-		System.out.println("keycode : "+keycode);
+		if (Logger.DEBUG) Logger.log("keycode : "+keycode);
 
 		IPresenterTurnState t = model.presenterTurnState;
 		switch (keycode) {
@@ -291,7 +292,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 				break;
 		}
 		
-		System.out.println("alpha : "+t.getAlpha()+"  range: "+t.getRange());
+		if (Logger.DEBUG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
 		return false;
 	}
 

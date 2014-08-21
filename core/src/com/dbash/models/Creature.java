@@ -1014,7 +1014,7 @@ public abstract class Creature implements IPresenterCreature
 	/*
 	 * public static void printAll() { for (int i=0; i<creatureData.size(); i++)
 	 * { CreatureData cd = (CreatureData) creatureData.elementAt(i);
-	 * System.out.println(cd.name + "level = " + calcLevel(i)); }
+	 * if (Logger.DEBUG) Logger.log(cd.name + "level = " + calcLevel(i)); }
 	 * 
 	 * }
 	 */

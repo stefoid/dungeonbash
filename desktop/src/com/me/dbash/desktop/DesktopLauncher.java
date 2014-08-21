@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import com.dbash.util.Logger;
 import com.me.dbash.Dbash;
 
 public class DesktopLauncher {
@@ -21,12 +22,6 @@ public class DesktopLauncher {
 		}
 	}
 	
-	/**
-	* Full screen application configuration. 
-	* 
-	* @author ph
-	*
-	*/
 	public static class MaximumApplicationConfiguration extends
 		MyApplicationConfiguration {
 	public MaximumApplicationConfiguration() {
@@ -36,7 +31,7 @@ public class DesktopLauncher {
 		for (DisplayMode displayMode : LwjglApplicationConfiguration
 				.getDisplayModes()) {
 			if (displayMode.width > maxWidth) {
-				System.out.println(displayMode);
+				if (Logger.DEBUG) Logger.log(displayMode.toString());
 				width = displayMode.width;
 				height = displayMode.height;
 				maxWidth = displayMode.width;

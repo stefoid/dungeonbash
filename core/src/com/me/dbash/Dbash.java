@@ -23,8 +23,11 @@ import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.SmoothBitmapFont;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.RootPresenter;
+import com.dbash.util.Logger;
 
 public class Dbash implements ApplicationListener {
+	
+	public static boolean DEBUG = true;
 	
 	enum GameState {
 		SPLASH,
@@ -77,7 +80,7 @@ public class Dbash implements ApplicationListener {
 
 		// load previously saved game, if it exists.
 		FileHandle fl = Gdx.files.local("gamedata.dat");
-		System.out.println("LOADING GAMEDATA");
+		if (Logger.DEBUG) Logger.log("LOADING GAMEDATA");
 		if (fl.exists() == true) {
 			newGame = false;
 			ObjectInputStream in = null;
@@ -119,7 +122,7 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-		System.out.println("SAVING GAMEDATA");
+		if (Logger.DEBUG) Logger.log("SAVING GAMEDATA");
 		FileHandle fl = Gdx.files.local("gamedata.dat");
 		ObjectOutputStream out = null;
 		try {
@@ -140,7 +143,7 @@ public class Dbash implements ApplicationListener {
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
-		System.out.println("DISPOSE CALLED");
+		if (Logger.DEBUG) Logger.log("DISPOSE CALLED");
 	}
 
 	@Override
@@ -192,7 +195,7 @@ public class Dbash implements ApplicationListener {
 
 	@Override
 	public void resume() {
-		System.out.println("RESUME CALLED");
+		if (Logger.DEBUG) Logger.log("RESUME CALLED");
 	}
 	
 	boolean quitted = false;
