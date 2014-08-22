@@ -327,6 +327,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 		cleanUpAfterCharacterLeavesMap((Character)actingCreature);
 		
+		// crash test
+//		dungeonEventListener = null;
+//		gameOver();
+		
 		final Creature downer = actingCreature;
 		final IAnimListener complete = completeListener;
 		if (dungeonEventListener != null) {

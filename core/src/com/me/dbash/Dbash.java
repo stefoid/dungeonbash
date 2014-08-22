@@ -43,8 +43,19 @@ public class Dbash implements ApplicationListener {
 	Audio audio; 
 	GameState gameState = GameState.SPLASH;
 	Texture splash;
+	Thread.UncaughtExceptionHandler previousHandler;
 	
 	public Dbash() {
+//		previousHandler = Thread.getDefaultUncaughtExceptionHandler();
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            @Override
+//            public void uncaughtException(Thread thread, Throwable throwable) {
+//                pause();
+//                if (previousHandler != null) {
+//                	previousHandler.uncaughtException(thread,  throwable);
+//                }
+//            }
+//        });
 	}
 
 	protected void initEverything() {
