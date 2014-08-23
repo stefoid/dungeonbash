@@ -301,9 +301,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		allCharacters.remove(character);
 		allCreatures.remove(character);
 		if (currentLeader == character) {
-			currentLeader = null;
-			leaderStatus = LeaderStatus.NO_LEADER;
-			leaderStatusListeners.alertListeners();
+			clearLeaderMode();
 		}
 		
 		if (character.getSolo()) {
@@ -436,9 +434,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 		// was that character the leader?
 		if (currentLeader == currentCharacter) {
-			currentLeader = null;
-			leaderStatus = LeaderStatus.NO_LEADER;
-			leaderStatusListeners.alertListeners();
+			clearLeaderMode();
 		}
 		
 		acceptInput = false;
@@ -473,19 +469,22 @@ public class TurnProcessor implements IPresenterTurnState {
 			character.setSolo(false);
 		}
 		
+		// Works out whether leader mode is possible.
+		currentLeader = getCurrentLeader();
+		
 		if (solo == true) {
 			if (currentLeader != null) {
 				currentLeader.setSolo(true);
 			} else {
 				if (acceptInput && currentCreature instanceof Character) {
 					currentCharacter.setSolo(true);
-					LeaderModeToggleSelected();
+					if (leaderStatus != LeaderStatus.LEADER_DISABLED) {
+						LeaderModeToggleSelected();
+					}
 				}
 			}
 		} else {
-			if (currentLeader != null) {
-				LeaderModeToggleSelected();
-			}
+			clearLeaderMode();
 		}
 		soloStatusListeners.alertListeners();
 	}
@@ -513,6 +512,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			leaderStatus = LeaderStatus.HAVE_LEADER;
 			if (Logger.DEBUG) Logger.log("current leader is "+currentLeader.creature.name);
 		} else {
+			currentLeader.leaderModeCleared();
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
 			if (Logger.DEBUG) Logger.log("no current leader");
@@ -543,6 +543,16 @@ public class TurnProcessor implements IPresenterTurnState {
 		leaderStatusListeners.alertListeners();
 
 		return currentLeader;
+	}
+	
+	/**
+	 * if Leader mode is on, this turns it off, either to disabled or enabled but off
+	 */
+	public void clearLeaderMode() {
+		currentLeader = getCurrentLeader();
+		if (currentLeader != null) {
+			LeaderModeToggleSelected();
+		}
 	}
 	
 	@Override

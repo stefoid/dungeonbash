@@ -625,6 +625,11 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 	}
 	
+	public void leaderModeCleared() {
+		clearAutomaticLeaderTarget();
+		theLeader = null;
+	}
+	
 	public DungeonPosition getAutomaticLeaderTarget() {
 		return leaderTargetPos;
 	}

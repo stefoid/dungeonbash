@@ -11,7 +11,7 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Crashlytics.start(this);
+		Crashlytics.start(this);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new Dbash(), config);
 	}
