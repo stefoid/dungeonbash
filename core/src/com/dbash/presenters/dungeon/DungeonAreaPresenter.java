@@ -149,9 +149,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
-	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter) {
+	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
 		CreaturePresenter creaturePresenter = fallingCharacter.getCreaturePresenter();
-		creaturePresenter.fallIntoLevel(sequenceNumber, fallingCharacter);
+		creaturePresenter.fallIntoLevel(sequenceNumber, fallingCharacter, level);
 	}
 	
 	@Override

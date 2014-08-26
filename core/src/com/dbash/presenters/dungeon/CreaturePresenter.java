@@ -16,6 +16,7 @@ import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.Audio;
 import com.dbash.platform.ImageView;
+import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.Rect;
@@ -318,7 +319,7 @@ public class CreaturePresenter {
 	
 	// when falling into a level, we dont have anywhere visible to come from, so we turn off static drawing of this
 	// creature as soon as we get this event, then turn it back on again after the animation is completed.
-	public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter) {
+	public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level) {
 		myPreviousAnim = null;  // if we are falling, then there was no previous move command.
 		visualState = VisualState.WAITING_TO_FALL;
 		Rect toRect = makeDrawingRectFromPosition(fallingCharacter.getPosition());
@@ -347,6 +348,14 @@ public class CreaturePresenter {
 		
 		model.animQueue.chainSequential(fallAnim, false);
 		myPreviousAnim = fallAnim;
+		
+		if (level > 0) {
+			Rect fromNumRect = new Rect(toRect, .25f, .25f, 0f, 0f);
+			Rect toNumRect = new Rect(fromNumRect,7f);
+			TextImageView levelNumber = new TextImageView(gui, gui.numberFont, String.valueOf(level), fromNumRect);
+			AnimationView levelAnim = new AnimationView(gui, levelNumber, fromNumRect, toNumRect, 1f, 0f, .5f, 1, null);
+			model.animQueue.chainSequential(levelAnim, false);
+		}
 	}
 	
 	// TODO not happy with the look of this, really.  I might change it to facing north, then 'stepping' down the stairs

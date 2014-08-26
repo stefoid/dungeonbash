@@ -23,7 +23,7 @@ public interface IDungeonPresentationEventListener {
 			DungeonPosition position);
 	
 	// fall into level (lands wherever the entrance is)  The Dungeon will update the creatures position, and its record of it.
-	void fallIntoLevel(int sequenceNumber, Character fallingCharacter);
+	void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level);
 	
 	// These two events have complete listeners so the dungeon can remove the creature from the map after it is shown to be dead.
 	void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, IAnimListener completeListener);

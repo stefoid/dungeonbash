@@ -56,7 +56,7 @@ public interface IDungeonEvents {
 	void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter);
 	
 	// fall into level (lands wherever the entrance is)  The Dungeon will update the creatures position, and its record of it.
-	void fallIntoLevel(int sequenceNumber, Character fallingCharacter);
+	void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level);
 	
 	// go down stairs
 	void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener);

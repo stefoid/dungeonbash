@@ -311,14 +311,14 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter) {
+	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
 		map.location(map.startPoint).setCreature(fallingCharacter);
 		fallingCharacter.shadowMap.setMap(map, map.startPoint, 5);
 		fallingCharacter.setPosition(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
 			if (Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " fallIntoLevel");
-			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter);
+			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level);
 		}
 	}
 

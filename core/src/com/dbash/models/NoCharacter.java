@@ -14,7 +14,7 @@ public class NoCharacter extends Character {
 		@Override
 		public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener animCompleteListener) {}
 		@Override
-		public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter) {}
+		public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level) {}
 		@Override
 		public void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener) {}
 		@Override

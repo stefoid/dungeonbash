@@ -32,6 +32,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean gameInProgress;
 	private boolean usingEye;
 	private boolean soloStatus;
+	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
 	
 	// Lists to maintain what is going on.
@@ -71,6 +72,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		acceptInput = false;  
 		dungeon.createLevel(this, level);
 		setCurrentCharacter(nobody);
+		firstCharToDrop = true;
 		
 		if (level == 1) {
 			allCharacters = new Vector<Character>();
@@ -212,9 +214,15 @@ public class TurnProcessor implements IPresenterTurnState {
     			if (soloStatus == false || theChar.getSolo()) {
             		// If a lucky falling character is ready and able to fall in, then tell the dungeon about it.
             		if (canFallIn) {
+            			int level = -1;
+            			if (firstCharToDrop) {
+            				level = this.level;
+            				firstCharToDrop = false;
+            			}
             			charactersFallingIn.removeElement(currentCreature);  // no longer falling
-            			dungeonEvents.fallIntoLevel(SequenceNumber.getNext(), (Character)currentCreature); // when a character falls in, it get a chance to act (wait for player control)
-                	}
+            			dungeonEvents.fallIntoLevel(SequenceNumber.getNext(), (Character)currentCreature, level); // when a character falls in, it get a chance to act (wait for player control)
+            
+            		}
     			} 
     		}
     		

@@ -51,6 +51,9 @@ public class DesktopLauncher {
 			maxHeight = 2048;
 			combineSubdirectories = true;
 			flattenPaths = true;
+			paddingX = 3;
+		    paddingY = 3;
+		    bleed = true;
 			filterMin = TextureFilter.Linear;
 			filterMag = TextureFilter.Linear;
 			duplicatePadding = true; // to stop gap line due to oversampling with linear filter
