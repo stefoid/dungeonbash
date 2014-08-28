@@ -8,8 +8,6 @@
 
     <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" />
 
-
-
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -25,11 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-    
-
-    <meta-data android:name="com.crashlytics.ApiKey" android:value="2fae8bedad1e84766db4bddb94031c22de93804d"/>
+    	<meta-data android:name="com.crashlytics.ApiKey" android:value="2fae8bedad1e84766db4bddb94031c22de93804d"/>
     </application>
 
 </manifest>

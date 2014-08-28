@@ -51,8 +51,8 @@ public class DesktopLauncher {
 			maxHeight = 2048;
 			combineSubdirectories = true;
 			flattenPaths = true;
-			paddingX = 3;
-		    paddingY = 3;
+			paddingX = 2;
+		    paddingY = 2;
 		    bleed = true;
 			filterMin = TextureFilter.Linear;
 			filterMag = TextureFilter.Linear;
