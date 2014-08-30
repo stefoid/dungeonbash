@@ -48,7 +48,7 @@ public class ItemListPresenter extends ListPresenter{
 			final Ability ability = abilityInfo.ability;
 			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
 			ItemListElementView element = new ItemListElementView(gui, abilityInfo, elementArea);
-			elements.add(element);
+			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
 					if (ability != null) {
@@ -64,7 +64,7 @@ public class ItemListPresenter extends ListPresenter{
 		// add the character inventory to the list.
 		for (AbilityInfo abilityInfo : characterItemList) {
 			ItemListElementView element = new ItemListElementView(gui, abilityInfo, elementArea);
-			elements.add(element);
+			element.addToList(elements);
 
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
@@ -83,12 +83,13 @@ public class ItemListPresenter extends ListPresenter{
 			AbilityInfo firstInfo = new AbilityInfo("No items carried");
 			firstInfo.isCarried = true;
 			ItemListElementView first = new ItemListElementView(gui, firstInfo, elementArea);
-			elements.add(first);
+			first.addToList(elements);
 		}
 		
 		// fill up to min elements by adding empty ones.
 		while (elements.size() < gui.sizeCalculator.MIN_ELEMENTS) {
-			elements.add(new IListElement.EmptyListElement(gui, "ITEM_CARRIED_IMAGE", elementArea));
+			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ITEM_CARRIED_IMAGE", elementArea);
+			emptyItem.addToList((elements));
 		}
 		
 		float listPos = characters.get(character);

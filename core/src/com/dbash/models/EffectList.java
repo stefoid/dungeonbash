@@ -1,6 +1,8 @@
 package com.dbash.models;
 import java.util.ArrayList;
 
+import com.dbash.util.Logger;
+
 
 //each Character has a AbilitySelectionList that has the following responsibilities.
 //
@@ -27,7 +29,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			// Effects are anything that that currently has an effect on the character, such as a non-physical, non-selectable
 			// ability, or a currently-equipped item that has intrinsic effects of its own, such as armor.
 			AbilityInfo info = new AbilityInfo(ability, owner);
-			
+			if (Logger.DEBUG) Logger.log(info.name);
 			// 'Effects' are non-physical, non-selectable abilities.
 			if (!ability.isSelectable() && (!ability.isPhysical())) {
 				

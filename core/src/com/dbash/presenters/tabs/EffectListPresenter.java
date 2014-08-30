@@ -46,12 +46,13 @@ public class EffectListPresenter extends ListPresenter{
 			firstInfo.abilityEffects = new Vector<AbilityEffectType>();
 			firstInfo.abilityEffects.add(AbilityEffectType.NONE_REALLY);
 			EffectListElementView first = new EffectListElementView(gui, firstInfo, elementArea);
-			elements.add(first);
+			first.addToList(elements);
 		}
 		
 		// fill up to min elements by adding empty ones.
 		while (elements.size() < gui.sizeCalculator.MIN_ELEMENTS) {
-			elements.add(new IListElement.EmptyListElement(gui, "EFFECT_IMAGE", elementArea));
+			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "EFFECT_IMAGE", elementArea);
+			emptyItem.addToList((elements));
 		}
 		
 		float listPos = characters.get(character);

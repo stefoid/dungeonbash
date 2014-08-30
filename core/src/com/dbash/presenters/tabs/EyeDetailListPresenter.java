@@ -18,7 +18,7 @@ import com.dbash.util.Rect;
 // a list of items at the owners location in the dungeon, and allows the player to drop items from the former
 // and pick up items from the latter.
 // displays it as a ScrollingList of ListElements.
-public class EyeDetailListPresenter extends ListPresenter{
+public class EyeDetailListPresenter extends ListPresenter {
 	
 	private ItemList dungeonItemList;
 	
@@ -53,25 +53,27 @@ public class EyeDetailListPresenter extends ListPresenter{
 		// Add creature details elements, plus empty list elements to act as spacers..
 		if (creature != null) {
 			for (int i=0; i<extraElements; i++) {
-				elements.add(new IListElement.EmptyListElement(gui, null, elementArea));
+				IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea);
+				empty.addToList((elements));
 			}
 			Rect creatureArea = new Rect(elementArea);
 			creatureArea.height *= (extraElements+1);
 			CreatureListElementView creatureElement = new CreatureListElementView(gui, creature.getCreatureStats(), creatureArea);
-			elements.add(creatureElement);
+			creatureElement.addToList(elements);
 		}
 		
 		// add the things on the dungeon floor at this spot.
 		for (AbilityInfo abilityInfo : dungeonItemList) {
 			// add the closure to the element about what to do if it is selected.
 			abilityInfo.isUsableByOwner = true;  // set this so as not to show the diasbled status
-			ItemListElementView element = new ItemListElementView(gui, abilityInfo, elementArea);
-			elements.add(element);
+			ItemListElementView itemElement = new ItemListElementView(gui, abilityInfo, elementArea);
+			itemElement.addToList(elements);
 		}
 		
 		// fill up to min elements by adding empty ones.
 		while (elements.size() < gui.sizeCalculator.MIN_ELEMENTS) {
-			elements.add(new IListElement.EmptyListElement(gui, "ITEM_ON_FLOOR_IMAGE", elementArea));
+			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ITEM_ON_FLOOR_IMAGE", elementArea);
+			emptyItem.addToList((elements));
 		}
 		
 		// always draws at the same position it already was at before.

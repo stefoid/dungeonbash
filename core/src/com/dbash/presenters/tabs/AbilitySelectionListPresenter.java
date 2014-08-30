@@ -37,7 +37,7 @@ public class AbilitySelectionListPresenter extends ListPresenter{
 		
 		for (AbilityInfo abilityInfo : abilityInfoList) {
 			AbilityListElementView element = new AbilityListElementView(gui, abilityInfo, elementArea);
-			elements.add(element);
+			element.addToList(elements);
 
 			// add the closure to the element about what to do if it is selected.
 			final Character owner = abilityInfoList.owner;
@@ -83,7 +83,8 @@ public class AbilitySelectionListPresenter extends ListPresenter{
 		
 		// fill up to min elements by adding empty ones.
 		while (elements.size() < gui.sizeCalculator.MIN_ELEMENTS) {
-			elements.add(new IListElement.EmptyListElement(gui, "ABILITY_AVAILABLE_IMAGE", elementArea));
+			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ABILITY_AVAILABLE_IMAGE", elementArea);
+			emptyItem.addToList((elements));
 		}
 		
 		float listPos = characters.get(character);

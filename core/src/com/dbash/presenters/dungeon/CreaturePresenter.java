@@ -428,9 +428,9 @@ public class CreaturePresenter {
 		updateStaticImageArea();
 		
 		final IAnimListener tpListen = completeListener;
-		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition));
-		Rect toRect = new Rect(fromRect);
-		toRect.y += toRect.height*.7f;
+		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition), 0.6f);
+		Rect toRect = new Rect(fromRect, 1.6f);
+		toRect.y += fromRect.height*.8f;
 		AnimationView deathAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, 0.7f, 1, new IAnimListener() {
 			public void animEvent() {
 				if (tpListen != null) {

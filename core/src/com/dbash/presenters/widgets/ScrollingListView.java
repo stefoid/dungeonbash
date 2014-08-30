@@ -7,6 +7,7 @@ import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
+import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
 
@@ -16,11 +17,7 @@ import com.dbash.util.Rect;
 // so the listElement can decide what, if anything, to do about it.
 public class ScrollingListView implements TouchEventListener {
 	
-//	public float ELEMENTS_PER_SCREEN = 4f;
-//	public int MIN_ELEMENTS = (int) (ELEMENTS_PER_SCREEN );
-	
-	private List<IListElement> listElements = null;
-	
+	List<IListElement> listElements = null;
 	Rect area;
 	float elementHeight;
 	int lastElementIndex;
@@ -105,6 +102,10 @@ public class ScrollingListView implements TouchEventListener {
 		
 		if (lastVisibleElement > lastElementIndex) {
 			lastVisibleElement = lastElementIndex;
+			if (Logger.DEBUG) {
+				Logger.log("lastVisibleElement: "+lastVisibleElement + "FirstVisibleElement: "+FirstVisibleElement);
+				
+			}
 		}
 		// where should the first visible element be drawn? (x,y passed to us as bottom left of area)
 		float elemY = area.y + area.height - elementHeight + (float) (listPosition %  elementHeight);

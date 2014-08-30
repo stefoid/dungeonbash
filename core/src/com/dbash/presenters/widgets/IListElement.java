@@ -1,5 +1,7 @@
 package com.dbash.presenters.widgets;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
@@ -48,6 +50,11 @@ public interface IListElement {
 		public void onSelection(ISelectionListener selectionListener) {
 			// do nothing
 		}
+
+		@Override
+		public void addToList(ArrayList<IListElement> list) {
+			list.add(this);
+		}
 	}
 	
 	// Just draw yourself to the screen at the coords given - the ScrollList will clip bits thatt shouldnt show.
@@ -58,5 +65,9 @@ public interface IListElement {
 
 	// 
 	void onSelection(ISelectionListener selectionListener);
+	
+	// Usually this is just a single add, but some list elements take up morethan one'slot' so have to add
+	// empty list elements to a number of slots first.
+	void addToList(ArrayList<IListElement> list);
 
 }

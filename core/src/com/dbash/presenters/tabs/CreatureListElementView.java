@@ -1,5 +1,7 @@
 package com.dbash.presenters.tabs;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -125,5 +127,10 @@ public class CreatureListElementView implements IListElement {
 	public void onSelection(ISelectionListener selectionListener) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void addToList(ArrayList<IListElement> list) {
+		list.add(this);
 	}
 }

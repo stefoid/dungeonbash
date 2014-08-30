@@ -1,9 +1,12 @@
 package com.dbash.presenters.tabs;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.widgets.IListElement;
 import com.dbash.util.Rect;
 
 
@@ -39,6 +42,11 @@ public class EffectListElementView extends AbilityTypeListElement {
 				effect.draw(spriteBatch, x, y);
 			}
 		}
+	}
+	
+	@Override
+	public void addToList(ArrayList<IListElement> list) {
+		list.add(this);
 	}
 
 }

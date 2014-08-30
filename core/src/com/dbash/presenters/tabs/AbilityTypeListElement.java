@@ -60,8 +60,17 @@ public abstract class AbilityTypeListElement implements IListElement {
 		this.gui = gui;
 		
 		// name
+		HAlignment hAlign = HAlignment.LEFT;
+		VAlignment vAlign = VAlignment.BOTTOM;
+		Color color = Color.BLACK;
 		Rect textArea = new Rect(area, .05f, 0f, .1f, .65f);  // 5% from left, 10% from top, 65% from bottom
-		abilityName = new TextView(gui, abilityInfo.name, textArea, Color.BLACK);  // left and bottom aligned in that rect
+		
+		if (abilityInfo.isStat) {
+			hAlign = HAlignment.LEFT;
+			textArea.y -= textArea.height*1.2f;
+			color = Color.WHITE;
+		}
+		abilityName = new TextView(gui, null, abilityInfo.name, textArea, hAlign, vAlign, color);
 		
 		// work out icon size
 		iconArea = new Rect(0, 0, .55f*area.height, .55f*area.height);

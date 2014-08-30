@@ -35,7 +35,7 @@ public class SizeCalculator {
 	}
 	
 //	given the pixels per centimetre, I can work out how many centimetres the list will be
-//	the ideal list element height is 11mm.
+//	the ideal list element height is around 12mm.
 //	divide the area by 11mm for the number of list elements, and if this number is less than 4, make it 4.
 	private void setListHeight(float height, float ppcy) {
 

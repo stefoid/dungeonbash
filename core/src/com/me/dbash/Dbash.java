@@ -1,8 +1,6 @@
 package com.me.dbash;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -133,22 +131,22 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-		if (Logger.DEBUG) Logger.log("SAVING GAMEDATA");
-		FileHandle fl = Gdx.files.local("gamedata.dat");
-		ObjectOutputStream out = null;
-		try {
-			out = new ObjectOutputStream(fl.write(false));
-			turnProcessor.allCreatures.persist(out);
-			dungeon.persist(out);
-			turnProcessor.persist(out);
-			audio.persist(out);
-		} catch (IOException e) {
-		} finally {
-			try {
-				out.close();
-			} catch (IOException e) {
-			}
-		}
+//		if (Logger.DEBUG) Logger.log("SAVING GAMEDATA");
+//		FileHandle fl = Gdx.files.local("gamedata.dat");
+//		ObjectOutputStream out = null;
+//		try {
+//			out = new ObjectOutputStream(fl.write(false));
+//			turnProcessor.allCreatures.persist(out);
+//			dungeon.persist(out);
+//			turnProcessor.persist(out);
+//			audio.persist(out);
+//		} catch (IOException e) {
+//		} finally {
+//			try {
+//				out.close();
+//			} catch (IOException e) {
+//			}
+//		}
 	}
 	
 	@Override
