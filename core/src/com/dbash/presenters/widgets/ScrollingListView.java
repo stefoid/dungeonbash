@@ -60,6 +60,7 @@ public class ScrollingListView implements TouchEventListener {
 		}
 	}
 	
+	float listPos;
 	void draw(SpriteBatch spriteBatch, float x, float y) {
 		// adjust list position by the current speed
 		if (speed != 0) {
@@ -93,24 +94,32 @@ public class ScrollingListView implements TouchEventListener {
 			listPosition = listPositionBottom;
 		}	
 		
+		listPosition = Math.round(listPosition);
+		
 		// Clip the top and bottom of the entire list so the top or bottom elements 
 		gui.cameraViewPort.startClipping(spriteBatch, area);
 		
 		// draw each ListElement that is at least partially visible.
-		int FirstVisibleElement = getElementIndexForYPosition(listPosition);
+		int firstVisibleElement = getElementIndexForYPosition(listPosition);
 		int lastVisibleElement = getElementIndexForYPosition(listPosition + area.height);
 		
 		if (lastVisibleElement > lastElementIndex) {
 			lastVisibleElement = lastElementIndex;
-			if (Logger.DEBUG) {
-				Logger.log("lastVisibleElement: "+lastVisibleElement + "FirstVisibleElement: "+FirstVisibleElement);
-				
-			}
+			//firstVisibleElement = lastVisibleElement - gui.sizeCalculator.MIN_ELEMENTS;
 		}
+
 		// where should the first visible element be drawn? (x,y passed to us as bottom left of area)
 		float elemY = area.y + area.height - elementHeight + (float) (listPosition %  elementHeight);
 		
-		for (int i=FirstVisibleElement; i <= lastVisibleElement; i++) {
+//		if (Logger.DEBUG) {
+//			if (listPos != listPosition) {
+//				listPos = listPosition;
+//			Logger.log("lastVE: "+lastVisibleElement + "  FirstVE: "+firstVisibleElement+ " LP: "+listPosition + " elemY: "+elemY +
+//					"  mod: " +(float) (listPosition %  elementHeight) + " float 1st: "+listPosition/elementHeight);
+//			}
+//		}
+		
+		for (int i=firstVisibleElement; i <= lastVisibleElement; i++) {
 			IListElement element = listElements.get(i);
 			element.draw(spriteBatch, area.x + x, elemY);
 			elemY -= elementHeight;
