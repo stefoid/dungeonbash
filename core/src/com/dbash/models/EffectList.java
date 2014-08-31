@@ -1,8 +1,6 @@
 package com.dbash.models;
 import java.util.ArrayList;
 
-import com.dbash.util.Logger;
-
 
 //each Character has a AbilitySelectionList that has the following responsibilities.
 //

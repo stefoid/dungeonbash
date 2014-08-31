@@ -8,6 +8,7 @@ import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.ImagePatchView;
+import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
 import com.dbash.util.Rect;
 
@@ -30,7 +31,7 @@ public abstract class ListPresenter {
 	
 	public ListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		elementWidth = area.width; // TODO not neccessarilly!
-		elementHeight = area.height / gui.sizeCalculator.ELEMENTS_PER_SCREEN; 
+		elementHeight = SizeCalculator.LIST_ELEMENT_HEIGHT;
 		elementArea = new Rect(0, 0, elementWidth, elementHeight);
 		this.gui = gui;
 		this.model = model;

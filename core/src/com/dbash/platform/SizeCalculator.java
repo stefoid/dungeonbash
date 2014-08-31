@@ -8,10 +8,9 @@ public class SizeCalculator {
 	public static float TAB_AREA_SCALE = 1.0f - DATA_HEADER_SCALE;
 	public static float TAB_BUTTON_SCALE = 0.15f;
 	public static float LIST_AREA_SCALE = 1.0f - TAB_BUTTON_SCALE;
-	
 	public static float MIN_DRAG_DISTANCE = 0.2f;  // 2mm
 	
-	
+	public static float LIST_ELEMENT_HEIGHT;
 	public float ELEMENTS_PER_SCREEN;
 	public int MIN_ELEMENTS;
 	
@@ -48,6 +47,7 @@ public class SizeCalculator {
 			ELEMENTS_PER_SCREEN = 7f;
 		}
 		MIN_ELEMENTS = (int) ELEMENTS_PER_SCREEN;
+		LIST_ELEMENT_HEIGHT = height / MIN_ELEMENTS;
 	}  
 	
 }

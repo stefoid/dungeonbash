@@ -41,16 +41,28 @@ public class CreatureListElementView implements IListElement {
 	private ImagePatchView border;
 	
 	protected CreatureStats stats;
+	protected UIDepend gui;
+	protected int extraElements;
+	protected Rect elementArea;
 	
-	public CreatureListElementView(UIDepend gui, CreatureStats stats, Rect area) {
-		this.area = new Rect(area);
+	/**
+	 * Read the width and expand vertically to the number of elements you require by adding empty ones.
+	 */
+	public CreatureListElementView(UIDepend gui, CreatureStats stats, Rect nominalArea) {
+		this.gui = gui;
+		// record the element area, but expand outselves veritcally by N element areas as required.
+		extraElements = (int) (gui.sizeCalculator.ELEMENTS_PER_SCREEN/2);
+		elementArea = new Rect(nominalArea);
+		area = new Rect(nominalArea);
+		area.height *= (extraElements+1);
+		
 		this.stats = stats;
 		String imageName = stats.name.replace(" ","_");
 		
-		elementBackground = new ImageView(gui, "PORTRAIT_IMAGE", this.area);
-		this.border = new ImagePatchView(gui, "9patchportrait", this.area);
+		elementBackground = new ImageView(gui, "PORTRAIT_IMAGE", area);
+		this.border = new ImagePatchView(gui, "9patchportrait", area);
 		
-		Rect portraitArea = new Rect(this.area, .2f, .2f, .1f, .3f); 
+		Rect portraitArea = new Rect(area, .2f, .2f, .1f, .3f); 
 		if (portraitArea.height < portraitArea.width) {
 			float dif = portraitArea.width - portraitArea.height;
 			portraitArea.width = portraitArea.height;
@@ -63,7 +75,7 @@ public class CreatureListElementView implements IListElement {
 		
 		portraitImage = new ImageView(gui, imageName, portraitArea);
 		
-		Rect nameArea = new Rect(this.area, 0f, 0f, .01f, .91f);
+		Rect nameArea = new Rect(area, 0f, 0f, .01f, .91f);
 		creatureName = new TextView(gui,null, stats.name, nameArea, HAlignment.CENTER, VAlignment.BOTTOM, Color.WHITE);
 
 		// stats
@@ -131,6 +143,10 @@ public class CreatureListElementView implements IListElement {
 
 	@Override
 	public void addToList(ArrayList<IListElement> list) {
+		for (int i=0; i<extraElements; i++) {
+			IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea);
+			empty.addToList((list));
+		}
 		list.add(this);
 	}
 }
