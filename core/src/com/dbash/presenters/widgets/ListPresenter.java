@@ -28,6 +28,7 @@ public abstract class ListPresenter {
 	protected HashMap<Character, Float> characters;
 	protected Character oldCharacter;
 	protected ImagePatchView border;
+	protected TouchEventProvider touchEventProvider;
 	
 	public ListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		elementWidth = area.width; // TODO not neccessarilly!
@@ -39,6 +40,7 @@ public abstract class ListPresenter {
 		scrollingList = new ScrollingListView(gui, touchEventProvider, area, elementHeight);
 		this.border = new ImagePatchView(gui, "9patchlistsides", area); 
 		oldCharacter = null;
+		this.touchEventProvider = touchEventProvider;
 		setup();
 	}
 

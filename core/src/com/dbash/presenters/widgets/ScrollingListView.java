@@ -7,7 +7,6 @@ import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
-import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
 
