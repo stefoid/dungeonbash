@@ -15,6 +15,7 @@ import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ISelectionListener;
 import com.dbash.presenters.widgets.SliderView;
+import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
 public class MenuListElementView implements IListElement {
@@ -31,15 +32,16 @@ public class MenuListElementView implements IListElement {
 	private SliderView musicSlider;
 	//private ButtonView tutorialOnButton;
 	//private ButtonView tutorialOffButton;
-	private PresenterDepend model;
 	private Rect bodyArea;
 	TouchEventProvider touchEventProvider;
 	protected ImagePatchView border;
+	PresenterDepend model;
 	
 	/**
 	 * Read the width and expand vertically to the number of elements you require by adding empty ones.
 	 */
-	public MenuListElementView(UIDepend gui, Rect nominalArea, TouchEventProvider touchEventProvider) {
+	public MenuListElementView(PresenterDepend modelPres, UIDepend gui, Rect nominalArea, TouchEventProvider touchEventProvider) {
+		this.model = modelPres;
 		this.gui = gui;
 		this.touchEventProvider = touchEventProvider;
 		// record the element area, but expand outselves veritcally by N element areas as required.
@@ -105,8 +107,6 @@ public class MenuListElementView implements IListElement {
 			}
 		});
 		
-		this.bodyArea = new Rect(bodyArea);
-		this.gui = gui;
 		menuBackground = new ImageView(gui, "MENU_BGROUND_IMAGE", bodyArea);
 		
 		doStartButton();
@@ -139,7 +139,7 @@ public class MenuListElementView implements IListElement {
 	@Override
 	public void gotSelection(float x, float y) {
 		// TODO Auto-generated method stub
-		
+		if (Logger.DEBUG) Logger.log("gotSelection");
 	}
 
 	@Override
@@ -168,22 +168,19 @@ public class MenuListElementView implements IListElement {
 		fxSlider.draw(spriteBatch, x, y);
 		musicSlider.draw(spriteBatch, x, y);
 	}
+	
+	public void activate() {
+		quitButton.setEnabled(true);
+		startButton.setEnabled(true);
+		fxSlider.activate();
+		musicSlider.activate();
+	}
+
+	public void deactivate() {
+		fxSlider.deactivate();
+		musicSlider.deactivate();
+		quitButton.setEnabled(false);
+		startButton.setEnabled(false);
+	}
 }
-//
-//@Override
-//public void setCurrent() {
-//	super.setCurrent();
-//	quitButton.setEnabled(true);
-//	startButton.setEnabled(true);
-//	fxSlider.activate();
-//	musicSlider.activate();
-//}
-//
-//@Override
-//public void unsetCurrent() {
-//	super.unsetCurrent();
-//	fxSlider.deactivate();
-//	musicSlider.deactivate();
-//	quitButton.setEnabled(false);
-//	startButton.setEnabled(false);
-//}
+

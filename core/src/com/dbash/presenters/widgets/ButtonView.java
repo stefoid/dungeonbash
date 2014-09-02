@@ -41,8 +41,7 @@ public class ButtonView implements TouchEventListener {
 		return enabled;
 	}
 	
-	public void setEnabled( boolean enabled)
-	{
+	public void setEnabled( boolean enabled) {
 		this.enabled = enabled;
 	}
 	
