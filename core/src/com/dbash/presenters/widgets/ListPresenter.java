@@ -29,11 +29,13 @@ public abstract class ListPresenter {
 	protected Character oldCharacter;
 	protected ImagePatchView border;
 	protected TouchEventProvider touchEventProvider;
+	protected Rect listArea;
 	
 	public ListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		elementWidth = area.width; // TODO not neccessarilly!
 		elementHeight = SizeCalculator.LIST_ELEMENT_HEIGHT;
 		elementArea = new Rect(0, 0, elementWidth, elementHeight);
+		listArea = new Rect(area);
 		this.gui = gui;
 		this.model = model;
 		this.characters = new HashMap<Character, Float>();

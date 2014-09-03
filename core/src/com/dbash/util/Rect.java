@@ -105,4 +105,9 @@ public class Rect {
 	public float getCenterY(Rect rect) {
 		return rect.y + rect.height/2;
 	}
+	
+	@Override
+	public String toString() {
+		return "X: "+x+" Y:"+y+" W:"+width+" H:"+height;
+	}
 }

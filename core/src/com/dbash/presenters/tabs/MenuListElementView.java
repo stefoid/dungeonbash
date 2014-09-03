@@ -50,6 +50,11 @@ public class MenuListElementView implements IListElement {
 		bodyArea = new Rect(nominalArea);
 		bodyArea.height *= (extraElements+1);
 
+//		if (Logger.DEBUG) {
+//			Logger.log("nominal="+nominalArea.toString());
+//			Logger.log("body="+bodyArea.toString());
+//		}
+		
 		final Audio audio = gui.audio;
 		
 		Rect sliderRect1 = new Rect(bodyArea, .65f, .2f, .05f, .4f);
