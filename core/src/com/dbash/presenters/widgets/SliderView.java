@@ -106,6 +106,7 @@ public class SliderView implements TouchEventListener {
 				break;
 				
 			case MOVE:
+				useTouched = true;
 				buttonArea.y = event.getY() - buttonArea.height/2;  
 				if (buttonArea.y < minButtonY) {
 					buttonArea.y = minButtonY;

@@ -115,11 +115,11 @@ public class MenuListElementView implements IListElement {
 		menuBackground = new ImageView(gui, "MENU_BGROUND_IMAGE", bodyArea);
 		
 		doStartButton();
-		model.presenterTurnState.onChangeToGameInProgress(new UIInfoListener() {
-			public void UIInfoChanged() {
-				doStartButton();
-			}
-		});
+//		model.presenterTurnState.onChangeToGameInProgress(new UIInfoListener() {
+//			public void UIInfoChanged() {
+//				doStartButton();
+//			}
+//		});
 	}
 		
 	private void doStartButton() 
@@ -175,8 +175,8 @@ public class MenuListElementView implements IListElement {
 	}
 	
 	public void activate() {
-		quitButton.setEnabled(true);
-		startButton.setEnabled(true);
+		quitButton.setEnabledAndTouch(true, true);
+		startButton.setEnabledAndTouch(true, true);
 		fxSlider.activate();
 		musicSlider.activate();
 	}
@@ -184,8 +184,8 @@ public class MenuListElementView implements IListElement {
 	public void deactivate() {
 		fxSlider.deactivate();
 		musicSlider.deactivate();
-		quitButton.setEnabled(false);
-		startButton.setEnabled(false);
+		quitButton.setEnabledAndTouch(false, false);
+		startButton.setEnabledAndTouch(false, false);
 	}
 }
 

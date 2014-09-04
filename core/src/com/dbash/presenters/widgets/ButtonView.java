@@ -21,16 +21,20 @@ public class ButtonView implements TouchEventListener {
 	private boolean pressed;
 	private boolean enabled;
 	private UIDepend gui;
+	private TouchEventProvider touchEventProvider;
+	private Rect area;
 	
 	public ButtonView(UIDepend gui, TouchEventProvider touchEventProvider, Rect area, String onImage, String offImage, 
 			String disabledImgae) {
-		touchEventProvider.addTouchEventListener(this, area, gui.cameraViewPort.viewPort);
+		this.touchEventProvider = touchEventProvider;
 		this.onImage = new ImageView(gui, onImage, area);
 		this.offImage = new ImageView(gui, offImage, area);
 		this.disabledImage = new ImageView(gui, disabledImgae, area);
 		this.gui = gui;
 		enabled = true;
 		pressed = false;
+		this.area = new Rect(area);
+		addYourself();
 	}
 	
 	public void onClick(IClickListener listener) {
@@ -47,6 +51,15 @@ public class ButtonView implements TouchEventListener {
 	
 	public void draw(SpriteBatch spriteBatch) {
 		draw(spriteBatch, 0, 0);
+	}
+	
+	public void setEnabledAndTouch( boolean enabled, boolean touch) {
+		this.enabled = enabled;
+		if (touch) {
+			addYourself();
+		} else {
+			removeYourself();
+		}
 	}
 	
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
@@ -113,5 +126,14 @@ public class ButtonView implements TouchEventListener {
 	
 	public boolean getState() {
 		return pressed;
+	}
+	
+	public void removeYourself() {
+		touchEventProvider.removeTouchEventListener(this);
+	}
+	
+	public void addYourself() {
+		removeYourself();
+		touchEventProvider.addTouchEventListener(this, area, gui.cameraViewPort.viewPort);
 	}
 }
