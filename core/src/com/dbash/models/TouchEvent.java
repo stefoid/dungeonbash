@@ -64,10 +64,10 @@ public class TouchEvent {
 	// This will be called when handing the touch event off for processing to a listener so that the position is adjusted for that listeners viewport
 	// We record the original screen coords so we can call this multipel times with different viewports.
 	public void adjustForViewPort(Rect viewPort) {
-		x = screenX - viewPort.x;
-		y = screenY - viewPort.y;
-		downX = screenDownX - viewPort.x;
-		downY = screenDownY - viewPort.y;
+		x = screenX - viewPort.getX();
+		y = screenY - viewPort.getY();
+		downX = screenDownX - viewPort.getX();
+		downY = screenDownY - viewPort.getY();
 	}
 	
 	public TouchType getTouchType() {

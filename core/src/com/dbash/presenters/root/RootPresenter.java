@@ -130,19 +130,17 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		Rect area;
 		TouchEventListener listener;
 		Rect viewPort;
-		TouchEventProvider.PosOffset posOffset;
 		
-		public TEListener(TouchEventListener listener, Rect area, Rect viewPort, TouchEventProvider.PosOffset posOffset) {
+		public TEListener(TouchEventListener listener, Rect area, Rect viewPort) {
 			this.area = new Rect(area);
 			this.listener = listener;
 			this.viewPort = viewPort;
-			this.posOffset = posOffset;
 		}
 		
 		// this comparison compares the touch event position after adjusting for the listeners viewport to
 		// determine if the touch falls inside the listeners area
 		boolean isInside(TouchEvent touchEvent) { 
-			return area.isInside(touchEvent.screenX - viewPort.x, touchEvent.screenY - viewPort.y);
+			return area.isInside(touchEvent.screenX - viewPort.getX(), touchEvent.screenY - viewPort.getY());
 		}
 	}
 	
@@ -224,20 +222,15 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	}
 	
 	@Override
-	public void addTouchEventListener(TouchEventListener listener, Rect area, Rect viewport, PosOffset yAdjuster) {
+	public void addTouchEventListener(TouchEventListener listener, Rect area, Rect viewport) {
 		Rect touchArea = area;
 		
 		if (area == null) {
 			touchArea = screenArea;
 		}
 		
-		TEListener tel = new TEListener(listener, touchArea, viewport, yAdjuster);
+		TEListener tel = new TEListener(listener, touchArea, viewport);
 		teListeners.addFirst(tel);
-	}
-	
-	@Override
-	public void addTouchEventListener(TouchEventListener listener, Rect area, Rect viewport) {
-		addTouchEventListener(listener, area, viewport, new PosOffset());
 	}
 	
 	@Override

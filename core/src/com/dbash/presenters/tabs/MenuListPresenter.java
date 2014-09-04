@@ -14,7 +14,6 @@ import com.dbash.util.Rect;
 
 public class MenuListPresenter extends ListPresenter implements TouchEventProvider {
 	
-	private boolean haveCreatedList = false;
 	MenuListElementView menuElement;
 	
 	public MenuListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
@@ -25,6 +24,8 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		Rect menuArea = new Rect(elementArea);
 		menuElement = new MenuListElementView(model, gui, menuArea, this);  // we intercept toucheventprovider calls
 		menuElement.addToList(elements);
+		
+		
 		
 		// always draws at the same position it already was at before.
 		scrollingList.setListElements(elements, scrollingList.getListPosition());
@@ -61,9 +62,14 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	 */
 	public void addTouchEventListener(TouchEventListener listener, Rect touchArea, Rect viewport) {
 		Logger.log("adding TEL "+listArea.y);
-		Rect vp = new Rect(viewport);
-		vp.y += listArea.y;
-		touchEventProvider.addTouchEventListener(listener, touchArea, vp, new TouchEventProvider.PosOffset());
+		Rect vp = new Rect(viewport) {
+			@Override
+			public float getY() {
+				return y +listArea.y + scrollingList.getListPosition();
+			}
+		};
+
+		touchEventProvider.addTouchEventListener(listener, touchArea, vp);
 		
 	}
 
@@ -71,12 +77,5 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	public void removeTouchEventListener(TouchEventListener listener) {
 		Logger.log("remove TEL "+listener);;
 		touchEventProvider.removeTouchEventListener(listener);
-	}
-
-	@Override
-	public void addTouchEventListener(TouchEventListener listener, Rect area,
-			Rect viewport, PosOffset yAdjuster) {
-		// TODO Auto-generated method stub
-		
 	}
 }

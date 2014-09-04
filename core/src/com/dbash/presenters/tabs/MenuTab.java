@@ -1,7 +1,6 @@
 package com.dbash.presenters.tabs;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.ImageView;
@@ -13,8 +12,8 @@ public class MenuTab extends TabPresenter {
 
 	private MenuListPresenter listPresenter;
 	private ImageView menuTabImage;
-	private IPresenterTurnState turnState;
-	private UIDepend gui;
+//	private IPresenterTurnState turnState;
+//	private UIDepend gui;
 	 
 	public MenuTab(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 		super(model, gui, touchEventProvider, tabArea, bodyArea);
@@ -22,8 +21,8 @@ public class MenuTab extends TabPresenter {
 		backImageCurrent = new ImageView(gui, "MENU_TAB_ON_IMAGE", tabArea);
 		backImageNotCurrent = new ImageView(gui, "MENU_TAB_OFF_IMAGE", tabArea);
 		listPresenter = new  MenuListPresenter(model, gui, touchEventProvider, bodyArea);
-		turnState = model.presenterTurnState;
-		this.gui = gui;
+//		turnState = model.presenterTurnState;
+//		this.gui = gui;
 	}
 	
 	@Override
