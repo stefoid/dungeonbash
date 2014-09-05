@@ -12,12 +12,16 @@ public class ImageView {
 	public Sprite sprite;
 	protected SpriteManager spriteManager;
 	protected Rect area;
+	protected float originalWidth;
+	protected float originalHeight;
 	public String name;
 	
 	// for an texture without frame indexes
 	public ImageView(UIDepend gui, String imageType, Rect area) {
 		this.spriteManager = gui.spriteManager;
 		sprite = spriteManager.createSprite(imageType);
+		originalWidth = sprite.getWidth();
+		originalHeight = sprite.getHeight();
 		name = imageType;
 		setArea(area);
 	}
@@ -74,6 +78,14 @@ public class ImageView {
 	public void setRotation(float rotation) {
 		sprite.setOrigin(area.width/2, area.height/2);
 		sprite.setRotation(rotation);
+	}
+	
+	public float getOriginalWidth() {
+		return originalWidth;
+	}
+	
+	public float getOriginalHeight() {
+		return originalHeight;
 	}
 	
 }

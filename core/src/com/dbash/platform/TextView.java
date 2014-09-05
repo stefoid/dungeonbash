@@ -29,7 +29,6 @@ public class TextView {
 	BitmapFont font;
 	ArrayList<SmoothBitmapFont> fontList;
 	Color color;
-	float textScale;
 	HAlignment hAlign;
 	VAlignment vAlign;
 	UIDepend gui;
@@ -91,7 +90,9 @@ public class TextView {
 		setScaleAndPosition();
 	}
 	
-	
+	public BitmapFont getFont() {
+		return font;
+	}
 	public void setColor(Color color) {
 		this.color = color;
 	}

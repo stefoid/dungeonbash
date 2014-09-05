@@ -1,6 +1,5 @@
 package com.dbash.presenters.root;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IPopupController;
 import com.dbash.models.TouchEvent;
@@ -65,8 +64,8 @@ public class PopupPresenter implements TouchEventListener {
 				}
 			});
 			
-			Rect textBoxRect = new Rect(area, 0.05f, 0.05f, 0.03f, 0.35f);
-			textBox = new TextBoxView(gui, text, textBoxRect, Rect.HAlignment.CENTER, Rect.VAlignment.CENTER, Color.BLACK);
+			//Rect  = new Rect(area, 0.05f, 0.05f, 0.03f, 0.35f);
+			//textBox = new TextBoxView(gui, text, textBoxRect, Rect.HAlignment.CENTER, Rect.VAlignment.CENTER, Color.BLACK);
 			
 			popupController.popupCreated(this, popupId);  // tell the popup controller about me.		
 		}

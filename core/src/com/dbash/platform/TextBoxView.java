@@ -6,16 +6,35 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
-import com.dbash.util.Rect.VAlignment;
 
-// You supply a rectangle for the text to appear in.  
+// You supply a rectangle for a single line of text.
 // And it does line wrapping within the box and horizontal and vertical alignment.
-// its based on TextView so the font is not scaled - depending on the font used and the size of the box, it may 
-// exceed the boundaries.
-public class TextBoxView extends TextView {
+// It works out the size of font that will fit best height-wise for the single line,
+// then does line-wrapping across the width using that size font.
+public class TextBoxView {
 	
-	public TextBoxView(UIDepend gui, String text, Rect area, HAlignment hAlign, VAlignment vAlign, Color color) {
-		super(gui, null, text, area, hAlign, vAlign, color);
+	UIDepend gui;
+	String text;
+	BitmapFont font;
+	Rect area;
+	HAlignment hAlign;
+	Color color;
+	float totalHeight;
+	
+	public TextBoxView(UIDepend gui, String text, Rect singleLineArea, HAlignment hAlign, Color color) {
+		TextView testTextView = new TextView(gui, "A", singleLineArea, color);
+		this.font = testTextView.getFont();  // This is the size of font to use.
+		this.text = text;
+		this.gui = gui;
+		this.area = singleLineArea;
+		this.hAlign = hAlign;
+		font.setColor(color);
+		TextBounds textBounds = font.getWrappedBounds(text, singleLineArea.width);
+		totalHeight = textBounds.height;
+	}
+	
+	public float getTotalHeight() {
+		return totalHeight;
 	}
 	
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
@@ -23,10 +42,10 @@ public class TextBoxView extends TextView {
 			return;
 		}
 		
-		font.setScale(scale);
+		font.setScale(1f);
 		font.setColor(color);
 		
-		BitmapFont.HAlignment  h = BitmapFont.HAlignment.LEFT;
+		BitmapFont.HAlignment h = BitmapFont.HAlignment.LEFT;
 		
 		switch (hAlign)
 		{
@@ -40,25 +59,7 @@ public class TextBoxView extends TextView {
 				break;
 		}
 		
-		// text x,y defined frm bottom left of text box area
+		// text x,y defined from bottom left of text box area
 		font.drawWrapped(spriteBatch, text, area.x + x, area.y + y + area.height, area.width, h);
-	}
-	
-	protected void setScaleAndPosition()
-	{
-		// avoids premature calculation!
-		if ((area == null) || (text == null) || (text.length() == 0)) {
-			return;
-		}
-		
-		font = gui.defaultFonts.get(2);  // TODO random font for now
-		
-		// work out vertical alignment w.r.t the bounding box passed in.
-		if (vAlign == Rect.VAlignment.CENTER) {
-			TextBounds bounds = font.getWrappedBounds(text, area.width);
-			area.y -= (area.height - bounds.height)/2;
-		} else if (vAlign == Rect.VAlignment.CENTER) {
-			area.y -= area.height;
-		}
 	}
 }
