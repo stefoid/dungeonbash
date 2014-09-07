@@ -88,7 +88,7 @@ public class ItemListPresenter extends ListPresenter{
 		
 		// fill up to min elements by adding empty ones.
 		while (elements.size() < gui.sizeCalculator.MIN_ELEMENTS) {
-			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ITEM_CARRIED_IMAGE", elementArea);
+			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ITEM_CARRIED_IMAGE", elementArea, null, 0);
 			emptyItem.addToList((elements));
 		}
 		

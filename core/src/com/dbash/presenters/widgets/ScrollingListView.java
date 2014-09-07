@@ -98,6 +98,11 @@ public class ScrollingListView implements TouchEventListener {
 		// Clip the top and bottom of the entire list so the top or bottom elements 
 		gui.cameraViewPort.startClipping(spriteBatch, area);
 		
+		// clear the draw flags
+		for (IListElement element : listElements) {
+			element.clearDrawFlag();
+		}
+		
 		// draw each ListElement that is at least partially visible.
 		int firstVisibleElement = getElementIndexForYPosition(listPosition);
 		int lastVisibleElement = getElementIndexForYPosition(listPosition + area.height);

@@ -21,6 +21,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 	ISelectionListener selectionListener;
 	
 	protected UIDepend gui;
+	boolean drawFlag;
 	
 	// Ability area
 	protected Rect area;

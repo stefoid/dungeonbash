@@ -28,7 +28,7 @@ public class TextBoxView {
 		this.gui = gui;
 		this.area = singleLineArea;
 		this.hAlign = hAlign;
-		font.setColor(color);
+		this.color = color;
 		TextBounds textBounds = font.getWrappedBounds(text, singleLineArea.width);
 		totalHeight = textBounds.height;
 	}
@@ -60,6 +60,6 @@ public class TextBoxView {
 		}
 		
 		// text x,y defined from bottom left of text box area
-		font.drawWrapped(spriteBatch, text, area.x + x, area.y + y + area.height, area.width, h);
+		font.drawWrapped(spriteBatch, text, area.x + x, area.y + y + totalHeight, area.width, h);
 	}
 }

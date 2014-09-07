@@ -6,6 +6,7 @@ import com.dbash.models.Character;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ListPresenter;
@@ -15,28 +16,48 @@ import com.dbash.util.Rect;
 public class MenuListPresenter extends ListPresenter implements TouchEventProvider {
 	
 	MenuListElementView menuElement;
+	ArrayList<ImageTextListElementView> helpElements;
 	
 	public MenuListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		super(model, gui, touchEventProvider, area);
 		
+		helpElements = new ArrayList<ImageTextListElementView>();
 		ArrayList<IListElement> elements = new ArrayList<IListElement>();
 		
 		Rect menuArea = new Rect(elementArea);
 		menuElement = new MenuListElementView(model, gui, menuArea, this);  // we intercept toucheventprovider calls
 		menuElement.addToList(elements);
+//		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "MENU_TAB_IMAGE", elementArea),       // the image
+				new ImageView(gui, "MENU_BGROUND_IMAGE", elementArea),	 // the backgroud image for the element
+				"This is some test text that may or may not do anything intersting."
+				+ "Lets see how much text I can type and what happens - do I get the extra Elements that I was after, or what?",
+				elementArea));
+				
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "MENU_TAB_IMAGE", elementArea),       // the image
+				new ImageView(gui, "MENU_BGROUND_IMAGE", elementArea),	 // the backgroud image for the element
+				null,
+				elementArea));
 		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_BGROUND_IMAGE", elementArea),	 // the backgroud image for the element
+				"This is some test text that may or may not do anything intersting."
+				+ "Lets see how much text I can type and what happens - do I get the extra Elements that I was after, or what?",
+				elementArea));
 		
+		for (ImageTextListElementView helpElement: helpElements) {
+			helpElement.addToList(elements);
+		}
 		
 		// always draws at the same position it already was at before.
 		scrollingList.setListElements(elements, scrollingList.getListPosition());
 	}
 	
-	// Create the menu list and all its things.  Only needs to be done once, so we set a flag.
-	// Unlike normal list elements, that are single-selection, the menuListelemnt has multiple touchable widgets
-	// over a number of list element positions, so we let it handle touch events itself.
 	@Override
 	public void listInfoUpdate() {
-
 	}
 	
 	@Override

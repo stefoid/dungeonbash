@@ -19,6 +19,7 @@ import com.dbash.util.Rect.VAlignment;
 public class CreatureListElementView implements IListElement {
 
 	ISelectionListener selectionListener;
+	boolean drawFlag;
 	
 	// Ability background
 	protected Rect area;
@@ -109,24 +110,26 @@ public class CreatureListElementView implements IListElement {
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-		
-		// Draw background
-		elementBackground.draw(spriteBatch, x, y);
+		if (drawFlag == false) {
+			drawFlag = true;
+			// Draw background
+			elementBackground.draw(spriteBatch, x, y);
 
-		portraitImage.draw(spriteBatch, x, y);
-		
-		creatureName.draw(spriteBatch, x, y);
-		healthIcon.draw(spriteBatch, x, y);
-		healthText.draw(spriteBatch, x, y);
-		
-		if (stats.isCharacter) {
-			magicIcon.draw(spriteBatch, x, y);
-			magicText.draw(spriteBatch, x, y);
-			xpIcon.draw(spriteBatch, x, y);
-			experience.draw(spriteBatch, x, y);
+			portraitImage.draw(spriteBatch, x, y);
+			
+			creatureName.draw(spriteBatch, x, y);
+			healthIcon.draw(spriteBatch, x, y);
+			healthText.draw(spriteBatch, x, y);
+			
+			if (stats.isCharacter) {
+				magicIcon.draw(spriteBatch, x, y);
+				magicText.draw(spriteBatch, x, y);
+				xpIcon.draw(spriteBatch, x, y);
+				experience.draw(spriteBatch, x, y);
+			}
+			
+			border.draw(spriteBatch, x, y);
 		}
-		
-		border.draw(spriteBatch, x, y);
 	}
 
 	@Override
@@ -144,9 +147,14 @@ public class CreatureListElementView implements IListElement {
 	@Override
 	public void addToList(ArrayList<IListElement> list) {
 		for (int i=0; i<extraElements; i++) {
-			IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea);
+			IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea, null, 0);
 			empty.addToList((list));
 		}
 		list.add(this);
+	}
+	
+	@Override
+	public void clearDrawFlag() {
+		drawFlag = false;
 	}
 }

@@ -30,6 +30,7 @@ public class MenuListElementView implements IListElement {
 	private ButtonView quitButton;
 	private SliderView fxSlider;
 	private SliderView musicSlider;
+	boolean drawFlag;
 	//private ButtonView tutorialOnButton;
 	//private ButtonView tutorialOffButton;
 	private Rect bodyArea;
@@ -156,7 +157,8 @@ public class MenuListElementView implements IListElement {
 	@Override
 	public void addToList(ArrayList<IListElement> list) {
 		for (int i=0; i<extraElements; i++) {
-			IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea);
+			float parentYOffset = (i - extraElements)*elementArea.height;
+			IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea, this, parentYOffset);
 			empty.addToList((list));
 		}
 		list.add(this);
@@ -164,14 +166,16 @@ public class MenuListElementView implements IListElement {
 
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-	
-		menuBackground.draw(spriteBatch, x, y);
-		startButton.draw(spriteBatch, x, y);
-		quitButton.draw(spriteBatch, x, y);
-	//		tutorialOnButton.draw(spriteBatch, x, y);
-	//		tutorialOffButton.draw(spriteBatch, x, y);
-		fxSlider.draw(spriteBatch, x, y);
-		musicSlider.draw(spriteBatch, x, y);
+		if (drawFlag == false) {
+			drawFlag = true;
+			menuBackground.draw(spriteBatch, x, y);
+			startButton.draw(spriteBatch, x, y);
+			quitButton.draw(spriteBatch, x, y);
+		//		tutorialOnButton.draw(spriteBatch, x, y);
+		//		tutorialOffButton.draw(spriteBatch, x, y);
+			fxSlider.draw(spriteBatch, x, y);
+			musicSlider.draw(spriteBatch, x, y);
+		}
 	}
 	
 	public void activate() {
@@ -186,6 +190,11 @@ public class MenuListElementView implements IListElement {
 		musicSlider.deactivate();
 		quitButton.setEnabledAndTouch(false, false);
 		startButton.setEnabledAndTouch(false, false);
+	}
+	
+	@Override
+	public void clearDrawFlag() {
+		drawFlag = false;
 	}
 }
 

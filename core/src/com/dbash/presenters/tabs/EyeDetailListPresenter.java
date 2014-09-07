@@ -65,7 +65,7 @@ public class EyeDetailListPresenter extends ListPresenter {
 		
 		// fill up to min elements by adding empty ones.
 		while (elements.size() < gui.sizeCalculator.MIN_ELEMENTS) {
-			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ITEM_ON_FLOOR_IMAGE", elementArea);
+			IListElement.EmptyListElement emptyItem = new IListElement.EmptyListElement(gui, "ITEM_ON_FLOOR_IMAGE", elementArea, null, 0);
 			emptyItem.addToList((elements));
 		}
 		

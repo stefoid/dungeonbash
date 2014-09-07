@@ -73,4 +73,8 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		list.add(this);
 	}
 	
+	@Override
+	public void clearDrawFlag() {
+		drawFlag = false;
+	}
 }

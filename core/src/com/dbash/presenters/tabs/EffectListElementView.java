@@ -49,4 +49,8 @@ public class EffectListElementView extends AbilityTypeListElement {
 		list.add(this);
 	}
 
+	@Override
+	public void clearDrawFlag() {
+		drawFlag = false;
+	}
 }

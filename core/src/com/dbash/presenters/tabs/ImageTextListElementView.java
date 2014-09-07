@@ -15,24 +15,28 @@ import com.dbash.util.Rect.HAlignment;
 
 public class ImageTextListElementView implements IListElement {
 	
-	// Ability background
-	protected ImageView	elementBackground;
+	protected static float BORDER = 0.05f;
+	
+	protected ImageView	backgroundImage;
 	protected ImageView image;
 	protected TextBoxView textBox;
-	UIDepend gui;
+	protected UIDepend gui;
+	protected int extraElements;
+	protected Rect elementArea;
+	float dt = 0;
+	boolean drawFlag;
 	
-	public ImageTextListElementView(UIDepend gui, ImageView image, String text, Rect nominalArea) {
+	public ImageTextListElementView(UIDepend gui, ImageView image, ImageView backgroundImage, String text, Rect nominalArea) {
 		this.gui = gui;
-		Rect imageRect = new Rect(nominalArea, .9f);
+		this.elementArea = nominalArea;
+		this.backgroundImage = backgroundImage;
+		
+		Rect imageRect = new Rect(nominalArea, (1 - 2*BORDER));
+		imageRect.y = 0;
 		Rect textRect = new Rect(imageRect);
 		float totalHeight = 0;
-		
-		if (image != null) {
-			float aspectRatio = image.getOriginalHeight() / image.getOriginalWidth();
-			imageRect.height = imageRect.width * aspectRatio;
-			image.setArea(imageRect);
-			totalHeight += imageRect.height;
-		}
+		extraElements = 0;
+		this.image = image;
 		
 		if (text != null) {
 			textRect.height /= 4;
@@ -40,31 +44,59 @@ public class ImageTextListElementView implements IListElement {
 			totalHeight += textBox.getTotalHeight();
 		}
 		
-		// TODO armed with the total height I can add the required elements and create the required background size.
+		if (image != null) {
+			float aspectRatio = image.getOriginalHeight() / image.getOriginalWidth();
+			imageRect.height = imageRect.width * aspectRatio;
+			imageRect.y += totalHeight;
+			totalHeight += imageRect.height;
+		}
+		
+		Rect totalArea = new Rect(nominalArea);
+		extraElements = (int)(totalHeight / nominalArea.height);
+		
+		float heightOfAllElements = nominalArea.height * (extraElements + 1);
+		float centeringOffset = (heightOfAllElements - totalHeight)/2;
+		totalArea.height = heightOfAllElements;
+		textRect.y += centeringOffset;
+		imageRect.y += centeringOffset;
+		if (image != null) {
+			image.setArea(imageRect);
+		}
+		backgroundImage.setArea(totalArea);
 	}
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-		elementBackground.draw(spriteBatch, x, y);
-		image.draw(spriteBatch, x, y);
-		textBox.draw(spriteBatch, x, y);
+		backgroundImage.draw(spriteBatch, x, y);
+		if (image != null) {
+			image.draw(spriteBatch, x, y);
+		}
+		
+		if (textBox != null) {
+			textBox.draw(spriteBatch, x, y);
+		}
 	}
 	
 	@Override
 	public void addToList(ArrayList<IListElement> list) {
+		for (int i=0; i<extraElements; i++) {
+			float parentYOffset = (i - extraElements)*elementArea.height;
+			IListElement.EmptyListElement empty = new IListElement.EmptyListElement(gui, null, elementArea, this, parentYOffset);
+			empty.addToList((list));
+		}
 		list.add(this);
 	}
 
 	@Override
 	public void gotSelection(float x, float y) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onSelection(ISelectionListener selectionListener) {
-		// TODO Auto-generated method stub
-		
 	}
 	
+	@Override
+	public void clearDrawFlag() {
+		drawFlag = false;
+	}
 }

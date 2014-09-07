@@ -61,4 +61,9 @@ public class ItemListElementView extends AbilityTypeListElement {
 	public void addToList(ArrayList<IListElement> list) {
 		list.add(this);
 	}
+	
+	@Override
+	public void clearDrawFlag() {
+		drawFlag = false;
+	}
 }

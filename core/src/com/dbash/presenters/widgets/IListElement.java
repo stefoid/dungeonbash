@@ -22,10 +22,16 @@ public interface IListElement {
 		protected UIDepend gui;
 		protected Rect area;
 		protected ImageView background;
+		protected IListElement parent;
+		protected boolean drawFlag;
+		protected float parentYOffset;
 
-		public EmptyListElement(UIDepend gui,String background, Rect area) {
+		public EmptyListElement(UIDepend gui,String background, Rect area, IListElement parent, float parentYOffset) {
 			this.area = new Rect(area);
 			this.gui = gui;
+			this.parent = parent;
+			this.parentYOffset = parentYOffset;
+			
 			if (background != null) {
 				this.background = new ImageView(gui, background, area);
 			} else {
@@ -35,6 +41,10 @@ public interface IListElement {
 		
 		@Override
 		public void draw(SpriteBatch spriteBatch, float x, float y) {
+			if (parent != null) {
+				parent.draw(spriteBatch, x, y+parentYOffset);
+			}
+			
 			if (background != null) {
 				background.setPos(x, y);
 				background.draw(spriteBatch);
@@ -55,6 +65,11 @@ public interface IListElement {
 		public void addToList(ArrayList<IListElement> list) {
 			list.add(this);
 		}
+
+		@Override
+		public void clearDrawFlag() {
+			drawFlag = false;
+		}
 	}
 	
 	// Just draw yourself to the screen at the coords given - the ScrollList will clip bits thatt shouldnt show.
@@ -69,5 +84,7 @@ public interface IListElement {
 	// Usually this is just a single add, but some list elements take up morethan one'slot' so have to add
 	// empty list elements to a number of slots first.
 	void addToList(ArrayList<IListElement> list);
+	
+	public void clearDrawFlag();
 
 }
