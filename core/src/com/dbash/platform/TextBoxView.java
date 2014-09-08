@@ -1,5 +1,7 @@
 package com.dbash.platform;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -21,12 +23,25 @@ public class TextBoxView {
 	Color color;
 	float totalHeight;
 	
-	public TextBoxView(UIDepend gui, String text, Rect singleLineArea, HAlignment hAlign, Color color) {
-		TextView testTextView = new TextView(gui, "A", singleLineArea, color);
-		this.font = testTextView.getFont();  // This is the size of font to use.
+	public TextBoxView(UIDepend gui, ArrayList<SmoothBitmapFont> fontList, String text, Rect singleLineArea, HAlignment hAlign, Color color) {
+		
+		if (fontList == null) {
+			fontList = gui.defaultFonts;
+		}
+		
+		// cycle through all the default font sizes, biggest first.
+		for (int i = fontList.size() - 1; i >= 0; i--) {
+			this.font = fontList.get(i);
+
+			// get the width of the text, for setting the text X and text Y.  Try big font first.
+			if (singleLineArea.height <= font.getCapHeight()) {
+				break;
+			}
+		}
+		
 		this.text = text;
 		this.gui = gui;
-		this.area = singleLineArea;
+		this.area = new Rect(singleLineArea);
 		this.hAlign = hAlign;
 		this.color = color;
 		TextBounds textBounds = font.getWrappedBounds(text, singleLineArea.width);
@@ -35,6 +50,10 @@ public class TextBoxView {
 	
 	public float getTotalHeight() {
 		return totalHeight;
+	}
+	
+	public void setArea(Rect area) {
+		this.area = new Rect(area);
 	}
 	
 	public void draw(SpriteBatch spriteBatch, float x, float y) {

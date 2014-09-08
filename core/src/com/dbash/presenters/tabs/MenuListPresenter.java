@@ -12,8 +12,12 @@ import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ListPresenter;
 import com.dbash.util.Logger;
 import com.dbash.util.Rect;
+import com.dbash.util.Rect.HAlignment;
 
 public class MenuListPresenter extends ListPresenter implements TouchEventProvider {
+	
+	public static final int HELP_TEXT_SIZE = 5;
+	public static final int HEADING_SIZE = 4;
 	
 	MenuListElementView menuElement;
 	ArrayList<ImageTextListElementView> helpElements;
@@ -29,24 +33,58 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		menuElement.addToList(elements);
 //		
 		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "MENU_TAB_IMAGE", elementArea),       // the image
-				new ImageView(gui, "MENU_BGROUND_IMAGE", elementArea),	 // the backgroud image for the element
-				"This is some test text that may or may not do anything intersting."
-				+ "Lets see how much text I can type and what happens - do I get the extra Elements that I was after, or what?",
-				elementArea));
-				
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "MENU_TAB_IMAGE", elementArea),       // the image
-				new ImageView(gui, "MENU_BGROUND_IMAGE", elementArea),	 // the backgroud image for the element
-				null,
-				elementArea));
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"HOW TO PLAY",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
 				null,       // the image
-				new ImageView(gui, "MENU_BGROUND_IMAGE", elementArea),	 // the backgroud image for the element
-				"This is some test text that may or may not do anything intersting."
-				+ "Lets see how much text I can type and what happens - do I get the extra Elements that I was after, or what?",
-				elementArea));
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"The animated highlight shows whose turn it is.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Swipe in a direction to move or melee attack.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Highlight a ranged weapon on the blue tab (if you have one) and touch the target tile to shoot.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Use leader mode to control the team as a group. (when no monsters are around, the crown button becomes enabled)  swipe and release on the destination tile to walk to that destination.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"To manage your inventory, walk to a tile with stuff on it, and use the green tab to pickup and drop items (max 10).",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Equip one weapon, one defensive item and one amulet using the blue tab - click on the item to be equipped.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"To go to the next level, find the stairs, and put a character on it - the 'stairs' button will become enabled.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Characters appear on the next level in the same order that they left the previous one, and the next character cannot appear until the landing spot is vacated, so be careful.﻿",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		for (ImageTextListElementView helpElement: helpElements) {
 			helpElement.addToList(elements);
@@ -82,11 +120,10 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	 * intercept touch registration from the menu element view so we can add a y offset and list position.
 	 */
 	public void addTouchEventListener(TouchEventListener listener, Rect touchArea, Rect viewport) {
-		Logger.log("adding TEL "+listArea.y);
 		Rect vp = new Rect(viewport) {
 			@Override
 			public float getY() {
-				return y +listArea.y + scrollingList.getListPosition();
+				return y + listArea.y + scrollingList.getListPosition();
 			}
 		};
 
@@ -96,7 +133,6 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 
 	@Override
 	public void removeTouchEventListener(TouchEventListener listener) {
-		Logger.log("remove TEL "+listener);;
 		touchEventProvider.removeTouchEventListener(listener);
 	}
 }

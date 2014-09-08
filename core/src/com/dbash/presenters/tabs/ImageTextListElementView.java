@@ -26,9 +26,9 @@ public class ImageTextListElementView implements IListElement {
 	float dt = 0;
 	boolean drawFlag;
 	
-	public ImageTextListElementView(UIDepend gui, ImageView image, ImageView backgroundImage, String text, Rect nominalArea) {
+	public ImageTextListElementView(UIDepend gui, ImageView image, ImageView backgroundImage, String text, int textSizeDivisor, HAlignment hAlign, Rect nominalArea) {
 		this.gui = gui;
-		this.elementArea = nominalArea;
+		this.elementArea = new Rect(nominalArea);
 		this.backgroundImage = backgroundImage;
 		
 		Rect imageRect = new Rect(nominalArea, (1 - 2*BORDER));
@@ -39,8 +39,8 @@ public class ImageTextListElementView implements IListElement {
 		this.image = image;
 		
 		if (text != null) {
-			textRect.height /= 4;
-			textBox = new TextBoxView(gui, text, textRect, HAlignment.LEFT, Color.BLACK);
+			textRect.height /= textSizeDivisor;
+			textBox = new TextBoxView(gui, null, text, textRect, hAlign, Color.BLACK);
 			totalHeight += textBox.getTotalHeight();
 		}
 		
@@ -59,6 +59,9 @@ public class ImageTextListElementView implements IListElement {
 		totalArea.height = heightOfAllElements;
 		textRect.y += centeringOffset;
 		imageRect.y += centeringOffset;
+		if (textBox != null) {
+			textBox.setArea(textRect);
+		}
 		if (image != null) {
 			image.setArea(imageRect);
 		}

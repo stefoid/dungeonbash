@@ -144,14 +144,10 @@ public class MenuListElementView implements IListElement {
 
 	@Override
 	public void gotSelection(float x, float y) {
-		// TODO Auto-generated method stub
-		if (Logger.DEBUG) Logger.log("gotSelection");
 	}
 
 	@Override
 	public void onSelection(ISelectionListener selectionListener) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
