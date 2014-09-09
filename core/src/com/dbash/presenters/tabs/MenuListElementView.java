@@ -45,7 +45,7 @@ public class MenuListElementView implements IListElement {
 		this.model = modelPres;
 		this.gui = gui;
 		this.touchEventProvider = touchEventProvider;
-		// record the element area, but expand outselves veritcally by N element areas as required.
+		// record the element area, but expand ourselves veritcally by N element areas as required.
 		extraElements = (int) (gui.sizeCalculator.MIN_ELEMENTS-1);
 		elementArea = new Rect(nominalArea);
 		bodyArea = new Rect(nominalArea);

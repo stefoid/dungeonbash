@@ -42,7 +42,7 @@ public class Map implements IPresenterMap {
 			try {
 				retainFocusBag = new UIInfoListenerBag();
 				locationInfoListeners = new Vector<UILocationInfoListener>();
-				width = 12 + (level * 2) + border*2 - 2;
+				width = 8 + (level * 2) + border*2 - 2;
 				height = width;
 				location = new Location[width][height];
 				// initialize array of locations - by default will be WALLS.

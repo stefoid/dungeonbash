@@ -141,14 +141,22 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		map = new Map(level);
 		initLevel();
 		// If its the last level, put nashkur at the exit instead of an exit.
-		if (level == Dungeon.FINAL_LEVEL) {
-			Monster nashkur = new Monster(0, level, map.exitPoint, this, this, turnProcessor);
-			map.location(map.exitPoint).creature = nashkur;
-			mobs.add(nashkur);
+		
+		switch (level) {
+			case Dungeon.FINAL_LEVEL:
+				Monster nashkur = new Monster(0, level, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = nashkur;
+				mobs.add(nashkur);
+				break;
+			case 1:
+				Monster minion = new Monster(9, level, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = minion;
+				mobs.add(minion);
+			default:
+				map.location(map.exitPoint).setAsExit();
+				break;
 		}
-		else {
-			map.location(map.exitPoint).setAsExit();
-		}
+		
 
 		// must set the map now so that it can observe changes to Locations as monsters are added to the level.
 		mapEventListener.setMap(map);

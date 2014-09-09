@@ -1,6 +1,7 @@
 package com.dbash.platform;
 
 import com.badlogic.gdx.Gdx;
+import com.dbash.util.Logger;
 
 public class SizeCalculator {
 
@@ -47,6 +48,7 @@ public class SizeCalculator {
 		if (ELEMENTS_PER_SCREEN > MAX_ELEMENTS) {
 			ELEMENTS_PER_SCREEN = MAX_ELEMENTS;
 		}
+		
 		MIN_ELEMENTS = (int) ELEMENTS_PER_SCREEN;
 		LIST_ELEMENT_HEIGHT = height / MIN_ELEMENTS;
 	}  
