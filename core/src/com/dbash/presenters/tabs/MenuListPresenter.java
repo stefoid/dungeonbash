@@ -16,8 +16,8 @@ import com.dbash.util.Rect.HAlignment;
 
 public class MenuListPresenter extends ListPresenter implements TouchEventProvider {
 	
-	public static final int HELP_TEXT_SIZE = 5;
-	public static final int HEADING_SIZE = 4;
+	public static final int HELP_TEXT_SIZE = 6;
+	public static final int HEADING_SIZE = 5;
 	
 	MenuListElementView menuElement;
 	ArrayList<ImageTextListElementView> helpElements;

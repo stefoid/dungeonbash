@@ -17,6 +17,17 @@ import com.dbash.util.Rect;
 // concrete implementations of ListElement.
 public interface IListElement {
 	
+//	public static class PaddedString {
+//		public String string;
+//		public PaddedString(String string) {
+//			if (string.length() < 30) {
+//			this.string = String.format("%-30s", string).replace(' ', ' ');
+//			} else {
+//				this.string = string;
+//			}
+//		}
+//	}
+	
 	public class EmptyListElement implements IListElement
 	{
 		protected UIDepend gui;

@@ -55,6 +55,9 @@ public abstract class AbilityTypeListElement implements IListElement {
 	final static float textSpacer = .9f;
 	final static float textHeightFat = 1.1f;
 	
+	final static float textFromTop = .1f;
+	final static float textFromBottom = .65f;
+	
 	public AbilityTypeListElement(UIDepend gui, AbilityInfo abilityInfo, Rect area) {
 		this.area = new Rect(area);
 		this.abilityInfo = abilityInfo;
@@ -64,13 +67,16 @@ public abstract class AbilityTypeListElement implements IListElement {
 		HAlignment hAlign = HAlignment.LEFT;
 		VAlignment vAlign = VAlignment.BOTTOM;
 		Color color = Color.BLACK;
-		Rect textArea = new Rect(area, .05f, 0f, .1f, .65f);  // 5% from left, 10% from top, 65% from bottom
+		float add = (gui.sizeCalculator.MAX_ELEMENTS - gui.sizeCalculator.ELEMENTS_PER_SCREEN) * 0.02f;
+		Rect textArea = new Rect(area, .05f, 0f, textFromTop, textFromBottom+add);  // 5% from left, 10% from top, 65% from bottom
 		
 		if (abilityInfo.isStat) {
 			hAlign = HAlignment.LEFT;
 			textArea.y -= textArea.height*1.2f;
 			color = Color.WHITE;
 		}
+
+		//String rightPaddedString = new IListElement.PaddedString(abilityInfo.name).string;
 		abilityName = new TextView(gui, null, abilityInfo.name, textArea, hAlign, vAlign, color);
 		
 		// work out icon size

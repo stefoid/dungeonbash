@@ -13,6 +13,7 @@ public class SizeCalculator {
 	public static float LIST_ELEMENT_HEIGHT;
 	public float ELEMENTS_PER_SCREEN;
 	public int MIN_ELEMENTS;
+	public float MAX_ELEMENTS = 7f;
 	
 	// the number of pixels the finger has to move to constitute a drag rather than a touch.  depends on pixel density
 	public float MIN_DRAG_PIXELS; 
@@ -43,8 +44,8 @@ public class SizeCalculator {
 		if (ELEMENTS_PER_SCREEN < 4.0f) {
 			ELEMENTS_PER_SCREEN = 4.0f;
 		}
-		if (ELEMENTS_PER_SCREEN > 7f) {
-			ELEMENTS_PER_SCREEN = 7f;
+		if (ELEMENTS_PER_SCREEN > MAX_ELEMENTS) {
+			ELEMENTS_PER_SCREEN = MAX_ELEMENTS;
 		}
 		MIN_ELEMENTS = (int) ELEMENTS_PER_SCREEN;
 		LIST_ELEMENT_HEIGHT = height / MIN_ELEMENTS;
