@@ -69,19 +69,31 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				null,       // the image
+				new ImageView(gui, "SOLO", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Use Solo mode to control only one character.  (orange button) Other Characters will skip their turns.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "PASS", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Use the Hand button for the current character to pass their turn.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "INVENTORY", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"To manage your inventory, walk to a tile with stuff on it, and use the green tab to pickup and drop items (max 10).",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				null,       // the image
+				new ImageView(gui, "EQUIP", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"Equip one weapon, one defensive item and one amulet using the blue tab - click on the item to be equipped.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				null,       // the image
+				new ImageView(gui, "STAIRS", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"To go to the next level, find the stairs, and put a character on it - the 'stairs' button will become enabled.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
