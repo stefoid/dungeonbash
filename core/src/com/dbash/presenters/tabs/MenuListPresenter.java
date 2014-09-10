@@ -41,25 +41,31 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				null,       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Your three characters drop into a level one at a time.  Characters have a faint highlight around them.  Monsters do not.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "HIGHLIGHT", elementArea),      // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"The animated highlight shows whose turn it is.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				null,       // the image
+				new ImageView(gui, "SWIPE", elementArea),      // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"Swipe in a direction to move or melee attack.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				null,       // the image
+				new ImageView(gui, "RANGED", elementArea),       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"Highlight a ranged weapon on the blue tab (if you have one) and touch the target tile to shoot.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				null,       // the image
+				new ImageView(gui, "LEADER", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use leader mode to control the team as a group. (when no monsters are around, the crown button becomes enabled)  swipe and release on the destination tile to walk to that destination.",
+				"Use leader mode to control the team as a group - when no monsters are around the crown button  becomes enabled - Swipe and release on the destination tile to walk to that destination.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
