@@ -59,6 +59,10 @@ public class ScrollingListView implements TouchEventListener {
 		}
 	}
 	
+	public void scroll(float speed) {
+		this.speed = speed;
+	}
+	
 	float listPos;
 	void draw(SpriteBatch spriteBatch, float x, float y) {
 		// adjust list position by the current speed

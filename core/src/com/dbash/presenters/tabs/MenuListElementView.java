@@ -27,7 +27,7 @@ public class MenuListElementView implements IListElement {
 	protected Rect elementArea;
 	private ImageView menuBackground;
 	private ButtonView startButton;
-	private ButtonView quitButton;
+	public ButtonView helpButton;
 	private SliderView fxSlider;
 	private SliderView musicSlider;
 	boolean drawFlag;
@@ -105,13 +105,8 @@ public class MenuListElementView implements IListElement {
 //			});
 		
 		Rect quitRect = new Rect(bodyArea, .6f, .15f, .75f, .05f);
-		quitButton = new ButtonView(gui, touchEventProvider, quitRect, "INFO_SELECTED_IMAGE", 
+		helpButton = new ButtonView(gui, touchEventProvider, quitRect, "INFO_SELECTED_IMAGE", 
 				"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE");
-		quitButton.onClick( new IClickListener() {
-			public void processClick() {
-				model.presenterTurnState.infoSelected();
-			}
-		});
 		
 		menuBackground = new ImageView(gui, "MENU_BGROUND_IMAGE", bodyArea);
 		
@@ -166,7 +161,7 @@ public class MenuListElementView implements IListElement {
 			drawFlag = true;
 			menuBackground.draw(spriteBatch, x, y);
 			startButton.draw(spriteBatch, x, y);
-			quitButton.draw(spriteBatch, x, y);
+			helpButton.draw(spriteBatch, x, y);
 		//		tutorialOnButton.draw(spriteBatch, x, y);
 		//		tutorialOffButton.draw(spriteBatch, x, y);
 			fxSlider.draw(spriteBatch, x, y);
@@ -175,7 +170,7 @@ public class MenuListElementView implements IListElement {
 	}
 	
 	public void activate() {
-		quitButton.setEnabledAndTouch(true, true);
+		helpButton.setEnabledAndTouch(true, true);
 		startButton.setEnabledAndTouch(true, true);
 		fxSlider.activate();
 		musicSlider.activate();
@@ -184,7 +179,7 @@ public class MenuListElementView implements IListElement {
 	public void deactivate() {
 		fxSlider.deactivate();
 		musicSlider.deactivate();
-		quitButton.setEnabledAndTouch(false, false);
+		helpButton.setEnabledAndTouch(false, false);
 		startButton.setEnabledAndTouch(false, false);
 	}
 	
