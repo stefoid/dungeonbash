@@ -65,6 +65,7 @@ public class MenuListElementView implements IListElement {
 				fxSlider.setSliderPosition(audio.getFxVolume()*100f);
 			}	
 		});
+		
 		fxSlider.onSliderChange (new ISelectionListener() {
 			public void processSelection() {
 				int volume = (int) (fxSlider.getSliderPosition());
@@ -79,6 +80,7 @@ public class MenuListElementView implements IListElement {
 				musicSlider.setSliderPosition(audio.getMusicVolume()*100f);
 			}	
 		});
+		
 		musicSlider.onSliderChange (new ISelectionListener() {
 			public void processSelection() {
 				int volume = (int) (musicSlider.getSliderPosition());

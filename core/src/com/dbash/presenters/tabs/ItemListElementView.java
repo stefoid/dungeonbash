@@ -1,7 +1,7 @@
 package com.dbash.presenters.tabs;
 
 import java.util.ArrayList;
-
+import com.dbash.models.Character;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.platform.ImageView;
@@ -17,7 +17,7 @@ public class ItemListElementView extends AbilityTypeListElement {
 	protected ImageView dungeonBackground;
 	
 	
-	public ItemListElementView(UIDepend gui, AbilityInfo abilityInfo, Rect area) {
+	public ItemListElementView(UIDepend gui, Character currentCharacter, AbilityInfo abilityInfo, Rect area) {
 		super(gui, abilityInfo, area);
 		
 		// set effects and position
@@ -26,10 +26,12 @@ public class ItemListElementView extends AbilityTypeListElement {
 		}
 		
 		carriedBackground = new ImageView(gui, "ITEM_CARRIED_IMAGE", area);
-		dungeonBackground = new ImageView(gui, "ITEM_ON_FLOOR_IMAGE", area);
-
 		
-		//if (abilityInfo.isUsableByOwner == false) {
+		if (abilityInfo.canBeCarried(currentCharacter)) {
+			dungeonBackground = new ImageView(gui, "ITEM_ON_FLOOR_IMAGE", area);
+		} else {
+			dungeonBackground = new ImageView(gui, "ABILITY_DISABLED_IMAGE", area);
+		}
 	}
 
 	

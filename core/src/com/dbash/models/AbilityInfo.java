@@ -51,7 +51,6 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			expireTime = ability.getAbilityDurationLeft();
 			isUsableByOwner = owner.canUseAbility(ability);
 			isCarried = true;
-			
 			targetable = ability.isTargetable();
 			
 			if (owner instanceof Character) {
@@ -80,6 +79,17 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	@Override
 	public int compareTo(AbilityInfo o) {
 		return (this.sortValue - o.sortValue);
+	}
+	
+	public boolean canBeCarried(Creature creature) {
+		if (creature == null) {
+			return true;
+		}
+		if (creature.getCreature().hands > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public String getAbilityTypeImageName()

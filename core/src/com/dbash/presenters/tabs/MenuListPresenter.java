@@ -35,7 +35,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 
 		menuElement.helpButton.onClick( new IClickListener() {
 			public void processClick() {
-				scrollingList.scroll(-20f);
+				scrollingList.scroll(-40f);
 			}
 		});
 		
@@ -86,7 +86,6 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"Swipe and release on the target tile to walk to that destination.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		 
 		
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "SOLO", elementArea),     // the image
@@ -103,7 +102,13 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "INVENTORY", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"To manage your inventory, walk to a tile with stuff on it, and use this tab to drop and pick up items (max 10).  Green items are in your inventory.  Red items are on the ground.",
+				"To manage your inventory, walk to a tile with stuff on it, and use this tab to drop and pick up items (max 10).",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "ITEMS", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Green items are in your inventory.  Red items are on the ground.  Items that cannot be picked up by that character up will appear grey.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,

@@ -47,7 +47,7 @@ public class ItemListPresenter extends ListPresenter{
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
 			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
-			ItemListElementView element = new ItemListElementView(gui, abilityInfo, elementArea);
+			ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea);
 			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
@@ -63,7 +63,7 @@ public class ItemListPresenter extends ListPresenter{
 		
 		// add the character inventory to the list.
 		for (AbilityInfo abilityInfo : characterItemList) {
-			ItemListElementView element = new ItemListElementView(gui, abilityInfo, elementArea);
+			ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea);
 			element.addToList(elements);
 
 			// add the closure to the element about what to do if it is selected.
@@ -82,7 +82,7 @@ public class ItemListPresenter extends ListPresenter{
 		if (elements.size() == 0) {
 			AbilityInfo firstInfo = new AbilityInfo("No items carried");
 			firstInfo.isCarried = true;
-			ItemListElementView first = new ItemListElementView(gui, firstInfo, elementArea);
+			ItemListElementView first = new ItemListElementView(gui, null, firstInfo, elementArea);
 			first.addToList(elements);
 		}
 		
