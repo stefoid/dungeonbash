@@ -23,7 +23,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	MenuListElementView menuElement;
 	ArrayList<ImageTextListElementView> helpElements;
 	
-	public MenuListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
+	public MenuListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, final Rect area) {
 		super(model, gui, touchEventProvider, area);
 		
 		helpElements = new ArrayList<ImageTextListElementView>();
@@ -35,7 +35,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 
 		menuElement.helpButton.onClick( new IClickListener() {
 			public void processClick() {
-				scrollingList.scroll(-40f);
+				scrollingList.scroll(area.height/10);
 			}
 		});
 		

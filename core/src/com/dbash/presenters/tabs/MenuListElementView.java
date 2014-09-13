@@ -51,10 +51,11 @@ public class MenuListElementView implements IListElement {
 		bodyArea = new Rect(nominalArea);
 		bodyArea.height *= (extraElements+1);
 
-//		if (Logger.DEBUG) {
-//			Logger.log("nominal="+nominalArea.toString());
-//			Logger.log("body="+bodyArea.toString());
-//		}
+		if (true) {
+			Logger.log("extra "+extraElements);
+			Logger.log("nominal="+nominalArea.toString());
+			Logger.log("body="+bodyArea.toString());
+		}
 		
 		final Audio audio = gui.audio;
 		

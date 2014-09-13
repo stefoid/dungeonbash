@@ -95,6 +95,10 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		dataAreaViewPort.y += yOffset;
 		CameraViewPort dataViewPort = new CameraViewPort(dataAreaViewPort);
 		gui.cameraViewPort = dataViewPort;
+		
+		// Great, the final drawing area is decided, we can set the height for list purpose (size calculator)
+		gui.sizeCalculator.setListHeight(dataArea.height);
+		
 		dataAreaPresenter = new TabbedDataAreaPresenter(gui, model, this, dataArea);  // the area passed to the presenter is the area it draws in the 'world'
 		
 		// By creating the dungeon area after the tabbed data area, it will process touch events first which will be more efficient

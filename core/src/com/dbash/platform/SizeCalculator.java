@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.dbash.util.Logger;
 
 public class SizeCalculator {
-
+	float ppcy;
+	
 	public static float DATA_HEADER_SCALE = 0.23f;
 	public static float TAB_AREA_SCALE = 1.0f - DATA_HEADER_SCALE;
 	public static float TAB_BUTTON_SCALE = 0.15f;
@@ -21,36 +22,43 @@ public class SizeCalculator {
 	
 	
 	public SizeCalculator() {
-		float ppcy = Gdx.graphics.getPpcY();
-		float height = Gdx.graphics.getHeight();
-		float tabHeight = (height*TAB_AREA_SCALE);
-		float listHeight = tabHeight*LIST_AREA_SCALE;
-		
-		if (ppcy < 30) {
-			ppcy = 80;  // something wrong with desktop pixel density
-		}
-
-		setListHeight(listHeight, ppcy);  // set the number of elements in the list.  (bit over 1cm per element)
-		
-		MIN_DRAG_PIXELS = MIN_DRAG_DISTANCE * ppcy;
+		ppcy = Gdx.graphics.getPpcY();
 	}
 	
 //	given the pixels per centimetre, I can work out how many centimetres the list will be
 //	the ideal list element height is around 12mm.
 //	divide the area by 11mm for the number of list elements, and if this number is less than 4, make it 4.
-	private void setListHeight(float height, float ppcy) {
+	public void setListHeight(float totalHeight) {
+		float tabHeight = (totalHeight*TAB_AREA_SCALE);
+		float listHeight = tabHeight*LIST_AREA_SCALE;
+		
+		Logger.log("ppcy: "+ppcy);
+		Logger.log("height: "+listHeight);
+		Logger.log("tabHeight: "+tabHeight);
+		Logger.log("listHeight: "+listHeight);
+		
+		if (ppcy < 30) {
+			Logger.log("something happened");;
+			ppcy = 80;  // something wrong with desktop pixel density
+		}
 
-		float cms = height/ppcy;
+		MIN_DRAG_PIXELS = MIN_DRAG_DISTANCE * ppcy;
+		float cms = listHeight/ppcy;
+		Logger.log("cms: "+cms);
+		
 		ELEMENTS_PER_SCREEN = Math.round(cms/1.2f);
 		if (ELEMENTS_PER_SCREEN < 4.0f) {
 			ELEMENTS_PER_SCREEN = 4.0f;
 		}
+		
 		if (ELEMENTS_PER_SCREEN > MAX_ELEMENTS) {
 			ELEMENTS_PER_SCREEN = MAX_ELEMENTS;
 		}
-		
+		Logger.log("ELEMENTS_PER_SCREEN: "+ELEMENTS_PER_SCREEN);
 		MIN_ELEMENTS = (int) ELEMENTS_PER_SCREEN;
-		LIST_ELEMENT_HEIGHT = height / MIN_ELEMENTS;
+		Logger.log("MIN_ELEMENTS: "+MIN_ELEMENTS);
+		LIST_ELEMENT_HEIGHT = listHeight / MIN_ELEMENTS;
+		Logger.log("LIST_ELEMENT_HEIGHT: "+LIST_ELEMENT_HEIGHT);
 	}  
 	
 }
