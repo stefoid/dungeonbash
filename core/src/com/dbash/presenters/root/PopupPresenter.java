@@ -45,6 +45,10 @@ public class PopupPresenter implements TouchEventListener {
 		init();
 	}
 
+	
+	public PopupPresenter() {
+	}
+	
 	public void init() {
 		// Should this popup even be shown?
 		if (popupController.shouldShowPopup(popupId)) {
