@@ -16,6 +16,7 @@ public interface IPopupController {
 	// draw popups at the given offset form their location.
 	public void draw(SpriteBatch spriteBatch, float x, float y);
 	public Rect getPopupArea();
+	public Rect getDungeonPopupArea();
 	public TouchEventProvider getTouchEventProvider();
 	public UIDepend getGuiDependencies();
 	

@@ -99,6 +99,7 @@ public class RootPopupPresenter implements IPopupController {
 
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
+		gui.cameraViewPort.use(spriteBatch);
 		spriteBatch.begin();
 		for (PopupPresenter popup : popups.values()) {
 			popup.draw(spriteBatch, x, y);
@@ -164,6 +165,12 @@ public class RootPopupPresenter implements IPopupController {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public Rect getDungeonPopupArea() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

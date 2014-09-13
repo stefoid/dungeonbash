@@ -2,6 +2,7 @@ package com.dbash.platform;
 
 import com.badlogic.gdx.Gdx;
 import com.dbash.util.Logger;
+import com.dbash.util.Rect;
 
 public class SizeCalculator {
 	float ppcy;
@@ -17,6 +18,9 @@ public class SizeCalculator {
 	public int MIN_ELEMENTS;
 	public float MAX_ELEMENTS = 7f;
 	
+	public Rect listArea;
+	public Rect dungeonArea;
+	
 	// the number of pixels the finger has to move to constitute a drag rather than a touch.  depends on pixel density
 	public float MIN_DRAG_PIXELS; 
 	
@@ -28,7 +32,10 @@ public class SizeCalculator {
 //	given the pixels per centimetre, I can work out how many centimetres the list will be
 //	the ideal list element height is around 12mm.
 //	divide the area by 11mm for the number of list elements, and if this number is less than 4, make it 4.
-	public void setListHeight(float totalHeight) {
+	public void setAreas(Rect listArea, Rect dungeonArea) {
+		this.listArea = new Rect(listArea);
+		this.dungeonArea = new Rect(dungeonArea);
+		float totalHeight = listArea.height;
 		float tabHeight = (totalHeight*TAB_AREA_SCALE);
 		float listHeight = tabHeight*LIST_AREA_SCALE;
 		

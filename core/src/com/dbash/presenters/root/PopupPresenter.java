@@ -28,21 +28,30 @@ public class PopupPresenter implements TouchEventListener {
 	protected ButtonView okButton;
 	protected CheckBoxView checkBox;
 	protected Rect area;
+	TouchEventProvider touchEventProvider;
+	IPopupController controller;
+	String imageType;
+	String text;
 	
-	public PopupPresenter(String popupId, String backgroundImage, String text) { 
+	public PopupPresenter(String popupId, String imageType, String text) { 
+		this.controller = popupController;
+		area = popupController.getPopupArea();
 		this.popupId = popupId;
+		this.imageType = imageType;
+		this.text = text;
+		this.touchEventProvider = popupController.getTouchEventProvider();
+		this.gui = popupController.getGuiDependencies();
 		
+		init();
+	}
+
+	public void init() {
 		// Should this popup even be shown?
 		if (popupController.shouldShowPopup(popupId)) {
-			// grab dependencies from the controller so the popup initiator doesnt have to deal with them.
-			Rect area = popupController.getPopupArea();
-			TouchEventProvider touchEventProvider = popupController.getTouchEventProvider();
-			this.gui = popupController.getGuiDependencies();
-			
 			// Needs to swallow all touches to the screen to be modal
 			touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
 			
-			this.backgroundImage = new ImageView(gui, backgroundImage, area);
+			this.backgroundImage = new ImageView(gui, imageType, area);
 			
 			// This is a 'show this popup next time' checkbox, which is always marked OK if the popup actually gets shown.
 			Rect checkBoxRect = new Rect(area, 0.1f, 0.75f, 0.75f, 0.1f);
@@ -52,14 +61,12 @@ public class PopupPresenter implements TouchEventListener {
 			Rect okButtonRect = new Rect(area, 0.75f, 0.1f, 0.75f, 0.1f);
 			okButtonRect.height = okButtonRect.width; // square it up
 			okButton = new ButtonView(gui, touchEventProvider, okButtonRect, "CONFIRM_SELECTED_IMAGE", "CONFIRM_BUTTON_IMAGE", "CONFIRM_BUTTON_IMAGE");
-			final IPopupController controller = popupController;
 			final String id = popupId;
-			final TouchEventProvider touchEP = touchEventProvider;
 			final TouchEventListener me = this;
 			final CheckBoxView box = checkBox;
 			okButton.onClick( new IClickListener() {
 				public void processClick() {
-					touchEP.removeTouchEventListener(me);
+					touchEventProvider.removeTouchEventListener(me);
 					controller.popupDismissed(id, box.getState());
 				}
 			});
@@ -67,15 +74,15 @@ public class PopupPresenter implements TouchEventListener {
 			//Rect  = new Rect(area, 0.05f, 0.05f, 0.03f, 0.35f);
 			//textBox = new TextBoxView(gui, text, textBoxRect, Rect.HAlignment.CENTER, Rect.VAlignment.CENTER, Color.BLACK);
 			
-			popupController.popupCreated(this, popupId);  // tell the popup controller about me.		
+			popupController.popupCreated(this, popupId);  // tell the popup controller about me.
 		}
 	}
-
+	
 	
 	public void draw(SpriteBatch spriteBatch, float x, float y)
 	{
 		backgroundImage.draw(spriteBatch, x, y);
-		textBox.draw(spriteBatch, x, y);
+	//	textBox.draw(spriteBatch, x, y);
 		okButton.draw(spriteBatch, x, y);
 		checkBox.draw(spriteBatch, x, y);
 	}

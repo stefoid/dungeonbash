@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dbash.presenters.root.GameOverPopupPresenter;
+import com.dbash.presenters.root.PopupPresenter;
 import com.dbash.util.Logger;
 import com.dbash.util.SequenceNumber;
 import com.me.dbash.Dbash;
@@ -322,6 +324,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			// game over man, game over.
 			dungeon.gameOver();
 			setGameInProgress(false);
+			new GameOverPopupPresenter();
 		} else
 		// What if that was the last character on this level?
 		// If so, go to the next level
