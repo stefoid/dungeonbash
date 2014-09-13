@@ -451,8 +451,8 @@ public class CreaturePresenter {
 		deathAnim.animType = AnimOp.AnimType.DEATH;
 		
 		// and an animation of the ceature sinking into the ground played at the same time
-		Rect fromRectC = new Rect(makeDrawingRectFromPosition(deathPosition));
-		Rect toRectC = new Rect(fromRect);
+		Rect fromRectC = makeDrawingRectFromPosition(deathPosition);
+		Rect toRectC = new Rect(fromRectC);
 		toRectC.y -= toRectC.height;
 		AnimationView deathAnimC = new AnimationView(gui, staticImage.name, fromRectC, toRectC, 1f, 1f, 1f, 1, null);
 		deathAnimC.sequenceNumber = sequenceNumber;

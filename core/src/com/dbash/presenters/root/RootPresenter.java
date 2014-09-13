@@ -139,8 +139,13 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		
 		// this comparison compares the touch event position after adjusting for the listeners viewport to
 		// determine if the touch falls inside the listeners area
+		// but it returns false if it falls outside of the viewport itself (out of bounds)
 		boolean isInside(TouchEvent touchEvent) { 
-			return area.isInside(touchEvent.screenX - viewPort.getX(), touchEvent.screenY - viewPort.getY());
+			if (viewPort.isInside(touchEvent.screenX, touchEvent.screenY)) {
+				return area.isInside(touchEvent.screenX - viewPort.getX(), touchEvent.screenY - viewPort.getY());
+			} else {
+				return false;
+			}
 		}
 	}
 	

@@ -158,12 +158,17 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	 * intercept touch registration from the menu element view so we can add a y offset and list position.
 	 */
 	public void addTouchEventListener(TouchEventListener listener, Rect touchArea, Rect viewport) {
-		Rect vp = new Rect(viewport) {
+		
+		// Pass in a viewport that 'moves' according to the scroll position.
+		Rect vp = new Rect(listArea) {
 			@Override
 			public float getY() {
-				return y + listArea.y + scrollingList.getListPosition();
+				return y + scrollingList.getListPosition();
 			}
 		};
+		
+		vp.x += viewport.x;
+		vp.y += viewport.y;
 
 		touchEventProvider.addTouchEventListener(listener, touchArea, vp);
 		

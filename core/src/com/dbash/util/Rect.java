@@ -92,7 +92,7 @@ public class Rect {
 		
 	public boolean isInside(float xt, float yt) {
 		if ((xt >= this.x) && (xt <= (this.x + this.width)) &&
-		   (yt >= this.y) && (yt <= (this.y + this.height))) 
+		   (yt >= this.y) && (yt <= (this.y + getHeight()))) 
 			return true;
 		else	
 			return false;
@@ -112,6 +112,10 @@ public class Rect {
 	
 	public float getY() {
 		return y;
+	}
+	
+	public float getHeight() {
+		return height;
 	}
 	
 	@Override
