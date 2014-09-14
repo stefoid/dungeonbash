@@ -12,5 +12,4 @@ public class PresenterDepend {
 	public IPresenterTurnState presenterTurnState;
 	public IPopupController popupController;
 	public AnimQueue animQueue;
-	
 }

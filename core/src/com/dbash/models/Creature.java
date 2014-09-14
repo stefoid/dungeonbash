@@ -531,7 +531,12 @@ public abstract class Creature implements IPresenterCreature
 		if (getCreature().head == 0)
 			percentage += 15;
 
-		experience += ((exp * percentage) / 100);
+		int xp = ((exp * percentage) / 100);
+		experience += xp;
+		if (this instanceof Character) {
+			turnProcessor.gameStats.xpGiven(xp);
+		}
+		
 		expRoot = (int)Math.sqrt(experience);// pre-calculate the squre root
 												// of the experience which is
 												// used in many places

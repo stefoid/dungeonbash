@@ -46,6 +46,8 @@ public class Monster extends Creature
 	protected void death() {
 		super.death();
 		
+		turnProcessor.gameStats.monsterKilled();
+		
 		// if a monster dies in a dungeon, and there is no character there to see it, did it really die?
 		Character observer = dungeonQuery.findClosestCharacterInSight(mapPosition, this);
 		turnProcessor.monsterDied(this, observer);
@@ -130,7 +132,7 @@ public class Monster extends Creature
 	{
 		closestCharacter = null;
 		rangedAttack = null; 
-		//System.out.println("creature id "+myId+" name "+creature.name);
+
 		boolean creatureStillAlive = processStatsForTurn();
 		
 		if (creatureStillAlive == false) {

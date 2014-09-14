@@ -51,7 +51,7 @@ public class MenuListElementView implements IListElement {
 		bodyArea = new Rect(nominalArea);
 		bodyArea.height *= (extraElements+1);
 
-		if (true) {
+		if (Logger.DEBUG) {
 			Logger.log("extra "+extraElements);
 			Logger.log("nominal="+nominalArea.toString());
 			Logger.log("body="+bodyArea.toString());

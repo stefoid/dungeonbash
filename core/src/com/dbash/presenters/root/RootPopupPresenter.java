@@ -87,13 +87,15 @@ public class RootPopupPresenter implements IPopupController {
 	@Override
 	// save the state of this popup so the next time it is called, should we show it again?
 	public void popupDismissed(String popupId, boolean showNextTime) {
-		popups.remove(popupId);
-		
-		// if the user has marked this as 'dont show next time' then we add it to the dontShowPopups list.
-		// which means it wont be showed next time.
-		if (showNextTime == false) {
-			hidePopups.put(popupId, 0);
-			writeHidePopups();  // persist this change.
+		PopupPresenter popup = popups.remove(popupId);
+		if (popup != null) {
+			touchEventProvider.removeTouchEventListener(popup);
+			// if the user has marked this as 'dont show next time' then we add it to the dontShowPopups list.
+			// which means it wont be showed next time.
+			if (showNextTime == false) {
+				hidePopups.put(popupId, 0);
+				writeHidePopups();  // persist this change.
+			}
 		}
 	}
 

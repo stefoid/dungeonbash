@@ -36,6 +36,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean soloStatus;
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
+	public GameStats gameStats;
 	
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character.  We iterate over this list to give everything a chance to act.
@@ -54,9 +55,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		setGameInProgress(false);
 		currentCharacter = nobody;
 		leaderStatus = LeaderStatus.NONE;
+		gameStats = new GameStats();
 	}
 	
 	public void startNewGame() {
+		GameOverPopupPresenter.clear();
+		gameStats = new GameStats();
 		setGameInProgress(true);
 		currentLeader = null;
 		leaderStatus = LeaderStatus.NONE;
@@ -70,6 +74,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// We set up the lists for this level.
 	private void startNewLevel(int level)
 	{
+		gameStats.newLevel(level);
 		pauseTurnProcessing = false;
 		acceptInput = false;  
 		dungeon.createLevel(this, level);
@@ -111,6 +116,10 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 		
 		getCurrentLeader();  // will update leader status and alert observers
+		
+		if (gameInProgress() == false) {
+			new GameOverPopupPresenter(gameStats);
+		}
 	}
 	
 	
@@ -324,7 +333,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			// game over man, game over.
 			dungeon.gameOver();
 			setGameInProgress(false);
-			new GameOverPopupPresenter();
+			new GameOverPopupPresenter(gameStats);
 		} else
 		// What if that was the last character on this level?
 		// If so, go to the next level
@@ -679,6 +688,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		charactersFallingOut = new Vector<Character>();
 		this.allCreatures = allCreatures;
 		
+		gameStats = new GameStats(in);
 		setGameInProgress((Boolean)in.readObject());
 		
 		// start reading saved game
@@ -736,6 +746,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 	
 	public void persist(ObjectOutputStream out) throws IOException {
+		gameStats.persist(out);
 		out.writeObject(gameInProgress);
 		
 		//	1) turn processor saves level number

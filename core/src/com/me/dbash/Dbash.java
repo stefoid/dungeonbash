@@ -64,6 +64,7 @@ public class Dbash implements ApplicationListener {
 		// Make the dependency buckets to pass to the rootPresenter
 		spriteManager = new CachedSpriteManager();
 		UIDepend gui = new UIDepend();
+		
 		gui.assetManager = new AssetManager();
 		dungeon = new Dungeon(true);
 		turnProcessor = new TurnProcessor(dungeon, dungeon, dungeon, this);
@@ -133,22 +134,22 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-//		if (Logger.DEBUG) Logger.log("SAVING GAMEDATA");
-//		FileHandle fl = Gdx.files.local("gamedata.dat");
-//		ObjectOutputStream out = null;
-//		try {
-//			out = new ObjectOutputStream(fl.write(false));
-//			turnProcessor.allCreatures.persist(out);
-//			dungeon.persist(out);
-//			turnProcessor.persist(out);
-//			audio.persist(out);
-//		} catch (IOException e) {
-//		} finally {
-//			try {
-//				out.close();
-//			} catch (IOException e) {
-//			}
-//		}
+		if (Logger.DEBUG) Logger.log("SAVING GAMEDATA");
+		FileHandle fl = Gdx.files.local("gamedata.dat");
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(fl.write(false));
+			turnProcessor.allCreatures.persist(out);
+			dungeon.persist(out);
+			turnProcessor.persist(out);
+			audio.persist(out);
+		} catch (IOException e) {
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+			}
+		}
 	}
 	
 	@Override

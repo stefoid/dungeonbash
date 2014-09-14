@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.dbash.models.GameStats;
 
 // This is here to wrap up dependencies on the gdx libraries
 // The Presenters should have no such dependencies.  But they will be required to pass this

@@ -70,7 +70,6 @@ public class PopupPresenter implements TouchEventListener {
 			final CheckBoxView box = checkBox;
 			okButton.onClick( new IClickListener() {
 				public void processClick() {
-					touchEventProvider.removeTouchEventListener(me);
 					controller.popupDismissed(id, box.getState());
 				}
 			});
