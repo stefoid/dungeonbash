@@ -35,7 +35,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 
 		menuElement.helpButton.onClick( new IClickListener() {
 			public void processClick() {
-				scrollingList.scroll(area.height/10);
+				scrollingList.scroll(-1*area.height/9.5f);
 			}
 		});
 		
