@@ -58,6 +58,7 @@ public class Dbash implements ApplicationListener {
 //        });
 	}
 
+	
 	protected void initEverything() {
 		boolean newGame = true;
 		//Gdx.app.setLogLevel(Application.LOG_INFO);
@@ -116,6 +117,7 @@ public class Dbash implements ApplicationListener {
 		} 
 
 		if (newGame) {
+			audio.defaultVolume();
 			turnProcessor.startNewGame();
 		} else {
 			turnProcessor.resume();

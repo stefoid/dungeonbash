@@ -66,7 +66,6 @@ public class PopupPresenter implements TouchEventListener {
 			okButtonRect.height = okButtonRect.width; // square it up
 			okButton = new ButtonView(gui, touchEventProvider, okButtonRect, "CONFIRM_SELECTED_IMAGE", "CONFIRM_BUTTON_IMAGE", "CONFIRM_BUTTON_IMAGE");
 			final String id = popupId;
-			final TouchEventListener me = this;
 			final CheckBoxView box = checkBox;
 			okButton.onClick( new IClickListener() {
 				public void processClick() {

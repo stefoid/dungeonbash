@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.dbash.models.UIInfoListenerBag;
 
+
 /**
  * I need to load all the sounds into memory, and then just play them.   I dont need to dispose of them as such.
  *
@@ -101,8 +102,8 @@ public class Audio {
 		addMusic(BATTLE_THEME);
 		addMusic(MOVING_THEME);
 		
-		setMusicVolume(1f);
-		setFxVolume(1f);
+		setMusicVolume(0f);
+		setFxVolume(0f);
 }
 	
 	protected void addSound(String name) {
@@ -168,6 +169,11 @@ public class Audio {
 		for (Song song : music.values()) {
 			song.processVolume();
 		}
+	}
+	
+	public void defaultVolume() {
+		setFxVolume(1f);
+		setMusicVolume(1f);
 	}
 	
 	public void persist(ObjectOutputStream out) throws IOException {

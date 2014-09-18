@@ -2,6 +2,7 @@ package com.dbash.presenters.root;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Timer;
 import com.dbash.models.GameStats;
 import com.dbash.models.TouchEvent;
 import com.dbash.platform.TextView;
@@ -19,9 +20,11 @@ public class GameOverPopupPresenter extends PopupPresenter {
 	TextView xpText;
 	TextView monText;
 	GameStats gameStats;
+	boolean startDrawing;
 	
 	public GameOverPopupPresenter(GameStats gameStats) {
 		super();
+		this.startDrawing = false;
 		this.gameStats = gameStats;
 		this.controller = popupController;
 		this.popupId = POPUP_ID;
@@ -53,19 +56,30 @@ public class GameOverPopupPresenter extends PopupPresenter {
 		
 		Rect monRect = new Rect(levelRect);
 		monRect.y -= (monRect.height * 1.5f);
-		monText = new TextView(gui, null, "You killed "+gameStats.monstersKilled+ " monsters", monRect, HAlignment.CENTER, VAlignment.CENTER, new Color(0f, 0f, 1f, 1));
+		monText = new TextView(gui, null, "You killed "+gameStats.monstersKilled+ " monsters", monRect, HAlignment.CENTER, VAlignment.CENTER, Color.CYAN);
 		
 		Rect xpRect = new Rect(monRect);
 		xpRect.y -= (xpRect.height * 1.5f);
-		xpText = new TextView(gui, null, "You got "+gameStats.xp+ " XP", xpRect, HAlignment.CENTER, VAlignment.CENTER, new Color(0, .8f, 0, 1));
+		xpText = new TextView(gui, null, "You got "+gameStats.xp+ " XP", xpRect, HAlignment.CENTER, VAlignment.CENTER, Color.GREEN);
+	
+		Timer.Task task = new Timer.Task() {
+			@Override
+			public void run() {
+				startDrawing = true;
+			}
+		};
+		
+		Timer.instance().scheduleTask(task, 2);
 	}
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-		gameOverText.draw(spriteBatch, x, y);
-		levelText.draw(spriteBatch, x, y);
-		monText.draw(spriteBatch, x, y);
-		xpText.draw(spriteBatch, x, y);
+		if (startDrawing) {
+			gameOverText.draw(spriteBatch, x, y);
+			levelText.draw(spriteBatch, x, y);
+			monText.draw(spriteBatch, x, y);
+			xpText.draw(spriteBatch, x, y);
+		}
 	}
 	
 	@Override

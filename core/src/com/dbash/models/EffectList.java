@@ -58,19 +58,19 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			add(speed);
 			
 			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
-			AbilityInfo hp = new AbilityInfo("HARD PROTECT : "+hpv+"%", hpv );
+			AbilityInfo hp = new AbilityInfo("HARD DEF : "+hpv+"%", hpv );
 			add(hp);
 			
 			int spv = owner.calcProtection(AbilityCommand.RESIST_SHARP);
-			AbilityInfo sp = new AbilityInfo("SHARP PROTECT : "+spv+"%", spv );
+			AbilityInfo sp = new AbilityInfo("SHARP DEF : "+spv+"%", spv );
 			add(sp);
 			
 			int epv = owner.calcProtection(AbilityCommand.RESIST_ENERGY);
-			AbilityInfo ep = new AbilityInfo("ENERGY PROTECT : "+epv+"%", epv );
+			AbilityInfo ep = new AbilityInfo("ENERGY DEF : "+epv+"%", epv );
 			add(ep);
 			
 			int cpv = owner.calcProtection(AbilityCommand.RESIST_CHEMICAL);
-			AbilityInfo cp = new AbilityInfo("CHEMICAL PROTECT : "+cpv+"%", cpv );
+			AbilityInfo cp = new AbilityInfo("CHEMICAL DEF : "+cpv+"%", cpv );
 			add(cp);
 			}
 		
