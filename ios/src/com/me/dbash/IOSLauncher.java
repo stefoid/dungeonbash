@@ -2,10 +2,12 @@ package com.me.dbash;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
+import org.robovm.apple.uikit.UIDevice;
 import org.robovm.bindings.crashlytics.Crashlytics;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
+import com.dbash.util.Rect;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
@@ -13,7 +15,9 @@ public class IOSLauncher extends IOSApplication.Delegate {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         config.orientationLandscape = true;
         config.orientationPortrait = false;
-        return new IOSApplication(new Dbash(), config);
+        String systemVersion = UIDevice.getCurrentDevice().getSystemVersion();
+        int version = Character.getNumericValue(systemVersion.charAt(0));
+        return new IOSApplication(new Dbash(version), config);
     }
 
 	@Override

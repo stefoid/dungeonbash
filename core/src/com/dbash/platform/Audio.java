@@ -61,8 +61,8 @@ public class Audio {
 	protected HashMap<String, Sound> sounds;
 	protected HashMap<String, Song> music;
 	
-	float fxVolume = 1f;
-	float musicVolume = 1f;
+	float fxVolume = 0f;
+	float musicVolume = 0f;
 	
 	protected Song currentTheme = null;
 	public UIInfoListenerBag musicVolumeListeners;

@@ -13,6 +13,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		Crashlytics.start(this);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Dbash(), config);
+		initialize(new Dbash(0), config);
 	}
 }

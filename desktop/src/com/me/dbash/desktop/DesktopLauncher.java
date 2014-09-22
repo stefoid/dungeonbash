@@ -86,7 +86,7 @@ public class DesktopLauncher {
 		//config.width = 800;
 		//config.height = 480;
 		
-		new LwjglApplication(new Dbash(), config);
+		new LwjglApplication(new Dbash(0), config);
 	}
 	
 	private static boolean isFullScreenArgument(String[] args) {

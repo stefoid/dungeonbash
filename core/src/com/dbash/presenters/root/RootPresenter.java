@@ -13,6 +13,7 @@ import com.dbash.models.TouchEvent.TouchType;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.CameraViewPort;
+import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.presenters.tabs.TabbedDataAreaPresenter;
@@ -59,7 +60,8 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	// It is important to note that the area passed to a CameraViewPort defines the area on the screen that subsequent drawing to that camera
 	// will  appear in [defined in ints].  While the area passed to presenters is the world (or model) coords where the presenter should position itself. [floats]
 	private void init() {	
-		screenArea = new Rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		screenArea = SizeCalculator.getScreenSize();
 		
 //		// We create three viewports so that we can the dungeon map and data area can be moved around just by adjusting the Viewport x and y offsets.
 //		// Means we can swap them for lefties...

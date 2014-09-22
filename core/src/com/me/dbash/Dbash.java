@@ -24,6 +24,7 @@ import com.dbash.platform.SmoothBitmapFont;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.RootPresenter;
 import com.dbash.util.Logger;
+import com.dbash.util.Rect;
 
 public class Dbash implements ApplicationListener {
 	
@@ -45,7 +46,8 @@ public class Dbash implements ApplicationListener {
 	Texture splash;
 	Thread.UncaughtExceptionHandler previousHandler;
 	
-	public Dbash() {
+	public Dbash(int iosVersion) {
+		SizeCalculator.setIosVersion(iosVersion);
 //		previousHandler = Thread.getDefaultUncaughtExceptionHandler();
 //        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 //            @Override
@@ -122,6 +124,7 @@ public class Dbash implements ApplicationListener {
 		} else {
 			turnProcessor.resume();
 		}
+		quitted = false;
 	}
 	
 	@Override
@@ -192,7 +195,8 @@ public class Dbash implements ApplicationListener {
 		
 		float aspect = (float)splash.getWidth()/(float)splash.getHeight();
 		
-		float splashW = Gdx.graphics.getWidth();
+		Rect splashRect = SizeCalculator.getScreenSize();
+		float splashW = splashRect.width;
 		float splashH = splashW/aspect;
 		float splashY = (float) ((Gdx.graphics.getHeight() - splashH) / 2);
 		float splashX = 0;
@@ -212,7 +216,7 @@ public class Dbash implements ApplicationListener {
 		if (Logger.DEBUG) Logger.log("RESUME CALLED");
 	}
 	
-	boolean quitted = false;
+	boolean quitted = true;
 	public void quit() {
 		pause();
 		quitted = true;

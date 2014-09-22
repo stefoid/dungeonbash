@@ -1,6 +1,8 @@
 package com.dbash.presenters.tabs;
 
 import java.util.ArrayList;
+
+import com.dbash.models.Ability;
 import com.dbash.models.Character;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
@@ -26,12 +28,18 @@ public class ItemListElementView extends AbilityTypeListElement {
 		}
 		
 		carriedBackground = new ImageView(gui, "ITEM_CARRIED_IMAGE", area);
-		
-		if (abilityInfo.canBeCarried(currentCharacter)) {
-			dungeonBackground = new ImageView(gui, "ITEM_ON_FLOOR_IMAGE", area);
-		} else {
-			dungeonBackground = new ImageView(gui, "ABILITY_DISABLED_IMAGE", area);
+		String dbImage = "ABILITY_DISABLED_IMAGE";
+		Ability ability = abilityInfo.ability;
+
+		if (ability != null && currentCharacter != null && currentCharacter.canUseAbility(ability)) {
+			dbImage = "ITEM_ON_FLOOR_IMAGE";
 		}
+		
+		if (ability == null || currentCharacter == null) {
+			dbImage = "ITEM_ON_FLOOR_IMAGE";
+		}
+		
+		dungeonBackground = new ImageView(gui, dbImage, area);
 	}
 
 	
