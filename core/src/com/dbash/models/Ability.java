@@ -452,6 +452,17 @@ public class Ability
 		executeCommandTarget(command, targCreature, position, owned);
     }	
 
+    public int getAbilityMeleeDamage() {
+    	int i = 0;
+    	for (int strategy : ability.executeStrategy) {
+    		if (strategy == ATTACKER) {
+    			return ability.executeParam2[i];
+    		}
+    		i++;
+    	}
+    	return 0;
+    }
+    
 	// experience value calculator
     public static int calcValue(int abilityId)
     {
@@ -653,7 +664,7 @@ public class Ability
 		return result;
 	}
 
-	protected boolean isUsed()
+	public boolean isUsed()
 	{
 		if (needsSetting() == true)
 			return set;

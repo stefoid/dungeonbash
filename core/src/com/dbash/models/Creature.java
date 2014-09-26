@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dbash.models.Ability.AbilityType;
 import com.dbash.platform.TextResourceIdentifier;
 import com.dbash.presenters.dungeon.CreaturePresenter;
 import com.dbash.util.Randy;
@@ -258,6 +259,27 @@ public abstract class Creature implements IPresenterCreature
 	
 	public int calculateSpeed() {
 		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
+	}
+	
+	public int calculateDamage() {
+		Ability theAbility = null;
+		
+		// First find the set weapon.
+		for (Ability ability : abilities) {
+			if (ability.isUsed()) {
+				if (ability.getAbilityType() == AbilityType.WEAPON) {
+					theAbility = ability;
+				}
+			}
+		}
+		
+		int damage = 0;
+		if (theAbility != null) {
+			damage = theAbility.getAbilityMeleeDamage();
+			damage += calculateSizeDamageBonus() + calculateSkillDamageBonus();
+		}
+		
+		return damage;
 	}
 	
 	// these are for a CreaturePresenter to observe changes to the highlight status of the creature.
@@ -860,7 +882,7 @@ public abstract class Creature implements IPresenterCreature
 				// 1. creatures size only affects damage of melee attacks
 				if (attack.melee)
 				{
-					attack.damage += (calculateMaxHealth() * calculateMaxHealth()) / 100;
+					attack.damage += calculateSizeDamageBonus();
 				}
 
 				// 2. creatures attack skill only affects damage of aimed
@@ -870,7 +892,7 @@ public abstract class Creature implements IPresenterCreature
 
 				if (useSkill)
 				{
-					attack.damage += attack.skill / 8;
+					attack.damage += calculateSkillDamageBonus();
 				}
 
 				// 4. creatures magical capability (maxMagic) effects damage of
@@ -915,6 +937,16 @@ public abstract class Creature implements IPresenterCreature
 	static int	index;
 	static int	endIndex;
 
+	protected int calculateSizeDamageBonus() {
+		int bonus = (calculateMaxHealth() * calculateMaxHealth()) / 100;
+		return bonus;
+	}
+	
+	protected int calculateSkillDamageBonus() {
+		int bonus = calculateAttackSkill() / 8;
+		return bonus;
+	}
+	
 	private static int readNextNum(String string)
 	{
 		int n;

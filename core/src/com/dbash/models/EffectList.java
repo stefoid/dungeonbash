@@ -57,6 +57,10 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			AbilityInfo speed = new AbilityInfo("SPEED : "+ss, ss);
 			add(speed);
 			
+			int wd = owner.calculateDamage();
+			AbilityInfo dam = new AbilityInfo("MELEE DAMAGE : "+wd, wd);
+			add(dam);
+			
 			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
 			AbilityInfo hp = new AbilityInfo("HARD DEF : "+hpv+"%", hpv );
 			add(hp);
