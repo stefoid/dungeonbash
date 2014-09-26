@@ -45,6 +45,8 @@ public class AbilitySelectionListPresenter extends ListPresenter{
 			final String soundEffect;
 			if (abilityInfo.oneShot) {
 				soundEffect = null;
+			} else if (abilityInfo.isUsableByOwner == false){ 
+				soundEffect = Audio.NEGATIVE;
 			} else {
 				switch (abilityInfo.abilityType) {
 					case WEAPON:

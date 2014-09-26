@@ -931,8 +931,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		if (items >= MAX_ITEMS)
 			pickupAllowed = false;
 
-		if ((creature.hands == 0) && (ability.ability.needs > Ability.NEEDS_HEAD))  //  if you got no hands, and the thing needs hands, then tough
-			pickupAllowed = false;
+		pickupAllowed = canCarry(ability);
 		
 		if (pickupAllowed) {
 			dungeonEvents.objectPickup(SequenceNumber.getNext(), this, ability, mapPosition);
@@ -944,6 +943,13 @@ public class Character extends Creature implements IPresenterCharacter {
 		return pickupAllowed;
 	}
 
+	public boolean canCarry(Ability ability) {
+		if ((creature.hands == 0) && (ability.ability.needs > Ability.NEEDS_HEAD))  //  if you got no hands, and the thing needs hands, then tough
+			return false;
+		else
+			return true;
+	}
+	
 	// Characters neveer skip turns.
 	public boolean canSkipTurn() {
 		return false;

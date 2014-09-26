@@ -15,8 +15,7 @@ import com.dbash.util.Rect;
 public class ItemListElementView extends AbilityTypeListElement {
 	
 	// Item background
-	protected ImageView	carriedBackground;
-	protected ImageView dungeonBackground;
+	protected ImageView backgroundImage;
 	
 	
 	public ItemListElementView(UIDepend gui, Character currentCharacter, AbilityInfo abilityInfo, Rect area) {
@@ -27,19 +26,15 @@ public class ItemListElementView extends AbilityTypeListElement {
 			setEffects(leftSide * area.width + iconSpacer * iconArea.width);
 		}
 		
-		carriedBackground = new ImageView(gui, "ITEM_CARRIED_IMAGE", area);
 		String dbImage = "ABILITY_DISABLED_IMAGE";
-		Ability ability = abilityInfo.ability;
 
-		if (ability != null && currentCharacter != null && currentCharacter.canUseAbility(ability)) {
+		if (abilityInfo.isCarried) {
+			dbImage = "ITEM_CARRIED_IMAGE";
+		} else if (abilityInfo.canBeCarried) {
 			dbImage = "ITEM_ON_FLOOR_IMAGE";
-		}
+		} 
 		
-		if (ability == null || currentCharacter == null) {
-			dbImage = "ITEM_ON_FLOOR_IMAGE";
-		}
-		
-		dungeonBackground = new ImageView(gui, dbImage, area);
+		backgroundImage = new ImageView(gui, dbImage, area);
 	}
 
 	
@@ -47,13 +42,8 @@ public class ItemListElementView extends AbilityTypeListElement {
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		
 		// Draw background
-		if (abilityInfo.isCarried) {
-			carriedBackground.setPos(x, y);
-			carriedBackground.draw(spriteBatch);
-		} else {
-			dungeonBackground.setPos(x, y);
-			dungeonBackground.draw(spriteBatch);
-		} 
+		backgroundImage.setPos(x, y);
+		backgroundImage.draw(spriteBatch);
 		
 		super.draw(spriteBatch, x, y);
 		

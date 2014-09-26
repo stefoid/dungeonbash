@@ -47,6 +47,7 @@ public class ItemListPresenter extends ListPresenter{
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
 			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
+			abilityInfo.canBeCarried = character.canCarry(ability);
 			ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea);
 			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {

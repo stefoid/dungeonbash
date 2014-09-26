@@ -27,8 +27,10 @@ public class AbilitySelectionList extends ArrayList<AbilityInfo> {
 		this.owner = owner;
 		for (Ability ability : owner.abilities) {
 			
+			// && (owner.canUseAbility(ability))
+			
 			// Cant be used directly by the owning character, so doesnt belong in the ability selection list.
-			if (ability.isSelectable() && (owner.canUseAbility(ability))) {
+			if (ability.isSelectable()) {
 				AbilityInfo info = new AbilityInfo(ability, owner);
 				
 				// Sort list according to type

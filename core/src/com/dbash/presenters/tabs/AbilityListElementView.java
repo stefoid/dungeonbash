@@ -43,12 +43,12 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		if (abilityInfo.currentySelected) {
 			selectedBackground.setPos(x, y);
 			selectedBackground.draw(spriteBatch);
-		} else if (abilityInfo.enoughMagic ){
-			elementBackground.setPos(x, y);
-			elementBackground.draw(spriteBatch);
-		} else {
+		} else if (abilityInfo.enoughMagic == false || abilityInfo.isUsableByOwner == false){
 			cantUseBackground.setPos(x, y);
 			cantUseBackground.draw(spriteBatch);
+		} else {
+			elementBackground.setPos(x, y);
+			elementBackground.draw(spriteBatch);
 		}
 		
 		super.draw(spriteBatch, x, y);

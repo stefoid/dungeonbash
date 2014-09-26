@@ -28,6 +28,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
 	public boolean isUsableByOwner;
+	public boolean canBeCarried;
 	public boolean isCarried;
 	
 	
@@ -47,6 +48,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		creates = ability.findAbilityAddedWhenEquipped();
 		
 		if (owner != null) {
+			canBeCarried = true;
 			enoughMagic = owner.hasEnoughMagic(ability);
 			expireTime = ability.getAbilityDurationLeft();
 			isUsableByOwner = owner.canUseAbility(ability);

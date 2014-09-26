@@ -59,6 +59,7 @@ public class EyeDetailListPresenter extends ListPresenter {
 		for (AbilityInfo abilityInfo : dungeonItemList) {
 			// add the closure to the element about what to do if it is selected.
 			abilityInfo.isUsableByOwner = true;  // set this so as not to show the diasbled status
+			abilityInfo.canBeCarried = true;  // set this so as not to show the diasbled status
 			ItemListElementView itemElement = new ItemListElementView(gui, null, abilityInfo, elementArea);
 			itemElement.addToList(elements);
 		}
