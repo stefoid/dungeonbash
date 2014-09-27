@@ -54,7 +54,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				null,       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Your three characters drop into a level one at a time.  The next character cannot appear until the landing spot is clear.", 
+				"Your characters drop into a level one at a time.  The next character cannot appear until the landing spot is clear.", 
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
@@ -72,7 +72,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "RANGED", elementArea),       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Highlight a ranged item (if you have one) on the blue 'abilities' tab and touch the target tile to shoot.  Ranged items have a target symbol",
+				"Highlight a ranged item (if you have one) on the blue 'abilities' tab and touch a target tile to shoot.  Ranged items have a target symbol",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
@@ -84,7 +84,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "LEADER", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Swipe and release on the target tile to walk to that destination.",
+				"Swipe and release on any tile in Line of Sight to walk to that destination.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
@@ -114,7 +114,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "EQUIP", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Equip one weapon, one defensive item and one amulet using the blue tab - click on the item to be equipped.",
+				"Equip one weapon, one defensive item and one amulet using the blue tab - click on the item to be equipped.  Items that cannot be used will appear grey.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
@@ -122,7 +122,12 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"To go to the next level, find the stairs, and put a character on it - the 'stairs' button will become enabled.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "FLANK", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"In Melee, monsters prefer to attack orthogonal enemies, allowing flank attacks from the diagonal.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		for (ImageTextListElementView helpElement: helpElements) {
 			helpElement.addToList(elements);
