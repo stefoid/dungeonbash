@@ -81,6 +81,10 @@ public interface IListElement {
 		public void clearDrawFlag() {
 			drawFlag = false;
 		}
+
+		@Override
+		public void setAnimating() {
+		}
 	}
 	
 	// Just draw yourself to the screen at the coords given - the ScrollList will clip bits thatt shouldnt show.
@@ -97,5 +101,7 @@ public interface IListElement {
 	void addToList(ArrayList<IListElement> list);
 	
 	public void clearDrawFlag();
+
+	void setAnimating();
 
 }

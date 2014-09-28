@@ -36,19 +36,17 @@ public class ItemListPresenter extends ListPresenter{
 	public void listInfoUpdate() {
 		// Make up the ListElements to feed the ScrollingList
 		ArrayList<IListElement> elements = new ArrayList<IListElement>();
-		Character currentCharacter = model.presenterTurnState.getCurrentCharacter();
-		dungeonItemList = model.presenterDungeon.getItemsAtPosition(currentCharacter.getPosition());
-		characterItemList = currentCharacter.getItemList();
-		
 		final Character character = model.presenterTurnState.getCurrentCharacter();
-		
+		dungeonItemList = model.presenterDungeon.getItemsAtPosition(character.getPosition());
+		characterItemList = character.getItemList();
+		int index = 0;
 		// add the things on the dungeon floor at this spot.
 		for (AbilityInfo abilityInfo : dungeonItemList) {
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
 			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
 			abilityInfo.canBeCarried = character.canCarry(ability);
-			ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea);
+			final ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea, index++);
 			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
@@ -56,6 +54,10 @@ public class ItemListPresenter extends ListPresenter{
 						boolean pickupAllowed = character.itemPickupSelected(ability);
 						if (pickupAllowed == false) {
 							gui.audio.playSound(Audio.NEGATIVE);
+						} else {
+							element.abilityInfo.isCarried = true;
+							element.setBackgroundImage();
+							scrollItem(element);
 						}
 					}
 				}
@@ -64,7 +66,7 @@ public class ItemListPresenter extends ListPresenter{
 		
 		// add the character inventory to the list.
 		for (AbilityInfo abilityInfo : characterItemList) {
-			ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea);
+			final ItemListElementView element = new ItemListElementView(gui, character, abilityInfo, elementArea, index++);
 			element.addToList(elements);
 
 			// add the closure to the element about what to do if it is selected.
@@ -74,6 +76,9 @@ public class ItemListPresenter extends ListPresenter{
 					if (ability != null) {
 						saveListPosition();  // do this first because processing the ability will create a new list
 						character.itemDropSelected(ability);
+						element.abilityInfo.isCarried = false;
+						element.setBackgroundImage();
+						scrollItem(element);
 					}
 				}
 			});
@@ -83,7 +88,7 @@ public class ItemListPresenter extends ListPresenter{
 		if (elements.size() == 0) {
 			AbilityInfo firstInfo = new AbilityInfo("No items carried");
 			firstInfo.isCarried = true;
-			ItemListElementView first = new ItemListElementView(gui, null, firstInfo, elementArea);
+			ItemListElementView first = new ItemListElementView(gui, null, firstInfo, elementArea, index++);
 			first.addToList(elements);
 		}
 		
@@ -95,6 +100,34 @@ public class ItemListPresenter extends ListPresenter{
 		
 		float listPos = characters.get(character);
 		scrollingList.setListElements(elements, listPos);
+	}
+	
+	/**
+	 * This element has to scroll from its old position to the position it will be in the new list that results.
+	 * To do that, we make a new list and determine the position first.
+	 * Then we add an animation to the ScollingListView from the old position to the new one.
+	 */
+	public void scrollItem(ItemListElementView element) {
+		// Build new list.
+		Character character = model.presenterTurnState.getCurrentCharacter();
+		ItemList newItemList = model.presenterDungeon.getItemsAtPosition(character.getPosition());
+		ItemList charItems = character.getItemList();
+		for (AbilityInfo abilityInfo : charItems) {
+			newItemList.add(abilityInfo);
+		}
+		
+		// Now find position of ability within that.
+		int count = 0;
+		for (AbilityInfo abilityInfo : newItemList) {
+			if (abilityInfo.ability == element.abilityInfo.ability) {
+				break;
+			} else {
+				count++;
+			}
+		}
+		
+		// tell the scrolling list to animate that element.
+		scrollingList.scrollElement(element, element.index, count);
 	}
 	
 	@Override

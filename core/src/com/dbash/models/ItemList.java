@@ -30,14 +30,14 @@ public class ItemList extends ArrayList<AbilityInfo>{
 				AbilityInfo info = new AbilityInfo(ability, owner);
 				
 				// Sort list according to type
-				info.sortValue = info.abilityType.val;
+				//info.sortValue = info.abilityType.val;
 				
 				add(info);
 			}
 		}
 		
 		// Now sort the list according to usageCount and that is the order presented to the player.
-		Collections.sort(this);
+		//Collections.sort(this);
 	}
 	
 	// Can just instantiate the list and add abilities to it one at a time, or in a vector below
@@ -45,6 +45,8 @@ public class ItemList extends ArrayList<AbilityInfo>{
 	{
 		super();
 	}
+	
+
 	
 	public void addAbility(Ability ability) {
 		if (ability.isPhysical()) {

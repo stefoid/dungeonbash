@@ -64,6 +64,10 @@ public class ImageView {
 		draw(spriteBatch);
 	}
 
+	public Rect getArea() {
+		return area;
+	}
+	
 	public void setArea(Rect area) {
 		this.area = new Rect(area);
 		sprite.setBounds(area.x , area.y, area.width, area.height);

@@ -7,6 +7,7 @@ import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.tabs.ElementAnimator;
 import com.dbash.util.Rect;
 
 
@@ -22,6 +23,7 @@ public class ScrollingListView implements TouchEventListener {
 	int lastElementIndex;
 	TouchEventProvider touchEventProvider;
 	UIDepend gui;
+	AnimQueue animQueue; 
 	
 	// A scrolling list containing N elements is N*element_height pixels_tall.  When only part of the list is visible in the scroll window, listPosition records
 	// the position of the scroll window with respect to the list.  i.e. if the very top of the first element is visible (top of the list) then this will be 0.
@@ -40,6 +42,7 @@ public class ScrollingListView implements TouchEventListener {
 		listPositionMax = 0;
 		this.touchEventProvider = touchEventProvider;
 		this.gui = gui;
+		animQueue = new AnimQueue();
 	}
 		
 	public void setListElements(List<IListElement> listElements, float listPosition) {
@@ -133,9 +136,11 @@ public class ScrollingListView implements TouchEventListener {
 			elemY -= elementHeight;
 		}
 		
+		// Over the top, draw any animated stuff that is going on
+		animQueue.draw(spriteBatch);
+		
 		gui.cameraViewPort.endClipping(spriteBatch);
 	}
-	
 	
 	public void activate() {
 		touchEventProvider.addTouchEventListener(this, area, gui.cameraViewPort.viewPort);
@@ -153,6 +158,31 @@ public class ScrollingListView implements TouchEventListener {
 		return elementIndex;
 	}
 
+	/**
+	 * Scroll said element from its current position, to a new position based on the indexes.
+	 * Need to work out the rectangles based on the index positions and the current listPosition
+	 * 
+	 */
+	public void scrollElement(IListElement element, int oldIndex, int newIndex) {
+		if (oldIndex != newIndex) {
+			element.setAnimating();
+			int firstVisibleElement = getElementIndexForYPosition(listPosition);
+			float elemY = area.y + area.height - elementHeight + (float) (listPosition %  elementHeight);
+			float startY = elemY - (oldIndex - firstVisibleElement) * elementHeight;
+			float endY = elemY - (newIndex - firstVisibleElement) * elementHeight;
+			float period = (oldIndex - newIndex);
+			if (period < 0) {
+				period *= -0.1f;
+			} else {
+				period *= 0.1f;
+			}
+			period += 0.1f;
+			ElementAnimator eAnim = new ElementAnimator(element, area.x, period, startY, endY);
+			animQueue.add(eAnim, false);
+			eAnim.startPlaying();
+		}
+	}
+	
 	public float getListPosition()
 	{
 		return listPosition;

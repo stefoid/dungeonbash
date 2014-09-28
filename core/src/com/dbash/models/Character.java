@@ -935,7 +935,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		if (pickupAllowed) {
 			dungeonEvents.objectPickup(SequenceNumber.getNext(), this, ability, mapPosition);
-			abilities.add(ability);
+			abilities.add(0, ability);
 			ability.setOwned(this, true);
 			itemListListeners.alertListeners();
 		} 

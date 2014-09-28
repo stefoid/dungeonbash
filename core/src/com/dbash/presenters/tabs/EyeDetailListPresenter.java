@@ -60,7 +60,7 @@ public class EyeDetailListPresenter extends ListPresenter {
 			// add the closure to the element about what to do if it is selected.
 			abilityInfo.isUsableByOwner = true;  // set this so as not to show the diasbled status
 			abilityInfo.canBeCarried = true;  // set this so as not to show the diasbled status
-			ItemListElementView itemElement = new ItemListElementView(gui, null, abilityInfo, elementArea);
+			ItemListElementView itemElement = new ItemListElementView(gui, null, abilityInfo, elementArea, 0);
 			itemElement.addToList(elements);
 		}
 		

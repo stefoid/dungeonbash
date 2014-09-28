@@ -190,5 +190,9 @@ public class MenuListElementView implements IListElement {
 	public void clearDrawFlag() {
 		drawFlag = false;
 	}
+
+	@Override
+	public void setAnimating() {
+	}
 }
 

@@ -53,4 +53,8 @@ public class EffectListElementView extends AbilityTypeListElement {
 	public void clearDrawFlag() {
 		drawFlag = false;
 	}
+
+	@Override
+	public void setAnimating() {
+	}
 }
