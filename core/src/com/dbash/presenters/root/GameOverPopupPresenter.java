@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.dbash.models.GameStats;
 import com.dbash.models.TouchEvent;
+import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
@@ -15,6 +16,7 @@ public class GameOverPopupPresenter extends PopupPresenter {
 
 	final static String POPUP_ID = "GameOver";
 	
+	ImageView bckgroundImage;
 	TextView gameOverText;
 	TextView levelText;
 	TextView xpText;
@@ -31,6 +33,8 @@ public class GameOverPopupPresenter extends PopupPresenter {
 		this.touchEventProvider = popupController.getTouchEventProvider();
 		this.gui = popupController.getGuiDependencies();
 		this.area = new Rect(gui.sizeCalculator.dungeonArea);
+		Rect backgroundArea = new Rect(area, .04f, .04f, .15f, .35f);
+		this.backgroundImage = new ImageView(gui, "GAME_OVER_BACKGROUND", backgroundArea);
 		
 		init();
 		popupController.popupCreated(this, popupId);  // tell the popup controller about me.
@@ -75,6 +79,7 @@ public class GameOverPopupPresenter extends PopupPresenter {
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		if (startDrawing) {
+			backgroundImage.draw(spriteBatch, x, y);
 			gameOverText.draw(spriteBatch, x, y);
 			levelText.draw(spriteBatch, x, y);
 			monText.draw(spriteBatch, x, y);

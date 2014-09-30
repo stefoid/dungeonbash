@@ -55,6 +55,8 @@ public class ItemListPresenter extends ListPresenter{
 						if (pickupAllowed == false) {
 							gui.audio.playSound(Audio.NEGATIVE);
 						} else {
+							saveListPosition();  // do this first because processing the ability will create a new list
+							character.performPickup(ability);
 							element.abilityInfo.isCarried = true;
 							element.setBackgroundImage();
 							scrollItem(element);

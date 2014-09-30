@@ -1,0 +1,32 @@
+import string
+
+file = open("dbash.txt",'rw')
+
+lines =  file.xreadlines()
+
+parsingAbilities = 1
+abilityIndex = 0
+creatureIndex = 0
+ability = []
+creature = []
+
+for line in lines:
+    if parsingAbilities == 1:
+        ability[abilityIndex] = parseAbility(line)
+        if Ability[abilityIndex] == none:
+            parsingAbilities = 0
+        else:
+            abilityIndex++
+
+    if parsingAbilities == 0:
+         creature[creatureIndex] = parseCreature(line)
+         creatureIndex++
+        
+
+
+    
+def parseAbility(line):
+    chunks = string.split(line, "\"")
+    
+def parseCreature(line):
+    chunks = string.split(line, "\"")

@@ -42,6 +42,7 @@ public interface IPresenterCharacter {
 	public ItemList getItemList();
 	
 	public boolean itemPickupSelected(Ability ability);
+	public void performPickup(Ability ability);
 	public void itemDropSelected(Ability ability);
 	
 	// Stairs status

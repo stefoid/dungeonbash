@@ -923,22 +923,26 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 
 	@Override
-	public boolean itemPickupSelected(Ability ability) {
-		boolean pickupAllowed = true;
-
-		// first check carry limit
-		int items = getNumberOfPhysicalItemsCarried();
-		if (items >= MAX_ITEMS)
-			pickupAllowed = false;
-
-		pickupAllowed = canCarry(ability);
-		
-		if (pickupAllowed) {
+	public void performPickup(Ability ability) {
+		if (itemPickupSelected(ability)) {
 			dungeonEvents.objectPickup(SequenceNumber.getNext(), this, ability, mapPosition);
 			abilities.add(0, ability);
 			ability.setOwned(this, true);
 			itemListListeners.alertListeners();
 		} 
+	}
+	
+	@Override
+	public boolean itemPickupSelected(Ability ability) {
+		boolean pickupAllowed = true;
+
+		// first check carry limit
+		int items = getNumberOfPhysicalItemsCarried();
+		if (items >= MAX_ITEMS) {
+			pickupAllowed = false;
+		} else {
+			pickupAllowed = canCarry(ability);
+		}
 		
 		return pickupAllowed;
 	}

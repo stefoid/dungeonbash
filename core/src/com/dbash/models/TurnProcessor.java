@@ -38,6 +38,9 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final int NO_CURRENT_CREATURE = -1;
 	public GameStats gameStats;
 	
+	public Character savedLeader;
+	
+	
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character.  We iterate over this list to give everything a chance to act.
 	// allCharacters contains all the alive characters.
@@ -553,12 +556,24 @@ public class TurnProcessor implements IPresenterTurnState {
 		
 		Character sawMonster = dungeonQuery.leaderModeOK();
 		if (sawMonster != null) {
+			
 			leaderStatus = LeaderStatus.LEADER_DISABLED;
 			if (currentLeader != null) {
+				savedLeader = currentLeader;
 				currentLeader.leaderStatusOff();
 				currentLeader = null;
 			}
-		}
+		} 
+//		else {
+//			if (savedLeader != null) {
+//				// If we are going to re-instate leader mode, is the leader alive and still on hte map?
+//				if (allCreatures.contains(savedLeader)) {
+//					currentLeader = savedLeader;
+//					leaderStatus = LeaderStatus.HAVE_LEADER;			
+//				} 
+//				savedLeader = null;
+//			}
+//		}
 		
 		leaderStatusListeners.alertListeners();
 
