@@ -1003,6 +1003,12 @@ public abstract class Creature implements IPresenterCreature
 
 		// read value
 		cd.value = readNextNum(string);
+		
+		// read stealth
+		cd.stealth = readNextNum(string);
+
+		// read detect
+		cd.detect = readNextNum(string);
 
 		creatureData.addElement(cd);
 

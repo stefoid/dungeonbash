@@ -36,7 +36,9 @@ public	 class Data
 	public int			speed;					
 	public int			attackSkill;			
 	public int			defenceSkill;	
-	//public int			value;
+	//public int		value;
+	public int 			stealth;
+	public int 			detect;
 	public int[]		abilityIds;
 
 }
