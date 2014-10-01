@@ -152,9 +152,33 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				Monster minion = new Monster(9, level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
 				mobs.add(minion);
-			default:
-				map.location(map.exitPoint).setAsExit();
 				break;
+			case 2:
+				Monster orc = new Monster(25, level, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = orc;
+				mobs.add(orc);
+				break;
+			case 3:
+				Monster priest = new Monster(49, level, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = priest;
+				mobs.add(priest);
+				break;
+			case 4:
+				Monster wizard = new Monster(47, level, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = wizard;
+				mobs.add(wizard);
+				break;
+			case 5:
+				Monster dwarf = new Monster(33, level, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = dwarf;
+				mobs.add(dwarf);
+				break;
+			default:
+				break;
+		}
+		
+		if (level != Dungeon.FINAL_LEVEL) {
+			map.location(map.exitPoint).setAsExit();
 		}
 		
 
@@ -163,7 +187,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 		// TOTO turn off monsters to test character anim for now
 		// add monsters to level
-		for (int i = 0; i < ((map.height - 12) * 3 / 2); i++)
+		for (int i = 0; i < ((map.height - 11) * 2); i++)
 		{
 			if ((level > 4) && (Randy.getRand(1, 10) == 1))
 			{

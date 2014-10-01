@@ -35,6 +35,7 @@ public class TextImageView extends ImageView {
 	
 	public void draw(SpriteBatch spriteBatch) {
 		font.setScale(scaleX, scaleY);
+		font.setColor(1f, 1f, 1f, 1f);
 		font.draw(spriteBatch, text, area.x, area.y);
 	}
 	
@@ -46,6 +47,7 @@ public class TextImageView extends ImageView {
 	
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		font.setScale(scaleX, scaleY);
+		font.setColor(1f, 1f, 1f, 1f);
 		font.draw(spriteBatch, text, area.x+x, area.y+y);
 	}
 

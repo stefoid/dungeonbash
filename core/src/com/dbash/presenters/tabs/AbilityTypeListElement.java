@@ -51,7 +51,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 	final static float fromBottom = 0.05f;
 	final static float effectSpacer = 1.05f;
 	final static float textBottom = 0.25f;
-	final static float rightSide = 1.75f;
+	final static float rightSide = 1.9f;
 	final static float textSpacer = .9f;
 	final static float textHeightFat = 1.1f;
 	
