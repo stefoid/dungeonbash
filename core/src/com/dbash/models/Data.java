@@ -39,6 +39,7 @@ public	 class Data
 	//public int		value;
 	public int 			stealth;
 	public int 			detect;
+	public int 			starter;
 	public int[]		abilityIds;
 
 }

@@ -705,19 +705,15 @@ public class Character extends Creature implements IPresenterCharacter {
 		return isAlive;
 	}
 	
-	public static Character getNewCharacter(int maxLevel, int minLevel, boolean humanoid, DungeonPosition p,
-			int index, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery, TurnProcessor turnProcessor) {
+	public static Character getNewCharacter( DungeonPosition p, int index, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery, TurnProcessor turnProcessor) {
 		boolean resultOK = false;
 		int random = 0;
 		
 		while (!resultOK) {
 			random = Randy.getRand(1, creatureData.size() - 1);
-			
 			Data cd = (Data) creatureData.elementAt(random);
-
-			if ((humanoid && cd.humanoid == 1) || !humanoid) {
-				if ((cd.value <= maxLevel) && (cd.value >= minLevel))
-					resultOK = true;
+			if (cd.starter != 0) {
+				resultOK = true;
 			}
 		}
 		

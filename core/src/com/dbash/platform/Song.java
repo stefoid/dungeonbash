@@ -83,16 +83,18 @@ public class Song {
 		if (state == State.FADING_OUT) {
 			startVolume = volumeTween.getValue();
 		} else {
+			music.setVolume(0f);
 			music.play();
 		}
 		
 		volumeTween = new Tween();
-		state = State.FADING_IN;
 		volumeTween.init(startVolume, 1f, 10, new IAnimListener() {
 			public void animEvent() {
 				state = State.PLAYING;
 			}
 		});
+		state = State.FADING_IN;
+
 	}
 	
 	/*

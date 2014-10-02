@@ -344,12 +344,13 @@ class Creature:
         self.defence = 0  
         self.value = 1
         self.stealth = 1
-        self.detect = 1;
+        self.detect = 1
+        self.starter = 0
         self.abilities = ["NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY"]    
 
     def fileWrite(self, file):
         self.comment = "// "+self.name + ": "
-        st = "+\"" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+","+ str(self.value)+"," + str(self.stealth)+"," + str(self.detect)+","
+        st = "+\"" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+","+ str(self.value)+"," + str(self.stealth)+"," + str(self.detect)+","+ str(self.starter)+","
         for i in range (0,6):
             if (self.abilities[i] != -1):
                 st = st + str(self.abilities[i]) + "," 
@@ -359,7 +360,7 @@ class Creature:
         file.write(st)
 
     def fileWrite2(self, file):
-        st = "" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+"," + str(self.value)+","+ str(self.stealth)+"," + str(self.detect)+","
+        st = "" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+"," + str(self.value)+","+ str(self.stealth)+"," + str(self.detect)+","+ str(self.starter)+","
         for i in range (0,6):
             if (self.abilities[i] != -1):
                 st = st + str(self.abilities[i]) + "," 
@@ -382,7 +383,8 @@ class Creature:
         self.defence = self.defenceStr.get()
         self.value = self.valueStr.get()
         self.stealth = self.stealthStr.get()
-        self.detect = self.detectStr.get()            
+        self.detect = self.detectStr.get()       
+        self.starter = self.starterStr.get()       
     
     def convert(self):  # will convert between numerical and string values and back again
         self.colour = convertColour(self.colour)
@@ -514,6 +516,13 @@ class Creature:
         self.detectStr.set(self.detect)
         tg101 = Entry(win, textvariable=self.detectStr)
         tg101.grid(row=14, column=7)  
+
+        l102 = Label(win, text="starter")
+        l102.grid(row=15, column=7)
+        self.starterStr = StringVar()
+        self.starterStr.set(self.starter)
+        tg102 = Entry(win, textvariable=self.starterStr)
+        tg102.grid(row=16, column=7)  
     
         # now do up to 6 abilities that this creatrue may or may not have
         cRow=5
@@ -1000,11 +1009,12 @@ def parseCreature(line):
     aCreature.value = int(parameters[12])  
     aCreature.stealth = int(parameters[13])  
     aCreature.detect = int(parameters[14]) 
+    aCreature.starter = int(parameters[15]) 
     aCreature.abilities = []
     
     # read an optional list of abilities for this creature
     
-    paramIndex = 15
+    paramIndex = 16
     
     while string.find(parameters[paramIndex], "*") == -1: # comment not found, so must be command    
         aCreature.abilities.append(int(parameters[paramIndex]))

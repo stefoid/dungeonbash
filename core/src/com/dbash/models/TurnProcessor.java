@@ -358,52 +358,73 @@ public class TurnProcessor implements IPresenterTurnState {
 		dungeonEvents.creatureDies(SequenceNumber.getCurrent()+2, observer, creature);
 	}
 	
+	private boolean noDuplicate(List<Character> theChars, Character character) {
+		for (Character c : theChars) {
+			if (character.myId == c.myId) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private List<Character> createRandomCharacters() {
-		List<Character> retval = new LinkedList<Character>();
+		List<Character> theChars = new LinkedList<Character>();
 
 		// The dungeon will fill in the position when the creature falls into the level.  This
 		// is just a placeholder.
 		DungeonPosition p = new DungeonPosition(0, 0);  //will init to level 1.
-
-		int teamLevelPoints = 9;
-
-		for (int i = 0; i < 3; i++) {
-			Character chr;
-			
-		   if (i == 0) {
-			   chr = Character.getNewCharacter(5, 2, true, p, i+1, dungeonEvents, dungeonQuery, this);
-		   }
-		   else if (i == 1) {   
-			   int nextValue = teamLevelPoints-2;
-			   if (nextValue < 2)
-				   nextValue = 2;
-			   chr = Character.getNewCharacter(nextValue, 2, false, p, i+1, dungeonEvents, dungeonQuery, this);
-		   } else {
-			   chr = Character.getNewCharacter(teamLevelPoints, teamLevelPoints, false, p, i+1, dungeonEvents, dungeonQuery, this); 
-		   }
-			
-			chr.addExperience(1000, true);
-			teamLevelPoints -= chr.getLevelValue();
-			retval.add(chr);
-		}
+		int index = 1;
+		
+		// First character must be humanoid
+		boolean foundChar = false;
+		while (foundChar == false) {
+			Character c = Character.getNewCharacter(p, 1, dungeonEvents, dungeonQuery, this); 
+			if (c.isHumanid() && noDuplicate(theChars, c)) {
+				c.addExperience(1000, true);
+				theChars.add(c);
+				foundChar = true;
+			}
+		} 
+		
+		// 2nd character cant have hands
+		foundChar = false;
+		while (foundChar == false) {
+			Character c = Character.getNewCharacter(p, 2, dungeonEvents, dungeonQuery, this); 
+			if (c.hasHands()==false && noDuplicate(theChars, c)) {
+				c.addExperience(1000, true);
+				theChars.add(c);
+				foundChar = true;
+			}
+		} 
+		
+		// 3rd character can be anything
+		foundChar = false;
+		while (foundChar == false) {
+			Character c = Character.getNewCharacter(p, 3, dungeonEvents, dungeonQuery, this); 
+			if (noDuplicate(theChars, c)) {
+				c.addExperience(1000, true);
+				theChars.add(c);
+				foundChar = true;
+			}
+		} 
 		
 		// test
-		retval.clear();
-		p.level = 20;
-		retval.add(new Character(29, p, 1, dungeonEvents, dungeonQuery, this));
-		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
-		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
-		Creature c = retval.get(0);
-		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
-		c.addAbility(new Ability(108, null, 20, dungeonEvents, dungeonQuery));
-		c.addAbility(new Ability(143, null, 20, dungeonEvents, dungeonQuery));
-		c.addAbility(new Ability(112, null, 20, dungeonEvents, dungeonQuery));
-		c.addAbility(new Ability(105, null, 20, dungeonEvents, dungeonQuery));
-		c.addAbility(new Ability(58, null, 20, dungeonEvents, dungeonQuery));
+//		retval.clear();
+//		p.level = 20;
+//		retval.add(new Character(29, p, 1, dungeonEvents, dungeonQuery, this));
+//		retval.add(new Character(29, p, 2, dungeonEvents, dungeonQuery, this));
+//		retval.add(new Character(29, p, 3, dungeonEvents, dungeonQuery, this));
+//		Creature c = retval.get(0);
+//		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
+//		c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
+//		c.addAbility(new Ability(143, null, 20, dungeonEvents, dungeonQuery));
+//		c.addAbility(new Ability(112, null, 20, dungeonEvents, dungeonQuery));
+//		c.addAbility(new Ability(105, null, 20, dungeonEvents, dungeonQuery));
+//		c.addAbility(new Ability(58, null, 20, dungeonEvents, dungeonQuery));
 		// 149 + 75 
 		// test
 
-		return retval;
+		return theChars;
 	}
 
 	// IPresenterTurn State  interface

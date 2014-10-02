@@ -1009,6 +1009,9 @@ public abstract class Creature implements IPresenterCreature
 
 		// read detect
 		cd.detect = readNextNum(string);
+		
+		// read starter
+		cd.starter = readNextNum(string);
 
 		creatureData.addElement(cd);
 
@@ -1192,7 +1195,26 @@ public abstract class Creature implements IPresenterCreature
 		return ability.meetsNeeds(hasHead, hasHands, isHumanoid);
 	}
 
+	public boolean hasHead() {
+		if (getCreature().head == 0)
+			return false;
+		else
+			return true;
+	}
 	
+	public boolean hasHands() {
+		if (getCreature().hands == 0)
+			return false;
+		else
+			return true;
+	}
+	
+	public boolean isHumanid() {
+		if (getCreature().humanoid == 0)
+			return false;
+		else
+			return true;
+	}
 	public CreatureStats getCreatureStats()
 	{
 		// initialize for first time
