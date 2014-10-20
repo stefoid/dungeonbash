@@ -927,11 +927,15 @@ public class Ability
 //		}
 		
 		if (ability.name.equals("charge")) {
-			abilityEffectTypeHash.add(AbilityEffectType.NONE_REALLY);
+			abilityEffectTypeHash.add(AbilityEffectType.CHARGE);
 		}
 		
 		if (ability.name.equals("knockback")) {
-			abilityEffectTypeHash.add(AbilityEffectType.NONE_REALLY);
+			abilityEffectTypeHash.add(AbilityEffectType.KNOCKBACK);
+		}
+		
+		if (ability.name.equals("flight")) {
+			abilityEffectTypeHash.add(AbilityEffectType.FLIGHT);
 		}
 		
 		// replace resist all 4 types with 'resist all'
