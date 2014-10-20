@@ -56,6 +56,10 @@ public abstract class Creature implements IPresenterCreature
 	// creatures current defence skill is increased as it gets more experience
 	int						defenceSkill;							// the
 	
+	int stealth;
+	
+	int detect;
+	
 	// creatures current health points
 	public int						health;								// the
 
@@ -229,6 +233,9 @@ public abstract class Creature implements IPresenterCreature
 		speed = getCreature().speed;
 		attackSkill = getCreature().attackSkill;
 		defenceSkill = getCreature().defenceSkill;
+		stealth = getCreature().stealth;
+		detect = getCreature().detect;
+		
 		// image = gameControl.getImageFromGif(creature.gifName);
 		myId = creatureId;
 		maximumHealth = getCreature().maximumHealth;
@@ -255,31 +262,6 @@ public abstract class Creature implements IPresenterCreature
         	missedTurns += 2;
         	return false;
         }
-	}
-	
-	public int calculateSpeed() {
-		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
-	}
-	
-	public int calculateDamage() {
-		Ability theAbility = null;
-		
-		// First find the set weapon.
-		for (Ability ability : abilities) {
-			if (ability.isUsed()) {
-				if (ability.getAbilityType() == AbilityType.WEAPON) {
-					theAbility = ability;
-				}
-			}
-		}
-		
-		int damage = 0;
-		if (theAbility != null) {
-			damage = theAbility.getAbilityMeleeDamage();
-			damage += calculateSizeDamageBonus() + calculateSkillDamageBonus();
-		}
-		
-		return damage;
 	}
 	
 	// these are for a CreaturePresenter to observe changes to the highlight status of the creature.
@@ -562,7 +544,7 @@ public abstract class Creature implements IPresenterCreature
 		expRoot = (int)Math.sqrt(experience);// pre-calculate the squre root
 												// of the experience which is
 												// used in many places
-
+		expRoot = 0;
 		// we need to modify the creatures health and maxheath based on initial
 		// experience
 		if (initialExp)
@@ -787,7 +769,7 @@ public abstract class Creature implements IPresenterCreature
 		return modifyValue(AbilityCommand.MODIFY_ATTACK_SKILL, newAttack);
 
 	}
-
+	
 	protected int calculateDefenceSkill()
 	{
 		int newDefence = defenceSkill + (defenceSkill * expRoot) / 100;
@@ -945,6 +927,39 @@ public abstract class Creature implements IPresenterCreature
 	protected int calculateSkillDamageBonus() {
 		int bonus = calculateAttackSkill() / 8;
 		return bonus;
+	}
+	
+	public int calculateSpeed() {
+		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
+	}
+	
+	public int calculateStealth() {
+		return modifyValue(AbilityCommand.MODIFY_STEALTH, stealth);
+	}
+	
+	public int calculateDetect() {
+		return modifyValue(AbilityCommand.MODIFY_DETECT, detect);
+	}
+	
+	public int calculateDamage() {
+		Ability theAbility = null;
+		
+		// First find the set weapon.
+		for (Ability ability : abilities) {
+			if (ability.isUsed()) {
+				if (ability.getAbilityType() == AbilityType.WEAPON) {
+					theAbility = ability;
+				}
+			}
+		}
+		
+		int damage = 0;
+		if (theAbility != null) {
+			damage = theAbility.getAbilityMeleeDamage();
+			damage += calculateSizeDamageBonus() + calculateSkillDamageBonus();
+		}
+		
+		return damage;
 	}
 	
 	private static int readNextNum(String string)

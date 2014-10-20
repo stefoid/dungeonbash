@@ -30,7 +30,8 @@ public class AbilityCommand
 	public static final int		MODIFY_MAX_MAGIC = 14;
 	public static final int		MODIFY_ATTACK_SKILL = 15;
 	public static final int		MODIFY_DEFENCE_SKILL = 16;
-
+	public static final int		MODIFY_STEALTH = 22;
+	public static final int		MODIFY_DETECT = 23;
 
 	public static final int		INVOKE = 18;
 	public static final int		EXECUTE = 19;

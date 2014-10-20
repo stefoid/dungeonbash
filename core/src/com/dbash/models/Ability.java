@@ -50,6 +50,9 @@ public class Ability
 		SPEED,
 		SLOW,
 		HOLD,
+		FLIGHT,
+		CHARGE,
+		KNOCKBACK,
 		STUNNED,
 		RESIST_POISON,
 		RESIST_HELD,
@@ -58,6 +61,7 @@ public class Ability
 		RESIST_SHARP,
 		RESIST_CHEMICAL,
 		RESIST_ENERGY,
+		RESIST_KNOCKBACK,
 		RESIST_ALL,
 		NONE_REALLY
 	}
@@ -897,12 +901,38 @@ public class Ability
 					abilityEffectTypeHash.add(AbilityEffectType.CURSE);
 				}
 			}
+			
+			// stealth related
+			if (testEffectType(i, AbilityCommand.MODIFY_STEALTH)) {
+				if (ability.executeParam1[i] > 0) {
+					abilityEffectTypeHash.add(AbilityEffectType.ATTACK);
+				} else {
+					abilityEffectTypeHash.add(AbilityEffectType.CURSE);
+				}
+			}
+			
+			// detect related
+			if (testEffectType(i, AbilityCommand.MODIFY_DETECT)) {
+				if (ability.executeParam1[i] > 0) {
+					abilityEffectTypeHash.add(AbilityEffectType.ATTACK);
+				} else {
+					abilityEffectTypeHash.add(AbilityEffectType.CURSE);
+				}
+			}
 		}
 		
 		// If its empty, put in a placeholder
 //		if (abilityEffectTypeHash.size() == 0) {
 //			abilityEffectTypeHash.add(AbilityEffectType.NONE_REALLY);
 //		}
+		
+		if (ability.name.equals("charge")) {
+			abilityEffectTypeHash.add(AbilityEffectType.NONE_REALLY);
+		}
+		
+		if (ability.name.equals("knockback")) {
+			abilityEffectTypeHash.add(AbilityEffectType.NONE_REALLY);
+		}
 		
 		// replace resist all 4 types with 'resist all'
 		if (hard && sharp && energy && chem) {
