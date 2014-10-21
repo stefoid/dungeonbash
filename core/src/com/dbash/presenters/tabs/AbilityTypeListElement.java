@@ -75,6 +75,10 @@ public abstract class AbilityTypeListElement implements IListElement {
 			textArea.y -= textArea.height*1.2f;
 			color = Color.WHITE;
 		}
+		
+		if (abilityInfo.color != null) {
+			color = abilityInfo.color;
+		}
 
 		//String rightPaddedString = new IListElement.PaddedString(abilityInfo.name).string;
 		abilityName = new TextView(gui, null, abilityInfo.name, textArea, hAlign, vAlign, color);

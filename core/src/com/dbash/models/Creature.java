@@ -544,7 +544,7 @@ public abstract class Creature implements IPresenterCreature
 		expRoot = (int)Math.sqrt(experience);// pre-calculate the squre root
 												// of the experience which is
 												// used in many places
-		expRoot = 0;
+
 		// we need to modify the creatures health and maxheath based on initial
 		// experience
 		if (initialExp)

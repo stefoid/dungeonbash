@@ -2,6 +2,7 @@ package com.dbash.models;
 
 import java.util.Vector;
 
+import com.badlogic.gdx.graphics.Color;
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
 
@@ -24,6 +25,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean oneShot;
 	public boolean isStat = false;
 	public int	statValue = 0;
+	public Color color;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -54,7 +56,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isUsableByOwner = owner.canUseAbility(ability);
 			isCarried = true;
 			targetable = ability.isTargetable();
-			
+
 			if (owner instanceof Character) {
 				Character c = (Character) owner;
 				// being disabled for not enough magic overrides selection status
@@ -69,13 +71,21 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 
 	public AbilityInfo(String text) {
 		name = text;
+		isStat = true;
 	}
 
+	public AbilityInfo(String text, Color color) {
+		name = text;
+		isStat = true;
+		this.color = color;
+	}
+	
 	// constructor for stat listing
-	public AbilityInfo(String text, int value) {
+	public AbilityInfo(String text, int value, Color color) {
 		name = text;
 		statValue = value;
 		isStat = true;
+		this.color = color;
 	}
 	
 	@Override

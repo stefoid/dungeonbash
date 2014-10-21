@@ -1,6 +1,8 @@
 package com.dbash.models;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
+
 
 //each Character has a AbilitySelectionList that has the following responsibilities.
 //
@@ -46,46 +48,58 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		
 			// We add character stats
 			int as = owner.calculateAttackSkill();
-			AbilityInfo attack = new AbilityInfo("ATTACK SKILL : "+as, as);
+			AbilityInfo attack = new AbilityInfo("ATTACK SKILL : "+as, as, Color.WHITE);
 			add(attack);
 			
 			int ds = owner.calculateDefenceSkill();
-			AbilityInfo defence = new AbilityInfo("DEFENCE SKILL : "+ds, ds);
+			AbilityInfo defence = new AbilityInfo("DEFENCE SKILL : "+ds, ds, Color.WHITE);
 			add(defence);
 			
 			int ss = owner.calculateSpeed();
-			AbilityInfo speed = new AbilityInfo("SPEED : "+ss, ss);
+			AbilityInfo speed = new AbilityInfo("SPEED : "+ss, ss, Color.WHITE);
 			add(speed);
 			
 			int wd = owner.calculateDamage();
-			AbilityInfo dam = new AbilityInfo("MELEE DAMAGE : "+wd, wd);
+			AbilityInfo dam = new AbilityInfo("MELEE DAMAGE : "+wd, wd, Color.WHITE);
 			add(dam);
 			
 			int st = owner.calculateStealth();
-			AbilityInfo stealth = new AbilityInfo("STEALTH : "+st, st);
+			AbilityInfo stealth = new AbilityInfo("STEALTH : "+st, st, Color.WHITE);
 			add(stealth);
 			
 			int de = owner.calculateDetect();
-			AbilityInfo detect = new AbilityInfo("DETECT : "+de, de);
+			AbilityInfo detect = new AbilityInfo("DETECT : "+de, de, Color.WHITE);
 			add(detect);
 			
 			
 			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
-			AbilityInfo hp = new AbilityInfo("HARD DEF : "+hpv+"%", hpv );
+			AbilityInfo hp = new AbilityInfo("HARD DEF : "+hpv+"%", hpv , new Color(1, .3f, 0.3f, 1));
 			add(hp);
 			
 			int spv = owner.calcProtection(AbilityCommand.RESIST_SHARP);
-			AbilityInfo sp = new AbilityInfo("SHARP DEF : "+spv+"%", spv );
+			AbilityInfo sp = new AbilityInfo("SHARP DEF : "+spv+"%", spv , new Color(0, 0, .7f, 1));
 			add(sp);
 			
 			int epv = owner.calcProtection(AbilityCommand.RESIST_ENERGY);
-			AbilityInfo ep = new AbilityInfo("ENERGY DEF : "+epv+"%", epv );
+			AbilityInfo ep = new AbilityInfo("ENERGY DEF : "+epv+"%", epv , Color.YELLOW);
 			add(ep);
 			
 			int cpv = owner.calcProtection(AbilityCommand.RESIST_CHEMICAL);
-			AbilityInfo cp = new AbilityInfo("CHEMICAL DEF : "+cpv+"%", cpv );
+			AbilityInfo cp = new AbilityInfo("CHEMICAL DEF : "+cpv+"%", cpv , Color.GREEN);
 			add(cp);
+			
+			if (owner.hasHead() == false) {
+				add(new AbilityInfo("NO HEAD", Color.BLACK));
 			}
+			
+			if (owner.hasHands() == false) {
+				add(new AbilityInfo("NO HANDS", Color.BLACK));
+			}
+			
+			if (owner.isHumanid() == false) {
+				add(new AbilityInfo("NOT NORMAL BODY", Color.BLACK));
+			}
+		}
 		
 		// Now sort the list according to usageCount and that is the order presented to the player.
 		//Collections.sort(this);
