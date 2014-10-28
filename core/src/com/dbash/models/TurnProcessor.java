@@ -414,7 +414,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		p.level = 20;
 		theChars.add(new Character(45, p, 1, dungeonEvents, dungeonQuery, this));
 		theChars.add(new Character(16, p, 2, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(79, p, 3, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(66, p, 3, dungeonEvents, dungeonQuery, this));
 //		Creature c = theChars.get(0);
 //		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
 //		c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
