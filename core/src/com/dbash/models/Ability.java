@@ -804,8 +804,8 @@ public class Ability
 		return abilityEffectType;
 	}
 	
-	private final static int HELD = 145;
-	private final static int STUN = 70;
+	private final static String HELD = "held";
+	private final static String STUN = "stunned";
 	
 	private void setAbilityEffectType()
 	{
@@ -845,7 +845,7 @@ public class Ability
 				if (ability.executeParam1[i] > 0) {
 					abilityEffectTypeHash.add(AbilityEffectType.SPEED);
 				} else if (ability.executeParam1[i] < -5) {
-					if (myId == HELD) {
+					if (ability.name.equals(HELD)) {
 						abilityEffectTypeHash.add(AbilityEffectType.HOLD);
 					} else {
 						abilityEffectTypeHash.add(AbilityEffectType.STUNNED);
@@ -884,9 +884,9 @@ public class Ability
 			
 			// resistance related
 			if (testEffectType(i, AbilityCommand.RESIST_ABILITY)) {
-				if (ability.executeParam1[i] == HELD) {
+				if (ability.name.equals(HELD)) {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_HELD);
-				} else if (ability.executeParam1[i] == STUN) {
+				} else if (ability.name.equals(STUN)) {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_STUN);
 				} else {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_POISON);
