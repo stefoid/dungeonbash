@@ -68,6 +68,16 @@ public class Ability
 	
 	public int usageCount = 0;  // Every time an ability is used, this number is incremented for ordering the selection list.
 	
+	public static int idForName(String name) {
+		for (int i=0; i<abilityData.size();i++) {
+			if (abilityData.get(i).name.equals(name)) {
+				return i;
+			}
+		}
+		
+		return 0;
+	}
+	
 	public Ability(int	abilityId, Creature isOwned, int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery)
 	{
 		this.dungeonEvents = dungeonEvents;
@@ -538,7 +548,7 @@ public class Ability
 	private Ability 		addedAbility;
 	public int				myId;
 	
-	static Vector 	abilityData = new Vector(30,5);	
+	static Vector<Data> 	abilityData = new Vector<Data>(30,5);	
 
 	static int index;
 	static int endIndex;

@@ -97,6 +97,8 @@ public class Map implements IPresenterMap {
 				}
 				addExitLight();
 				
+				addRoughTerrain();
+				
 				dungeonNotCompleted = false;
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
@@ -272,6 +274,54 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
+	private void drawSquigglyRoughTerrainLine(DungeonPosition pos) {
+		int x = pos.x;
+		int y = pos.y;
+		int dir = Randy.getRand(0, 4);
+		int nx;
+		int ny;
+
+		for (int i = 0; i < ((height * 3) / 2); i++) {
+			nx = x;
+			ny = y;
+
+			switch (dir) {
+				case 0:
+					if (y > 1)
+						ny--;
+					break;
+				case 1:
+					if (y < (height - 2))
+						ny++;
+					break;
+				case 2:
+					if (x > 1)
+						nx--;
+					break;
+
+				case 3:
+					if (x < (width - 2))
+						nx++;
+					break;
+			}
+
+			if (isLegal(nx, ny))
+			{
+				x = nx;
+				y = ny;
+				location(x,y).clearLocation();
+			}
+
+			// will only change the direction when the direction is legal, i.e.
+			// between 1-4
+			int nDir = Randy.getRand(0, height * 2);
+
+			if (nDir < 5) {
+				dir = nDir;
+			}
+		}
+	}
+	
 	public boolean inBounds(DungeonPosition p) {
 		if (safeLocation(p.x, p.y) == solidRock) {
 			return false;
@@ -383,6 +433,10 @@ public class Map implements IPresenterMap {
 		for (Light light : tempLights) {
 			light.clearLight();
 		}
+	}
+	
+	protected void addRoughTerrain() {
+		int numberRough = Randy.getRand(width/5,  width);
 	}
 	
 //	public void dump() {

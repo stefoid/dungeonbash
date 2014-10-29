@@ -16,6 +16,9 @@ import com.dbash.util.Randy;
 // (Each character has a shadowMap that informs Locations that it can see them)
 public class Location {
 
+	public static final String ROUGH = "rough";
+	public static final String BARRIER = "barrier";
+	
 	public enum LocationType {
 		WALL,
 		FLOOR,
@@ -33,6 +36,38 @@ public class Location {
 		FRONT,
 		EAST,
 		WEST
+	}
+	
+	public enum RoughTerrainType {
+		BONES ("bones"),
+		ROCKS ("rocks"),
+		MUD ("mud"),
+		HOLE ("hole");
+		
+	    private final String value;
+
+	    private RoughTerrainType(String value) {
+	        this.value = value;
+	    }
+
+	    public String getValue() {
+	        return value;
+	    }
+	    
+	    public Boolean isPassable() {
+	    	return value != HOLE.getValue();
+	    }
+	    
+	    public static RoughTerrainType fromString(String text) {
+	        if (text != null) {
+	          for (RoughTerrainType b : RoughTerrainType.values()) {
+	            if (text.equalsIgnoreCase(b.getValue())) {
+	              return b;
+	            }
+	          }
+	        }
+	        return null;
+	      }
 	}
 	
 	public static final float minTint = 0.3f;
@@ -200,6 +235,23 @@ public class Location {
 	
 	public void clearLocation() {
 		locationType = LocationType.FLOOR;
+	}
+	
+	public void setRoughTerrain(RoughTerrainType roughTerrainType) {
+		int id = Ability.idForName(roughTerrainType.getValue());
+		Ability ability = new Ability(id, null, 1, null, null); // TODO do I need these last two params?
+		itemList.add(ability);
+	}
+	
+	public RoughTerrainType getRoughTerrain() {
+		RoughTerrainType result = null;
+		for (Ability ability : itemList) {
+			result = RoughTerrainType.fromString(ability.ability.gifName);
+			if (result != null) {
+				break;
+			}
+		}
+		return result;
 	}
 	
 	public void setAsExit() {
