@@ -3,7 +3,9 @@ package com.dbash.presenters.dungeon;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
+import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
@@ -30,6 +32,7 @@ public class LocationPresenter {
 	private AnimationView torchAnimation = null;
 	private boolean drawEye = false;
 	private ImageView shadow = null;
+	private ImageView roughTerrain = null;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter dungeonPresenter) {
 		this.area = new Rect(area);
@@ -46,6 +49,11 @@ public class LocationPresenter {
 		
 		if (locationInfo.shadowMaps.contains(shadowMap)) {
 			tile.drawTinted(spriteBatch, tint, alpha);
+			
+			if (roughTerrain != null) {
+				roughTerrain.drawTinted(spriteBatch, tint, alpha);
+			}
+			
 			if (shadow != null) {
 				shadow.drawTinted(spriteBatch, tint, alpha);
 			}
@@ -64,6 +72,9 @@ public class LocationPresenter {
 			}
 		} else if (locationInfo.isDiscovered) {
 			tile.drawTinted(spriteBatch, Location.minTint, alpha);
+			if (roughTerrain != null) {
+				roughTerrain.drawTinted(spriteBatch, tint, alpha);
+			}
 		} 
 
 		return drawOverlay;
@@ -95,6 +106,9 @@ public class LocationPresenter {
 			}
 
 			this.tile = new ImageView(gui, tileName, area); 
+			if (locationInfo.roughTerrainType != null) {
+				this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainType.getValue(), area);
+			}
 			
 			Rect torchArea; 
 			switch (locationInfo.torch) {
@@ -142,11 +156,16 @@ public class LocationPresenter {
 		itemArea.width = area.width/3;
 		itemArea.height = area.width/3;
 		items.clear();
-		for (int i=0; i<locationInfo.itemList.size(); i++) {
-			int posIndex = i%(x.length);
-			itemArea.x = area.x + area.width*x[posIndex];  
-			itemArea.y = area.y + area.height*y[posIndex];  
-			items.add(new ImageView(gui, locationInfo.itemList.get(i).getAbilityTypeImageName(), itemArea));
+		
+		int i = 0;
+		for (AbilityInfo abilityInfo : locationInfo.itemList) {
+			if (abilityInfo.isRoughTerrain == false) {
+				int posIndex = i%(x.length);
+				itemArea.x = area.x + area.width*x[posIndex];  
+				itemArea.y = area.y + area.height*y[posIndex];  
+				items.add(new ImageView(gui, locationInfo.itemList.get(i).getAbilityTypeImageName(), itemArea));
+				i++;
+			}
 		}
 	}
 	

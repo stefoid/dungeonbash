@@ -17,7 +17,6 @@ import com.dbash.util.Randy;
 public class Location {
 
 	public static final String ROUGH = "rough";
-	public static final String BARRIER = "barrier";
 	
 	public enum LocationType {
 		WALL,
@@ -39,19 +38,25 @@ public class Location {
 	}
 	
 	public enum RoughTerrainType {
-		BONES ("bones"),
-		ROCKS ("rocks"),
-		MUD ("mud"),
-		HOLE ("hole");
+		BONES ("bones", 1),
+		ROCKS ("rocks", 2),
+		MUD ("mud", 3),
+		HOLE ("hole", 4);
 		
 	    private final String value;
+	    private final int num;
 
-	    private RoughTerrainType(String value) {
+	    private RoughTerrainType(String value, int num) {
 	        this.value = value;
+	        this.num = num;
 	    }
 
 	    public String getValue() {
 	        return value;
+	    }
+	    
+	    public int getNum() {
+	        return num;
 	    }
 	    
 	    public Boolean isPassable() {
@@ -67,7 +72,20 @@ public class Location {
 	          }
 	        }
 	        return null;
-	      }
+	     }
+	    
+	    public static RoughTerrainType fromInt(int n) {
+	          for (RoughTerrainType b : RoughTerrainType.values()) {
+	            if (n == b.getNum()) {
+	              return b;
+	            }
+	          }
+	        return null;
+	     }
+	    
+	    public static RoughTerrainType getRandomType() {
+	    	return RoughTerrainType.fromInt(Randy.getRand(1,  HOLE.getNum()));
+	    }
 	}
 	
 	public static final float minTint = 0.3f;
@@ -224,6 +242,19 @@ public class Location {
 		return !isOpaque();
 	}
 	
+	public boolean isTotallyEmpty() {
+		boolean result = isClear();
+		if (locationType == LocationType.EXIT) {
+			result = false;
+		}
+		
+		if (getRoughTerrain() != null) {
+			result = false;
+		}
+		
+		return result;
+	}
+	
 	public LocationInfo getLocationInfo() {
 		return new LocationInfo(this);
 	}
@@ -246,7 +277,7 @@ public class Location {
 	public RoughTerrainType getRoughTerrain() {
 		RoughTerrainType result = null;
 		for (Ability ability : itemList) {
-			result = RoughTerrainType.fromString(ability.ability.gifName);
+			result = RoughTerrainType.fromString(ability.ability.name);
 			if (result != null) {
 				break;
 			}

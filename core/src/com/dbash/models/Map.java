@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 
@@ -95,10 +96,9 @@ public class Map implements IPresenterMap {
 						location(x,y).doPostMapGenerationPrcessing();
 					}
 				}
+				
 				addExitLight();
-				
 				addRoughTerrain();
-				
 				dungeonNotCompleted = false;
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
@@ -280,8 +280,9 @@ public class Map implements IPresenterMap {
 		int dir = Randy.getRand(0, 4);
 		int nx;
 		int ny;
+		RoughTerrainType roughTerrainType = RoughTerrainType.getRandomType();
 
-		for (int i = 0; i < ((height * 3) / 2); i++) {
+		for (int i = 0; i < (Randy.getRand(2, 8)); i++) {
 			nx = x;
 			ny = y;
 
@@ -304,13 +305,13 @@ public class Map implements IPresenterMap {
 						nx++;
 					break;
 			}
-
-			if (isLegal(nx, ny))
-			{
-				x = nx;
-				y = ny;
-				location(x,y).clearLocation();
+			
+			if (isLegal(nx, ny) && location(x,y).isTotallyEmpty()) {
+				location(x,y).setRoughTerrain(roughTerrainType);
 			}
+			
+			x = nx;
+			y = ny;
 
 			// will only change the direction when the direction is legal, i.e.
 			// between 1-4
@@ -436,7 +437,14 @@ public class Map implements IPresenterMap {
 	}
 	
 	protected void addRoughTerrain() {
-		int numberRough = Randy.getRand(width/5,  width);
+		int numberRoughLines = Randy.getRand(width/5,  width);
+		for (int i=0; i < numberRoughLines; i++) {
+			try {
+				drawSquigglyRoughTerrainLine(getRandomPoint(true));
+			} catch (MapException e) {
+
+			}
+		}
 	}
 	
 //	public void dump() {

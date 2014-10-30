@@ -983,7 +983,7 @@ public abstract class Creature implements IPresenterCreature
 
 		// read gif filename
 		endIndex = string.indexOf(",", index);
-		cd.gifName = string.substring(index, endIndex);
+		cd.tag = string.substring(index, endIndex);
 		index = endIndex + 1;
 
 		// read gif colour

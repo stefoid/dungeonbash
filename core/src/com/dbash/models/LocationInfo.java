@@ -2,6 +2,8 @@ package com.dbash.models;
 
 import java.util.Set;
 
+import com.dbash.models.Location.RoughTerrainType;
+
 // LocationInfo is information created by a Location model object for Presenter consumption.
 // It contains everything the Presenter needs to know to visually represent that location.
 public class LocationInfo {
@@ -14,6 +16,7 @@ public class LocationInfo {
 	public float tint; // how dark should this tile be?
 	public Location.TorchType torch;
 	public boolean isShadowedFloor;
+	public RoughTerrainType roughTerrainType;
 	
 	public LocationInfo(Location location)
 	{
@@ -24,6 +27,7 @@ public class LocationInfo {
 		this.itemList = location.getItemList();
 		this.tint = location.tint;
 		this.torch = location.torch;
+		this.roughTerrainType = location.getRoughTerrain();
 		if (location.locationType == Location.LocationType.FLOOR) {
 			if (location.tileName.equals("CLEAR_FLOOR_IMAGE") == false) {
 				isShadowedFloor = true;

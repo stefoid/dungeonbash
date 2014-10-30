@@ -3,7 +3,7 @@ public	 class Data
 {
 	// abaility data
 	public String		name;
-	public String		gifName;
+	public String		tag;
 	public int			colour;
 	public int			needs;
 	public int			invokingStrategy;	// what happens when this ability is selected?

@@ -14,10 +14,12 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	
 	// Displayable ability attributes.
 	public String 		name;
+	public String 		tag;
 	public AbilityType 	abilityType = AbilityType.DE_NADA;
 	public boolean 		equipped = false;
 	public int			magicCost = 0;
 	public boolean 		targetable;
+	public boolean 		isRoughTerrain;
 	public boolean		enoughMagic = false;	
 	public int			sortValue = 0;
 	public boolean 		currentySelected = false;
@@ -42,6 +44,10 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		this.ability = ability;  // A pointer to the actual ability this presentation data belongs to.
 		
 		name = new String(details.name);
+		tag = ability.getTag();
+		if (tag != null && tag.equals(Location.ROUGH)) {
+			isRoughTerrain  = true;
+		}
 		abilityType = ability.getAbilityType();
 		equipped = ability.set;
 		magicCost = details.magicCost;
@@ -106,7 +112,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	
 	public String getAbilityTypeImageName()
 	{
-		String image;
+		String image = "ABILITY_IMAGE";
 		
 		switch (abilityType) {
 			case WEAPON:
@@ -147,8 +153,11 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 				break;
 			case ABILITY:
 			default:
-				image = "ABILITY_IMAGE";
 				break;
+		}
+		
+		if (isRoughTerrain) {
+			image = ability.ability.name;
 		}
 		return image;
 	}

@@ -575,7 +575,7 @@ public class Ability
 
 		// read gifName
 		endIndex = string.indexOf(",",index);
-		ad.gifName = string.substring(index, endIndex);
+		ad.tag = string.substring(index, endIndex);
 		index = endIndex+1;
 
 		// read colour
@@ -696,6 +696,10 @@ public class Ability
 			return false;
 	}
 
+	String getTag() {
+		return ability.tag;
+	}
+	
 	// processes the actual effect of the ability by sending it the invoke command.
 	// instants and one-shots will go off.
 	// equipables will toggle their selection status
@@ -787,6 +791,7 @@ public class Ability
 	private static String rangedString = "ad";
 	private static String amuletString = "af";
 	private static String magicString = "ma";
+	private static String roughTerrain = "rough";
 	
 	private AbilityType abilityType;
 	private Vector<AbilityEffectType> abilityEffectType;
@@ -969,27 +974,27 @@ public class Ability
 	{	
 		AbilityType abilityType = AbilityType.ABILITY;
 		
-		if (ability.gifName.contentEquals(weaponString))
+		if (getTag().contentEquals(weaponString))
 		{
 			abilityType = AbilityType.WEAPON;
 		} 
-		else if (ability.gifName.contentEquals(armorString))
+		else if (getTag().contentEquals(armorString))
 		{
 			abilityType = AbilityType.ARMOR;
 		}
-		else if (ability.gifName.contentEquals(wandString))
+		else if (getTag().contentEquals(wandString))
 		{
 			abilityType = AbilityType.WAND;
 		}
-		else if (ability.gifName.contentEquals(rangedString))
+		else if (getTag().contentEquals(rangedString))
 		{
 			abilityType = AbilityType.RANGED;
 		}
-		else if (ability.gifName.contentEquals(amuletString))
+		else if (getTag().contentEquals(amuletString))
 		{
 			abilityType = AbilityType.AMULET;
 		}
-		else if (ability.gifName.contentEquals(magicString))
+		else if (getTag().contentEquals(magicString))
 		{
 			abilityType = AbilityType.MAGIC_ITEM;
 			

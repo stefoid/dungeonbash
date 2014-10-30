@@ -2,7 +2,7 @@
 +"bones,rough,-1,0,0,-1,1,0,0,1,0,10,1,-6,0,0,0,*"// bones: VALUE MODIFIER,
 +"mud,rough,-1,0,0,1,1,0,0,1,0,10,1,-6,0,0,0,*"// mud: VALUE MODIFIER,
 +"rocks,rough,-1,0,0,-1,2,0,0,1,0,10,1,-6,0,0,0,*"// rocks: VALUE MODIFIER,
-+"hole,barrier,-1,0,0,-1,1,0,0,1,0,*"// hole: 
++"hole,rough,-1,0,0,-1,1,0,0,1,0,*"// hole: 
 +"smash,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,9,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// smash: ATTACKER,DESELECT,SELECT,
 +"headbutt,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,9,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// headbutt: ATTACKER,DESELECT,SELECT,
 +"resist knockback,ia,-1,0,0,0,0,0,0,0,0,21,0,9,0,0,0,*"// resist knockback: NO STRATEGY,
