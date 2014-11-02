@@ -17,16 +17,22 @@ import java.util.List;
 public class ItemList extends ArrayList<AbilityInfo>{
 	
 	public Character owner;
+	boolean includeRoughTerrain;
 	
-	public ItemList(Character owner) {
+	public ItemList(Character owner, boolean includeRoughTerrain) {
 		
 		super();
 		
 		this.owner = owner;
+		this.includeRoughTerrain = includeRoughTerrain;
+		
 		for (Ability ability : owner.abilities) {
 			
 			// Cant be used directly by the owning character, so doesnt belong in the ability selection list.
 			if (ability.isPhysical()) {
+				if (ability.isRoughTerrain() && includeRoughTerrain == false) {
+					return;
+				}
 				AbilityInfo info = new AbilityInfo(ability, owner);
 				
 				// Sort list according to type
@@ -41,15 +47,19 @@ public class ItemList extends ArrayList<AbilityInfo>{
 	}
 	
 	// Can just instantiate the list and add abilities to it one at a time, or in a vector below
-	public ItemList()
+	public ItemList(boolean includeRoughTerrain)
 	{
 		super();
+		this.includeRoughTerrain = includeRoughTerrain;
 	}
 	
 
 	
 	public void addAbility(Ability ability) {
 		if (ability.isPhysical()) {
+			if (ability.isRoughTerrain() && includeRoughTerrain == false) {
+				return;
+			}
 			AbilityInfo info = new AbilityInfo(ability, null);
 			
 			// its possible to order abilities by value maybe?  There is a value stat.
@@ -66,8 +76,10 @@ public class ItemList extends ArrayList<AbilityInfo>{
 	}
 	
 	// This list is of physical items at a specific dungeon location (i.e. the eye location).
-	public ItemList(List<Ability> abilities) {
+	public ItemList(List<Ability> abilities, boolean includeRoughTerrain) {
 		super();
+		
+		this.includeRoughTerrain = includeRoughTerrain;
 		
 		for (Ability ability : abilities) {
 				addAbility(ability);

@@ -44,10 +44,11 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		this.ability = ability;  // A pointer to the actual ability this presentation data belongs to.
 		
 		name = new String(details.name);
-		tag = ability.getTag();
-		if (tag != null && tag.equals(Location.ROUGH)) {
+
+		if (ability.isRoughTerrain()) {
 			isRoughTerrain  = true;
 		}
+		
 		abilityType = ability.getAbilityType();
 		equipped = ability.set;
 		magicCost = details.magicCost;
@@ -78,6 +79,11 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public AbilityInfo(String text) {
 		name = text;
 		isStat = true;
+	}
+	
+	public AbilityInfo(String text, boolean isStat) {
+		name = text;
+		this.isStat = isStat;
 	}
 
 	public AbilityInfo(String text, Color color) {

@@ -515,9 +515,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public ItemList getItemsAtEyepos() {
 		if (eyePos != null) {
-			return map.location(eyePos).getItemList();
+			return map.location(eyePos).getItemList(true);
 		} else {
-			return new ItemList();
+			return new ItemList(true);
 		}
 	}
 
@@ -532,7 +532,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public ItemList getItemsAtPosition(DungeonPosition position) {
-		return map.location(position).getItemList();   
+		return map.location(position).getItemList(false);   
 	}
 	
 	@Override

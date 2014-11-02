@@ -915,7 +915,7 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	@Override
 	public ItemList getItemList() {
-		return new ItemList(this);
+		return new ItemList(this, false);
 	}
 
 	@Override

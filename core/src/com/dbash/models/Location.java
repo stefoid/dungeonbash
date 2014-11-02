@@ -15,8 +15,6 @@ import com.dbash.util.Randy;
 // A Location embodies everything about a particular tile in the dungeon, including which characters can currently see it
 // (Each character has a shadowMap that informs Locations that it can see them)
 public class Location {
-
-	public static final String ROUGH = "rough";
 	
 	public enum LocationType {
 		WALL,
@@ -253,6 +251,14 @@ public class Location {
 		}
 		
 		return result;
+	}
+	
+	public boolean isNearWall() {
+		if (map.safeLocation(x-1, y).isOpaque()) { return true;}
+		if (map.safeLocation(x+1, y).isOpaque()) { return true;}
+		if (map.safeLocation(x, y-1).isOpaque()) { return true;}
+		if (map.safeLocation(x, y+1).isOpaque()) { return true;}
+		return false;
 	}
 	
 	public LocationInfo getLocationInfo() {
@@ -555,8 +561,8 @@ public class Location {
 		return tileName;
 	}
 	
-	public ItemList getItemList() {
-		return new ItemList(itemList);
+	public ItemList getItemList(boolean includeRoughTerrain) {
+		return new ItemList(itemList, includeRoughTerrain);
 	}
 	
 	public void persistLocation(ObjectOutputStream out) throws IOException {

@@ -106,9 +106,6 @@ public class LocationPresenter {
 			}
 
 			this.tile = new ImageView(gui, tileName, area); 
-			if (locationInfo.roughTerrainType != null) {
-				this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainType.getValue(), area);
-			}
 			
 			Rect torchArea; 
 			switch (locationInfo.torch) {
@@ -130,6 +127,10 @@ public class LocationPresenter {
 			default:
 				break;
 			}
+		}
+		
+		if (locationInfo.roughTerrainType != null) {
+			this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainType.getValue(), area);
 		}
 		
 		// set a creature presenter if there is a creature at this location.

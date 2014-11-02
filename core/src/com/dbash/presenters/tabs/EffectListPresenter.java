@@ -41,7 +41,7 @@ public class EffectListPresenter extends ListPresenter{
 		
 		// if the effect list is totally empty, put some text there to say that so it doesnt look dumb
 		if (elements.size() == 0) {
-			AbilityInfo firstInfo = new AbilityInfo("No effects");
+			AbilityInfo firstInfo = new AbilityInfo("No effects", false);
 			// Make the effect list have an 'ability effect' in it, because the star looks nice!
 			firstInfo.abilityEffects = new Vector<AbilityEffectType>();
 			firstInfo.abilityEffects.add(AbilityEffectType.NONE_REALLY);

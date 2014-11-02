@@ -88,7 +88,7 @@ public class ItemListPresenter extends ListPresenter{
 		
 		// if the item list is totally empty, put some text there to say that so it doesnt look dumb
 		if (elements.size() == 0) {
-			AbilityInfo firstInfo = new AbilityInfo("No items carried");
+			AbilityInfo firstInfo = new AbilityInfo("No items carried", false);
 			firstInfo.isCarried = true;
 			ItemListElementView first = new ItemListElementView(gui, null, firstInfo, elementArea, index++);
 			first.addToList(elements);

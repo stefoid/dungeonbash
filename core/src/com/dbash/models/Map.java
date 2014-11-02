@@ -282,7 +282,7 @@ public class Map implements IPresenterMap {
 		int ny;
 		RoughTerrainType roughTerrainType = RoughTerrainType.getRandomType();
 
-		for (int i = 0; i < (Randy.getRand(2, 8)); i++) {
+		for (int i = 0; i < (Randy.getRand(1, height-3)); i++) {
 			nx = x;
 			ny = y;
 
@@ -306,7 +306,7 @@ public class Map implements IPresenterMap {
 					break;
 			}
 			
-			if (isLegal(nx, ny) && location(x,y).isTotallyEmpty()) {
+			if (isOKForRoughTerrain(roughTerrainType, x, y)) {
 				location(x,y).setRoughTerrain(roughTerrainType);
 			}
 			
@@ -315,12 +315,30 @@ public class Map implements IPresenterMap {
 
 			// will only change the direction when the direction is legal, i.e.
 			// between 1-4
-			int nDir = Randy.getRand(0, height * 2);
+			int nDir = Randy.getRand(0, height);
 
 			if (nDir < 5) {
 				dir = nDir;
 			}
 		}
+	}
+	
+	private boolean isOKForRoughTerrain(RoughTerrainType roughTerrainType, int x, int y) {
+		if (isLegal(x, y) == false) {
+			return false;
+		}
+		
+		Location location = location(x,y);
+		
+		if (location.isTotallyEmpty() == false) {
+			return false;
+		}
+		
+		if (roughTerrainType == RoughTerrainType.HOLE && location.isNearWall()) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public boolean inBounds(DungeonPosition p) {
@@ -437,7 +455,7 @@ public class Map implements IPresenterMap {
 	}
 	
 	protected void addRoughTerrain() {
-		int numberRoughLines = Randy.getRand(width/5,  width);
+		int numberRoughLines = Randy.getRand(width/5,  width/3);
 		for (int i=0; i < numberRoughLines; i++) {
 			try {
 				drawSquigglyRoughTerrainLine(getRandomPoint(true));

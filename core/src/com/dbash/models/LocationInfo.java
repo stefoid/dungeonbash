@@ -24,7 +24,7 @@ public class LocationInfo {
 		this.creature = location.creature;
 		this.isDiscovered = location.isDiscovered;
 		this.shadowMaps = location.shadowMaps.keySet();
-		this.itemList = location.getItemList();
+		this.itemList = location.getItemList(true);
 		this.tint = location.tint;
 		this.torch = location.torch;
 		this.roughTerrainType = location.getRoughTerrain();

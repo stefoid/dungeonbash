@@ -502,7 +502,13 @@ public class Ability
     	}
     }
     
-    
+    public boolean isRoughTerrain() {
+    	if (getTag() != null && getTag().equals(Ability.ROUGH_TERRAIN_TAG)) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
 	public boolean invokeFinishesTurn()
 	{
 		if ((ability.invokingStrategy == INSTANT_ABILITY) ||
@@ -785,13 +791,13 @@ public class Ability
 		addedAbility = null;
 	}
 	
-	private static String weaponString = "aa";
-	private static String armorString = "ab";
-	private static String wandString = "ac";
-	private static String rangedString = "ad";
-	private static String amuletString = "af";
-	private static String magicString = "ma";
-	private static String roughTerrain = "rough";
+	private static String WEAPON_TAG = "aa";
+	private static String ARMOR_TAG = "ab";
+	private static String WAND_TAG = "ac";
+	private static String RANGED_TAG = "ad";
+	private static String AMULET_TAG = "af";
+	private static String MAGIC_TAG = "ma";
+	private static String ROUGH_TERRAIN_TAG = "rough";
 	
 	private AbilityType abilityType;
 	private Vector<AbilityEffectType> abilityEffectType;
@@ -856,7 +862,9 @@ public class Ability
 			}
 			
 			// speed related
-			if (testEffectType(i, AbilityCommand.MODIFY_SPEED) ) {
+			if (isRoughTerrain()) {
+				abilityEffectTypeHash.add(AbilityEffectType.SLOW);
+			} else if (testEffectType(i, AbilityCommand.MODIFY_SPEED) ) {
 				if (ability.executeParam1[i] > 0) {
 					abilityEffectTypeHash.add(AbilityEffectType.SPEED);
 				} else if (ability.executeParam1[i] < -5) {
@@ -974,27 +982,27 @@ public class Ability
 	{	
 		AbilityType abilityType = AbilityType.ABILITY;
 		
-		if (getTag().contentEquals(weaponString))
+		if (getTag().contentEquals(WEAPON_TAG))
 		{
 			abilityType = AbilityType.WEAPON;
 		} 
-		else if (getTag().contentEquals(armorString))
+		else if (getTag().contentEquals(ARMOR_TAG))
 		{
 			abilityType = AbilityType.ARMOR;
 		}
-		else if (getTag().contentEquals(wandString))
+		else if (getTag().contentEquals(WAND_TAG))
 		{
 			abilityType = AbilityType.WAND;
 		}
-		else if (getTag().contentEquals(rangedString))
+		else if (getTag().contentEquals(RANGED_TAG))
 		{
 			abilityType = AbilityType.RANGED;
 		}
-		else if (getTag().contentEquals(amuletString))
+		else if (getTag().contentEquals(AMULET_TAG))
 		{
 			abilityType = AbilityType.AMULET;
 		}
-		else if (getTag().contentEquals(magicString))
+		else if (getTag().contentEquals(MAGIC_TAG))
 		{
 			abilityType = AbilityType.MAGIC_ITEM;
 			
