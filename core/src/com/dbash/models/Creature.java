@@ -225,7 +225,7 @@ public abstract class Creature implements IPresenterCreature
 		for (int i=0; i < numberOfAbilities; i++)
 		{
 			Ability ability = new Ability(in, this, dungeonEvents, dungeonQuery);
-			addAbility(ability);
+			abilities.add(ability);
 		}
 	}
 
