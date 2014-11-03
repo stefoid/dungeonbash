@@ -37,7 +37,7 @@ public class Map implements IPresenterMap {
 	public class MapException extends Exception {
 	}
 	
-	public Map(int level) {
+	public Map(int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		boolean dungeonNotCompleted = true;
 		while (dungeonNotCompleted) {
 			try {
@@ -98,7 +98,7 @@ public class Map implements IPresenterMap {
 				}
 				
 				addExitLight();
-				addRoughTerrain();
+				addRoughTerrain(dungeonEvents, dungeonQuery);
 				dungeonNotCompleted = false;
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
@@ -274,7 +274,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	private void drawSquigglyRoughTerrainLine(DungeonPosition pos) {
+	private void drawSquigglyRoughTerrainLine(DungeonPosition pos, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int x = pos.x;
 		int y = pos.y;
 		int dir = Randy.getRand(0, 4);
@@ -307,7 +307,7 @@ public class Map implements IPresenterMap {
 			}
 			
 			if (isOKForRoughTerrain(roughTerrainType, x, y)) {
-				location(x,y).setRoughTerrain(roughTerrainType);
+				location(x,y).setRoughTerrain(roughTerrainType, dungeonEvents, dungeonQuery);
 			}
 			
 			x = nx;
@@ -334,6 +334,10 @@ public class Map implements IPresenterMap {
 			return false;
 		}
 		
+		if (location.position.equals(startPoint)) {
+			return false;
+		}
+
 		if (roughTerrainType == RoughTerrainType.HOLE && location.isNearWall()) {
 			return false;
 		}
@@ -454,11 +458,11 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	protected void addRoughTerrain() {
+	protected void addRoughTerrain(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int numberRoughLines = Randy.getRand(width/5,  width/3);
 		for (int i=0; i < numberRoughLines; i++) {
 			try {
-				drawSquigglyRoughTerrainLine(getRandomPoint(true));
+				drawSquigglyRoughTerrainLine(getRandomPoint(true), dungeonEvents, dungeonQuery);
 			} catch (MapException e) {
 
 			}

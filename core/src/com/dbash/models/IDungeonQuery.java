@@ -17,7 +17,8 @@ public interface IDungeonQuery {
 		FREE,
 		MONSTER,
 		WALL,
-		CHARACTER
+		CHARACTER,
+		HOLE
 	}
 
 	// the basic repository of spatial relationships is a 2D array of Locations called a Map

@@ -78,6 +78,10 @@ public class Ability
 		return 0;
 	}
 	
+	public Ability(Ability theAbility) {
+		this(theAbility.myId, theAbility.owned, 1, theAbility.dungeonEvents, theAbility.dungeonQuery);
+	}
+	
 	public Ability(int	abilityId, Creature isOwned, int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery)
 	{
 		this.dungeonEvents = dungeonEvents;
@@ -251,6 +255,13 @@ public class Ability
 		}
 		
 		return abilityAdded;
+	}
+	
+	// This makes this ability copy itself and add the copy to the creature.
+	// used by rough terrain.
+	public void applyToCreature(Creature target) {
+		Ability copy = new Ability(this);
+		target.addAbility(copy);
 	}
 	
 	public int executeCommandValue(AbilityCommand	command, Creature owner)
@@ -727,14 +738,10 @@ public class Ability
 
 		AbilityCommand	newCommand = new AbilityCommand(0,0,1,1,1);
 
-		if (ability.invokingStrategy == SELECTABLE)
-		{
-			if (set)
-			{
+		if (ability.invokingStrategy == SELECTABLE) {
+			if (set) {
 				unset(owner);
-			}
-			else
-			{
+			} else {
 				newCommand.name = AbilityCommand.SET;
 				executeCommandValue(newCommand, owner);
 			}

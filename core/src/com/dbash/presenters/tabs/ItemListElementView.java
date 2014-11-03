@@ -2,7 +2,6 @@ package com.dbash.presenters.tabs;
 
 import java.util.ArrayList;
 
-import com.dbash.models.Ability;
 import com.dbash.models.Character;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;

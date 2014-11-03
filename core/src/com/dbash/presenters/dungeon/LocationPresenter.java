@@ -5,7 +5,6 @@ import java.util.Vector;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
-import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;

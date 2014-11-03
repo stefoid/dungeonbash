@@ -7,7 +7,6 @@ import org.robovm.bindings.crashlytics.Crashlytics;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.dbash.util.Rect;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override

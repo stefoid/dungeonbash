@@ -2,7 +2,6 @@ package com.dbash.presenters.root;
 
 import java.util.LinkedList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IPopupController;

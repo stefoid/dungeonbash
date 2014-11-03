@@ -496,6 +496,14 @@ public class Character extends Creature implements IPresenterCharacter {
 			DungeonPosition position = new DungeonPosition(mapPosition, direction);
 			switch (dungeonQuery.whatIsAtLocation(position))
 			{	
+			    case HOLE:
+			    	if (canFly) {
+						Dungeon.MoveType mType = Dungeon.MoveType.NORMAL_MOVE;
+						dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, position, direction, mType, null);
+						updatePath(position);
+						turnProcessor.characterEndsTurn(this);
+			    	}
+			    	break;
 				case FREE:
 					Dungeon.MoveType mType = Dungeon.MoveType.NORMAL_MOVE;
 					dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, position, direction, mType, null);

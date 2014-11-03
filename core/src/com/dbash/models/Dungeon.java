@@ -138,7 +138,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		this.turnProcessor = turnProcessor;
 		currentLevel = level;
 		// will create a map of Locations all ready to use.
-		map = new Map(level);
+		map = new Map(level, this, this);
 		initLevel();
 		// If its the last level, put nashkur at the exit instead of an exit.
 		
@@ -250,7 +250,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 		// update the position of the creature in the model.
 		map.location(fromPosition).setCreature(null);
-		map.location(toPosition).setCreature(actingCreature);
+		map.location(toPosition).moveCreature(actingCreature);
 		actingCreature.setPosition(toPosition);
 		
 		// creature has been moved in the model, but does it need to be animated?

@@ -284,6 +284,8 @@ public class Monster extends Creature
 				break;
 			case WALL:
 				break;
+			default:
+				break;
 		}
 	}
 

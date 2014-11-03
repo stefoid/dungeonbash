@@ -11,7 +11,6 @@ import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ListPresenter;
-import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 

@@ -33,7 +33,7 @@ public class NoCharacter extends Character {
 	
 	public NoCharacter()
 	{
-		super(5, new DungeonPosition (0, 0), 99, null, null, null);
+		super(4, new DungeonPosition (0, 0), 99, null, null, null); // wild dog because it only has minimal abilities.  doesnt matter that much.
 		abilities = new ArrayList<Ability>();
 		creature = new Data();
 		creature.name = "nobody";

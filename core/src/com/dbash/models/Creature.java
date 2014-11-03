@@ -93,6 +93,8 @@ public abstract class Creature implements IPresenterCreature
 	
 	public int uniqueId;
 	
+	public boolean canFly;
+	
 	@Override
 	public void setCreaturePresenter(CreaturePresenter creaturePresenter) {
 		this.creaturePresenter = creaturePresenter;
@@ -223,7 +225,7 @@ public abstract class Creature implements IPresenterCreature
 		for (int i=0; i < numberOfAbilities; i++)
 		{
 			Ability ability = new Ability(in, this, dungeonEvents, dungeonQuery);
-			abilities.add(ability);
+			addAbility(ability);
 		}
 	}
 
@@ -352,6 +354,8 @@ public abstract class Creature implements IPresenterCreature
 				} else {
 					return false;
 				}
+			case HOLE:
+				return canFly;
 			default:
 				return true;		
 		}
@@ -651,28 +655,43 @@ public abstract class Creature implements IPresenterCreature
 		// ability from being added (such as resist poison)
 		AbilityCommand ac = new AbilityCommand(AbilityCommand.RESIST_ABILITY, ability.myId, 1, 1, 1);
 
-		for (int i = 0; i < abilities.size(); i++)
-		{
+		for (int i = 0; i < abilities.size(); i++) {
 			if (abilities.get(i).executeCommandValue(ac, this) == Ability.RESISTED)
 				return false;
 		}
-
+		
+		if (ability.isRoughTerrain()) {
+			if (canFly) {
+				return false;
+			}
+		}
+		
 		abilities.add(ability);
+		setCanFly();
 		ability.setOwned(this, true);
 		return true;
 	}
 
 	public void broadcastAbilityCommand(AbilityCommand command)
 	{
-		for (int i = 0; i < abilities.size(); i++)
-		{
+		for (int i = 0; i < abilities.size(); i++) {
 			abilities.get(i).executeCommandValue(command, this);
 		}
 	}
 
-	public void destroyAbility(Ability ability)
-	{
+	public void destroyAbility(Ability ability) {
 		abilities.remove(ability);
+		setCanFly();
+	}
+	
+	private void setCanFly() {
+		for (Ability ability : abilities) {
+			if (ability.getTag().equals("flight")) {
+				canFly = true;
+				return;
+			}
+		}
+		canFly = false;
 	}
 	
 	// when an ability has an instant effect that modifies an attribute
@@ -1083,8 +1102,7 @@ public abstract class Creature implements IPresenterCreature
 	{
 		AbilityCommand command = new AbilityCommand(commandName, commandValue, getCreature().head, getCreature().hands, getCreature().humanoid);
 
-		for (int i = 0; i < abilities.size(); i++)
-		{
+		for (int i = 0; i < abilities.size(); i++) {
 			command.value = abilities.get(i).executeCommandValue(command, this);
 		}
 

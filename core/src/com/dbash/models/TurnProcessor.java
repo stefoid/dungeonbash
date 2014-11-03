@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.presenters.root.GameOverPopupPresenter;
-import com.dbash.presenters.root.PopupPresenter;
 import com.dbash.util.Logger;
 import com.dbash.util.SequenceNumber;
 import com.me.dbash.Dbash;
@@ -374,7 +373,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		// The dungeon will fill in the position when the creature falls into the level.  This
 		// is just a placeholder.
 		DungeonPosition p = new DungeonPosition(0, 0);  //will init to level 1.
-		int index = 1;
 		
 		// First character must be humanoid
 		boolean foundChar = false;

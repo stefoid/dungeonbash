@@ -102,6 +102,7 @@ public class Location {
 	public float tint;
 	public float permTint;
 	public TorchType torch = TorchType.NONE;
+	public RoughTerrainType roughTerrainType;
 	
 	// ShadowMaps in which this Location is visible, and the distance of this location form the center of that shadowmap
 	HashMap<ShadowMap, Character>  shadowMaps;  
@@ -185,6 +186,15 @@ public class Location {
 	public void setCreature(Creature creature) {
 		this.creature = creature;
 		map.alertToVisualChangeAtLocation(this);   
+	}
+	
+	public void moveCreature(Creature creature) {
+		setCreature(creature);
+			for (Ability ability : itemList) {
+				if (ability.isRoughTerrain() && roughTerrainType != RoughTerrainType.HOLE) {
+					ability.applyToCreature(creature);
+			}
+		}
 	}
 	
 	// Onlt gets lighter due to, err lights.
@@ -274,21 +284,25 @@ public class Location {
 		locationType = LocationType.FLOOR;
 	}
 	
-	public void setRoughTerrain(RoughTerrainType roughTerrainType) {
+	public void setRoughTerrain(RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int id = Ability.idForName(roughTerrainType.getValue());
-		Ability ability = new Ability(id, null, 1, null, null); // TODO do I need these last two params?
+		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 
 		itemList.add(ability);
+		roughTerrainType = getRoughTerrain();
 	}
 	
 	public RoughTerrainType getRoughTerrain() {
-		RoughTerrainType result = null;
+		if (roughTerrainType != null) {
+			return roughTerrainType;
+		}
+		
 		for (Ability ability : itemList) {
-			result = RoughTerrainType.fromString(ability.ability.name);
-			if (result != null) {
+			roughTerrainType = RoughTerrainType.fromString(ability.ability.name);
+			if (roughTerrainType != null) {
 				break;
 			}
 		}
-		return result;
+		return roughTerrainType;
 	}
 	
 	public void setAsExit() {
@@ -336,9 +350,15 @@ public class Location {
 		if (isOpaque()) {
 			return AtLocation.WALL;
 		} else {
+			RoughTerrainType roughTerrainType = getRoughTerrain();
+			if (roughTerrainType != null) {
+				if (roughTerrainType == RoughTerrainType.HOLE) {
+					return AtLocation.HOLE;
+				}
+			} 
+				
 			return AtLocation.FREE;
 		}
-
 	}
 	
 	

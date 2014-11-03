@@ -91,7 +91,13 @@ public class AbilityCommand
 	}
 
 	// METHODS
-
+	public AbilityCommand(int command) {
+		name = command;
+		value = 0;
+		head = true;
+		hands = true;
+		humanoid = true;
+	}
 
 }
 
