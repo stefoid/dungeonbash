@@ -56,10 +56,8 @@ public class ItemList extends ArrayList<AbilityInfo>{
 
 	
 	public void addAbility(Ability ability) {
-		if (ability.isPhysical()) {
-			if (ability.isRoughTerrain() && includeRoughTerrain == false) {
-				return;
-			}
+		if (ability.isPhysical() || (ability.isRoughTerrain() && includeRoughTerrain)) {
+
 			AbilityInfo info = new AbilityInfo(ability, null);
 			
 			// its possible to order abilities by value maybe?  There is a value stat.

@@ -311,6 +311,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	@Override
 	public void objectDrop(int sequenceNumber, Creature releventCharacter, Ability abilityObjectDropped, DungeonPosition position) {
+		if (Logger.DEBUG) Logger.log("dropping "+abilityObjectDropped.ability.name);
 		map.location(position).dropItem(abilityObjectDropped);
 		dungeonEventListener.objectDrop(sequenceNumber, releventCharacter, abilityObjectDropped, position);
 		if (position == eyePos) {

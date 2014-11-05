@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.dbash.models.Ability.AbilityType;
 import com.dbash.platform.TextResourceIdentifier;
 import com.dbash.presenters.dungeon.CreaturePresenter;
+import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
@@ -1157,10 +1158,13 @@ public abstract class Creature implements IPresenterCreature
 		// Drop all physical ability items
 		List<Ability> newlyDroppedObjects = new LinkedList<Ability>();
 		for (Ability ability : abilities) {
-			if (ability.isPhysical())
+			if (ability.isPhysical()) {
+				if (Logger.DEBUG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
 				newlyDroppedObjects.add(ability);
+			}
 		}
 		for (Ability ability : newlyDroppedObjects) {
+			if (Logger.DEBUG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
 			dropObject(ability);
 		}
 	}

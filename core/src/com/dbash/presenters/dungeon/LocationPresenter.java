@@ -12,6 +12,7 @@ import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
+import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
 // a LocationPresenter is the partner of a Location in the model.  it handles the presentation of the corresponding Location, duh.
@@ -159,11 +160,13 @@ public class LocationPresenter {
 		
 		int i = 0;
 		for (AbilityInfo abilityInfo : locationInfo.itemList) {
+			Logger.log("stuff in locationlist: "+abilityInfo.name);
 			if (abilityInfo.isRoughTerrain == false) {
+				Logger.log("stuff to show at location: "+abilityInfo.name);
 				int posIndex = i%(x.length);
 				itemArea.x = area.x + area.width*x[posIndex];  
 				itemArea.y = area.y + area.height*y[posIndex];  
-				items.add(new ImageView(gui, locationInfo.itemList.get(i).getAbilityTypeImageName(), itemArea));
+				items.add(new ImageView(gui, abilityInfo.getAbilityTypeImageName(), itemArea));
 				i++;
 			}
 		}
