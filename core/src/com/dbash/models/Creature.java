@@ -26,6 +26,16 @@ public abstract class Creature implements IPresenterCreature
 		}
 	}
 	
+	static int getIdForName(String name) {
+		initializeData();
+		for (Data data : creatureData){
+			if (data.name.equalsIgnoreCase(name)) {
+				return creatureData.indexOf(data);
+			}
+		}
+		return 0;
+	}
+	
 	public enum CreatureType {
 		CHARACTER,
 		MONSTER

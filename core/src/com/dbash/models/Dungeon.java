@@ -144,32 +144,32 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		switch (level) {
 			case Dungeon.FINAL_LEVEL:
-				Monster nashkur = new Monster(0, level, map.exitPoint, this, this, turnProcessor);
+				Monster nashkur = new Monster(Creature.getIdForName("nashkur"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = nashkur;
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster minion = new Monster(9, level, map.exitPoint, this, this, turnProcessor);
+				Monster minion = new Monster(Creature.getIdForName("crazed minion"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
 				mobs.add(minion);
 				break;
 			case 2:
-				Monster orc = new Monster(25, level, map.exitPoint, this, this, turnProcessor);
+				Monster orc = new Monster(Creature.getIdForName("orc"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = orc;
 				mobs.add(orc);
 				break;
 			case 3:
-				Monster priest = new Monster(49, level, map.exitPoint, this, this, turnProcessor);
+				Monster priest = new Monster(Creature.getIdForName("priest"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = priest;
 				mobs.add(priest);
 				break;
 			case 4:
-				Monster wizard = new Monster(47, level, map.exitPoint, this, this, turnProcessor);
+				Monster wizard = new Monster(Creature.getIdForName("wizard"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = wizard;
 				mobs.add(wizard);
 				break;
 			case 5:
-				Monster dwarf = new Monster(33, level, map.exitPoint, this, this, turnProcessor);
+				Monster dwarf = new Monster(Creature.getIdForName("dwarf"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = dwarf;
 				mobs.add(dwarf);
 				break;
