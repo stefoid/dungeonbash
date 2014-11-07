@@ -697,7 +697,7 @@ public abstract class Creature implements IPresenterCreature
 	
 	private void setCanFly() {
 		for (Ability ability : abilities) {
-			if (ability.getTag().equals("flight")) {
+			if (ability.hasTag(Ability.FLIGHT_TAG)) {
 				canFly = true;
 				return;
 			}

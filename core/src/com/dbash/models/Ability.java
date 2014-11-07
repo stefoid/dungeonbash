@@ -1,8 +1,11 @@
 package com.dbash.models;
 
+import java.util.List;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Vector;
 
@@ -21,6 +24,16 @@ public class Ability
 	
 	IDungeonEvents dungeonEvents;
 	IDungeonQuery dungeonQuery;
+	
+	public static String WEAPON_TAG = "aa";
+	public static String ARMOR_TAG = "ab";
+	public static String WAND_TAG = "ac";
+	public static String RANGED_TAG = "ad";
+	public static String AMULET_TAG = "af";
+	public static String MAGIC_TAG = "ma";
+	public static String ROUGH_TERRAIN_TAG = "rough";
+	public static String FLIGHT_TAG = "flight";
+	public static String HOLE_TAG = "hole";
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -514,7 +527,7 @@ public class Ability
     }
     
     public boolean isRoughTerrain() {
-    	if (getTag() != null && getTag().equals(Ability.ROUGH_TERRAIN_TAG)) {
+    	if (getTag() != null && hasTag(Ability.ROUGH_TERRAIN_TAG)) {
     		return true;
     	} else {
     		return false;
@@ -713,8 +726,18 @@ public class Ability
 			return false;
 	}
 
-	String getTag() {
+	public String getTag() {
 		return ability.tag;
+	}
+	
+	public boolean hasTag(String theTag) {
+      for (String tag: ability.tag.split("\\.")) {
+			if (tag.equals(theTag)) {
+				return true;
+			}
+       }
+		
+		return false;
 	}
 	
 	// processes the actual effect of the ability by sending it the invoke command.
@@ -798,14 +821,6 @@ public class Ability
 		addedAbility = null;
 	}
 	
-	private static String WEAPON_TAG = "aa";
-	private static String ARMOR_TAG = "ab";
-	private static String WAND_TAG = "ac";
-	private static String RANGED_TAG = "ad";
-	private static String AMULET_TAG = "af";
-	private static String MAGIC_TAG = "ma";
-	private static String ROUGH_TERRAIN_TAG = "rough";
-	
 	private AbilityType abilityType;
 	private Vector<AbilityEffectType> abilityEffectType;
 	
@@ -869,7 +884,7 @@ public class Ability
 			}
 			
 			// speed related
-			if (isRoughTerrain()) {
+			if (isRoughTerrain() && hasTag(HOLE_TAG) == false) {
 				abilityEffectTypeHash.add(AbilityEffectType.SLOW);
 			} else if (testEffectType(i, AbilityCommand.MODIFY_SPEED) ) {
 				if (ability.executeParam1[i] > 0) {
@@ -989,27 +1004,27 @@ public class Ability
 	{	
 		AbilityType abilityType = AbilityType.ABILITY;
 		
-		if (getTag().contentEquals(WEAPON_TAG))
+		if (hasTag(WEAPON_TAG))
 		{
 			abilityType = AbilityType.WEAPON;
 		} 
-		else if (getTag().contentEquals(ARMOR_TAG))
+		else if (hasTag(ARMOR_TAG))
 		{
 			abilityType = AbilityType.ARMOR;
 		}
-		else if (getTag().contentEquals(WAND_TAG))
+		else if (hasTag(WAND_TAG))
 		{
 			abilityType = AbilityType.WAND;
 		}
-		else if (getTag().contentEquals(RANGED_TAG))
+		else if (hasTag(RANGED_TAG))
 		{
 			abilityType = AbilityType.RANGED;
 		}
-		else if (getTag().contentEquals(AMULET_TAG))
+		else if (hasTag(AMULET_TAG))
 		{
 			abilityType = AbilityType.AMULET;
 		}
-		else if (getTag().contentEquals(MAGIC_TAG))
+		else if (hasTag(MAGIC_TAG))
 		{
 			abilityType = AbilityType.MAGIC_ITEM;
 			
