@@ -272,6 +272,7 @@ public class Monster extends Creature
 				makeMeleeAttack(dungeonQuery.getCreatureAtLocation(newPosition));
 				break;
 			case FREE:
+			case HOLE:
 				Character releventCharacter = closestCharacter;
 				// This could be a random move that just happens to end up in a character LOS.
 				if (releventCharacter == null) {

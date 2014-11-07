@@ -238,6 +238,7 @@ public abstract class Creature implements IPresenterCreature
 			Ability ability = new Ability(in, this, dungeonEvents, dungeonQuery);
 			abilities.add(ability);
 		}
+		setCanFly();
 	}
 
 	// this function sets all the data that can be derived form the creature id
