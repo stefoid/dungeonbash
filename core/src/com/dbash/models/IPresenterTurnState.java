@@ -41,12 +41,4 @@ public interface IPresenterTurnState {
 	
 	// eye mode
 	public void usingEye(boolean usingEye);
-	
-	public float getRange();
-	public float getAlpha();
-	public boolean getUseBlack();
-	public void setRange(float range);
-	public void setAlpha(float alpha);
-	public void setUseBlack(boolean useBlack);
-	
 }

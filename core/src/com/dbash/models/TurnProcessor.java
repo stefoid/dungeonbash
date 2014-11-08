@@ -408,11 +408,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		} 
 		
 		// test
-//		theChars.clear();
-//		p.level = 20;
-//		theChars.add(new Character(Creature.getIdForName("living eye"), p, 1, dungeonEvents, dungeonQuery, this));
-//		theChars.add(new Character(Creature.getIdForName("giant hornet"), p, 2, dungeonEvents, dungeonQuery, this));
-//		theChars.add(new Character(Creature.getIdForName("flying horror"), p, 3, dungeonEvents, dungeonQuery, this));
+		theChars.clear();
+		p.level = 20;
+		theChars.add(new Character(Creature.getIdForName("vampire bat"), p, 1, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("giant hornet"), p, 2, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("flying horror"), p, 3, dungeonEvents, dungeonQuery, this));
 //		Creature c = theChars.get(0);
 //		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
 //		c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
@@ -659,44 +659,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void usingEye(boolean usingEye) {
 		this.usingEye = usingEye;
 		currentCharacter.setCharacterisUsingEye(usingEye);
-	}
-
-	
-	private float range;
-	private float alpha;
-	private boolean useBlack = false;
-	
-	@Override
-	public float getRange() {
-		return range;
-	}
-
-
-	@Override
-	public float getAlpha() {
-		return alpha;
-	}
-
-
-	@Override
-	public boolean getUseBlack() {
-		return useBlack;
-	}
-
-	public void setUseBlack(boolean useBlack) {
-		this.useBlack = useBlack;
-	}
-
-
-	@Override
-	public void setRange(float range) {
-		this.range = range;
-	}
-
-
-	@Override
-	public void setAlpha(float alpha) {
-		this.alpha = alpha;
 	}
 	
 	private void initOneTime(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery, IDungeonControl dungeon) {

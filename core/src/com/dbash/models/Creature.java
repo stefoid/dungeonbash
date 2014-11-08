@@ -105,6 +105,7 @@ public abstract class Creature implements IPresenterCreature
 	public int uniqueId;
 	
 	public boolean canFly;
+	public boolean canCharge;
 	
 	@Override
 	public void setCreaturePresenter(CreaturePresenter creaturePresenter) {
@@ -238,7 +239,7 @@ public abstract class Creature implements IPresenterCreature
 			Ability ability = new Ability(in, this, dungeonEvents, dungeonQuery);
 			abilities.add(ability);
 		}
-		setCanFly();
+		setAbilityFlags();
 	}
 
 	// this function sets all the data that can be derived form the creature id
@@ -679,7 +680,7 @@ public abstract class Creature implements IPresenterCreature
 		}
 		
 		abilities.add(ability);
-		setCanFly();
+		setAbilityFlags();
 		ability.setOwned(this, true);
 		return true;
 	}
@@ -693,17 +694,22 @@ public abstract class Creature implements IPresenterCreature
 
 	public void destroyAbility(Ability ability) {
 		abilities.remove(ability);
-		setCanFly();
+		setAbilityFlags();
 	}
 	
-	private void setCanFly() {
+	private void setAbilityFlags() {
+		canFly = false;
+		canCharge = false;
+		
 		for (Ability ability : abilities) {
 			if (ability.hasTag(Ability.FLIGHT_TAG)) {
 				canFly = true;
-				return;
+			}
+			
+			if (ability.hasTag(Ability.CHARGE_TAG)) {
+				canCharge = true;
 			}
 		}
-		canFly = false;
 	}
 	
 	// when an ability has an instant effect that modifies an attribute

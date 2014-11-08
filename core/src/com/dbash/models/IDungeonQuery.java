@@ -27,6 +27,9 @@ public interface IDungeonQuery {
 	// Is the position occupied by a character or is it free?  return true - used by monsters.
 	public AtLocation whatIsAtLocation(DungeonPosition position);
 	
+	// Is the position occupied by a character or is it free?  return true - used by monsters.
+	public Location getLocation(DungeonPosition position);
+	
 	// used by monsters to make melee attacks and probably characters too.
 	public Creature getCreatureAtLocation(DungeonPosition position);
 	

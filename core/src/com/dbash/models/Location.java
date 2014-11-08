@@ -305,6 +305,14 @@ public class Location {
 		return roughTerrainType;
 	}
 	
+	public boolean hasRoughTerrain() {
+		if (getRoughTerrain() == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	public void setAsExit() {
 		locationType = LocationType.EXIT;
 	}

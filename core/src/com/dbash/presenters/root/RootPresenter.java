@@ -286,30 +286,30 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	@Override
 	public boolean keyDown(int keycode) {
 		// a=29, z = 54,    r=46, z=34,   x=52
-		if (Logger.DEBUG) Logger.log("keycode : "+keycode);
-
-		IPresenterTurnState t = model.presenterTurnState;
-		switch (keycode) {
-			case 29:
-				t.setAlpha(t.getAlpha()+.05f);
-				break;
-			case 54:
-				t.setAlpha(t.getAlpha()-.05f);
-				break;
-			case 46:
-				t.setRange(t.getRange()+.2f);
-				break;
-			case 34:
-				t.setRange(t.getRange()-.2f);
-				break;
-			case 52:
-				t.setUseBlack(!t.getUseBlack());
-				break;
-			default:
-				break;
-		}
-		
-		if (Logger.DEBUG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
+//		if (Logger.DEBUG) Logger.log("keycode : "+keycode);
+//
+//		IPresenterTurnState t = model.presenterTurnState;
+//		switch (keycode) {
+//			case 29:
+//				t.setAlpha(t.getAlpha()+.05f);
+//				break;
+//			case 54:
+//				t.setAlpha(t.getAlpha()-.05f);
+//				break;
+//			case 46:
+//				t.setRange(t.getRange()+.2f);
+//				break;
+//			case 34:
+//				t.setRange(t.getRange()-.2f);
+//				break;
+//			case 52:
+//				t.setUseBlack(!t.getUseBlack());
+//				break;
+//			default:
+//				break;
+//		}
+//		
+//		if (Logger.DEBUG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
 		return false;
 	}
 

@@ -34,6 +34,7 @@ public class Ability
 	public static String ROUGH_TERRAIN_TAG = "rough";
 	public static String FLIGHT_TAG = "flight";
 	public static String HOLE_TAG = "hole";
+	public static String CHARGE_TAG = "charge";
 	
 	public enum AbilityType {
 		WEAPON(3),
