@@ -408,11 +408,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		} 
 		
 		// test
-		theChars.clear();
-		p.level = 20;
-		theChars.add(new Character(Creature.getIdForName("vampire bat"), p, 1, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName("giant hornet"), p, 2, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName("flying horror"), p, 3, dungeonEvents, dungeonQuery, this));
+//		theChars.clear();
+//		p.level = 20;
+//		theChars.add(new Character(Creature.getIdForName("vampire bat"), p, 1, dungeonEvents, dungeonQuery, this));
+//		theChars.add(new Character(Creature.getIdForName("wolf"), p, 2, dungeonEvents, dungeonQuery, this));
+//		theChars.add(new Character(Creature.getIdForName("flying horror"), p, 3, dungeonEvents, dungeonQuery, this));
 //		Creature c = theChars.get(0);
 //		//c.addAbility(new Ability(50, null, 20, dungeonEvents, dungeonQuery));
 //		c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));

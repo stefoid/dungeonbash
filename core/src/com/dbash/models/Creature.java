@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.platform.TextResourceIdentifier;
 import com.dbash.presenters.dungeon.CreaturePresenter;
 import com.dbash.util.Logger;
@@ -538,6 +539,31 @@ public abstract class Creature implements IPresenterCreature
 		}
 	}
 
+	protected boolean canChargeAcross(DungeonPosition position) {
+		boolean result = false;
+		if (canCharge) {
+			if (dungeonQuery.getLocation(position).hasRoughTerrain()) {
+				result = canFly;
+			} else {
+				result = true;
+			}
+		}
+		return result;
+	}
+	
+	protected boolean performCharge(DungeonPosition position, int direction, AtLocation targetType, Character releventCharacter) {
+		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
+		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position)) {
+			dungeonEvents.creatureCharge(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, null);
+	
+			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
+			// TODO process knockback somehow in conjunction with the melee attack.
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public void addExperience(int exp, boolean initialExp)
 	{
 		// modify the added experience depending on the type of creature

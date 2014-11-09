@@ -279,7 +279,9 @@ public class Monster extends Creature
 					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this);
 				} 
 				
-				dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
+				if (performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter) == false) {
+					dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
+				}
 			break;
 			case MONSTER:
 				break;

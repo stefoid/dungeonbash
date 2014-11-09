@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Ability;
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
@@ -46,6 +47,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public final static float walkPeriod = 0.7f;
 	public final static float leaderModeWalkPeriod = walkPeriod;
 	public final static float attackPeriod = 0.4f;
+	public final static float chargePeriod = 0.4f;
 	public final static float fallPeriod = 0.3f;
 	public final static float damagePeriod = 0.7f;
 	public final static float burstPeriod = 0.3f;
@@ -124,19 +126,26 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	// which will have updated the LocationPresenter.
 	// But here we need to tell the creaturePresenter itself so it can perform an animation rather than just draw a static image at the destination
 	@Override
-	public void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, int direction, Dungeon.MoveType moveType, IAnimListener completeListener) {
+	public void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, int direction, Dungeon.MoveType moveType, boolean chargeMove, IAnimListener completeListener) {
 		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
-		creaturePresenter.creatureMove(sequenceNumber, fromPosition, toPosition, direction, moveType, completeListener);
+		
+		float moveTime;
+		if (chargeMove) {
+			moveTime = DungeonAreaPresenter.chargePeriod;
+		} else {
+			moveTime = DungeonAreaPresenter.walkPeriod;
+		}
+		if (moveType == MoveType.FOLLOWER_MOVE || moveType == MoveType.LEADER_MOVE) {
+			moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
+		}
+		
+		creaturePresenter.creatureMove(sequenceNumber, fromPosition, toPosition, direction, moveType, chargeMove, moveTime, completeListener);
 		
 		// if the focused *character* is actually the one moving, then the focus has to move with it.
 		// this is the only instance of the focus changing without an explicit command from the turn processor.
-		float walkingPeriod = walkPeriod;
-		if (moveType == Dungeon.MoveType.LEADER_MOVE) {
-			walkingPeriod = leaderModeWalkPeriod;
-		}
 		
 		if (actingCreature instanceof Character && moveType != Dungeon.MoveType.FOLLOWER_MOVE) {
-			mapPresenter.performFocusChange(releventCharacter, walkingPeriod, true, null);
+			mapPresenter.performFocusChange(releventCharacter, moveTime, true, null);
 		}
 	}
 	

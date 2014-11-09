@@ -35,6 +35,7 @@ public class Ability
 	public static String FLIGHT_TAG = "flight";
 	public static String HOLE_TAG = "hole";
 	public static String CHARGE_TAG = "charge";
+	public static String KNOCKBACK_TAG = "knockback";
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -46,6 +47,9 @@ public class Ability
 		ORB(6),
 		POTION(5),
 		ABILITY(1),
+		FLIGHT(9),
+		CHARGE(10),
+		KNOCKBACK(11),
 		DE_NADA(8);
 		
 		public int val;
@@ -1005,28 +1009,22 @@ public class Ability
 	{	
 		AbilityType abilityType = AbilityType.ABILITY;
 		
-		if (hasTag(WEAPON_TAG))
-		{
+		if (hasTag(WEAPON_TAG)) {
 			abilityType = AbilityType.WEAPON;
 		} 
-		else if (hasTag(ARMOR_TAG))
-		{
+		else if (hasTag(ARMOR_TAG)) {
 			abilityType = AbilityType.ARMOR;
 		}
-		else if (hasTag(WAND_TAG))
-		{
+		else if (hasTag(WAND_TAG)) {
 			abilityType = AbilityType.WAND;
 		}
-		else if (hasTag(RANGED_TAG))
-		{
+		else if (hasTag(RANGED_TAG)) {
 			abilityType = AbilityType.RANGED;
 		}
-		else if (hasTag(AMULET_TAG))
-		{
+		else if (hasTag(AMULET_TAG)) {
 			abilityType = AbilityType.AMULET;
 		}
-		else if (hasTag(MAGIC_TAG))
-		{
+		else if (hasTag(MAGIC_TAG)) {
 			abilityType = AbilityType.MAGIC_ITEM;
 			
 			// special case potions and orbs.   Only way to tell is to scan the name.
@@ -1036,7 +1034,13 @@ public class Ability
 			} else if (ability.name.contains("potion")) {
 				abilityType = AbilityType.POTION;
 			}
-		}	
+		} else if (hasTag(FLIGHT_TAG)) {
+			abilityType = AbilityType.FLIGHT;
+		} else if (hasTag(CHARGE_TAG)) {
+			abilityType = AbilityType.CHARGE;
+		} else if (hasTag(KNOCKBACK_TAG)) {
+			abilityType = AbilityType.KNOCKBACK;
+		}
 		
 		this.abilityType = abilityType;
 	}

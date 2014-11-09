@@ -10,7 +10,7 @@ public interface IDungeonPresentationEventListener {
 	
 	// creature move:  The Dungeon will update the creatures position in it, and in its own record.
 	void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
-			int direction, Dungeon.MoveType moveType, IAnimListener completeListener);
+			int direction, Dungeon.MoveType moveType, boolean chargeMove, IAnimListener completeListener);
 	
 	void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition);
 	

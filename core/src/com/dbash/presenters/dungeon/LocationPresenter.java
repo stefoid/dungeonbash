@@ -160,9 +160,7 @@ public class LocationPresenter {
 		
 		int i = 0;
 		for (AbilityInfo abilityInfo : locationInfo.itemList) {
-			Logger.log("stuff in locationlist: "+abilityInfo.name);
 			if (abilityInfo.isRoughTerrain == false) {
-				Logger.log("stuff to show at location: "+abilityInfo.name);
 				int posIndex = i%(x.length);
 				itemArea.x = area.x + area.width*x[posIndex];  
 				itemArea.y = area.y + area.height*y[posIndex];  

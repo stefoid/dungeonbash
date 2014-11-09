@@ -498,7 +498,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			{	
 			    case HOLE:
 			    	if (canFly) {
-						if (performCharge(position, direction) == false) {
+						if (performCharge(position, direction, AtLocation.MONSTER, this) == false) {
 							dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, position, direction, Dungeon.MoveType.NORMAL_MOVE, null);
 						}
 						updatePath(position);
@@ -507,7 +507,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			    	break;
 				case FREE:
 					// If the character has charge ability, and there is a monster at the end of this move, its a charge move
-					if (performCharge(position, direction) == false) {
+					if (performCharge(position, direction, AtLocation.MONSTER, this) == false) {
 						dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, position, direction, Dungeon.MoveType.NORMAL_MOVE, null);
 					}
 					updatePath(position);
@@ -523,30 +523,6 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 	}
 	
-	private boolean performCharge(DungeonPosition position, int direction) {
-		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
-		if (dungeonQuery.whatIsAtLocation(furtherPosition) == AtLocation.MONSTER && canChargeAcross(position)) {
-			dungeonEvents.creatureCharge(SequenceNumber.getNext(), this, this, mapPosition, position, direction, null);
-	
-			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
-			// TODO process knockback somehow in conjunction with the melee attack.
-			return true;
-		}
-		
-		return false;
-	}
-	
-	private boolean canChargeAcross(DungeonPosition position) {
-		boolean result = false;
-		if (canCharge) {
-			if (dungeonQuery.getLocation(position).hasRoughTerrain()) {
-				result = canFly;
-			} else {
-				result = true;
-			}
-		}
-		return result;
-	}
 	
 	/**
 	 * If this character is the leader, use the target position, if the finger is lifted on a spot that is

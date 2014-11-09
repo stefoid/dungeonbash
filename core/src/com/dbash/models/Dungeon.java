@@ -285,11 +285,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 			
 			// ok, so presumably we can see this move, one way or the other.
-			if (isChargeMove) {
-				dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, completeListener);
-			} else {
-				dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, completeListener);
-			}
+			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, isChargeMove, completeListener);
+		
 		} else {
 			// we wont animate, but call things that might be waiting on the animation to compelte anyway.
 			if (completeListener != null) {

@@ -12,7 +12,7 @@ public class NoCharacter extends Character {
 	public class NoCreaturePresenter extends CreaturePresenter {
 		public NoCreaturePresenter() {super();}
 		@Override
-		public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener animCompleteListener) {}
+		public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, boolean chargeMove, float moveTime, IAnimListener animCompleteListener) {}
 		@Override
 		public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level) {}
 		@Override

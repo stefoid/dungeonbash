@@ -78,6 +78,7 @@ public class CreaturePresenter {
 	private ImageView highlightImage;
 	private AnimationView myPreviousAnim;
 	private Light light;
+	private boolean isCharging;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
@@ -85,6 +86,7 @@ public class CreaturePresenter {
 		this.name = creature.getNameUnderscore();
 		this.model = model;
 		this.myPreviousAnim = null;
+		isCharging = false;
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.WAITING_TO_FALL;
@@ -204,12 +206,11 @@ public class CreaturePresenter {
 	// preceding one that sets the source position to its own source position.
 	int moves_waiting = 0;
 	
-	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener animCompleteListener) {
+	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, boolean chargeMove, float moveTime, IAnimListener animCompleteListener) {
 		//final CreaturePresenter selfi = this;
 		final DungeonPosition newSourcePos = fromPosition;
-		float moveTime = DungeonAreaPresenter.walkPeriod;
-		if (moveType == MoveType.FOLLOWER_MOVE || moveType == MoveType.LEADER_MOVE) {
-			moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
+		if (chargeMove) {
+			isCharging = true;
 		}
 		//System.out.printlnln(this+" command to move with moves waiting " + moves_waiting++ +" and state "+visualState.toString());
 		// depends on the state as to what we do - can be multiple follower mode moves, falling in etc...
@@ -240,11 +241,15 @@ public class CreaturePresenter {
 		}
 		
 		// set up animation
+		String animToUse = "walk";
+		if (chargeMove) {
+			animToUse = "attack";
+		}
 		final Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final IAnimListener tpListen = animCompleteListener;
 		final int dir = direction;
-		final AnimationView moveAnim = new AnimationView(gui, getFullName(name, "walk", direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
+		final AnimationView moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
 			public void animEvent() {
 				visualState = VisualState.STATIONARY;
 				moves_waiting--;
@@ -395,8 +400,20 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureMeleeAttack(int sequenceNumber, DungeonPosition fromPosition, DungeonPosition targetPosition, int direction, IAnimListener animCompleteListener) {
+		if (isCharging) {
+			isCharging = false;
+			return;
+		}
+		
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
-		visualState = VisualState.WAITING_TO_ATTACK;;
+		switch (visualState) {
+			case STATIONARY:
+				visualState = VisualState.WAITING_TO_ATTACK;
+				break;
+			default:
+				break;
+		}
+		
 		final IAnimListener tpListen = animCompleteListener;
 		final int dir = direction;
 		final Rect toRect;
