@@ -47,9 +47,6 @@ public class Ability
 		ORB(6),
 		POTION(5),
 		ABILITY(1),
-		FLIGHT(9),
-		CHARGE(10),
-		KNOCKBACK(11),
 		DE_NADA(8);
 		
 		public int val;
@@ -976,15 +973,15 @@ public class Ability
 //			abilityEffectTypeHash.add(AbilityEffectType.NONE_REALLY);
 //		}
 		
-		if (ability.name.equals("charge")) {
+		if (hasTag(CHARGE_TAG)) {
 			abilityEffectTypeHash.add(AbilityEffectType.CHARGE);
 		}
 		
-		if (ability.name.equals("knockback")) {
+		if (hasTag(KNOCKBACK_TAG)) {
 			abilityEffectTypeHash.add(AbilityEffectType.KNOCKBACK);
 		}
 		
-		if (ability.name.equals("flight")) {
+		if (hasTag(FLIGHT_TAG)) {
 			abilityEffectTypeHash.add(AbilityEffectType.FLIGHT);
 		}
 		
@@ -1034,12 +1031,6 @@ public class Ability
 			} else if (ability.name.contains("potion")) {
 				abilityType = AbilityType.POTION;
 			}
-		} else if (hasTag(FLIGHT_TAG)) {
-			abilityType = AbilityType.FLIGHT;
-		} else if (hasTag(CHARGE_TAG)) {
-			abilityType = AbilityType.CHARGE;
-		} else if (hasTag(KNOCKBACK_TAG)) {
-			abilityType = AbilityType.KNOCKBACK;
 		}
 		
 		this.abilityType = abilityType;

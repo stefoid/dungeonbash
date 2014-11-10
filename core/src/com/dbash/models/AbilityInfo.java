@@ -148,15 +148,6 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			case WAND:
 				image = "WAND_IMAGE";
 				break;
-			case FLIGHT:
-				image = "FLIGHT_IMAGE";
-				break;
-			case CHARGE:
-				image = "CHARGE_IMAGE";
-				break;
-			case KNOCKBACK:
-				image = "KNOCKBACK_IMAGE";
-				break;
 			case MAGIC_ITEM:
 				image = "MAGIC_ITEM_IMAGE";
 				break;
@@ -239,6 +230,15 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 				break;
 			case RESIST_STUN:
 				image = "RESIST_STUN_IMAGE";
+				break;
+			case FLIGHT:
+				image = "FLIGHT_IMAGE";
+				break;
+			case CHARGE:
+				image = "CHARGE_IMAGE";
+				break;
+			case KNOCKBACK:
+				image = "KNOCKBACK_IMAGE";
 				break;
 			default:
 				image = "MAGIC_ITEM_IMAGE";
