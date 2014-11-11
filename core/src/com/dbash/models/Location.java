@@ -285,7 +285,7 @@ public class Location {
 	}
 	
 	public void setRoughTerrain(RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
-		int id = Ability.idForName(roughTerrainType.getValue());
+		int id = Ability.getIdForName(roughTerrainType.getValue());
 		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 
 		itemList.add(ability);
 		roughTerrainType = getRoughTerrain();

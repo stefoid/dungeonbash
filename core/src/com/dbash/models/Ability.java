@@ -83,7 +83,7 @@ public class Ability
 	
 	public int usageCount = 0;  // Every time an ability is used, this number is incremented for ordering the selection list.
 	
-	public static int idForName(String name) {
+	public static int getIdForName(String name) {
 		for (int i=0; i<abilityData.size();i++) {
 			if (abilityData.get(i).name.equals(name)) {
 				return i;
@@ -92,6 +92,8 @@ public class Ability
 		
 		return 0;
 	}
+	
+	
 	
 	public Ability(Ability theAbility) {
 		this(theAbility.myId, theAbility.owned, 1, theAbility.dungeonEvents, theAbility.dungeonQuery);
@@ -851,7 +853,7 @@ public class Ability
 	
 	private final static String HELD = "held";
 	private final static String STUN = "stunned";
-	private final static String KNOCKBACK = "knockback";
+	private final static String KNOCKEDBACK = "knockedback";
 	
 	private void setAbilityEffectType()
 	{
@@ -862,6 +864,10 @@ public class Ability
 		boolean sharp=false;
 		boolean chem=false;
 		boolean energy=false;
+		
+		int heldId = Ability.getIdForName(HELD);
+		int knockbackId = Ability.getIdForName(KNOCKEDBACK);
+		int stunnedId = Ability.getIdForName(STUN);
 		
 		for (int i=0; i<numberOfCommands; i++) {
 	
@@ -932,11 +938,11 @@ public class Ability
 			
 			// resistance related
 			if (testEffectType(i, AbilityCommand.RESIST_ABILITY)) {
-				if (ability.name.equals(HELD)) {
+				if (ability.executeParam1[i] == heldId) {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_HELD);
-				} else if (ability.name.equals(STUN)) {
+				} else if (ability.executeParam1[i] == stunnedId) {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_STUN);
-				} else if (ability.name.equals(KNOCKBACK)) {
+				} else if (ability.executeParam1[i] == knockbackId) {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_KNOCKBACK);
 				} else {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_POISON);
