@@ -997,6 +997,9 @@ public class Character extends Creature implements IPresenterCharacter {
 		creatureStats.abilityCountdown = 0;
 		
 		if (highlightAbility != null) {
+			if (highlightAbility.abilityEffects.size() == 0) {
+				System.out.println("it happened again");
+			}
 			creatureStats.abilityEffectType = highlightAbility.abilityEffects.firstElement();
 			creatureStats.abilityCountdown = highlightAbility.expireTime;
 		} else {

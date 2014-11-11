@@ -851,6 +851,7 @@ public class Ability
 	
 	private final static String HELD = "held";
 	private final static String STUN = "stunned";
+	private final static String KNOCKBACK = "knockback";
 	
 	private void setAbilityEffectType()
 	{
@@ -935,6 +936,8 @@ public class Ability
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_HELD);
 				} else if (ability.name.equals(STUN)) {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_STUN);
+				} else if (ability.name.equals(KNOCKBACK)) {
+					abilityEffectTypeHash.add(AbilityEffectType.RESIST_KNOCKBACK);
 				} else {
 					abilityEffectTypeHash.add(AbilityEffectType.RESIST_POISON);
 				}

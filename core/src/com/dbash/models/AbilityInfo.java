@@ -231,6 +231,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			case RESIST_STUN:
 				image = "RESIST_STUN_IMAGE";
 				break;
+			case RESIST_KNOCKBACK:
+				image = "RESIST_KNOCKBACK_IMAGE";
+				break;
 			case FLIGHT:
 				image = "FLIGHT_IMAGE";
 				break;

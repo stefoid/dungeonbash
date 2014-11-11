@@ -4,11 +4,11 @@
 +"mud,rough,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,*"// mud: VALUE MODIFIER,
 +"rocks,rough,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,*"// rocks: VALUE MODIFIER,
 +"hole,rough.hole,-1,0,0,-1,0,0,0,1,1,*"// hole: 
-+"smash,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,10,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// smash: ATTACKER,DESELECT,SELECT,
-+"headbutt,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,10,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// headbutt: ATTACKER,DESELECT,SELECT,
++"smash,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,-1,0,7,5,0,0,0,0,9,6,7,10,0,0,*"// smash: ATTACKER,DESELECT,SELECT,
++"headbutt,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,-1,0,7,5,0,0,0,0,9,6,7,10,0,0,*"// headbutt: ATTACKER,DESELECT,SELECT,
 +"resist knockback,ia,-1,0,0,0,0,0,0,0,0,21,0,10,0,0,0,*"// resist knockback: NO STRATEGY,
 +"charge,charge,6,0,0,-1,0,0,0,1,1,*"// charge: 
-+"knockback,ia,-1,0,0,1,0,0,0,1,0,*"// knockback: 
++"knockback,knockback,-1,0,0,-1,0,0,0,1,0,*"// knockback: 
 +"flight,flight,-1,0,0,-1,0,0,0,1,0,*"// flight: 
 +"torches,ad,6,2,2,-1,1,0,1,2,1,19,3,3,5,-1,0,*"// torches: ATTACKER,
 +"resist poison,ia,-1,0,0,0,0,0,0,0,0,21,0,140,0,0,0,21,0,122,0,0,0,*"// resist poison: NO STRATEGY,NO STRATEGY,
