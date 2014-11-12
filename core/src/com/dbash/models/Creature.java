@@ -556,7 +556,7 @@ public abstract class Creature implements IPresenterCreature
 	protected boolean performCharge(DungeonPosition position, int direction, AtLocation targetType, Character releventCharacter) {
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
 		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position)) {
-			dungeonEvents.creatureCharge(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, null);
+			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, Dungeon.MoveType.CHARGE_MOVE, null);
 	
 			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
 			return true;

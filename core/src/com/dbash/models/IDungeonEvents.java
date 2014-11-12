@@ -46,14 +46,6 @@ public interface IDungeonEvents {
 	void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
 			int direction, Dungeon.MoveType moveType, IAnimListener completeListener);
 	
-	// creature move:  The Dungeon will update the creatures position in it, and in its own record.
-	void creatureCharge(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
-			int direction, IAnimListener completeListener);
-	
-	// creature move:  The Dungeon will update the creatures position in it, and in its own record.
-	void creaturKnockback(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
-			int direction, IAnimListener completeListener);
-	
 	// object drop
 	void objectDrop(int sequenceNumber, Creature releventCharacter, Ability abilityObjectDropped, DungeonPosition position);
 	

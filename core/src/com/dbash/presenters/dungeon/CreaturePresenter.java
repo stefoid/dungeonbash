@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
+import com.dbash.models.Dungeon;
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
@@ -206,10 +207,11 @@ public class CreaturePresenter {
 	// preceding one that sets the source position to its own source position.
 	int moves_waiting = 0;
 	
-	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType, boolean chargeMove, float moveTime, IAnimListener animCompleteListener) {
+	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, 
+			MoveType moveType, float moveTime, IAnimListener animCompleteListener) {
 		//final CreaturePresenter selfi = this;
 		final DungeonPosition newSourcePos = fromPosition;
-		if (chargeMove) {
+		if (moveType == Dungeon.MoveType.CHARGE_MOVE) {
 			isCharging = true;
 		}
 		//System.out.printlnln(this+" command to move with moves waiting " + moves_waiting++ +" and state "+visualState.toString());
@@ -242,7 +244,7 @@ public class CreaturePresenter {
 		
 		// set up animation
 		String animToUse = "walk";
-		if (chargeMove) {
+		if (isCharging) {
 			animToUse = "attack";
 		}
 		final Rect toRect = makeDrawingRectFromPosition(toPosition);

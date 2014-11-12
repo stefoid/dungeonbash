@@ -126,11 +126,12 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	// which will have updated the LocationPresenter.
 	// But here we need to tell the creaturePresenter itself so it can perform an animation rather than just draw a static image at the destination
 	@Override
-	public void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, int direction, Dungeon.MoveType moveType, boolean chargeMove, IAnimListener completeListener) {
+	public void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, int direction, 
+			Dungeon.MoveType moveType, IAnimListener completeListener) {
 		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
 		
 		float moveTime;
-		if (chargeMove) {
+		if (moveType == Dungeon.MoveType.CHARGE_MOVE) {
 			moveTime = DungeonAreaPresenter.chargePeriod;
 		} else {
 			moveTime = DungeonAreaPresenter.walkPeriod;
@@ -139,7 +140,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
 		}
 		
-		creaturePresenter.creatureMove(sequenceNumber, fromPosition, toPosition, direction, moveType, chargeMove, moveTime, completeListener);
+		creaturePresenter.creatureMove(sequenceNumber, fromPosition, toPosition, direction, moveType, moveTime, completeListener);
 		
 		// if the focused *character* is actually the one moving, then the focus has to move with it.
 		// this is the only instance of the focus changing without an explicit command from the turn processor.

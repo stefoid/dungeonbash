@@ -247,21 +247,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	
 	@Override
-	public void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition,
-			DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener completeListener) {
-		performMovement(false, sequenceNumber, releventCharacter, actingCreature, fromPosition,
-		 toPosition, direction, moveType, completeListener);
-	}
-	
-	@Override
-	public void creatureCharge(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
-			int direction, IAnimListener completeListener) {
-		performMovement(true, sequenceNumber, releventCharacter, actingCreature, fromPosition,
-				 toPosition, direction, MoveType.NORMAL_MOVE, completeListener);
-	}
-	
-	private void performMovement(boolean isChargeMove, int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition,
-			DungeonPosition toPosition, int direction, MoveType moveType, IAnimListener completeListener) {
+	public void creatureMove(int sequenceNumber, Character releventCharacter,
+			Creature actingCreature, DungeonPosition fromPosition,
+			DungeonPosition toPosition, int direction, MoveType moveType,
+			IAnimListener completeListener) {
 		// update the position of the creature in the model.
 		map.location(fromPosition).setCreature(null);
 		map.location(toPosition).moveCreature(actingCreature);
@@ -287,7 +276,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 			
 			// ok, so presumably we can see this move, one way or the other.
-			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, isChargeMove, completeListener);
+			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, completeListener);
 		
 		} else {
 			// we wont animate, but call things that might be waiting on the animation to compelte anyway.
@@ -778,18 +767,5 @@ private void printEff(AbilityEffectType abilityEfectType) {
 		// turn off previous eye pos if relevent
 		dungeonEventListener.usingEye(position, showIt);
 	}
-
-
-	@Override
-	public void creaturKnockback(int sequenceNumber,
-			Character releventCharacter, Creature actingCreature,
-			DungeonPosition fromPosition, DungeonPosition toPosition,
-			int direction, IAnimListener completeListener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
 
 }
