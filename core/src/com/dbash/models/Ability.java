@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Vector;
 
@@ -36,6 +37,7 @@ public class Ability
 	public static String HOLE_TAG = "hole";
 	public static String CHARGE_TAG = "charge";
 	public static String KNOCKBACK_TAG = "knockback";
+	public static String KNOCKEDBACK_TAG = "knockedback";
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -81,6 +83,7 @@ public class Ability
 		NONE_REALLY
 	}
 	
+	public HashMap<String, Object> dynamicParams = new HashMap<String, Object>();
 	public int usageCount = 0;  // Every time an ability is used, this number is incremented for ordering the selection list.
 	
 	public static int getIdForName(String name) {
@@ -596,6 +599,8 @@ public class Ability
 		return n;
 	}
 
+	
+	
 	// METHODS
 	private int addNextAbility(String string, int startIndex)
 	{

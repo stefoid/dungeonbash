@@ -30,7 +30,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public enum MoveType {
 		NORMAL_MOVE,
 		LEADER_MOVE,
-		FOLLOWER_MOVE
+		FOLLOWER_MOVE,
+		KNOCKBACK_MOVE,
+		CHARGE_MOVE
 	}
 	
 	public final static int FINAL_LEVEL = 20;

@@ -43,9 +43,11 @@ public abstract class Creature implements IPresenterCreature
 	}
 
 // ATTRIBUTES
+	private final static String GIVER = "giver";
+	private final static String TARGET_POS = "targetpos";
 	
 	protected CanMoveStrategy canMove = new CanMoveStrategy();
-	
+
 	// instance data
 	protected HighlightStatus highlightStatus;
 	
@@ -557,7 +559,6 @@ public abstract class Creature implements IPresenterCreature
 			dungeonEvents.creatureCharge(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, null);
 	
 			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
-			// TODO process knockback somehow in conjunction with the melee attack.
 			return true;
 		}
 		
@@ -705,6 +706,11 @@ public abstract class Creature implements IPresenterCreature
 			}
 		}
 		
+		if (ability.hasTag(Ability.KNOCKEDBACK_TAG)) {
+			performKnockback(ability);
+			return true;
+		}
+		
 		abilities.add(ability);
 		setAbilityFlags();
 		ability.setOwned(this, true);
@@ -798,6 +804,80 @@ public abstract class Creature implements IPresenterCreature
 		return someEffect;
 	}
 
+	/**
+	 * Knockback has been applied to the creature.  
+	 */
+	private void performKnockback(Ability ability) {
+		DungeonPosition targetPos = (DungeonPosition) ability.dynamicParams.get(TARGET_POS);
+		Creature attacker = (Creature) ability.dynamicParams.get(GIVER);
+		DungeonPosition sourcePos = attacker.getPosition();
+		int knockbackDir;
+		
+		if (targetPos.equals(mapPosition)) {
+			knockbackDir = calcMostAccurateDir(sourcePos, mapPosition);
+		} else {
+			knockbackDir = calcMostAccurateDir(targetPos, mapPosition);
+		}
+		
+		if (knockbackDir == DungeonPosition.NO_DIR) {
+			knockbackDir = Randy.getRand(DungeonPosition.WEST, DungeonPosition.SOUTHWEST);
+		}
+		
+		//lets just move
+		DungeonPosition newPosition = new DungeonPosition(mapPosition, knockbackDir);
+		dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.FOLLOWER_MOVE, null);
+	}
+	
+	protected int calcMostAccurateDir(DungeonPosition sourcePos, DungeonPosition destPos) {
+
+		if (sourcePos.equals(destPos)) {
+			return DungeonPosition.NO_DIR;
+		}
+		
+		int difX = destPos.x - sourcePos.x;
+		int difY = destPos.y - sourcePos.y;
+		int abDifX = Math.abs(difX);
+		int abDifY = Math.abs(difY);
+		
+		// NORTH OR SOUTH
+		if (abDifY >= 2*abDifX) {
+			if (difY >= 0) {
+				return DungeonPosition.NORTH;
+			} else {
+				return DungeonPosition.SOUTH;
+			}
+		}
+		
+		// EAST OR WEST
+		if (abDifX >= 2*abDifY) {
+			if (difX >= 0) {
+				return DungeonPosition.EAST;
+			} else {
+				return DungeonPosition.WEST;
+			}
+		}
+		
+		// NORTHEAST OR SOUTHEAST
+		if (difX >= 0) {
+			if (difY >= 0) {
+				return DungeonPosition.NORTHEAST;
+			} else {
+				return DungeonPosition.SOUTHEAST;
+			}
+		}
+		
+		// NORTHWEST OR SOUTHWEST
+		if (difX < 0) {
+			if (difY >= 0) {
+				return DungeonPosition.NORTHWEST;
+			} else {
+				return DungeonPosition.SOUTHWEST;
+			}
+		}
+
+		return DungeonPosition.NO_DIR;
+	}
+	
 	// The highlighted ability effect will be either the latest ability added to the character, or the temporary ability
 	// with the least turns left to countDown
 	// returns true if highlighted ability has changed
@@ -805,14 +885,6 @@ public abstract class Creature implements IPresenterCreature
 	
 	
 	// ATTRIBUTES
-
-	
-
-	/*
-	 * colour numbers BLACK (=0) BLUE (=1) LIME (=2) AQUA (=3) RED (=4) FUCHSIA
-	 * (=5) YELLOW (=6) WHITE (=7) GRAY (=8) NAVY (=9) GREEN (=10) TEAL (=11)
-	 * MAROON (=12) PURPLE (=13) OLIVE (=14) SILVER (=15)
-	 */
 
 	// name, gifname, colour, head, hands, humanoid, swarm, maxHealth, maxMagic,
 	// speed, attack, defence, n x (abilities *)
@@ -872,8 +944,11 @@ public abstract class Creature implements IPresenterCreature
 	public boolean giveAbility(Creature target, Ability ab, DungeonPosition pos, int magicCost, Creature giver)
 	{
 		boolean addedOk = true;
-
+		
 		if (target != null){
+			ab.dynamicParams.put(GIVER, giver);
+			ab.dynamicParams.put(TARGET_POS, pos);
+			
 			addedOk = target.addAbility(ab);
 			
 			// There is an edge case where adding the creature adds an ability to itself, which will end its turn,
