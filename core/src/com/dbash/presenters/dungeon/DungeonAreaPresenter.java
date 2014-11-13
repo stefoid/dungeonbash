@@ -43,17 +43,21 @@ import com.dbash.util.Rect;
 //
 public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresentationEventListener {
 
-	public final static float scrollPeriod = 0.5f;
-	public final static float walkPeriod = 0.7f;
-	public final static float leaderModeWalkPeriod = walkPeriod;
-	public final static float attackPeriod = 0.4f;
-	public final static float chargePeriod = 0.4f;
-	public final static float fallPeriod = 0.3f;
-	public final static float damagePeriod = 0.7f;
-	public final static float burstPeriod = 0.3f;
-	public final static float abilityPeriod = 0.8f;
-	public final static float missedPeriod = 0.4f;
-	public final static float highlightPeriod = 1.2f;
+	private static final float multiplier = 1.0f;
+	public final static float scrollPeriod = 0.5f * multiplier;
+	public final static float walkPeriod = 0.7f * multiplier;
+	public final static float leaderModeWalkPeriod = 0.7f * multiplier;
+	public final static float attackPeriod = 0.4f * multiplier;
+	public final static float chargePeriod = 0.4f * multiplier;
+	public final static float fallPeriod = 0.3f * multiplier;
+	public final static float damagePeriod = 0.7f * multiplier;
+	public final static float burstPeriod = 0.3f * multiplier;
+	public final static float abilityPeriod = 0.8f * multiplier;
+	public final static float missedPeriod = 0.4f * multiplier;
+	public final static float highlightPeriod = 1.2f * multiplier;
+	public final static float deathPeriod = 1.0f * multiplier;
+	public final static float skullPeriod = 0.7f * multiplier;
+	public final static float knockbackPeriod = 0.55f * multiplier;
 	
 	
 	private UIDepend				gui;
@@ -131,13 +135,22 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
 		
 		float moveTime;
-		if (moveType == Dungeon.MoveType.CHARGE_MOVE) {
-			moveTime = DungeonAreaPresenter.chargePeriod;
-		} else {
-			moveTime = DungeonAreaPresenter.walkPeriod;
-		}
-		if (moveType == MoveType.FOLLOWER_MOVE || moveType == MoveType.LEADER_MOVE) {
-			moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
+		switch (moveType) {
+			case CHARGE_MOVE:
+				moveTime = DungeonAreaPresenter.chargePeriod;
+				break;
+			case KNOCKBACK_MOVE:
+				moveTime = DungeonAreaPresenter.knockbackPeriod;
+				break;
+			case FOLLOWER_MOVE:
+				moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
+				break;
+			case LEADER_MOVE:
+				moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
+				break;
+			default:
+				moveTime = DungeonAreaPresenter.walkPeriod;
+				break;
 		}
 		
 		creaturePresenter.creatureMove(sequenceNumber, fromPosition, toPosition, direction, moveType, moveTime, completeListener);

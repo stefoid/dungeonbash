@@ -825,7 +825,7 @@ public abstract class Creature implements IPresenterCreature
 		
 		//lets just move
 		DungeonPosition newPosition = new DungeonPosition(mapPosition, knockbackDir);
-		dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.FOLLOWER_MOVE, null);
+		dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
 	}
 	
 	protected int calcMostAccurateDir(DungeonPosition sourcePos, DungeonPosition destPos) {

@@ -219,6 +219,42 @@ public class DungeonPosition implements Serializable {
 			}
 		}
 	}
+	
+	static public int oppositeDirection(int direction)
+	{
+		int result = DungeonPosition.NO_DIR;
+
+		// Identify the exact opposition direction
+		switch (direction) {
+			case DungeonPosition.NORTH:
+				result = DungeonPosition.SOUTH;
+				break;
+			case DungeonPosition.SOUTH:
+				result = DungeonPosition.NORTH;
+				break;
+			case DungeonPosition.EAST:
+				result = DungeonPosition.WEST;
+				break;
+			case DungeonPosition.WEST:
+				result = DungeonPosition.EAST;
+				break;
+			case DungeonPosition.NORTHEAST:
+				result = DungeonPosition.SOUTHWEST;
+				break;
+			case DungeonPosition.NORTHWEST:
+				result = DungeonPosition.SOUTHEAST;
+				break;
+			case DungeonPosition.SOUTHEAST:
+				result = DungeonPosition.NORTHWEST;
+				break;
+			case DungeonPosition.SOUTHWEST:
+				result = DungeonPosition.NORTHEAST;
+				break;
+		}
+
+		return result;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		DungeonPosition p = (DungeonPosition) obj;

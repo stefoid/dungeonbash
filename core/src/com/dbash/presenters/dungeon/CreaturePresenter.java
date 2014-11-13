@@ -211,9 +211,22 @@ public class CreaturePresenter {
 			MoveType moveType, float moveTime, IAnimListener animCompleteListener) {
 		//final CreaturePresenter selfi = this;
 		final DungeonPosition newSourcePos = fromPosition;
-		if (moveType == Dungeon.MoveType.CHARGE_MOVE) {
-			isCharging = true;
+		String animToUse = "walk";
+		
+		switch (moveType) {
+			case CHARGE_MOVE:
+				isCharging = true;
+				animToUse = "attack";
+				break;
+			case KNOCKBACK_MOVE:
+				direction = DungeonPosition.oppositeDirection(direction);
+				setStaticImage(direction);
+				break;
+			default:
+				animToUse = "walk";
+				break;
 		}
+		
 		//System.out.printlnln(this+" command to move with moves waiting " + moves_waiting++ +" and state "+visualState.toString());
 		// depends on the state as to what we do - can be multiple follower mode moves, falling in etc...
 		// these are the possible states for a single character that has been sent a MOVE command:
@@ -242,11 +255,6 @@ public class CreaturePresenter {
 				break;
 		}
 		
-		// set up animation
-		String animToUse = "walk";
-		if (isCharging) {
-			animToUse = "attack";
-		}
 		final Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final IAnimListener tpListen = animCompleteListener;
@@ -295,6 +303,10 @@ public class CreaturePresenter {
 					//System.out.printlnln("this is the one fialing to start");
 					model.animQueue.chainConcurrent(moveAnim, 20f, false); // slight delay in following for asthetic reasons
 				}
+				break;
+			case KNOCKBACK_MOVE:
+				moveAnim.staticFrameOnly();
+				model.animQueue.chainConcurrentWithSn(moveAnim, false);
 				break;
 			case LEADER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;
@@ -442,7 +454,9 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, IAnimListener completeListener) {
-		sourcePosition = deathPosition;
+		if (myPreviousAnim == null || (myPreviousAnim != null && myPreviousAnim.hasCompleted) ) {
+			sourcePosition = deathPosition;
+		}
 		visualState = VisualState.WAITING_TO_DIE;
 		updateStaticImageArea();
 		
@@ -450,7 +464,7 @@ public class CreaturePresenter {
 		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition), 0.6f);
 		Rect toRect = new Rect(fromRect, 1.6f);
 		toRect.y += fromRect.height*.8f;
-		AnimationView deathAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, 0.7f, 1, new IAnimListener() {
+		AnimationView deathAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
 			public void animEvent() {
 				if (tpListen != null) {
 					tpListen.animEvent(); // tell anyone who cares
@@ -473,7 +487,7 @@ public class CreaturePresenter {
 		Rect fromRectC = makeDrawingRectFromPosition(deathPosition);
 		Rect toRectC = new Rect(fromRectC);
 		toRectC.y -= toRectC.height;
-		AnimationView deathAnimC = new AnimationView(gui, staticImage.name, fromRectC, toRectC, 1f, 1f, 1f, 1, null);
+		AnimationView deathAnimC = new AnimationView(gui, staticImage.name, fromRectC, toRectC, 1f, 1f, DungeonAreaPresenter.deathPeriod, 1, null);
 		deathAnimC.sequenceNumber = sequenceNumber;
 		deathAnimC.animType = AnimOp.AnimType.SINKING;
 		deathAnimC.staticFrameOnly();
@@ -481,7 +495,7 @@ public class CreaturePresenter {
 		
 		// chain concurently with same SN otherwise sequentially.
 		model.animQueue.chainConcurrentWithSn(deathAnimC, false); // the creature sinking into the ground 
-		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the winged skull
+		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the  skull
 	}
 	
 
