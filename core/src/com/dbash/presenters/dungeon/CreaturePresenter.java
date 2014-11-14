@@ -42,33 +42,19 @@ import com.dbash.util.Rect;
 // asked to, or to display an animation of the creature moving form one tile to the next when it gets a move command.
 // the tricky bit there is that sometimes the move command is queued, so a static image must be drawn while waiting for the anim to play
 // but it cant be a static image in a position 'ahead' of where an unplayed animation will display it.
-//
-// display state for a creature is -
-// STATIONARY - display static image at model [dest] position
-// WAITING TO FALL - do not display anything
-// WAITING_TO_MOVE - display at [source] position because model had already updated [dest] position]
-// WAITING_TO_ATTACK - display static at [dest] position.
-// FOLLOWER_MOVE_AFTER_FALL - edge case.  we are waiting to move, but we are also waiting to fall in.  dont display anything
-// ANIMATING - display animation instead of static image.
 public class CreaturePresenter {
 	
 	public enum VisualState {
-		STATIONARY,
-		WAITING_TO_FALL,
-		WAITING_TO_MOVE, 
-		WAITING_TO_ATTACK,
-		WAITING_TO_DIE, 
-		WAITING_TO_GO_DOWN_STAIRS,
-		ANIMATING    // any animation that is not moving or falling
+		SHOW_STATIC,
+		SHOW_NOTHING,
+		SHOW_ANIMATION    
 	}
-	
-	// this is the position of the creature according to the presenter
-	private DungeonPosition sourcePosition;  // recorded when a move command is received.
-	private DungeonPosition destPosition; // always updated by observing changes in the model (presenterCreature)
-	private VisualState visualState;
 	
 	private UIDepend gui;
 	private PresenterDepend model;
+	
+	private DungeonPosition currentVisualPosition;  
+	private VisualState visualState;
 	private AnimationView highlightAnimation;
 	private IPresenterCreature creature;
 	private ImageView staticImage;
@@ -77,9 +63,10 @@ public class CreaturePresenter {
 	private MapPresenter mapPresenter;
 	private String name;
 	private ImageView highlightImage;
-	private AnimationView myPreviousAnim;
 	private Light light;
 	private boolean isCharging;
+
+	private AnimationView myPreviousAnim;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
@@ -90,46 +77,47 @@ public class CreaturePresenter {
 		isCharging = false;
 		
 		if (creature instanceof Character) {
-			this.visualState = VisualState.WAITING_TO_FALL;
+			this.visualState = VisualState.SHOW_NOTHING;
 			light = new Light(creature.getPosition(), 5, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
 		} else {
-			this.visualState = VisualState.STATIONARY;
+			this.visualState = VisualState.SHOW_STATIC;
 		}
 		   
-		// register for changes to the underlying model..
+		// This registers for changes for when the character is waiting for its turn?
+		// I think I can do better.
+		// i.e. only use this to set a flag of 'show highlight', rather than also the position.
 		final IPresenterCreature theCreature = creature;
 		creature.onChangeToVisualStatus(new UIInfoListener() {
 			public void UIInfoChanged() {
-				destPosition = theCreature.getPosition();
-				updateStaticImageArea();
-				updateHighlightAnimation();
+				updateHighlightAnimation(theCreature.getPosition());
 			}
 		});
 		
 		this.mapPresenter = mapPresenter;
 		this.area = new Rect(0,0,0,0);
-		this.sourcePosition = creature.getPosition();
-		this.destPosition = creature.getPosition();
+		this.currentVisualPosition = creature.getPosition();
 		highlightImage = new ImageView(gui, "RANGED_DOT", this.area);
-		updateHighlightAnimation();
+		updateHighlightAnimation(currentVisualPosition);
 		setStaticImage(DungeonPosition.SOUTH);
+		updateStaticImageArea();
 	}
 	public CreaturePresenter(){};
 	
 	public void resume() {
-		this.visualState = VisualState.STATIONARY;
+		this.visualState = VisualState.SHOW_STATIC;
 		mapPresenter.addLight(light);
 	}
 	
-	private void updateHighlightAnimation() {
+	private void updateHighlightAnimation(DungeonPosition position) {
+		Rect highlightArea = makeDrawingRectFromPosition(position);
 		final float startScale = .7f;
 		final float endScale = .9f;
 		final float startAlpha = .2f;
 		final float endAlpha = .3f;
 		final float halfAlpha = startAlpha + (endAlpha*2 - startAlpha)/2;
-		final Rect fromRect = new Rect(this.area, startScale);
-		final Rect toRect = new Rect(this.area, endScale);
-		final Rect halfRect = new Rect(this.area, (startScale+endScale)/2f);
+		final Rect fromRect = new Rect(highlightArea, startScale);
+		final Rect toRect = new Rect(highlightArea, endScale);
+		final Rect halfRect = new Rect(highlightArea, (startScale+endScale)/2f);
 		highlightAnimation = new AnimationView(gui, "RANGED_DOT", fromRect, toRect, startAlpha, endAlpha*2, DungeonAreaPresenter.highlightPeriod, -1, null);
 		// listen to itself for 50% wax/wane cycle
 		highlightAnimation.onPercentComplete(50, new IAnimListener() {
@@ -149,16 +137,7 @@ public class CreaturePresenter {
 	}
 	
 	private void updateStaticImageArea() {
-		switch (visualState) {
-			case WAITING_TO_MOVE:
-			case WAITING_TO_DIE:
-				area = makeDrawingRectFromPosition(sourcePosition);
-				break;
-			default:
-				area = makeDrawingRectFromPosition(destPosition);
-				break;
-		}
-
+		area = makeDrawingRectFromPosition(currentVisualPosition);
 		staticImage.setArea(area);
 		shadowImage.setArea(area);
 		Rect hArea = new Rect(area, 0.75f);
@@ -167,30 +146,46 @@ public class CreaturePresenter {
 	
 	// static images drawn here, whereas animated stuff delegated to the animqueue which will call draw when it wants to.
 	public void draw(SpriteBatch spriteBatch, float alpha) {
-		switch (visualState) {
-			case STATIONARY:
-			case WAITING_TO_MOVE:
-			case WAITING_TO_ATTACK:
-			case WAITING_TO_DIE:
-			case WAITING_TO_GO_DOWN_STAIRS:
-				if (creature.getHighlightStatus() == HighlightStatus.HIGHLIGHTED) {  
-					highlightImage.draw(spriteBatch, 0.18f*alpha);
-				} else if (creature.getHighlightStatus() == HighlightStatus.CURRENTLY_IN_FOCUS) {
-					highlightAnimation.draw(spriteBatch);
-				}
+		if (visualState == VisualState.SHOW_STATIC) {
+			if (creature.getHighlightStatus() == HighlightStatus.HIGHLIGHTED) {  
+				highlightImage.draw(spriteBatch, 0.18f*alpha);
+			} else if (creature.getHighlightStatus() == HighlightStatus.CURRENTLY_IN_FOCUS) {
+				highlightAnimation.draw(spriteBatch);
+			}
 			
-				shadowImage.draw(spriteBatch, alpha);
-				staticImage.draw(spriteBatch, alpha);
-				break;
-			case WAITING_TO_FALL:
-				break;
-			case ANIMATING:
-				break;
-			default:
-				break;			
+			shadowImage.draw(spriteBatch, alpha);
+			staticImage.draw(spriteBatch, alpha);
 		}
 	}
 
+	// attach a call that turns off static drawing of this creature when this animation starts to play.
+	// (the animation complete block will turn on static images again probably (unless the creature dies)
+	// by setting to the appropriate state.
+	private void changeStateToAnimatingWhenStarted(AnimationView animView) {
+		animView.onStart(new IAnimListener() {
+			public void animEvent() {
+				visualState = VisualState.SHOW_ANIMATION;		
+			}
+		});
+	}
+	
+	private void updateToStaticWhenStopped(final AnimationView animView, final DungeonPosition animEndPosition, final Integer dir) {
+		animView.onComplete(new IAnimListener() {
+			public void animEvent() {
+				visualState = VisualState.SHOW_STATIC;
+				currentVisualPosition = animEndPosition;
+				if (dir != null) {
+					setStaticImage(dir);
+				} else {
+					updateStaticImageArea();
+				}
+				if (light != null) {
+					mapPresenter.moveLight(light, animEndPosition);
+				}		
+			}
+		});
+	}
+	
 	// Dungeon instructs this CreaturePresenter to play this animation rather than draw its normal static image.
 	// Because it knows when a creature moving is visible.
 	//
@@ -205,14 +200,12 @@ public class CreaturePresenter {
 	// When the move command is received, the move command must update the statically drawn image with its own source
 	// position, and when multiple move commands are received, the latter move commands must add a complete block to the 
 	// preceding one that sets the source position to its own source position.
-	int moves_waiting = 0;
 	
 	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, 
 			MoveType moveType, float moveTime, IAnimListener animCompleteListener) {
-		//final CreaturePresenter selfi = this;
-		final DungeonPosition newSourcePos = fromPosition;
+
+		// Work out what animation to play for the movement.
 		String animToUse = "walk";
-		
 		switch (moveType) {
 			case CHARGE_MOVE:
 				isCharging = true;
@@ -230,51 +223,46 @@ public class CreaturePresenter {
 		//System.out.printlnln(this+" command to move with moves waiting " + moves_waiting++ +" and state "+visualState.toString());
 		// depends on the state as to what we do - can be multiple follower mode moves, falling in etc...
 		// these are the possible states for a single character that has been sent a MOVE command:
-		switch (visualState) {
-			
-			// if we are waiting to move, or moving, we need to add to its complete block to set up the right.
-			case WAITING_TO_MOVE:
-			case WAITING_TO_FALL: 
-			case ANIMATING:
-				myPreviousAnim.onComplete( new IAnimListener() {
-					public void animEvent() {
-						sourcePosition = newSourcePos;
-						visualState = VisualState.WAITING_TO_MOVE;
-						updateStaticImageArea();
-					}
-				});
-				break;
-				
-			// stationary the move command can set the source position straight away.
-			case STATIONARY: 
-				myPreviousAnim = null; // start of a new sequence of moves
-				sourcePosition = newSourcePos;
-				visualState = VisualState.WAITING_TO_MOVE;
-				updateStaticImageArea();
-			default:
-				break;
-		}
+//		switch (visualState) {
+//			
+//			// if we are waiting to move, or moving, we need to add to its complete block to set up the right.
+//			case WAITING_TO_MOVE:
+//			case WAITING_TO_FALL: 
+//			case SHOW_ANIMATION:
+//				myPreviousAnim.onComplete( new IAnimListener() {
+//					public void animEvent() {
+//						currentVisualPosition = newSourcePos;
+//						visualState = VisualState.WAITING_TO_MOVE;
+//						updateStaticImageArea();
+//					}
+//				});
+//				break;
+//				
+//			// stationary the move command can set the source position straight away.
+//			case STATIONARY: 
+//				myPreviousAnim = null; // start of a new sequence of moves
+//				currentVisualPosition = newSourcePos;
+//				visualState = VisualState.WAITING_TO_MOVE;
+//				updateStaticImageArea();
+//			default:
+//				break;
+//		}
 		
+		// Construct the move animation and add start and end strategies.
 		final Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final IAnimListener tpListen = animCompleteListener;
 		final int dir = direction;
 		final AnimationView moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
 			public void animEvent() {
-				visualState = VisualState.STATIONARY;
-				moves_waiting--;
-				//System.out.printlnln("" + selfi + " ending");
-				setStaticImage(dir);
 				if (tpListen != null) {
 					tpListen.animEvent(); // tell anyone who cares
-				}
-				if (light != null) {
-					mapPresenter.moveLight(light, toPosition);
 				}
 			}
 		});
 		
 		changeStateToAnimatingWhenStarted(moveAnim);
+		updateToStaticWhenStopped(moveAnim, toPosition, direction);
 		
 		// how and to what we chain this move anim depends on these rules:
 		// 1. if the current move is a LEADER_MODE move, or a normal move, its chained sequentially to the last 
@@ -289,18 +277,12 @@ public class CreaturePresenter {
 					myPreviousAnim.animType == AnimOp.AnimType.FALL_IN)) {
 					// chain sequentially to the previous anim for this particular
 					model.animQueue.add(moveAnim, false);
-					if (visualState == VisualState.WAITING_TO_MOVE) {
-						//System.out.printlnln(this+" will fail "+"prev type "+myPreviousAnim.animType+" completed "+myPreviousAnim.hasCompleted);
-						
-					}
 					myPreviousAnim.onComplete(new IAnimListener() {
 						public void animEvent() {
-							//System.out.printlnln( selfi + " starting chained move for follower");
 							moveAnim.startPlaying();
 						}
 					});
 				} else {
-					//System.out.printlnln("this is the one fialing to start");
 					model.animQueue.chainConcurrent(moveAnim, 20f, false); // slight delay in following for asthetic reasons
 				}
 				break;
@@ -312,7 +294,6 @@ public class CreaturePresenter {
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;
 				model.animQueue.add(moveAnim, false);
 				moveAnim.startPlaying();
-				//model.animQueue.chainConcurrent(moveAnim, 0f, false);
 				break;
 			default:
 				moveAnim.animType = AnimOp.AnimType.MOVE;
@@ -340,28 +321,22 @@ public class CreaturePresenter {
 	// creature as soon as we get this event, then turn it back on again after the animation is completed.
 	public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level) {
 		myPreviousAnim = null;  // if we are falling, then there was no previous move command.
-		visualState = VisualState.WAITING_TO_FALL;
+		visualState = VisualState.SHOW_NOTHING;
 		Rect toRect = makeDrawingRectFromPosition(fallingCharacter.getPosition());
 		Rect fromRect = new Rect(toRect);
 		fromRect.y += toRect.height*4;
-		destPosition = fallingCharacter.getPosition();
 		
-		final int dir = DungeonPosition.SOUTH;
-		AnimationView fallAnim = new AnimationView(gui, getFullName(name, "walk", DungeonPosition.SOUTH), fromRect, toRect, 0.1f, 1f, DungeonAreaPresenter.fallPeriod, 1,  new IAnimListener() {
-			public void animEvent() {
-				visualState = VisualState.STATIONARY;  // we assume stationary.
-				setStaticImage(dir);
-				mapPresenter.moveLight(light, fallingCharacter.getPosition());
-			}
-		});
+		AnimationView fallAnim = new AnimationView(gui, getFullName(name, "walk", DungeonPosition.SOUTH), fromRect, toRect, 0.1f, 1f, DungeonAreaPresenter.fallPeriod, 1,null);
 
+		changeStateToAnimatingWhenStarted(fallAnim);
+		updateToStaticWhenStopped(fallAnim, fallingCharacter.getPosition(), DungeonPosition.SOUTH);
+		
 		fallAnim.onComplete(new IAnimListener() {
 			public void animEvent() {
 				gui.audio.playSound(Audio.DROP_IN);
 			}
 		});
 		
-		changeStateToAnimatingWhenStarted(fallAnim);
 		fallAnim.sequenceNumber = sequenceNumber;
 		fallAnim.animType = AnimOp.AnimType.FALL_IN;
 		
@@ -381,17 +356,14 @@ public class CreaturePresenter {
 	// with an animation that sinks into the ground in discrete jumps and darkens a little with each one.
 	// that means a change to ImageView to allow variable darkening of the image, which isnt a bad idea.
 	// and include in the animationView a 'darkTween' maybe?  leave until latter.
-	public void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener) {
-		visualState = VisualState.WAITING_TO_GO_DOWN_STAIRS;  
-		updateStaticImageArea();
+	public void goDownStairs(int sequenceNumber, Character actingCreature, final IAnimListener completeListener) {
 		
-		final IAnimListener tpListen = completeListener;
 		Rect fromRect = new Rect(makeDrawingRectFromPosition(actingCreature.getPosition()));
 		Rect toRect = new Rect(fromRect, 0.4f);
 		AnimationView downAnim = new AnimationView(gui, staticImage.name, fromRect, toRect, 1f, .3f, 1f, 1, new IAnimListener() {
 			public void animEvent() {
-				if (tpListen != null) {
-					tpListen.animEvent(); // tell anyone who cares
+				if (completeListener != null) {
+					completeListener.animEvent(); // tell anyone who cares
 				}
 				mapPresenter.removeLight(light);
 			}
@@ -413,23 +385,13 @@ public class CreaturePresenter {
 		model.animQueue.chainSequential(downAnim, false); 
 	}
 	
-	public void creatureMeleeAttack(int sequenceNumber, DungeonPosition fromPosition, DungeonPosition targetPosition, int direction, IAnimListener animCompleteListener) {
+	public void creatureMeleeAttack(int sequenceNumber, DungeonPosition fromPosition, DungeonPosition targetPosition, int direction, final IAnimListener animCompleteListener) {
 		if (isCharging) {
 			isCharging = false;
 			return;
 		}
 		
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
-		switch (visualState) {
-			case STATIONARY:
-				visualState = VisualState.WAITING_TO_ATTACK;
-				break;
-			default:
-				break;
-		}
-		
-		final IAnimListener tpListen = animCompleteListener;
-		final int dir = direction;
 		final Rect toRect;
 		if (creature instanceof Monster) {
 			toRect = new Rect(fromRect, 1.34f);
@@ -438,48 +400,29 @@ public class CreaturePresenter {
 		}
 		AnimationView attackAnim = new AnimationView(gui, getFullName(name, "attack", direction), fromRect, toRect, 1f, 1f, DungeonAreaPresenter.attackPeriod, 1, new IAnimListener() {
 			public void animEvent() {
-				visualState = VisualState.STATIONARY;
-				setStaticImage(dir);
-				if (tpListen != null) {
-					tpListen.animEvent(); // tell anyone who cares
+				if (animCompleteListener != null) {
+					animCompleteListener.animEvent(); // tell anyone who cares
 				}
 			}
 		});
 
+		changeStateToAnimatingWhenStarted(attackAnim);
+		updateToStaticWhenStopped(attackAnim, fromPosition, direction);
 		attackAnim.sequenceNumber = sequenceNumber;
 		attackAnim.animType = AnimOp.AnimType.MELEE_ATTACK;
-		changeStateToAnimatingWhenStarted(attackAnim);
-		
 		model.animQueue.chainSequential(attackAnim, false);
 	}
 	
-	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, IAnimListener completeListener) {
-//		if (myPreviousAnim == null || (myPreviousAnim != null && myPreviousAnim.hasCompleted) ) {
-//			sourcePosition = deathPosition;
-//		}
+	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, final IAnimListener completeListener) {
 		
-		switch (visualState) {
-			case STATIONARY:
-				visualState = VisualState.WAITING_TO_DIE;
-				sourcePosition = deathPosition;
-				updateStaticImageArea();
-				break;
-			default:
-				break;
-		}
-	//		visualState = VisualState.WAITING_TO_DIE;
-	//		updateStaticImageArea();
-		
-		final IAnimListener tpListen = completeListener;
 		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition), 0.6f);
 		Rect toRect = new Rect(fromRect, 1.6f);
 		toRect.y += fromRect.height*.8f;
 		AnimationView deathAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
 			public void animEvent() {
-				if (tpListen != null) {
-					tpListen.animEvent(); // tell anyone who cares
+				if (completeListener != null) {
+					completeListener.animEvent(); // tell anyone who cares
 				}
-				mapPresenter.removeLight(light);
 			}
 		});
 		
@@ -490,6 +433,7 @@ public class CreaturePresenter {
 		});
 		
 		changeStateToAnimatingWhenStarted(deathAnim);
+		
 		deathAnim.sequenceNumber = sequenceNumber;
 		deathAnim.animType = AnimOp.AnimType.DEATH;
 		
@@ -504,27 +448,8 @@ public class CreaturePresenter {
 		deathAnimC.setClipRect(fromRectC);
 		
 		// chain concurently with same SN otherwise sequentially.
-		model.animQueue.chainSequential(deathAnimC, false); // the creature sinking into the ground 
-		model.animQueue.chainConcurrent(deathAnim, 0f, false); // the  skull
-	}
-	
-
-	public void invokeAbility(int sequenceNumber, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	// attach a call that turns off static drawing of this creature when this animation starts to play.
-	// (the animation complete block will turn on static images again probably (unless the creature dies)
-	// by setting to the appropriate state.
-	private void changeStateToAnimatingWhenStarted(AnimationView animView) {
-		//final CreaturePresenter selfi = this;
-		animView.onStart(new IAnimListener() {
-			public void animEvent() {
-				//System.out.printlnln(selfi+" started anim");
-				visualState = VisualState.ANIMATING;		
-			}
-		});
+		model.animQueue.chainConcurrentWithSn(deathAnimC, false); // the creature sinking into the ground 
+		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the  skull
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
@@ -560,6 +485,11 @@ public class CreaturePresenter {
 		}
 		
 		return fullName.concat(dirString);
+	}
+	
+	public void invokeAbility(int sequenceNumber, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
