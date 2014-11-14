@@ -454,11 +454,21 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, IAnimListener completeListener) {
-		if (myPreviousAnim == null || (myPreviousAnim != null && myPreviousAnim.hasCompleted) ) {
-			sourcePosition = deathPosition;
+//		if (myPreviousAnim == null || (myPreviousAnim != null && myPreviousAnim.hasCompleted) ) {
+//			sourcePosition = deathPosition;
+//		}
+		
+		switch (visualState) {
+			case STATIONARY:
+				visualState = VisualState.WAITING_TO_DIE;
+				sourcePosition = deathPosition;
+				updateStaticImageArea();
+				break;
+			default:
+				break;
 		}
-		visualState = VisualState.WAITING_TO_DIE;
-		updateStaticImageArea();
+	//		visualState = VisualState.WAITING_TO_DIE;
+	//		updateStaticImageArea();
 		
 		final IAnimListener tpListen = completeListener;
 		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition), 0.6f);
@@ -494,8 +504,8 @@ public class CreaturePresenter {
 		deathAnimC.setClipRect(fromRectC);
 		
 		// chain concurently with same SN otherwise sequentially.
-		model.animQueue.chainConcurrentWithSn(deathAnimC, false); // the creature sinking into the ground 
-		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the  skull
+		model.animQueue.chainSequential(deathAnimC, false); // the creature sinking into the ground 
+		model.animQueue.chainConcurrent(deathAnim, 0f, false); // the  skull
 	}
 	
 

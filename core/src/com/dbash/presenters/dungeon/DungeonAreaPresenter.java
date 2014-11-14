@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Ability;
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
-import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
