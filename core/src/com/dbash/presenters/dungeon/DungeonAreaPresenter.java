@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Ability;
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
@@ -42,7 +43,7 @@ import com.dbash.util.Rect;
 //
 public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresentationEventListener {
 
-	private static final float multiplier = 1.0f;
+	private static final float multiplier = 1f;
 	public final static float scrollPeriod = 0.5f * multiplier;
 	public final static float walkPeriod = 0.7f * multiplier;
 	public final static float leaderModeWalkPeriod = 0.7f * multiplier;
@@ -163,6 +164,12 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
+	public void creatureMovedOutOfLOS(int sequenceNumber, Creature actingCreature, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType)  {
+		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
+		creaturePresenter.creatureMovedOutOfLOS(sequenceNumber, fromPosition, toPosition, direction, moveType);
+	}
+	
+	@Override
 	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
 		DungeonPosition fromPosition = attackingCreature.getPosition();
 		CreaturePresenter creaturePresenter = attackingCreature.getCreaturePresenter();
@@ -247,7 +254,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 				});
 				model.animQueue.chainSequential(dotAnim, false);
 			} else {
-				model.animQueue.chainConcurrent(dotAnim, 20, false);
+				model.animQueue.chainConcurrentWithLast(dotAnim, 20, false);
 			}
 		}
 	}
@@ -269,7 +276,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		
 		// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
 		if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
-			model.animQueue.chainConcurrent(damage, 50f, false);
+			model.animQueue.chainConcurrentWithLast(damage, 50f, false);
 		} else {
 			model.animQueue.chainConcurrentWithSn(damage, false);
 		}
@@ -388,7 +395,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		
 		// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
 		if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
-			model.animQueue.chainConcurrent(added, 50f, false);
+			model.animQueue.chainConcurrentWithLast(added, 50f, false);
 		} else {
 			model.animQueue.chainConcurrentWithSn(added, false);
 		}

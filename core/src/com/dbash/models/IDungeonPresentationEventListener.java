@@ -2,6 +2,7 @@ package com.dbash.models;
 
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.IPresenterTurnState.LeaderStatus;
 
 
@@ -74,4 +75,8 @@ public interface IDungeonPresentationEventListener {
 	public void gameOver();
 	
 	public void changeInLeaderStatus(LeaderStatus status);
+
+	void creatureMovedOutOfLOS(int sequenceNumber, Creature actingCreature,
+			DungeonPosition fromPosition, DungeonPosition toPosition,
+			int direction, MoveType moveType);
 }

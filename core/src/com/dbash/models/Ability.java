@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Vector;
 
@@ -373,8 +374,7 @@ public class Ability
 	// This is the attempted execution of any ability against a target creature or location.
 	// It returns true if the ability use did happen, false otherwise 
 	// even if the ability did happen, that doesnt mean it had the desired effect, however.
-	public boolean executeCommandTarget(AbilityCommand	command, Creature targetCreature, DungeonPosition pos, Creature attackingCreature)
-	{
+	public boolean executeCommandTarget(AbilityCommand	command, Creature targetCreature, DungeonPosition pos, Creature attackingCreature) {
 		if (meetsNeeds(command.head, command.hands, command.humanoid) == false)
 			return false;
 
@@ -390,22 +390,17 @@ public class Ability
 		{
 			if (command.name == ability.command[i])  // does the command sent from the Creature match a command that this ability responds to?
 			{
-				Vector  targets = new Vector(10,5);
-				Vector  positions = new Vector(10,5);
+				HashSet<Creature> targets = new HashSet<Creature>();
 
-				// copy initial target into vector position 0, if it is a TARGETABLE ability or MELEE ATTACK
-				if ((ability.invokingStrategy == TARGETABLE_ABILITY) || (command.name == AbilityCommand.MELEE_ATTACK))
-				{
-					targets.addElement(targetCreature);
-					positions.addElement(pos);
-				}
-				else
-				// if this directed at oneself, or is it offensive?
-				if (ability.offensive == false)
-				{
+				// copy initial target if it is a TARGETABLE ability or MELEE ATTACK
+				if ((ability.invokingStrategy == TARGETABLE_ABILITY) || (command.name == AbilityCommand.MELEE_ATTACK)) {
+					if (targetCreature != null) {
+						targets.add(targetCreature);
+					}
+				} else if (ability.offensive == false) {
+					// if this directed at oneself, or is it offensive?
 					// add the creature itself as a target of its own spell
-					targets.addElement(attackingCreature);
-					positions.addElement(attackingCreature.getPosition());					
+					targets.add(attackingCreature);					
 				}
 
 				// set the damage type, if any
@@ -426,32 +421,16 @@ public class Ability
 						range = 5;// TODO RANGE L.VIEWPORT_LOS;
 					
 					for (Creature visibleCreature : dungeonQuery.getCreaturesVisibleFrom(pos, range)) {
-						
 						// if the ability we are using is targetable, we add the attacking creature to the list also. otherwise we dont
-						if ((attackingCreature != visibleCreature) || (ability.invokingStrategy == TARGETABLE_ABILITY))
-						{
-							Creature origTarget = null;
-
-							if (targets.size() > 0)
-								origTarget = (Creature) targets.elementAt(0);
-								
-							// we cant add the initial target twice, either
-							if (visibleCreature != origTarget) {
-								targets.addElement(visibleCreature);
-								positions.addElement(visibleCreature.getPosition());
-							}
+						if ((attackingCreature != visibleCreature) || (ability.invokingStrategy == TARGETABLE_ABILITY)) {
+								targets.add(visibleCreature);
 						}
 					}
 				}
 
 				// now apply the effect to the list of target creatures
-				for (int t=0; t<targets.size(); t++)
-				{
-					Creature theCreature = (Creature) targets.elementAt(t);
-					DungeonPosition thePos = (DungeonPosition) positions.elementAt(t);
-
-//					if (t>0)			// only apply the magic cost once, not for each target
-//						magicCost = 0;
+				for (Creature theCreature : targets) {
+					DungeonPosition thePos = theCreature.getPosition();
 					
 					if (ability.executeStrategy[i] == ATTACKER)  // tell the creature to make a certain type of attack
 					{

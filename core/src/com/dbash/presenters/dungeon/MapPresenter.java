@@ -283,7 +283,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		
 		// startPlaying will be called by the animQueue when the last anim on the queue has started.
 		if (characterMoving) {
-			model.animQueue.chainConcurrent(this, 0f, true);
+			model.animQueue.chainConcurrentWithLast(this, 0f, true);
 		} else {
 			model.animQueue.chainSequential(this, true);
 		}

@@ -160,7 +160,7 @@ public abstract class Creature implements IPresenterCreature
 		health = maximumHealth;
 		magic = maximumMagic;
 		
-		setPosition(p); // will alert the creaturePresenter to the postion
+		setPositionAndFlagPresenter(p); // will alert the creaturePresenter to the postion
 	}
 
 	public void persist(ObjectOutputStream out) throws IOException {
@@ -534,13 +534,21 @@ public abstract class Creature implements IPresenterCreature
 		return mapPosition;
 	}
 	
+	public void setPositionAndFlagPresenter(DungeonPosition newPosition) {
+		mapPosition = new DungeonPosition(newPosition);
+		flagPresenter();
+	}
+
 	public void setPosition(DungeonPosition newPosition) {
 		mapPosition = new DungeonPosition(newPosition);
+	}
+	
+	public void flagPresenter() {
 		if (visualStatusListener != null) {
 			visualStatusListener.UIInfoChanged();
 		}
 	}
-
+	
 	protected boolean canChargeAcross(DungeonPosition position) {
 		boolean result = false;
 		if (canCharge) {
@@ -1043,12 +1051,6 @@ public abstract class Creature implements IPresenterCreature
 
 				target.respondAttack(attack, this);
 			}
-//		}
-//		else
-//		{
-//			result = false;
-//			// dungeonQuery.getSoundControl().playSound(GameControl.BADSOUND);
-//		}
 
 		return result;
 

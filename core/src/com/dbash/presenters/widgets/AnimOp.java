@@ -50,6 +50,7 @@ public class AnimOp {
 		MISSED,
 		SHADOW,
 		TARGETED,
+		KNOCKBACK_MOVE,
 		DEFAULT
 	}
 	
@@ -86,6 +87,7 @@ public class AnimOp {
 	public boolean animating;
 	public boolean owned;
 	public boolean hasCompleted;
+	public Object creator;
 	
 	// private stuff.
 	protected float nextCompleteTrigger;
@@ -202,5 +204,9 @@ public class AnimOp {
 		for (IAnimListener l : completeListeners) {
 			l.animEvent();
 		}
+	}
+	
+	public void setCreator(Object creator) {
+		this.creator = creator;
 	}
 }

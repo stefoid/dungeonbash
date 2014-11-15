@@ -151,7 +151,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster minion = new Monster(Creature.getIdForName("titan"), level, map.exitPoint, this, this, turnProcessor);
+				Monster minion = new Monster(Creature.getIdForName("crazed minion"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
 				mobs.add(minion);
 				break;
@@ -254,7 +254,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		// update the position of the creature in the model.
 		map.location(fromPosition).setCreature(null);
 		map.location(toPosition).moveCreature(actingCreature);
-		actingCreature.setPosition(toPosition);
+		actingCreature.setPositionAndFlagPresenter(toPosition);
 		
 		// creature has been moved in the model, but does it need to be animated?
 		// setting the position above has 
@@ -279,6 +279,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, completeListener);
 		
 		} else {
+			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
 			// we wont animate, but call things that might be waiting on the animation to compelte anyway.
 			if (completeListener != null) {
 				completeListener.animEvent();
@@ -351,7 +352,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
 		map.location(map.startPoint).setCreature(fallingCharacter);
 		fallingCharacter.shadowMap.setMap(map, map.startPoint, 5);
-		fallingCharacter.setPosition(map.startPoint);
+		fallingCharacter.setPositionAndFlagPresenter(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
 			if (Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " fallIntoLevel");
@@ -383,6 +384,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature) {
+		if (Logger.DEBUG) Logger.log("DUNGEON DIES called");
 		final DungeonPosition deadPosition = deadCreature.getPosition();
 		final Creature deader = deadCreature;
 		boolean inLOS = false;

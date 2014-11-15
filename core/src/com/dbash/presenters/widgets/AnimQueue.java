@@ -73,7 +73,7 @@ public class AnimQueue {
 	
 	// similar to the sequential one, except the animation will start playing on a certain percentage complete, rather than 
 	// after it totally completes.
-	public void chainConcurrent(AnimOp animOp, float percentage, boolean owner) {
+	public void chainConcurrentWithLast(AnimOp animOp, float percentage, boolean owner) {
 		AnimOp lastAnimOp = getLast();
 		add(animOp, owner);
 		
@@ -119,6 +119,33 @@ public class AnimQueue {
 		}
 	}
 	
+	//  Will start immediately if queue empty 
+	// Otherwise will attempt to chain concurrently with the last anim belonging to the same creator.
+	public void chainConcurrentWithMyLast(AnimOp animOp, Object creator, float percentage, boolean owner) {
+		AnimOp lastAnimOp = getLastByCreator(creator);
+		add(animOp, owner);
+		
+		// if the queue is empty 
+		if (lastAnimOp == null) {
+			animOp.startPlaying();
+		} else {
+			final AnimOp av = animOp;
+			lastAnimOp.onPercentComplete(percentage, new IAnimListener() {
+				public void animEvent() {
+					av.startPlaying();
+				}
+			});
+		}
+	}
+
+	public void chainSequntialToOp(final AnimOp thisOp, AnimOp afterThisOp) {
+		add(thisOp, false);
+		afterThisOp.onComplete(new IAnimListener() {
+			public void animEvent() {
+				thisOp.startPlaying();
+			}
+		});
+	}
 	
 	public void draw(SpriteBatch spriteBatch) {
 		for (Iterator<AnimOp> it = queue.iterator(); it.hasNext(); ) {  
@@ -145,6 +172,21 @@ public class AnimQueue {
 		
 		return op;
 	}
+	
+	// returns the last non-completed op in the queue
+	public AnimOp getLastByCreator(Object creator) {
+			int i = queue.size()-1;
+			
+			while (i >= 0) {
+				AnimOp op = queue.get(i);
+				if (op.creator == creator && !op.hasCompleted) {
+					return op;
+				}
+				i--;
+			}
+
+			return null;
+		}
 	
 	// returns the last non-completed op it finds with the same sequence number, or null.
 	public AnimOp getLast(int sequenceNumber) {

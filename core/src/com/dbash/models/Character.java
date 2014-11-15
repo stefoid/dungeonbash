@@ -254,8 +254,8 @@ public class Character extends Creature implements IPresenterCharacter {
 		return madeAutomaticTurn;
 	}
 	
-	public void setPosition(DungeonPosition newPosition) {
-		super.setPosition(newPosition);
+	public void setPositionAndFlagPresenter(DungeonPosition newPosition) {
+		super.setPositionAndFlagPresenter(newPosition);
 		if (shadowMap != null) {
 			shadowMap.updateCenterPos(newPosition);
 		}
