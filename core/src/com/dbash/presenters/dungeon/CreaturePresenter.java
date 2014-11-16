@@ -434,6 +434,8 @@ public class CreaturePresenter {
 			}
 		});
 		
+		skullAnim.sequenceNumber = sequenceNumber;
+		
 		// chain concurently with same SN otherwise sequentially.
 		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
 		model.animQueue.chainConcurrentWithSn(skullAnim, false); // the  skull
