@@ -839,7 +839,21 @@ public abstract class Creature implements IPresenterCreature
 		
 		//lets just move
 		DungeonPosition newPosition = new DungeonPosition(mapPosition, knockbackDir);
-		dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
+		switch (dungeonQuery.whatIsAtLocation(newPosition)) {
+			case FREE:
+				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
+				break;
+			case MONSTER:
+				break;
+			case CHARACTER:
+				break;
+			case WALL:
+				break;
+			case HOLE:
+				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
+				death();
+				break;
+		}
 	}
 	
 	protected int calcMostAccurateDir(DungeonPosition sourcePos, DungeonPosition destPos) {
@@ -1281,17 +1295,19 @@ public abstract class Creature implements IPresenterCreature
 	}
 
 	public void dropAllPhysicalItems() {
-		// Drop all physical ability items
-		List<Ability> newlyDroppedObjects = new LinkedList<Ability>();
-		for (Ability ability : abilities) {
-			if (ability.isPhysical()) {
-				if (Logger.DEBUG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
-				newlyDroppedObjects.add(ability);
+		if (dungeonQuery.whatIsAtLocation(mapPosition) != AtLocation.HOLE) {
+			// Drop all physical ability items
+			List<Ability> newlyDroppedObjects = new LinkedList<Ability>();
+			for (Ability ability : abilities) {
+				if (ability.isPhysical()) {
+					if (Logger.DEBUG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
+					newlyDroppedObjects.add(ability);
+				}
 			}
-		}
-		for (Ability ability : newlyDroppedObjects) {
-			if (Logger.DEBUG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
-			dropObject(ability);
+			for (Ability ability : newlyDroppedObjects) {
+				if (Logger.DEBUG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
+				dropObject(ability);
+			}
 		}
 	}
 	

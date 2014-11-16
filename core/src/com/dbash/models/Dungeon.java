@@ -11,6 +11,8 @@ import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.IDungeonPresentationEventListener.DeathType;
+import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 // Dungeon delegates creating a new map to the Map model, but when it has done so, it populates it with monsters.
@@ -410,7 +412,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		if (dungeonEventListener != null && releventCharacter != null && inLOS) {
 			if (Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " creatureDies");
-			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, new IAnimListener () {
+			DeathType deathType = DeathType.NORMAL;
+			if (getTerrainAtLocation(deadPosition) == RoughTerrainType.HOLE) {
+				deathType = DeathType.HOLE;
+			}
+			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, deathType, new IAnimListener () {
 				public void animEvent() {
 					map.location(deader.getPosition()).setCreature(null);
 				}
@@ -578,6 +584,14 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			return AtLocation.WALL;
 		} else {
 			return map.location(position.x, position.y).whatIsAtLocation();
+		}
+	}
+	
+	public Location.RoughTerrainType getTerrainAtLocation(DungeonPosition position) {
+		if (map.inBounds(position) == false) {
+			return null;
+		} else {
+			return map.location(position.x, position.y).getRoughTerrain();
 		}
 	}
 	

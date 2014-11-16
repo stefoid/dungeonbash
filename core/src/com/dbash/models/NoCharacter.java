@@ -3,6 +3,7 @@ package com.dbash.models;
 import java.util.ArrayList;
 
 import com.dbash.models.Dungeon.MoveType;
+import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.presenters.dungeon.CreaturePresenter;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 
@@ -20,7 +21,7 @@ public class NoCharacter extends Character {
 		@Override
 		public void creatureMeleeAttack(int sequenceNumber, DungeonPosition fromPosition, DungeonPosition targetPosition, int direction, IAnimListener animCompleteListener) {}
 		@Override
-		public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, IAnimListener completeListener) {}
+		public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, DeathType deathType, IAnimListener completeListener) {}
 		@Override
 		public void invokeAbility(int sequenceNumber, Creature actingCreature, DungeonPosition targetPosition, Data ability) {}
 	}

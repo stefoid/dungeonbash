@@ -184,9 +184,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
-	public void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, IAnimListener completeListener) {
+	public void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, DeathType deathType, IAnimListener completeListener) {
 		CreaturePresenter creaturePresenter = deadCreature.getCreaturePresenter();
-		creaturePresenter.creatureDies(sequenceNumber, deadCreature, deadPosition, completeListener);
+		creaturePresenter.creatureDies(sequenceNumber, deadCreature, deadPosition, deathType, completeListener);
 	}
 	
 	@Override

@@ -9,6 +9,11 @@ import com.dbash.models.IPresenterTurnState.LeaderStatus;
 
 public interface IDungeonPresentationEventListener {
 	
+	public static enum DeathType {
+		NORMAL,
+		HOLE
+	}
+	
 	// creature move:  The Dungeon will update the creatures position in it, and in its own record.
 	void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
 			int direction, Dungeon.MoveType moveType, IAnimListener completeListener);
@@ -27,7 +32,7 @@ public interface IDungeonPresentationEventListener {
 	void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level);
 	
 	// These two events have complete listeners so the dungeon can remove the creature from the map after it is shown to be dead.
-	void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, IAnimListener completeListener);
+	void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, DeathType deathType, IAnimListener completeListener);
 	// go down stairs
 	void goDownStairs(int sequenceNumber, Character actingCreature,  IAnimListener completeListener);
 

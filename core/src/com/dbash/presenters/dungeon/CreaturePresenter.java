@@ -9,6 +9,7 @@ import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
 import com.dbash.models.IPresenterCreature;
+import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.IPresenterCreature.HighlightStatus;
 import com.dbash.models.Light;
 import com.dbash.models.Monster;
@@ -255,7 +256,7 @@ public class CreaturePresenter {
 				moveAnim.animType = AnimOp.AnimType.KNOCKBACK_MOVE;
 				moveAnim.staticFrameOnly();
 				model.animQueue.chainConcurrentWithSn(moveAnim, false);
-				model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
+				//model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
 				break;
 			case LEADER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;
@@ -337,14 +338,13 @@ public class CreaturePresenter {
 				mapPresenter.removeLight(light);
 			}
 		});
+		downAnim.setRotation(0, 360*3, 1);  // rotate 3 times
 		
 		downAnim.onStart(new IAnimListener() {
 			public void animEvent() {
 				gui.audio.playSound(Audio.STAIR_DOWN);
 			}
 		});
-		
-		downAnim.setRotation(0, 360*3, 1);  // rotate 3 times
 		
 		configureAnimation(downAnim);
 		downAnim.sequenceNumber = sequenceNumber;
@@ -382,22 +382,38 @@ public class CreaturePresenter {
 		model.animQueue.chainSequential(attackAnim, false);
 	}
 	
-	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, final IAnimListener completeListener) {
+	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, DeathType deathType, final IAnimListener completeListener) {
 		if (Logger.DEBUG) Logger.log("creatureDies called for :" + this);
-		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition), 0.6f);
-		Rect toRect = new Rect(fromRect, 1.6f);
-		toRect.y += fromRect.height*.8f;
-		AnimationView deathAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
-			public void animEvent() {
-				if (completeListener != null) {
-					completeListener.animEvent(); // tell anyone who cares
+		AnimationView deathAnim = null;
+		
+		if (deathType == DeathType.HOLE) {
+			// spiralling down a hole.
+			Rect fromRect = new Rect(makeDrawingRectFromPosition(deadCreature.getPosition()));
+			Rect toRect = new Rect(fromRect, 0.2f);
+			toRect.y -= fromRect.height/2;
+			deathAnim = new AnimationView(gui, staticImage.name, fromRect, toRect, 1f, .3f, DungeonAreaPresenter.deathPeriod, 1, new IAnimListener() {
+				public void animEvent() {
+					if (completeListener != null) {
+						completeListener.animEvent(); // tell anyone who cares
+					}
+					mapPresenter.removeLight(light);
 				}
-			}
-		});
-		final Object cp = this;
+			});
+			deathAnim.setRotation(0, 360*1.5f, 1);  // rotate 2 times
+		} else {
+			// Animation of creature sinking into the ground.
+			Rect fromRectC = makeDrawingRectFromPosition(deathPosition);
+			Rect toRectC = new Rect(fromRectC);
+			toRectC.y -= toRectC.height;
+			deathAnim = new AnimationView(gui, staticImage.name, fromRectC, toRectC, 1f, 1f, DungeonAreaPresenter.deathPeriod, 1, null);
+			deathAnim.sequenceNumber = sequenceNumber;
+			deathAnim.animType = AnimOp.AnimType.SINKING;
+			deathAnim.staticFrameOnly();
+			deathAnim.setClipRect(fromRectC);
+		}
+
 		deathAnim.onStart(new IAnimListener() {
 			public void animEvent() {
-				if (Logger.DEBUG) Logger.log("DEATH anim starts for :" + cp);
 				gui.audio.playSound(Audio.DEATH);
 			}
 		});
@@ -406,19 +422,21 @@ public class CreaturePresenter {
 		deathAnim.sequenceNumber = sequenceNumber;
 		deathAnim.animType = AnimOp.AnimType.DEATH;
 		
-		// and an animation of the ceature sinking into the ground played at the same time
-		Rect fromRectC = makeDrawingRectFromPosition(deathPosition);
-		Rect toRectC = new Rect(fromRectC);
-		toRectC.y -= toRectC.height;
-		AnimationView deathAnimC = new AnimationView(gui, staticImage.name, fromRectC, toRectC, 1f, 1f, DungeonAreaPresenter.deathPeriod, 1, null);
-		deathAnimC.sequenceNumber = sequenceNumber;
-		deathAnimC.animType = AnimOp.AnimType.SINKING;
-		deathAnimC.staticFrameOnly();
-		deathAnimC.setClipRect(fromRectC);
+		// put a popping skull on top.
+		Rect fromRect = new Rect(makeDrawingRectFromPosition(deathPosition), 0.6f);
+		Rect toRect = new Rect(fromRect, 1.6f);
+		toRect.y += fromRect.height*.8f;
+		AnimationView skullAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
+			public void animEvent() {
+				if (completeListener != null) {
+					completeListener.animEvent(); // tell anyone who cares
+				}
+			}
+		});
 		
 		// chain concurently with same SN otherwise sequentially.
-		model.animQueue.chainConcurrentWithSn(deathAnimC, false); // the creature sinking into the ground 
-		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the  skull
+		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
+		model.animQueue.chainConcurrentWithSn(skullAnim, false); // the  skull
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
