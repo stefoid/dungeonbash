@@ -113,6 +113,7 @@ public interface IDungeonEvents {
 	
 	// area effect explosion type of thing, range in tiles
 	void explosion(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int range);
+	void explosionOver();
 	
 	// character is using the eye at a certain position
 	public void setCharacterisUsingEye(boolean usingEye, DungeonPosition position, boolean showEyeAnim);

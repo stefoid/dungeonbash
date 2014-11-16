@@ -1,11 +1,8 @@
 package com.dbash.models;
 
-import java.util.List;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -457,6 +454,8 @@ public class Ability
 						attackingCreature.giveAbility(theCreature, ab, thePos, magicCost, attackingCreature);
 					}
 				}
+				
+				dungeonEvents.explosionOver();
 				
 				// Looks like the ability was activated, so apply magic cost
 				attackingCreature.usedMagic(magicCost);
