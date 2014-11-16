@@ -213,4 +213,11 @@ public class AnimQueue {
 		}
 	}
 	
+	public void drawBeneath(AnimOp animOp) {
+		if (queue.contains(animOp)) {
+			queue.remove(animOp);
+			queue.addFirst(animOp);
+		}
+	}
+	
 }

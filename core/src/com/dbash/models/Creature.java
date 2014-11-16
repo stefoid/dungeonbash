@@ -612,6 +612,12 @@ public abstract class Creature implements IPresenterCreature
 	// attackers skill level to 32000
 	public int respondAttack(AbilityCommand attack, Creature attacker)
 	{
+		// If monster hasnt had a turn yet (say after new game load, it may need to find the closest character to respond to an attack
+		// so lets set that now.
+		if (getReleventCharacter() == null) {
+			setReleventCharacter();
+		}
+		
 		if (Randy.getRand(1, attack.skill) > Randy.getRand(1, calculateDefenceSkill())) // attack hits
 		{
 			int newDamage = attack.damage;
@@ -1334,6 +1340,8 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	public abstract Character getReleventCharacter();
+	public void setReleventCharacter() {
+	}
 	
 	public boolean canUseAbility(Ability ability) {
 		boolean hasHead = true;

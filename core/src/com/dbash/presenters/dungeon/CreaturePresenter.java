@@ -255,6 +255,7 @@ public class CreaturePresenter {
 				moveAnim.animType = AnimOp.AnimType.KNOCKBACK_MOVE;
 				moveAnim.staticFrameOnly();
 				model.animQueue.chainConcurrentWithSn(moveAnim, false);
+				model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
 				break;
 			case LEADER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;

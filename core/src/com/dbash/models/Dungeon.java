@@ -256,8 +256,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		map.location(fromPosition).setCreature(null);
 		map.location(toPosition).moveCreature(actingCreature);
 		actingCreature.setPositionAndFlagPresenter(toPosition);
-		
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
+		
+		if (Logger.DEBUG) Logger.log("DUNGEON MOVE type "+ moveType+ " nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
 		
 		// creature has been moved in the model, but does it need to be animated?
 		// setting the position above has 
@@ -293,6 +294,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void meleeAttack(int sequenceNumber, Character nominalCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
+		if (Logger.DEBUG) Logger.log("DUNGEON MELEE - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
@@ -390,7 +392,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void creatureDies(int sequenceNumber, Character nominalCharacter, Creature deadCreature) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (Logger.DEBUG) Logger.log("DUNGEON DIES called");
+		if (Logger.DEBUG) Logger.log("DUNGEON DIES - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
 		final DungeonPosition deadPosition = deadCreature.getPosition();
 		final Creature deader = deadCreature;
 		boolean inLOS = false;
@@ -399,11 +401,13 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			cleanUpAfterCharacterLeavesMap((Character)deadCreature);
 			inLOS = true;
 		} else {
-			if (currentlyFocussedCharacter != null) {  // we use currently focussed here because relevant character = closest character
-				inLOS = positionIsInLOSOfCharacter(currentlyFocussedCharacter, deadPosition);
+			if (releventCharacter != null) {  // we use currently focussed here because relevant character = closest character
+				inLOS = positionIsInLOSOfCharacter(releventCharacter, deadPosition);
 			}
 		}
 
+		if (Logger.DEBUG) Logger.log(">>>> inLOS "+inLOS);
+		
 		if (dungeonEventListener != null && releventCharacter != null && inLOS) {
 			if (Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " creatureDies");
 			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, new IAnimListener () {
@@ -419,6 +423,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void damageInflicted(int sequenceNumber, Character nominalCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
+		if (Logger.DEBUG) Logger.log("DAMAGE INFLICTED - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			if (Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " damageInflicted");
 			dungeonEventListener.damageInflicted(sequenceNumber, releventCharacter, targetPosition, damageType, damageAmount);
@@ -738,7 +743,7 @@ private void printEff(AbilityEffectType abilityEfectType) {
 
 	@Override
 	public boolean positionIsInLOSOfCharacter(Character character, DungeonPosition position) {
-		ShadowMap shadowMap = shadowMaps.get(character);
+		ShadowMap shadowMap = character.shadowMap;
 		Location location = null;
 		if (map.inBounds(position)) {
 			location = map.location(position);

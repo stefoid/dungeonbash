@@ -352,6 +352,11 @@ public class Monster extends Creature
 	public Character getReleventCharacter() {
 		return closestCharacter;
 	}
+	
+	@Override 
+	public void setReleventCharacter() {
+		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this);
+	}
 
 	// the monster version of this function simply returns true if there are any temproary 
 	// abilities active and false otherwise

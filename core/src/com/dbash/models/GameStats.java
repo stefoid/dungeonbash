@@ -45,6 +45,6 @@ public class GameStats {
 	}
 	
 	public void logstats() {
-		if (Logger.DEBUG) Logger.log("monstersKilled "+monstersKilled+",xp "+xp+",level "+level);
+		//if (Logger.DEBUG) Logger.log("monstersKilled "+monstersKilled+",xp "+xp+",level "+level);
 	}
 }
