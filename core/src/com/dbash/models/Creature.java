@@ -844,10 +844,13 @@ public abstract class Creature implements IPresenterCreature
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
 				break;
 			case MONSTER:
+				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
 				break;
 			case CHARACTER:
+				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
 				break;
 			case WALL:
+				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
 				break;
 			case HOLE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);

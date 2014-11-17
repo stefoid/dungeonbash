@@ -32,7 +32,7 @@ public class AnimationView  extends AnimOp {
 	float startAlpha;
 	float endAlpha;
 	float period;
-	Rect currentArea;
+	public Rect currentArea;
 	Rect clipBox = null;
 	boolean staticFrame = false;
 	float startRotation;
@@ -198,7 +198,6 @@ public class AnimationView  extends AnimOp {
 				drawTheFrame(spriteBatch);
 			}
 			
-
 			// then apply the delta
 			float dt = Gdx.graphics.getDeltaTime();
 			xTween.deltaTime(dt);

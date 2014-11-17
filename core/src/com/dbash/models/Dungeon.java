@@ -34,7 +34,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		LEADER_MOVE,
 		FOLLOWER_MOVE,
 		KNOCKBACK_MOVE,
-		CHARGE_MOVE
+		CHARGE_MOVE,
+		SHUDDER_MOVE
 	}
 	
 	public final static int FINAL_LEVEL = 20;

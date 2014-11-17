@@ -4,17 +4,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
-import com.dbash.models.Dungeon;
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
-import com.dbash.models.IPresenterCreature;
 import com.dbash.models.IDungeonPresentationEventListener.DeathType;
+import com.dbash.models.IPresenterCreature;
 import com.dbash.models.IPresenterCreature.HighlightStatus;
 import com.dbash.models.Light;
 import com.dbash.models.Monster;
 import com.dbash.models.PresenterDepend;
-import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.Audio;
 import com.dbash.platform.ImageView;
@@ -187,6 +185,8 @@ public class CreaturePresenter {
 		});
 	}
 	
+
+	
 	// Dungeon instructs this CreaturePresenter to play this animation rather than draw its normal static image.
 	// Because it knows when a creature moving is visible.
 	//
@@ -203,7 +203,7 @@ public class CreaturePresenter {
 	// preceding one that sets the source position to its own source position.
 	
 	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, 
-			MoveType moveType, float moveTime, IAnimListener animCompleteListener) {
+			MoveType moveType, final float moveTime, IAnimListener animCompleteListener) {
 
 		// Work out what animation to play for the movement.
 		String animToUse = "walk";
@@ -216,23 +216,47 @@ public class CreaturePresenter {
 				direction = DungeonPosition.oppositeDirection(direction);
 				setStaticImage(direction);
 				break;
+			case SHUDDER_MOVE:
+				setStaticImage(DungeonPosition.oppositeDirection(direction));
+				break;
 			default:
 				animToUse = "walk";
 				break;
 		}
 		
-		// Construct the move animation and add start and end strategies.
-		final Rect toRect = makeDrawingRectFromPosition(toPosition);
+		AnimationView moveAnim = null;
+		Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final IAnimListener tpListen = animCompleteListener;
-		final AnimationView moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
-			public void animEvent() {
-				if (tpListen != null) {
-					tpListen.animEvent(); // tell anyone who cares
+		// Construct the move animation and add start and end strategies.
+		if (moveType == MoveType.SHUDDER_MOVE) {
+			calcShudderRect(toRect, direction);
+			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 2, new IAnimListener() {
+				public void animEvent() {
+					if (tpListen != null) {
+						tpListen.animEvent(); // tell anyone who cares
+					}
 				}
-			}
-		});
-		
+			});
+			
+			// On 50 percent duty cycle, move back the other way.
+			final AnimationView shudderAnim = moveAnim;
+			moveAnim.onPercentComplete(50f, new IAnimListener() {
+				public void animEvent() {
+					shudderAnim.setRects(shudderAnim.currentArea, fromRect, moveTime/2);
+				}
+			});
+		} else {
+			// normal moving from tile to tile.
+			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
+				public void animEvent() {
+					if (tpListen != null) {
+						tpListen.animEvent(); // tell anyone who cares
+					}
+				}
+			});
+		}
+
 		configureAnimation(moveAnim);
 		updateToStaticWhenStopped(moveAnim, toPosition, direction);
 		
@@ -253,6 +277,7 @@ public class CreaturePresenter {
 				}
 				break;
 			case KNOCKBACK_MOVE:
+			case SHUDDER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.KNOCKBACK_MOVE;
 				moveAnim.staticFrameOnly();
 				model.animQueue.chainConcurrentWithSn(moveAnim, false);
@@ -436,9 +461,15 @@ public class CreaturePresenter {
 		
 		skullAnim.sequenceNumber = sequenceNumber;
 		
-		// chain concurently with same SN otherwise sequentially.
-		model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
-		model.animQueue.chainConcurrentWithSn(skullAnim, false); // the  skull
+		// if death is following a move such as knockback, chain sequentailly to that, otherwise
+		// chain concurrently with other animations with the same SN
+		AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this);
+		if (myPreviousAnim != null) {
+			model.animQueue.chainSequntialToOp(deathAnim, myPreviousAnim); // the creature sinking into the ground or spiral.
+		} else {
+			model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
+		}
+		model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
@@ -474,6 +505,43 @@ public class CreaturePresenter {
 		}
 		
 		return fullName.concat(dirString);
+	}
+	
+	public void calcShudderRect(Rect toRect, int direction) {
+		float offset = toRect.width/3f;
+		
+		switch (direction) {
+		case DungeonPosition.NORTH:
+			toRect.y += offset;
+			break;
+		case DungeonPosition.SOUTHWEST:
+			toRect.y -= offset;
+			toRect.x -= offset;
+			break;
+		case DungeonPosition.WEST:
+			toRect.x -= offset;
+			break;
+		case DungeonPosition.NORTHWEST:
+			toRect.y += offset;
+			toRect.x -= offset;
+			break;
+		case DungeonPosition.NORTHEAST:
+			toRect.y += offset;
+			toRect.x += offset;
+			break;
+		case DungeonPosition.SOUTHEAST:
+			toRect.y -= offset;
+			toRect.x += offset;
+			break;
+		case DungeonPosition.EAST:
+			toRect.x += offset;
+			break;
+		case DungeonPosition.SOUTH:
+			toRect.y -= offset;
+			break;
+		default:
+			break;
+		}
 	}
 	
 	public void invokeAbility(int sequenceNumber, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
