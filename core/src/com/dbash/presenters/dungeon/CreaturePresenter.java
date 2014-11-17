@@ -231,7 +231,7 @@ public class CreaturePresenter {
 		// Construct the move animation and add start and end strategies.
 		if (moveType == MoveType.SHUDDER_MOVE) {
 			calcShudderRect(toRect, direction);
-			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 2, new IAnimListener() {
+			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
 				public void animEvent() {
 					if (tpListen != null) {
 						tpListen.animEvent(); // tell anyone who cares
@@ -281,7 +281,7 @@ public class CreaturePresenter {
 				moveAnim.animType = AnimOp.AnimType.KNOCKBACK_MOVE;
 				moveAnim.staticFrameOnly();
 				model.animQueue.chainConcurrentWithSn(moveAnim, false);
-				//model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
+				model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
 				break;
 			case LEADER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;
@@ -466,10 +466,12 @@ public class CreaturePresenter {
 		AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this);
 		if (myPreviousAnim != null) {
 			model.animQueue.chainSequntialToOp(deathAnim, myPreviousAnim); // the creature sinking into the ground or spiral.
+			model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
+			model.animQueue.drawBeneath(deathAnim);
 		} else {
 			model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
+			model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
 		}
-		model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
@@ -508,7 +510,7 @@ public class CreaturePresenter {
 	}
 	
 	public void calcShudderRect(Rect toRect, int direction) {
-		float offset = toRect.width/3f;
+		float offset = toRect.width/1.5f;
 		
 		switch (direction) {
 		case DungeonPosition.NORTH:
