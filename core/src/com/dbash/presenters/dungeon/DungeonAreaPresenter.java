@@ -265,28 +265,37 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 
 
 	@Override
-	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {
-		LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
-		Rect fromRect = new Rect(loc.getScreenArea(), 0.8f);
-		Rect toRect = new Rect(fromRect,1.5f);
-		AnimationView damage = new AnimationView(gui, getDamageName(damageType), fromRect, toRect, 1f, 0.3f, damagePeriod, 1, null);
-		addDamageSoundEffect(damage, damageType);
-		TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
-		Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
-		Rect toNumRect = new Rect(fromNumRect, 1.5f);
-		AnimationView damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
-		damage.sequenceNumber = damageNum.sequenceNumber = sequenceNumber;
-		damage.animType = damageNum.animType = AnimOp.AnimType.DAMAGE;
-		
-		// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
-		if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
-			model.animQueue.chainConcurrentWithLast(damage, 50f, false);
+	public void damageInflicted(int sequenceNumber, Character releventCharacter, Creature damagedCreature, DungeonPosition targetPosition, int damageType, int damageAmount) {
+
+		if (damagedCreature != null) {
+			// Let the creature persenter handle it.
+			CreaturePresenter cp = damagedCreature.getCreaturePresenter();
+			String damageName = getDamageName(damageType);
+			String sound = getSound(damageType);
+			cp.damageInflicted(sequenceNumber, releventCharacter, targetPosition, damageType, damageName, damagePeriod, damageAmount, sound);
 		} else {
-			model.animQueue.chainConcurrentWithSn(damage, false);
+			LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
+			Rect fromRect = new Rect(loc.getScreenArea(), 0.8f);
+			Rect toRect = new Rect(fromRect,1.5f);
+			AnimationView damage = new AnimationView(gui, getDamageName(damageType), fromRect, toRect, 1f, 0.3f, damagePeriod, 1, null);
+			addDamageSoundEffect(damage, damageType);
+			TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
+			Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
+			Rect toNumRect = new Rect(fromNumRect, 1.5f);
+			AnimationView damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
+			damage.sequenceNumber = damageNum.sequenceNumber = sequenceNumber;
+			damage.animType = damageNum.animType = AnimOp.AnimType.DAMAGE;
+			
+			// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
+			if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
+				model.animQueue.chainConcurrentWithLast(damage, 50f, false);
+			} else {
+				model.animQueue.chainConcurrentWithSn(damage, false);
+			}
+			
+			// chain concurrently with same sn otherwise sequentially
+			model.animQueue.chainConcurrentWithSn(damageNum, false);
 		}
-		
-		// chain concurrently with same sn otherwise sequentially
-		model.animQueue.chainConcurrentWithSn(damageNum, false);
 	}
 
 
@@ -455,31 +464,36 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 
 	protected void addDamageSoundEffect(AnimationView anim, int damageType) {
-		final String sound;
-		switch (damageType) {
-			case AbilityCommand.CHEMICAL_ATTACK:
-				sound = Audio.CHEMICAL_HIT;
-				break;
-			case AbilityCommand.ENERGY_ATTACK:
-				sound = Audio.ENERGY_HIT;
-				break;
-			case AbilityCommand.HARD_ATTACK:
-				sound = Audio.HARD_HIT;
-				break;
-			case AbilityCommand.SHARP_ATTACK: 
-				sound = Audio.SHARP_HIT;
-				break;
-			case AbilityCommand.NO_PHYSICAL_ATTACK:
-			default:
-				sound = Audio.BAD_EFFECT;
-				break;
-		}
+		final String sound = getSound(damageType);
 		
 		anim.onStart(new IAnimListener() {
 			public void animEvent() {
 				gui.audio.playSound(sound);
 			}
 		});
+	}
+	
+	protected String getSound(int damageType) {
+		String sound;
+		switch (damageType) {
+		case AbilityCommand.CHEMICAL_ATTACK:
+			sound = Audio.CHEMICAL_HIT;
+			break;
+		case AbilityCommand.ENERGY_ATTACK:
+			sound = Audio.ENERGY_HIT;
+			break;
+		case AbilityCommand.HARD_ATTACK:
+			sound = Audio.HARD_HIT;
+			break;
+		case AbilityCommand.SHARP_ATTACK: 
+			sound = Audio.SHARP_HIT;
+			break;
+		case AbilityCommand.NO_PHYSICAL_ATTACK:
+		default:
+			sound = Audio.BAD_EFFECT;
+			break;
+		}
+		return sound;
 	}
 	
 	protected void addBurstSoundEffect(AnimationView anim, int damageType) {

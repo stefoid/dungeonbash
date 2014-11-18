@@ -279,7 +279,7 @@ public class Ability
 	// used by rough terrain.
 	public void applyToCreature(Creature target) {
 		Ability copy = new Ability(this);
-		target.addAbility(copy);
+		target.addAbility(copy, null);
 	}
 	
 	public int executeCommandValue(AbilityCommand	command, Creature owner)
@@ -319,7 +319,7 @@ public class Ability
 					if (ability.executeParam2[i] >= 0)  // -1 means 'no ability'
 					{
 						addedAbility = new Ability(ability.executeParam2[i], null, 0, dungeonEvents, dungeonQuery);
-						owner.addAbility(addedAbility);
+						owner.addAbility(addedAbility, null);
 					}
 					
 					set = true;

@@ -147,7 +147,7 @@ public abstract class Creature implements IPresenterCreature
 			if (getCreature().abilityIds[i] != -1)
 			{
 				Ability a = new Ability(getCreature().abilityIds[i], this, p.level, dungeonEvents, dungeonQuery);
-				addAbility(a);
+				addAbility(a, null);
 			}
 		}
 
@@ -657,18 +657,13 @@ public abstract class Creature implements IPresenterCreature
 				newDamage = 99;
 
 			// there is some kind of attack
-			if (abilityCommand != AbilityCommand.NO_PHYSICAL_ATTACK)
-			{
-				//makeHit(attack.type, newDamage, mapPosition, hitTime);
-				
+			if (abilityCommand != AbilityCommand.NO_PHYSICAL_ATTACK) {	
 				// Tell the gui about the damage
 				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), mapPosition, attack.type, newDamage);	
 			}
 			
-			if (attack.ability != null)
-			{
-				if (attacker.giveAbility(this, attack.ability, this.mapPosition, 0, attacker))
-				{
+			if (attack.ability != null) {
+				if (attacker.giveAbility(this, attack.ability, this.mapPosition, 0, attacker)) {
 					// hitTime = 400;
 					// give attacker experience for inflicting ability
 					attacker.addExperience(getExpValue() / 30 + 1, false); 
@@ -692,7 +687,7 @@ public abstract class Creature implements IPresenterCreature
 		
 		return -1;
 	}
-
+	
 	public int getExpValue()
 	{
 		return 10 * calcLevel(myId) + experience / 20;
@@ -703,7 +698,7 @@ public abstract class Creature implements IPresenterCreature
 		return calcLevel(myId);
 	}
 
-	public boolean addAbility(Ability ability)
+	public boolean addAbility(Ability ability, Creature giver)
 	{
 		// first work out whether you have any ability which will prevent this
 		// ability from being added (such as resist poison)
@@ -721,7 +716,7 @@ public abstract class Creature implements IPresenterCreature
 		}
 		
 		if (ability.hasTag(Ability.KNOCKEDBACK_TAG)) {
-			performKnockback(ability);
+			performKnockback(ability, giver);
 			return true;
 		}
 		
@@ -821,7 +816,7 @@ public abstract class Creature implements IPresenterCreature
 	/**
 	 * Knockback has been applied to the creature.  
 	 */
-	private void performKnockback(Ability ability) {
+	private void performKnockback(Ability ability, Creature giver) {
 		DungeonPosition targetPos = (DungeonPosition) ability.dynamicParams.get(TARGET_POS);
 		Creature attacker = (Creature) ability.dynamicParams.get(GIVER);
 		DungeonPosition sourcePos = attacker.getPosition();
@@ -839,18 +834,30 @@ public abstract class Creature implements IPresenterCreature
 		
 		//lets just move
 		DungeonPosition newPosition = new DungeonPosition(mapPosition, knockbackDir);
+		int damageType = AbilityCommand.HARD_ATTACK;
+		int collisionDamage = calculateBaseHealth()/4+1;
+		int myCollisionDamage = reduceDamage(AbilityCommand.RESIST_HARD, collisionDamage);
+		AbilityCommand collideCommand = new AbilityCommand(AbilityCommand.HARD_ATTACK, collisionDamage, true, null);
+		collideCommand.skill = 30000;  // auto hit
+		Creature hitCreature = dungeonQuery.getCreatureAtLocation(newPosition);
 		switch (dungeonQuery.whatIsAtLocation(newPosition)) {
 			case FREE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
 				break;
 			case MONSTER:
+				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
+				hitCreature.respondAttack(collideCommand, giver);
 				break;
 			case CHARACTER:
+				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
+				hitCreature.respondAttack(collideCommand, giver);
 				break;
 			case WALL:
+				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
+				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), newPosition, damageType, myCollisionDamage);	
 				break;
 			case HOLE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
@@ -955,9 +962,11 @@ public abstract class Creature implements IPresenterCreature
 
 	public int calculateMaxHealth()
 	{
-		int newMaxHealth = maximumHealth + (maximumHealth * expRoot) / 100;
-
-		return modifyValue(AbilityCommand.MODIFY_MAX_HEALTH, newMaxHealth);
+		return modifyValue(AbilityCommand.MODIFY_MAX_HEALTH, calculateBaseHealth());
+	}
+	
+	public int calculateBaseHealth() {
+		return  maximumHealth + (maximumHealth * expRoot) / 100;
 	}
 
 	public int calculateMaxMagic()
@@ -980,7 +989,7 @@ public abstract class Creature implements IPresenterCreature
 			ab.dynamicParams.put(GIVER, giver);
 			ab.dynamicParams.put(TARGET_POS, pos);
 			
-			addedOk = target.addAbility(ab);
+			addedOk = target.addAbility(ab, giver);
 			
 			// There is an edge case where adding the creature adds an ability to itself, which will end its turn,
 			// and in the end turn processing, the tic counter for temp abilities is decremented, effectively

@@ -268,7 +268,7 @@ public class CreaturePresenter {
 		moveAnim.sequenceNumber = sequenceNumber;
 		switch (moveType) {
 			case FOLLOWER_MOVE:
-				AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this);
+				AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this, null);
 				moveAnim.animType = AnimOp.AnimType.FOLLOWER_MOVE;
 				if (myPreviousAnim != null) {
 					model.animQueue.chainSequntialToOp(moveAnim, myPreviousAnim);
@@ -295,17 +295,19 @@ public class CreaturePresenter {
 		}
 		
 		// Moving shadow animation
-		final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, 1f, 1f, moveTime, 1, null);
-		shadowAnim.staticFrameOnly();
-		model.animQueue.add(shadowAnim, false);
-		shadowAnim.animType = AnimOp.AnimType.SHADOW;
-		
-		// cued to start and run when the creature moves
-		moveAnim.onStart(new IAnimListener() {
-			public void animEvent() {
-				shadowAnim.startPlaying();
-			}
-		});
+		if (moveType != MoveType.SHUDDER_MOVE) {
+			final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, 1f, 1f, moveTime, 1, null);
+			shadowAnim.staticFrameOnly();
+			model.animQueue.add(shadowAnim, false);
+			shadowAnim.animType = AnimOp.AnimType.SHADOW;
+			
+			// cued to start and run when the creature moves
+			moveAnim.onStart(new IAnimListener() {
+				public void animEvent() {
+					shadowAnim.startPlaying();
+				}
+			});
+		}
 	}
 	
 	// This is an indication to the creaturePresenter of a move event that cant be seen
@@ -463,7 +465,7 @@ public class CreaturePresenter {
 		
 		// if death is following a move such as knockback, chain sequentailly to that, otherwise
 		// chain concurrently with other animations with the same SN
-		AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this);
+		AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this, null);
 		if (myPreviousAnim != null) {
 			model.animQueue.chainSequntialToOp(deathAnim, myPreviousAnim); // the creature sinking into the ground or spiral.
 			model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
@@ -543,6 +545,52 @@ public class CreaturePresenter {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, String damageName, final float damagePeriod, int damageAmount, final String sound) {
+		
+		AnimationView previousAnim = (AnimationView) model.animQueue.getLastByCreator(this, AnimOp.AnimType.DAMAGE_NUM);
+		LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
+		Rect fromRect = new Rect(loc.getScreenArea(), 0.8f);
+		Rect toRect = new Rect(fromRect,1.5f);
+		
+		// Create new damage animation
+		if (previousAnim == null) {
+			AnimationView damage = new AnimationView(gui, damageName, fromRect, toRect, 1f, 0.3f, damagePeriod, 1, null);
+			
+			damage.onStart(new IAnimListener() {
+				public void animEvent() {
+					gui.audio.playSound(sound);
+				}
+			});
+			
+			damage.sequenceNumber = sequenceNumber;
+			damage.animType = AnimOp.AnimType.DAMAGE;
+			
+			TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
+			Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
+			Rect toNumRect = new Rect(fromNumRect, 1.5f);
+			AnimationView damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
+			damageNum.animType = AnimOp.AnimType.DAMAGE_NUM;
+			damageNum.sequenceNumber = sequenceNumber;
+			damageNum.creator = this;
+			damageNum.putTag("damage", String.valueOf(damageAmount));
+			// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
+			if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
+				model.animQueue.chainConcurrentWithLast(damage, 50f, false);
+			} else {
+				model.animQueue.chainConcurrentWithSn(damage, false);
+			}
+			
+			// chain concurrently with same sn otherwise sequentially
+			model.animQueue.chainConcurrentWithSn(damageNum, false);
+		} else {
+			// add damage amount to existing animation by changing the value.
+			String oldDamage = previousAnim.getTag("damage");
+			int totalDamage = Integer.valueOf(oldDamage) + damageAmount;
+			TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(totalDamage), fromRect);
+			previousAnim.setImageView(numbers);
 		}
 	}
 	

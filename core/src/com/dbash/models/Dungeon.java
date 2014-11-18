@@ -433,7 +433,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		if (Logger.DEBUG) Logger.log("DAMAGE INFLICTED - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			if (Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " damageInflicted");
-			dungeonEventListener.damageInflicted(sequenceNumber, releventCharacter, targetPosition, damageType, damageAmount);
+			Creature damagedCreature = getCreatureAtLocation(targetPosition);
+			dungeonEventListener.damageInflicted(sequenceNumber, releventCharacter, damagedCreature, targetPosition, damageType, damageAmount);
 		}
 	}
 

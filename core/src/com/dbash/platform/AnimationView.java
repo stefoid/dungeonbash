@@ -1,5 +1,6 @@
 package com.dbash.platform;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
@@ -42,6 +43,8 @@ public class AnimationView  extends AnimOp {
 	ImageView image;  // the current frame
 	UIDepend gui;
 	
+	HashMap<String, String> tags = new HashMap<String, String>();
+	
 	// The constructor takes the usual parameters.  sets up initial conditions.  initRepetition sets up one animation cycle.
 	// the completeListener is called at the end of the entire animation sequence which includes and multiple repetions.
 	// whereas the %complete listeners are called with respect to completion of one cycle.
@@ -58,6 +61,10 @@ public class AnimationView  extends AnimOp {
 			float period, int repetitions, IAnimListener completeListener) {
 		super();  // init the AnimOp
 		init(gui, startRect, endRect, startAlpha, endAlpha, period, repetitions, completeListener);
+		setImageView(image);
+	}
+	
+	public void setImageView(ImageView image) {
 		frames = new Vector<ImageView>();
 		frames.add(image);
 	}
@@ -214,8 +221,15 @@ public class AnimationView  extends AnimOp {
 		}
 	}
 	
-	
 	protected void drawTheFrame(SpriteBatch spriteBatch) {
 		image.draw(spriteBatch, alphaTween.getValue());
+	}
+	
+	public String getTag(String key) {
+		return tags.get(key);
+	}
+	
+	public void putTag(String key, String value) {
+		tags.put(key, value);
 	}
 }

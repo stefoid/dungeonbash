@@ -45,7 +45,7 @@ public interface IDungeonPresentationEventListener {
 	void rangedAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, AbilityType abilityType, int damageType, DungeonPosition targetPosition);
 	
 	// damage inflicted
-	void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int damageAmount);	
+	void damageInflicted(int sequenceNumber, Character releventCharacter, Creature damagedCreature, DungeonPosition targetPosition, int damageType, int damageAmount);	
 	
 	// miss - either melee or ranged target miss
 	void missed(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition);

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IAnimListener;
+import com.dbash.util.Logger;
+
 
 // This queue is used by things to get alerted to when an animation has started, stopped, or reached some percentage 
 // of progress in an animation cycle.  An AnimOp is put on the queue to represent an animation that may play at some stage.
@@ -122,7 +124,7 @@ public class AnimQueue {
 	//  Will start immediately if queue empty 
 	// Otherwise will attempt to chain concurrently with the last anim belonging to the same creator.
 	public void chainConcurrentWithMyLast(AnimOp animOp, Object creator, float percentage, boolean owner) {
-		AnimOp lastAnimOp = getLastByCreator(creator);
+		AnimOp lastAnimOp = getLastByCreator(creator, null);
 		add(animOp, owner);
 		
 		// if the queue is empty 
@@ -174,13 +176,16 @@ public class AnimQueue {
 	}
 	
 	// returns the last non-completed op in the queue
-	public AnimOp getLastByCreator(Object creator) {
+	public AnimOp getLastByCreator(Object creator, AnimOp.AnimType type) {
 			int i = queue.size()-1;
 			
 			while (i >= 0) {
 				AnimOp op = queue.get(i);
+				//if (Logger.DEBUG) Logger.log("asked crea: "+creator+" crea: "+op.creator+ " comp: "+op.hasCompleted+" type: "+op.animType);
 				if (op.creator == creator && !op.hasCompleted) {
-					return op;
+					if (type == null || (type != null && op.animType == type)) {
+						return op;
+					}
 				}
 				i--;
 			}

@@ -43,6 +43,7 @@ public class AnimOp {
 		MELEE_ATTACK,
 		RANGED_ATTACK,
 		DAMAGE,
+		DAMAGE_NUM,
 		DEATH,
 		SINKING,
 		EXPLOSION,
