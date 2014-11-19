@@ -433,13 +433,14 @@ public class Ability
 					{
 						Ability a = null;
 						
-						if (ability.executeParam3[i] >= 0)  // -1 means add no ability
-						{
+						if (ability.executeParam3[i] >= 0)  { // -1 means add no ability
 							a = new Ability(ability.executeParam3[i], theCreature, 1, dungeonEvents, dungeonQuery);  // this is the ability to add to a creature as part of the attack
+							a.dynamicParams.put(Ability.TARGET_POS, pos);
 						}
 
-						if (command.name == AbilityCommand.MELEE_ATTACK)
+						if (command.name == AbilityCommand.MELEE_ATTACK) {
 							melee = true;
+						}
 						
 						AbilityCommand attack = new AbilityCommand(damageType, ability.executeParam2[i], melee, a);	// type, damage, melee? and ability
 						boolean result = attackingCreature.makeAttack(attack, theCreature, thePos, ability.aimed, magicCost, ability.magicCost);
@@ -451,6 +452,7 @@ public class Ability
 					else if (ability.executeStrategy[i] == ABILITY_ADDER)  // add a certain ability to the target
 					{
 						Ability  ab = new Ability(ability.executeParam1[i], theCreature, 1, dungeonEvents, dungeonQuery); // will be owned by the target
+						ab.dynamicParams.put(Ability.TARGET_POS, pos);
 						attackingCreature.giveAbility(theCreature, ab, thePos, magicCost, attackingCreature);
 					}
 				}
@@ -810,6 +812,8 @@ public class Ability
 	
 	private AbilityType abilityType;
 	private Vector<AbilityEffectType> abilityEffectType;
+	// ATTRIBUTES
+	public final static String TARGET_POS = "targetpos";
 	
 	// To set the general type of image, we have to investiagte the effects of the ability on the creature stats.
 	// abilities can modify...

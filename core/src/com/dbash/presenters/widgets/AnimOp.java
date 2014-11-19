@@ -38,6 +38,7 @@ public class AnimOp {
 		MOVE,
 		FOLLOWER_MOVE,
 		LEADER_MOVE,
+		CHARGE_MOVE,
 		FALL_IN,
 		GO_DOWN_STAIRS,
 		MELEE_ATTACK,

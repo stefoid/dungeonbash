@@ -42,11 +42,7 @@ public abstract class Creature implements IPresenterCreature
 		MONSTER
 	}
 
-// ATTRIBUTES
-	private final static String GIVER = "giver";
-	private final static String TARGET_POS = "targetpos";
-	
-	protected CanMoveStrategy canMove = new CanMoveStrategy();
+protected CanMoveStrategy canMove = new CanMoveStrategy();
 
 	// instance data
 	protected HighlightStatus highlightStatus;
@@ -816,10 +812,12 @@ public abstract class Creature implements IPresenterCreature
 	/**
 	 * Knockback has been applied to the creature.  
 	 */
-	private void performKnockback(Ability ability, Creature giver) {
-		DungeonPosition targetPos = (DungeonPosition) ability.dynamicParams.get(TARGET_POS);
-		Creature attacker = (Creature) ability.dynamicParams.get(GIVER);
+	private void performKnockback(Ability ability, Creature attacker) {
+		DungeonPosition targetPos = (DungeonPosition) ability.dynamicParams.get(Ability.TARGET_POS);
 		DungeonPosition sourcePos = attacker.getPosition();
+		if (targetPos == null) {
+			targetPos = sourcePos;
+		}
 		int knockbackDir;
 		
 		if (targetPos.equals(mapPosition)) {
@@ -847,12 +845,12 @@ public abstract class Creature implements IPresenterCreature
 			case MONSTER:
 				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
-				hitCreature.respondAttack(collideCommand, giver);
+				hitCreature.respondAttack(collideCommand, attacker);
 				break;
 			case CHARACTER:
 				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
-				hitCreature.respondAttack(collideCommand, giver);
+				hitCreature.respondAttack(collideCommand, attacker);
 				break;
 			case WALL:
 				health -= myCollisionDamage;
@@ -986,9 +984,6 @@ public abstract class Creature implements IPresenterCreature
 		boolean addedOk = true;
 		
 		if (target != null){
-			ab.dynamicParams.put(GIVER, giver);
-			ab.dynamicParams.put(TARGET_POS, pos);
-			
 			addedOk = target.addAbility(ab, giver);
 			
 			// There is an edge case where adding the creature adds an ability to itself, which will end its turn,
@@ -1029,60 +1024,56 @@ public abstract class Creature implements IPresenterCreature
 	{
 		boolean result = true;
 
-//		if (magic >= magicCost)
-//		{
-//			magic -= magicCost;
+		// calculate damage before changing attack skill to enormous
+		attack.skill = calculateAttackSkill();
 
-			// calculate damage before changing attack skill to enormous
-			attack.skill = calculateAttackSkill();
-
-			if (attack.type != AbilityCommand.NO_PHYSICAL_ATTACK)
+		if (attack.type != AbilityCommand.NO_PHYSICAL_ATTACK)
+		{
+			// rules for damage:
+			// 1. creatures size only affects damage of melee attacks
+			if (attack.melee)
 			{
-				// rules for damage:
-				// 1. creatures size only affects damage of melee attacks
-				if (attack.melee)
-				{
-					attack.damage += calculateSizeDamageBonus();
-				}
-
-				// 2. creatures attack skill only affects damage of aimed
-				// attacks
-				// 3. skill effect on damage is much less than size affect on
-				// damage
-
-				if (useSkill)
-				{
-					attack.damage += calculateSkillDamageBonus();
-				}
-
-				// 4. creatures magical capability (maxMagic) effects damage of
-				// magical attacks (that have a magic cost)
-				if (magicUse > 0)
-				{
-					attack.damage += calculateMaxMagic() / 6;
-				}
+				attack.damage += calculateSizeDamageBonus();
 			}
 
-			// TODO really?  there is no real need for this.
-			if (target == null) // this is an attack on empty air. too bad, it still counts
+			// 2. creatures attack skill only affects damage of aimed
+			// attacks
+			// 3. skill effect on damage is much less than size affect on
+			// damage
+
+			if (useSkill)
 			{
-				if (attack.type != AbilityCommand.NO_PHYSICAL_ATTACK)
-				{
-				//	makeHit(attack.type, attack.damage, targetPosition, 800);
-					// dungeonQuery.getSoundControl().playSound(GameControl.HITSOUND);
-				}
-				else
-				{
-				//	dungeonEvents.abilityAdded(SequenceNumber.getCurrent(), giver.getReleventCharacter(), abilityEfectType, mapPosition, null);
-				}
+				attack.damage += calculateSkillDamageBonus();
+			}
+
+			// 4. creatures magical capability (maxMagic) effects damage of
+			// magical attacks (that have a magic cost)
+			if (magicUse > 0)
+			{
+				attack.damage += calculateMaxMagic() / 6;
+			}
+		}
+
+		// TODO really?  there is no real need for this.
+		if (target == null) // this is an attack on empty air. too bad, it still counts
+		{
+			if (attack.type != AbilityCommand.NO_PHYSICAL_ATTACK)
+			{
+			//	makeHit(attack.type, attack.damage, targetPosition, 800);
+				// dungeonQuery.getSoundControl().playSound(GameControl.HITSOUND);
 			}
 			else
 			{
-				if (!useSkill)
-					attack.skill = 32000; // sure thing
-
-				target.respondAttack(attack, this);
+			//	dungeonEvents.abilityAdded(SequenceNumber.getCurrent(), giver.getReleventCharacter(), abilityEfectType, mapPosition, null);
 			}
+		}
+		else
+		{
+			if (!useSkill)
+				attack.skill = 32000; // sure thing
+
+			target.respondAttack(attack, this);
+		}
 
 		return result;
 

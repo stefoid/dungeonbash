@@ -81,7 +81,6 @@ public class AbilityCommand
 	public int skill;
 	public int type;
 
-
 	public AbilityCommand(int attackType, int attackDamage, boolean meleeAttack, Ability ability)
 	{
 		type = attackType;

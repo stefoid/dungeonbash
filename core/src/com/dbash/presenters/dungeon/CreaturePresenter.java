@@ -34,18 +34,16 @@ import com.dbash.util.Rect;
 // Why doesnt the creature tell the creaturePresetner to animate directly?  because only the MapPresenter actually knows
 // if a particular tile and/or needs to bother to show an animation or not, because it knows where the viewport currently is.
 //
-// One hiccup is that events come in that result in animations, and these animations have position, but if no aniamtions
-// are supposed to be drawn, the creature model can still update its position via a listener.  The problem is when
-// both of these things happen simultaneously, there can be some glitchiness.
-//
 //DRAWING CREATURES
 // Location and hence LocationPresenter gets 'realtime' model updates of creatures locations, and MapPresenter only
 // tells those tiles that are visible in the shadowmap(s) it is currently displaying to draw creatures.  i.e. only those
 // creatures either sitting in a visible location get to draw themselves.
-// Creature presenter takes care of the nasty business of working out whether to draw a static image of the creature when 
-// asked to, or to display an animation of the creature moving form one tile to the next when it gets a move command.
-// the tricky bit there is that sometimes the move command is queued, so a static image must be drawn while waiting for the anim to play
-// but it cant be a static image in a position 'ahead' of where an unplayed animation will display it.
+//
+// Basically all teh creature presetner does when an event comes in is decide what animation to play, and when to play it by 
+// scheduling it with the animqueue.  There is just ne anim queue so the animations can be scheduled with respect to oter craetures
+// animation, and the map scrolling, but a creature can look at teh queue to work out its own animations that are in it, and what
+// type they are, to help it deicde how to schedule the current one, if it needs to.
+
 public class CreaturePresenter {
 	
 	public enum VisualState {
@@ -68,14 +66,12 @@ public class CreaturePresenter {
 	private String name;
 	private ImageView highlightImage;
 	private Light light;
-	private boolean isCharging;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
 		this.creature = creature;
 		this.name = creature.getNameUnderscore();
 		this.model = model;
-		isCharging = false;
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.SHOW_NOTHING;
@@ -209,7 +205,6 @@ public class CreaturePresenter {
 		String animToUse = "walk";
 		switch (moveType) {
 			case CHARGE_MOVE:
-				isCharging = true;
 				animToUse = "attack";
 				break;
 			case KNOCKBACK_MOVE:
@@ -280,13 +275,21 @@ public class CreaturePresenter {
 			case SHUDDER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.KNOCKBACK_MOVE;
 				moveAnim.staticFrameOnly();
-				model.animQueue.chainConcurrentWithSn(moveAnim, false);
+				if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
+					model.animQueue.chainConcurrentWithLast(moveAnim, 50f, false);
+				} else {
+					model.animQueue.chainConcurrentWithSn(moveAnim, false);
+				}
 				model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
 				break;
 			case LEADER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;
 				model.animQueue.add(moveAnim, false);
 				moveAnim.startPlaying();
+				break;
+			case CHARGE_MOVE:
+				moveAnim.animType = AnimOp.AnimType.CHARGE_MOVE;
+				model.animQueue.chainSequential(moveAnim, false);
 				break;
 			default:
 				moveAnim.animType = AnimOp.AnimType.MOVE;
@@ -382,11 +385,10 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureMeleeAttack(int sequenceNumber, DungeonPosition fromPosition, DungeonPosition targetPosition, int direction, final IAnimListener animCompleteListener) {
-		if (isCharging) {
-			isCharging = false;
-			return;
+		AnimationView previousAnim = (AnimationView) model.animQueue.getLastByCreator(this, AnimOp.AnimType.CHARGE_MOVE);
+		if (previousAnim != null) {
+			return; // charge move covers attack as well.
 		}
-		
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final Rect toRect;
 		if (creature instanceof Monster) {
