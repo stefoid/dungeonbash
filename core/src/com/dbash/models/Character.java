@@ -13,7 +13,7 @@ import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
-
+@SuppressWarnings("unused")
 /* Players control characters, so there is no AI like a Monster, but there could be multiple player input required
  * to fully define a character action. Player input that can end a character's turn is: 
  * 
@@ -40,6 +40,7 @@ import com.dbash.util.SequenceNumber;
  */
 
 public class Character extends Creature implements IPresenterCharacter {
+	public static final boolean LOG_HERE = false;
 	
 	private class BestDir {
 		public BestDir () {
@@ -68,7 +69,7 @@ public class Character extends Creature implements IPresenterCharacter {
 
 			complaints++;
 			if (turnProcessor.getCurrentLeader() == me) {
-				if (Logger.DEBUG) Logger.log("COMPLAINT "+complaints);
+				if (LOG_HERE && Logger.DEBUG) Logger.log("COMPLAINT "+complaints);
 			}
 		}
 		
@@ -839,7 +840,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	// at that position, otherwise if we have a selected targetable ability that we can use, we use it against
 	// that position.  simple.
 	public void targetTileSelected(DungeonPosition position) {
-		if (Logger.DEBUG) Logger.log("targetTileselected "+isPlayerCharacter());
+		if (LOG_HERE && Logger.DEBUG) Logger.log("targetTileselected "+isPlayerCharacter());
 		if (dungeonQuery.positionIsInLOSOfCharacter(this, position)) {
 			if (canSetLeaderModeTarget(position) == false ) {
 				if (characterIsUsingEye) {
@@ -855,7 +856,7 @@ public class Character extends Creature implements IPresenterCharacter {
 						currentSelectedAbility.targetSelected(position);
 						turnProcessor.characterEndsTurn(this);
 					} else {
-						if (Logger.DEBUG) Logger.log("WOULD HAVE CRAHSED");
+						if (LOG_HERE && Logger.DEBUG) Logger.log("WOULD HAVE CRAHSED");
 					}
 				}
 			}	

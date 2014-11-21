@@ -26,8 +26,10 @@ import com.dbash.presenters.root.RootPresenter;
 import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
+@SuppressWarnings("unused")
+
 public class Dbash implements ApplicationListener {
-	
+	public static final boolean LOG_HERE = false;
 	public static boolean DEBUG = true;
 	
 	enum GameState {
@@ -95,7 +97,7 @@ public class Dbash implements ApplicationListener {
 
 		// load previously saved game, if it exists.
 		FileHandle fl = Gdx.files.local("gamedata.dat");
-		if (Logger.DEBUG) Logger.log("LOADING GAMEDATA");
+		if (LOG_HERE && Logger.DEBUG) Logger.log("LOADING GAMEDATA");
 		if (fl.exists() == true) {
 			newGame = false;
 			ObjectInputStream in = null;
@@ -139,7 +141,7 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-		if (Logger.DEBUG) Logger.log("SAVING GAMEDATA");
+		if (LOG_HERE && Logger.DEBUG) Logger.log("SAVING GAMEDATA");
 		FileHandle fl = Gdx.files.local("gamedata.dat");
 		ObjectOutputStream out = null;
 		try {
@@ -160,7 +162,7 @@ public class Dbash implements ApplicationListener {
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
-		if (Logger.DEBUG) Logger.log("DISPOSE CALLED");
+		if (LOG_HERE && Logger.DEBUG) Logger.log("DISPOSE CALLED");
 	}
 
 	@Override
@@ -213,7 +215,7 @@ public class Dbash implements ApplicationListener {
 
 	@Override
 	public void resume() {
-		if (Logger.DEBUG) Logger.log("RESUME CALLED");
+		if (LOG_HERE && Logger.DEBUG) Logger.log("RESUME CALLED");
 	}
 	
 	boolean quitted = true;

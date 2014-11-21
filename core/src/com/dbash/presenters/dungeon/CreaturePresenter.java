@@ -22,6 +22,7 @@ import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
+@SuppressWarnings("unused")
 
 // The model can fire multiple events about a creature to its presenter, but animations take a while to play
 // these so the state of the presenter, including position, can get out of phase with the model state
@@ -45,6 +46,7 @@ import com.dbash.util.Rect;
 // type they are, to help it deicde how to schedule the current one, if it needs to.
 
 public class CreaturePresenter {
+	public static final boolean LOG_HERE = false;
 	
 	public enum VisualState {
 		SHOW_STATIC,
@@ -412,7 +414,7 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, DeathType deathType, final IAnimListener completeListener) {
-		if (Logger.DEBUG) Logger.log("creatureDies called for :" + this);
+		if (LOG_HERE && Logger.DEBUG) Logger.log("creatureDies called for :" + this);
 		AnimationView deathAnim = null;
 		
 		if (deathType == DeathType.HOLE) {

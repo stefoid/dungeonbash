@@ -5,8 +5,10 @@ import java.util.Vector;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IAnimListener;
+import com.dbash.util.Logger;
 import com.dbash.util.Tween;
 
+@SuppressWarnings("unused")
 // An AnimOp is used to help schedule animations by providing observable events for starting, stopping and incremental completion.
 // Really, it doesnt have to be an animation - any process that can start, run for a period of time and then stop could use or extend
 // AnimOp to allow other things to observe those states.
@@ -32,7 +34,9 @@ import com.dbash.util.Tween;
 // and (4) call animationStopped() when done.
 public class AnimOp {
 	
-	public enum AnimType {
+	public static final boolean LOG_HERE = false;
+	
+	public static enum AnimType {
 		ABILITY_ADD,
 		ABILITY_RESIST,
 		MOVE,
@@ -56,9 +60,7 @@ public class AnimOp {
 		DEFAULT
 	}
 	
-
-	
-	public class PercentCompleteListener {
+	public static class PercentCompleteListener {
 		float percent;
 		IAnimListener listener;
 		boolean haveTriggered;
@@ -70,6 +72,8 @@ public class AnimOp {
 		}
 		
 		public void alertListener(float currentPercent) {
+			if (LOG_HERE && Logger.DEBUG) Logger.log("alertListener-animOp: %s", this);
+			
 			if (haveTriggered == false) {
 				if (currentPercent >= percent) {
 					listener.animEvent();
@@ -113,12 +117,15 @@ public class AnimOp {
 	// until this is called, it wont do anything.
 	// If you want to chain the start of this animation, make a call to this in the complete callback of some other animation.
 	public void startPlaying() {
+		if (LOG_HERE && Logger.DEBUG) Logger.log("animOp: %s", this);
 		animating = true;
 		alertAnimStartListeners();
 	}
 	
 	// a subclass *must* call this to start a new cycle.
 	protected void animationCycleStarted(float period) {
+		if (LOG_HERE && Logger.DEBUG) Logger.log("animOp: %s", this);
+		
 		nextCompleteTrigger = 0;
 		for (PercentCompleteListener pListener : percentCompleteListeners) {
 			pListener.resetTrigger();
@@ -136,6 +143,8 @@ public class AnimOp {
 	
 	// subclass can call this to tell the AnimOp we have stopped.
 	protected void animationStopped() {
+		if (LOG_HERE && Logger.DEBUG) Logger.log("animOp: %s", this);
+		
 		animating = false;
 		alertPercentageCompleteListeners(100f);
 		alertAnimCompleteListeners();
@@ -175,6 +184,8 @@ public class AnimOp {
 	// Alert listeners.  Rather than every single tick, lets only do this at 10% increments which should be
 	// enough granularity
 	protected void alertPercentageCompleteListeners(float currentPercent) {
+		if (LOG_HERE && Logger.DEBUG) Logger.log("animOp: %s", this);
+		
 		if (currentPercent >= nextCompleteTrigger) {
 			for (PercentCompleteListener pListener : percentCompleteListeners) {
 				pListener.alertListener(currentPercent);
@@ -193,6 +204,8 @@ public class AnimOp {
 	}
 	
 	protected void alertAnimStartListeners() {
+		if (LOG_HERE && Logger.DEBUG) Logger.log("animOp: %s", this);
+		
 		for (IAnimListener l : startListeners) {
 			l.animEvent();
 		}
@@ -203,6 +216,8 @@ public class AnimOp {
 	}
 	
 	protected void alertAnimCompleteListeners() {
+		if (LOG_HERE && Logger.DEBUG) Logger.log("animOp: %s", this);
+		
 		for (IAnimListener l : completeListeners) {
 			l.animEvent();
 		}
@@ -210,5 +225,9 @@ public class AnimOp {
 	
 	public void setCreator(Object creator) {
 		this.creator = creator;
+	}
+	
+	public String toString() {
+		return animType.toString();
 	}
 }

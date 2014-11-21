@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IPopupController;
-import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEvent.TouchType;
@@ -16,7 +15,6 @@ import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.presenters.tabs.TabbedDataAreaPresenter;
-import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
 
@@ -286,7 +284,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	@Override
 	public boolean keyDown(int keycode) {
 		// a=29, z = 54,    r=46, z=34,   x=52
-//		if (Logger.DEBUG) Logger.log("keycode : "+keycode);
+//		if (LOG_HERE && Logger.DEBUG) Logger.log("keycode : "+keycode);
 //
 //		IPresenterTurnState t = model.presenterTurnState;
 //		switch (keycode) {
@@ -309,7 +307,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 //				break;
 //		}
 //		
-//		if (Logger.DEBUG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
+//		if (LOG_HERE && Logger.DEBUG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
 		return false;
 	}
 

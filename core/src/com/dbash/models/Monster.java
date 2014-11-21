@@ -11,6 +11,8 @@ import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
+@SuppressWarnings("unused")
+
 public class Monster extends Creature
 {
 	// ATTRIBUTES
@@ -34,7 +36,7 @@ public class Monster extends Creature
 		int creatureLevel = calcLevel(creatureId);
 		
 		if (dungeonQuery.whatIsAtLocation(p) == AtLocation.WALL) {
-			if (Logger.DEBUG) Logger.log("wtf....");
+			if (LOG_HERE && Logger.DEBUG) Logger.log("wtf....");
 		}
 		
 		if (creatureLevel < level) {

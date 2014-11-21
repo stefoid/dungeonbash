@@ -15,9 +15,11 @@ import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
+@SuppressWarnings("unused")
 
 public abstract class Creature implements IPresenterCreature
 {
+	public static final boolean LOG_HERE = false;
 	// INTERFACE
 	public static final int	MAX_SPEED		= 10;
 	
@@ -1238,7 +1240,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	/*
 	 * public static void printAll() { for (int i=0; i<creatureData.size(); i++)
 	 * { CreatureData cd = (CreatureData) creatureData.elementAt(i);
-	 * if (Logger.DEBUG) Logger.log(cd.name + "level = " + calcLevel(i)); }
+	 * if (LOG_HERE && Logger.DEBUG) Logger.log(cd.name + "level = " + calcLevel(i)); }
 	 * 
 	 * }
 	 */
@@ -1303,12 +1305,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			List<Ability> newlyDroppedObjects = new LinkedList<Ability>();
 			for (Ability ability : abilities) {
 				if (ability.isPhysical()) {
-					if (Logger.DEBUG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
+					if (LOG_HERE && Logger.DEBUG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
 					newlyDroppedObjects.add(ability);
 				}
 			}
 			for (Ability ability : newlyDroppedObjects) {
-				if (Logger.DEBUG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
+				if (LOG_HERE && Logger.DEBUG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
 				dropObject(ability);
 			}
 		}

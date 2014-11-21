@@ -18,8 +18,10 @@ import com.dbash.presenters.widgets.SliderView;
 import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 
-public class MenuListElementView implements IListElement {
+@SuppressWarnings("unused")
 
+public class MenuListElementView implements IListElement {
+	public static final boolean LOG_HERE = false;
 	ISelectionListener selectionListener;
 	
 	protected UIDepend gui;
@@ -51,7 +53,7 @@ public class MenuListElementView implements IListElement {
 		bodyArea = new Rect(nominalArea);
 		bodyArea.height *= (extraElements+1);
 
-		if (Logger.DEBUG) {
+		if (LOG_HERE && Logger.DEBUG) {
 			Logger.log("extra "+extraElements);
 			Logger.log("nominal="+nominalArea.toString());
 			Logger.log("body="+bodyArea.toString());

@@ -10,7 +10,7 @@ import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.Logger;
 import com.dbash.util.Randy;
 
-
+@SuppressWarnings("unused")
 
 // This class is basically a two dimension array of 'locations' and the code to build a maze  in it.
 // Each location has all the info about that location, including a spritename (TileName) and any creatures or items
@@ -18,6 +18,7 @@ import com.dbash.util.Randy;
 // Map doesnt know about Monsters, Characters etc...  To move creatures and items around in it, interact with the Locations
 // directly.  Those changes to Locations will emit observable Presentation events
 public class Map implements IPresenterMap {
+	public static final boolean LOG_HERE = false;
 	public Location[][] location;
 	public int width;
 	public int height;
@@ -102,7 +103,7 @@ public class Map implements IPresenterMap {
 				dungeonNotCompleted = false;
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
-				if (Logger.DEBUG) Logger.log("TRYING AGAIN!");
+				if (LOG_HERE && Logger.DEBUG) Logger.log("TRYING AGAIN!");
 			}
 		}
 	}
@@ -473,12 +474,12 @@ public class Map implements IPresenterMap {
 //		// debug print
 //		for (int y=width-1; y>=0; y--) {
 //			for (int x=0; x< height; x++) {
-//				if (location(x,y).isOpaque()) if (Logger.DEBUG) Logger.log('#'); else if (Logger.DEBUG) Logger.log(' ');
+//				if (location(x,y).isOpaque()) if (LOG_HERE && Logger.DEBUG) Logger.log('#'); else if (LOG_HERE && Logger.DEBUG) Logger.log(' ');
 //			}
-//			if (Logger.DEBUG) Logger.log();
+//			if (LOG_HERE && Logger.DEBUG) Logger.log();
 //		}
-//		if (Logger.DEBUG) Logger.log();
-//		if (Logger.DEBUG) Logger.log();
-//		if (Logger.DEBUG) Logger.log();
+//		if (LOG_HERE && Logger.DEBUG) Logger.log();
+//		if (LOG_HERE && Logger.DEBUG) Logger.log();
+//		if (LOG_HERE && Logger.DEBUG) Logger.log();
 //	}
 }

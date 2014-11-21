@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.dbash.util.Logger;
 
 public class GameStats {
 	public int monstersKilled;
@@ -45,6 +44,6 @@ public class GameStats {
 	}
 	
 	public void logstats() {
-		//if (Logger.DEBUG) Logger.log("monstersKilled "+monstersKilled+",xp "+xp+",level "+level);
+		//if (LOG_HERE && Logger.DEBUG) Logger.log("monstersKilled "+monstersKilled+",xp "+xp+",level "+level);
 	}
 }
