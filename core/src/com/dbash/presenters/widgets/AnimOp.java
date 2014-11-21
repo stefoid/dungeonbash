@@ -5,7 +5,7 @@ import java.util.Vector;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IAnimListener;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Tween;
 
 @SuppressWarnings("unused")
@@ -34,7 +34,7 @@ import com.dbash.util.Tween;
 // and (4) call animationStopped() when done.
 public class AnimOp {
 	
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public static enum AnimType {
 		ABILITY_ADD,
@@ -72,7 +72,7 @@ public class AnimOp {
 		}
 		
 		public void alertListener(float currentPercent) {
-			if (LOG) Logger.log("alertListener-animOp: %s", this);
+			if (LOG) L.log("alertListener-animOp: %s", this);
 			
 			if (haveTriggered == false) {
 				if (currentPercent >= percent) {
@@ -117,14 +117,14 @@ public class AnimOp {
 	// until this is called, it wont do anything.
 	// If you want to chain the start of this animation, make a call to this in the complete callback of some other animation.
 	public void startPlaying() {
-		if (LOG) Logger.log("animOp: %s", this);
+		if (LOG) L.log("animOp: %s", this);
 		animating = true;
 		alertAnimStartListeners();
 	}
 	
 	// a subclass *must* call this to start a new cycle.
 	protected void animationCycleStarted(float period) {
-		if (LOG) Logger.log("animOp: %s", this);
+		if (LOG) L.log("animOp: %s", this);
 		
 		nextCompleteTrigger = 0;
 		for (PercentCompleteListener pListener : percentCompleteListeners) {
@@ -143,7 +143,7 @@ public class AnimOp {
 	
 	// subclass can call this to tell the AnimOp we have stopped.
 	protected void animationStopped() {
-		if (LOG) Logger.log("animOp: %s", this);
+		if (LOG) L.log("animOp: %s", this);
 		
 		animating = false;
 		alertPercentageCompleteListeners(100f);
@@ -184,7 +184,7 @@ public class AnimOp {
 	// Alert listeners.  Rather than every single tick, lets only do this at 10% increments which should be
 	// enough granularity
 	protected void alertPercentageCompleteListeners(float currentPercent) {
-		if (LOG) Logger.log("animOp: %s", this);
+		if (LOG) L.log("animOp: %s", this);
 		
 		if (currentPercent >= nextCompleteTrigger) {
 			for (PercentCompleteListener pListener : percentCompleteListeners) {
@@ -204,7 +204,7 @@ public class AnimOp {
 	}
 	
 	protected void alertAnimStartListeners() {
-		if (LOG) Logger.log("animOp: %s", this);
+		if (LOG) L.log("animOp: %s", this);
 		
 		for (IAnimListener l : startListeners) {
 			l.animEvent();
@@ -216,7 +216,7 @@ public class AnimOp {
 	}
 	
 	protected void alertAnimCompleteListeners() {
-		if (LOG) Logger.log("animOp: %s", this);
+		if (LOG) L.log("animOp: %s", this);
 		
 		for (IAnimListener l : completeListeners) {
 			l.animEvent();

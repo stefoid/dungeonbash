@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.presenters.root.GameOverPopupPresenter;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.SequenceNumber;
 import com.me.dbash.Dbash;
 
 @SuppressWarnings("unused")
 
 public class TurnProcessor implements IPresenterTurnState {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
 	private IDungeonControl dungeon;
@@ -333,7 +333,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// waitForAnimsToFinish
 	public void waitForPlayerInput() {
 		if (LOG)
-			Logger.log("waiting for player input");
+			L.log("waiting for player input");
 		pauseTurnProcessing = true;
 		dungeonEvents.waitingForAnimToComplete(SequenceNumber.getNext(),
 				new IAnimListener() {
@@ -525,7 +525,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void passTurnSelected() {
 		if (LOG)
-			Logger.log("Pass turn pressed");
+			L.log("Pass turn pressed");
 		characterEndsTurn(currentCharacter);
 	}
 
@@ -635,13 +635,13 @@ public class TurnProcessor implements IPresenterTurnState {
 			currentLeader = currentCharacter;
 			leaderStatus = LeaderStatus.HAVE_LEADER;
 			if (LOG)
-				Logger.log("current leader is " + currentLeader.creature.name);
+				L.log("current leader is " + currentLeader.creature.name);
 		} else {
 			currentLeader.leaderModeCleared();
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
 			if (LOG)
-				Logger.log("no current leader");
+				L.log("no current leader");
 		}
 
 		leaderStatusListeners.alertListeners();

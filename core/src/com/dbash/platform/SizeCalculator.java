@@ -1,13 +1,13 @@
 package com.dbash.platform;
 
 import com.badlogic.gdx.Gdx;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 @SuppressWarnings("unused")
 
 public class SizeCalculator {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	float ppcy;
 	
 	public static float DATA_HEADER_SCALE = 0.23f;
@@ -31,13 +31,13 @@ public class SizeCalculator {
 	
 	public static void setIosVersion(int version) {
 		iosVersion = version;
-		if (LOG) Logger.log("IOSVersion = " + version);
+		if (LOG) L.log("IOSVersion = " + version);
 	}
 	
 	public static Rect getScreenSize() {
 		Rect result = new Rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		if (LOG) Logger.log("WIDTH = " + Gdx.graphics.getWidth() + "HEIGHT = " +Gdx.graphics.getHeight());
+		if (LOG) L.log("WIDTH = " + Gdx.graphics.getWidth() + "HEIGHT = " +Gdx.graphics.getHeight());
 		
 		if (iosVersion > 7) {
 			if (result.height > result.width) {
@@ -63,19 +63,19 @@ public class SizeCalculator {
 		float tabHeight = (totalHeight*TAB_AREA_SCALE);
 		float listHeight = tabHeight*LIST_AREA_SCALE;
 		
-		if (LOG) Logger.log("ppcy: "+ppcy);
-		if (LOG) Logger.log("height: "+listHeight);
-		if (LOG) Logger.log("tabHeight: "+tabHeight);
-		if (LOG) Logger.log("listHeight: "+listHeight);
+		if (LOG) L.log("ppcy: "+ppcy);
+		if (LOG) L.log("height: "+listHeight);
+		if (LOG) L.log("tabHeight: "+tabHeight);
+		if (LOG) L.log("listHeight: "+listHeight);
 		
 		if (ppcy < 30) {
-			if (LOG) Logger.log("something happened");;
+			if (LOG) L.log("something happened");;
 			ppcy = 80;  // something wrong with desktop pixel density
 		}
 
 		MIN_DRAG_PIXELS = MIN_DRAG_DISTANCE * ppcy;
 		float cms = listHeight/ppcy;
-		if (LOG) Logger.log("cms: "+cms);
+		if (LOG) L.log("cms: "+cms);
 		
 		ELEMENTS_PER_SCREEN = Math.round(cms/1.2f);
 		if (ELEMENTS_PER_SCREEN < 4.0f) {
@@ -85,11 +85,11 @@ public class SizeCalculator {
 		if (ELEMENTS_PER_SCREEN > MAX_ELEMENTS) {
 			ELEMENTS_PER_SCREEN = MAX_ELEMENTS;
 		}
-		if (LOG) Logger.log("ELEMENTS_PER_SCREEN: "+ELEMENTS_PER_SCREEN);
+		if (LOG) L.log("ELEMENTS_PER_SCREEN: "+ELEMENTS_PER_SCREEN);
 		MIN_ELEMENTS = (int) ELEMENTS_PER_SCREEN;
-		if (LOG) Logger.log("MIN_ELEMENTS: "+MIN_ELEMENTS);
+		if (LOG) L.log("MIN_ELEMENTS: "+MIN_ELEMENTS);
 		LIST_ELEMENT_HEIGHT = listHeight / MIN_ELEMENTS;
-		if (LOG) Logger.log("LIST_ELEMENT_HEIGHT: "+LIST_ELEMENT_HEIGHT);
+		if (LOG) L.log("LIST_ELEMENT_HEIGHT: "+LIST_ELEMENT_HEIGHT);
 	}  
 	
 }

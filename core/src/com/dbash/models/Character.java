@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.tabs.AbilitySelectionList;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
@@ -40,7 +40,7 @@ import com.dbash.util.SequenceNumber;
  */
 
 public class Character extends Creature implements IPresenterCharacter {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	private class BestDir {
 		public BestDir () {
@@ -69,7 +69,7 @@ public class Character extends Creature implements IPresenterCharacter {
 
 			complaints++;
 			if (turnProcessor.getCurrentLeader() == me) {
-				if (LOG) Logger.log("COMPLAINT "+complaints);
+				if (LOG) L.log("COMPLAINT "+complaints);
 			}
 		}
 		
@@ -840,7 +840,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	// at that position, otherwise if we have a selected targetable ability that we can use, we use it against
 	// that position.  simple.
 	public void targetTileSelected(DungeonPosition position) {
-		if (LOG) Logger.log("targetTileselected "+isPlayerCharacter());
+		if (LOG) L.log("targetTileselected "+isPlayerCharacter());
 		if (dungeonQuery.positionIsInLOSOfCharacter(this, position)) {
 			if (canSetLeaderModeTarget(position) == false ) {
 				if (characterIsUsingEye) {
@@ -856,7 +856,7 @@ public class Character extends Creature implements IPresenterCharacter {
 						currentSelectedAbility.targetSelected(position);
 						turnProcessor.characterEndsTurn(this);
 					} else {
-						if (LOG) Logger.log("WOULD HAVE CRAHSED");
+						if (LOG) L.log("WOULD HAVE CRAHSED");
 					}
 				}
 			}	

@@ -6,13 +6,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.me.dbash.Dbash;
 
 @SuppressWarnings("unused")
 
 public class DesktopLauncher {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	public static class MyApplicationConfiguration extends
 	LwjglApplicationConfiguration {
 		
@@ -33,7 +33,7 @@ public class DesktopLauncher {
 		for (DisplayMode displayMode : LwjglApplicationConfiguration
 				.getDisplayModes()) {
 			if (displayMode.width > maxWidth) {
-				if (LOG) Logger.log(displayMode.toString());
+				if (LOG) L.log(displayMode.toString());
 				width = displayMode.width;
 				height = displayMode.height;
 				maxWidth = displayMode.width;

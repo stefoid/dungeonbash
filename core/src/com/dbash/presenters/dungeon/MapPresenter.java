@@ -20,7 +20,7 @@ import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 import com.dbash.util.Tween;
 
@@ -33,7 +33,7 @@ import com.dbash.util.Tween;
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapPresenter extends AnimOp implements IMapPresentationEventListener{
-	public static final boolean LOG = true && Logger.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
@@ -221,7 +221,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	// animated scroll to the new focus position.
 	// if we are already scrolling, chain the next scroll to the when that is completed.
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
-		if (LOG) Logger.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
+		if (LOG) L.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
 		
 		this.sequenceNumber = sequenceNumber;
 		this.animType = AnimType.SCROLLING;
@@ -239,7 +239,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	}
 
 	protected boolean notFocussingOnDeadCharacter(Character focusCharacter) {
-		if (LOG) Logger.log("FocusCharacter: %s", focusCharacter);
+		if (LOG) L.log("FocusCharacter: %s", focusCharacter);
 		
 		for (ShadowMap shadowMap : deadCharactersShadowmap) {
 			if (shadowMap.owner == focusCharacter) {
@@ -251,17 +251,16 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	
 	// This is the override of the AnimOp function.
 	public void startPlaying() {
-		if (LOG) Logger.log("");
+		if (LOG) L.log("");
 		
 		super.startPlaying();
 		super.animationCycleStarted(currentScrollPeriod);
-		//if (LOG) Logger.log("map anim started");
 	}
 	
 	// animated scroll to the new focus position.  It is not that characters turn, its just scrolling to that character
 	// so they can see something interesting.
 	public void performFocusChange(Character newFocusCharacter, float period, boolean characterMoving, IAnimListener animCompleteListener) {
-		if (LOG) Logger.log("newFocusCharacter: %s, characterMoving: %s", newFocusCharacter, characterMoving);
+		if (LOG) L.log("newFocusCharacter: %s, characterMoving: %s", newFocusCharacter, characterMoving);
 		
 		targetDungeonPosition = newFocusCharacter.getPosition();
 		currentScrollPeriod = period;
@@ -303,7 +302,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	@Override
 	// This sets the focus position on the map in one step (no anim scroll).
 	public void setFocusPosition(DungeonPosition focusPosition, ShadowMap shadowMap) {
-		if (LOG) Logger.log("focusPosition: %s, shadowMap: %s", focusPosition, shadowMap);
+		if (LOG) L.log("focusPosition: %s, shadowMap: %s", focusPosition, shadowMap);
 		
 		this.focusPosition = new DungeonPosition(focusPosition);
 		if (shadowMap != null) {
@@ -318,7 +317,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 
 	@Override
 	public void retainViewUntilNextFocusChange(ShadowMap focussedCharacterMap, UIInfoListener nextFocusChangeListener) {
-		if (LOG) Logger.log("focussedCharacterMap: %s", focussedCharacterMap);
+		if (LOG) L.log("focussedCharacterMap: %s", focussedCharacterMap);
 		
 		retainFocusBag.add(nextFocusChangeListener);
 		deadCharactersShadowmap.add(focussedCharacterMap);

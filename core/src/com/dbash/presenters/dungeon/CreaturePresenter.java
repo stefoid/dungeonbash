@@ -19,7 +19,7 @@ import com.dbash.platform.ImageView;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 @SuppressWarnings("unused")
@@ -46,7 +46,7 @@ import com.dbash.util.Rect;
 // type they are, to help it deicde how to schedule the current one, if it needs to.
 
 public class CreaturePresenter {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public enum VisualState {
 		SHOW_STATIC,
@@ -414,7 +414,7 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, DeathType deathType, final IAnimListener completeListener) {
-		if (LOG) Logger.log("creatureDies called for :" + this);
+		if (LOG) L.log("creatureDies called for :" + this);
 		AnimationView deathAnim = null;
 		
 		if (deathType == DeathType.HOLE) {

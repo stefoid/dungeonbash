@@ -11,7 +11,7 @@ import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.platform.TextResourceIdentifier;
 import com.dbash.presenters.dungeon.CreaturePresenter;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
@@ -19,7 +19,7 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	// INTERFACE
 	public static final int	MAX_SPEED		= 10;
 	
@@ -1305,12 +1305,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			List<Ability> newlyDroppedObjects = new LinkedList<Ability>();
 			for (Ability ability : abilities) {
 				if (ability.isPhysical()) {
-					if (LOG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
+					if (LOG) L.log("dropAllpysical: Ill drop "+ability.ability.name);
 					newlyDroppedObjects.add(ability);
 				}
 			}
 			for (Ability ability : newlyDroppedObjects) {
-				if (LOG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
+				if (LOG) L.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
 				dropObject(ability);
 			}
 		}

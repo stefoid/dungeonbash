@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dbash.models.IDungeonQuery.AtLocation;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
@@ -36,7 +36,7 @@ public class Monster extends Creature
 		int creatureLevel = calcLevel(creatureId);
 		
 		if (dungeonQuery.whatIsAtLocation(p) == AtLocation.WALL) {
-			if (LOG) Logger.log("wtf....");
+			if (LOG) L.log("wtf....");
 		}
 		
 		if (creatureLevel < level) {

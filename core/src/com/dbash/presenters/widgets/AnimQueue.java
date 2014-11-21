@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IAnimListener;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 
 
 // This queue is used by things to get alerted to when an animation has started, stopped, or reached some percentage 
@@ -33,7 +33,7 @@ import com.dbash.util.Logger;
 // has the option of calling draw is so you can have unowned 'set and forget' animations that you can hand off to the queue and 
 // be done with them.
 public class AnimQueue {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	protected LinkedList<AnimOp> queue;
 	

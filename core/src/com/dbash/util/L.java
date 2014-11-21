@@ -1,6 +1,6 @@
 package com.dbash.util;
 
-public class Logger {
+public class L {
 
 	public static boolean DEBUG = true;
 	

@@ -15,13 +15,13 @@ import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ISelectionListener;
 import com.dbash.presenters.widgets.SliderView;
-import com.dbash.util.Logger;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 @SuppressWarnings("unused")
 
 public class MenuListElementView implements IListElement {
-	public static final boolean LOG = false && Logger.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	ISelectionListener selectionListener;
 	
 	protected UIDepend gui;
@@ -54,9 +54,9 @@ public class MenuListElementView implements IListElement {
 		bodyArea.height *= (extraElements+1);
 
 		if (LOG) {
-			Logger.log("extra "+extraElements);
-			Logger.log("nominal="+nominalArea.toString());
-			Logger.log("body="+bodyArea.toString());
+			L.log("extra "+extraElements);
+			L.log("nominal="+nominalArea.toString());
+			L.log("body="+bodyArea.toString());
 		}
 		
 		final Audio audio = gui.audio;
