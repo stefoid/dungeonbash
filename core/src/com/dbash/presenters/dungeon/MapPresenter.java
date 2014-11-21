@@ -20,10 +20,11 @@ import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
+import com.dbash.util.Logger;
 import com.dbash.util.Rect;
 import com.dbash.util.Tween;
 
-
+@SuppressWarnings("unused")
 // This class draws the dungeon map and smoothly scrolls it when required.
 // it talks to the dungeon simulation through the presenter dungeon interface.
 // it defers drawing Locations to individual LocationPresenters, and creatures to creaturePresenters.
@@ -32,6 +33,7 @@ import com.dbash.util.Tween;
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapPresenter extends AnimOp implements IMapPresentationEventListener{
+	public static final boolean LOG = true && Logger.DEBUG;
 	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
@@ -219,6 +221,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	// animated scroll to the new focus position.
 	// if we are already scrolling, chain the next scroll to the when that is completed.
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
+		if (LOG) Logger.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
+		
 		this.sequenceNumber = sequenceNumber;
 		this.animType = AnimType.SCROLLING;
 		final Character theNewFocusCharacter = newFocusCharacter;
@@ -235,6 +239,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	}
 
 	protected boolean notFocussingOnDeadCharacter(Character focusCharacter) {
+		if (LOG) Logger.log("FocusCharacter: %s", focusCharacter);
+		
 		for (ShadowMap shadowMap : deadCharactersShadowmap) {
 			if (shadowMap.owner == focusCharacter) {
 				return false;
@@ -245,14 +251,18 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	
 	// This is the override of the AnimOp function.
 	public void startPlaying() {
+		if (LOG) Logger.log("");
+		
 		super.startPlaying();
 		super.animationCycleStarted(currentScrollPeriod);
-		//if (LOG_HERE && Logger.DEBUG) Logger.log("map anim started");
+		//if (LOG) Logger.log("map anim started");
 	}
 	
 	// animated scroll to the new focus position.  It is not that characters turn, its just scrolling to that character
 	// so they can see something interesting.
 	public void performFocusChange(Character newFocusCharacter, float period, boolean characterMoving, IAnimListener animCompleteListener) {
+		if (LOG) Logger.log("newFocusCharacter: %s, characterMoving: %s", newFocusCharacter, characterMoving);
+		
 		targetDungeonPosition = newFocusCharacter.getPosition();
 		currentScrollPeriod = period;
 		previousShadowMap = currentShadowMap;
@@ -293,6 +303,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	@Override
 	// This sets the focus position on the map in one step (no anim scroll).
 	public void setFocusPosition(DungeonPosition focusPosition, ShadowMap shadowMap) {
+		if (LOG) Logger.log("focusPosition: %s, shadowMap: %s", focusPosition, shadowMap);
+		
 		this.focusPosition = new DungeonPosition(focusPosition);
 		if (shadowMap != null) {
 			previousShadowMap = currentShadowMap;
@@ -306,6 +318,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 
 	@Override
 	public void retainViewUntilNextFocusChange(ShadowMap focussedCharacterMap, UIInfoListener nextFocusChangeListener) {
+		if (LOG) Logger.log("focussedCharacterMap: %s", focussedCharacterMap);
+		
 		retainFocusBag.add(nextFocusChangeListener);
 		deadCharactersShadowmap.add(focussedCharacterMap);
 	}
@@ -325,20 +339,20 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 //	@Override
 //	protected void animationStopped() {
 //		super.animationStopped();
-//		if (LOG_HERE && Logger.DEBUG) Logger.log("map anim ended");
+//		if (LOG) Logger.log("map anim ended");
 //	}
 //	
 //	@Override
 //	public void onPercentComplete(float percentage, IAnimListener listener) {
 //		super.onPercentComplete(percentage, listener);
-//		if (LOG_HERE && Logger.DEBUG) Logger.log("listener added to map anim");
+//		if (LOG) Logger.log("listener added to map anim");
 //	}
 //	
 //	@Override
 //	protected void alertPercentageCompleteListeners(float currentPercent) {
 //		if (currentPercent >= nextCompleteTrigger) {
 //			for (PercentCompleteListener pListener : percentCompleteListeners) {
-//				if (LOG_HERE && Logger.DEBUG) Logger.log("percent listener alerted");
+//				if (LOG) Logger.log("percent listener alerted");
 //			}
 //		}
 //		super.alertPercentageCompleteListeners(currentPercent);

@@ -36,7 +36,7 @@ public class Monster extends Creature
 		int creatureLevel = calcLevel(creatureId);
 		
 		if (dungeonQuery.whatIsAtLocation(p) == AtLocation.WALL) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("wtf....");
+			if (LOG) Logger.log("wtf....");
 		}
 		
 		if (creatureLevel < level) {

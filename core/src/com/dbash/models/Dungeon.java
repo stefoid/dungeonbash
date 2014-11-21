@@ -28,7 +28,9 @@ import com.dbash.util.Randy;
 //- c) when a monster attacks (mellee/ranged) or invokes an ability, the focus must move to the relevant characters. (dungeon).
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
-	public static final boolean LOG_HERE = true;
+	
+	public static final boolean LOG = true && Logger.DEBUG;
+	
 	public enum MoveType {
 		NORMAL_MOVE,
 		LEADER_MOVE,
@@ -261,12 +263,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		actingCreature.setPositionAndFlagPresenter(toPosition);
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		
-		if (LOG_HERE && Logger.DEBUG) Logger.log("DUNGEON MOVE type "+ moveType+ " nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
+		if (LOG) Logger.log("SN: %s, moveType %s, nominalChar:%s, actingCreature:% ", sequenceNumber, moveType, nominalCharacter, releventCharacter); 
 		
 		// creature has been moved in the model, but does it need to be animated?
 		// setting the position above has 
 		if (dungeonEventListener != null && releventCharacter != null) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " creatureMove-" + moveType);
+			if (LOG) Logger.log("SN:"+sequenceNumber + " creatureMove-" + moveType);
 			
 			if (currentlyFocussedCharacter != null) {
 				// So we have a character in mind that the monster moving toward or away from.(relevent character)
@@ -297,11 +299,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void meleeAttack(int sequenceNumber, Character nominalCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (LOG_HERE && Logger.DEBUG) Logger.log("DUNGEON MELEE - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
+		if (LOG) Logger.log("SN: %s, nominalChar:%s, actingCreature:% ", sequenceNumber, nominalCharacter, releventCharacter); 
+		
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " meleeAttack");
 			dungeonEventListener.meleeAttack(sequenceNumber, releventCharacter, attackingCreature, targetPosition);
 		}
 	}
@@ -312,7 +314,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " rangedAttack");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " rangedAttack");
 			dungeonEventListener.rangedAttack(sequenceNumber, releventCharacter, attackingCreature, abilityType, damageType, targetPosition);
 			}
 	}
@@ -322,7 +324,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
 		if (dungeonEventListener != null && releventCharacter != null) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " invoke abaility");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " invoke abaility");
 			dungeonEventListener.invokeAbility(sequenceNumber, releventCharacter, actingCreature, targetPosition, ability);
 		}
 	}
@@ -330,7 +332,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void objectDrop(int sequenceNumber, Creature releventCharacter, Ability abilityObjectDropped, DungeonPosition position) {
 		
-		if (LOG_HERE && Logger.DEBUG) Logger.log("dropping "+abilityObjectDropped.ability.name);
+		if (LOG) Logger.log("dropping "+abilityObjectDropped.ability.name);
 		map.location(position).dropItem(abilityObjectDropped);
 		dungeonEventListener.objectDrop(sequenceNumber, releventCharacter, abilityObjectDropped, position);
 		if (position == eyePos) {
@@ -356,7 +358,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		if (currentlyFocussedCharacter != newFocusCharacter) {
 			currentlyFocussedCharacter = newFocusCharacter;
 			if (dungeonEventListener != null) {
-				if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " changeCurrentCharcterFocus");
+				if (LOG) Logger.log("SN:"+sequenceNumber + " changeCurrentCharcterFocus");
 				mapEventListener.changeCurrentCharacterFocus(sequenceNumber, newFocusCharacter);
 			}
 		}
@@ -369,7 +371,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		fallingCharacter.setPositionAndFlagPresenter(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " fallIntoLevel");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " fallIntoLevel");
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level);
 		}
 	}
@@ -382,7 +384,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		final Creature downer = actingCreature;
 		final IAnimListener complete = completeListener;
 		if (dungeonEventListener != null) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " down stairs");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " down stairs");
 			dungeonEventListener.goDownStairs(sequenceNumber, actingCreature, new IAnimListener () {
 				public void animEvent() {
 					map.location(downer.getPosition()).setCreature(null);
@@ -395,7 +397,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void creatureDies(int sequenceNumber, Character nominalCharacter, Creature deadCreature) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (LOG_HERE && Logger.DEBUG) Logger.log("DUNGEON DIES - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
+		if (LOG) Logger.log("nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
 		final DungeonPosition deadPosition = deadCreature.getPosition();
 		final Creature deader = deadCreature;
 		boolean inLOS = false;
@@ -408,11 +410,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				inLOS = positionIsInLOSOfCharacter(releventCharacter, deadPosition);
 			}
 		}
-
-		if (LOG_HERE && Logger.DEBUG) Logger.log(">>>> inLOS "+inLOS);
 		
 		if (dungeonEventListener != null && releventCharacter != null && inLOS) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " creatureDies");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " creatureDies");
 			DeathType deathType = DeathType.NORMAL;
 			if (getTerrainAtLocation(deadPosition) == RoughTerrainType.HOLE) {
 				deathType = DeathType.HOLE;
@@ -430,9 +430,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void damageInflicted(int sequenceNumber, Character nominalCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (LOG_HERE && Logger.DEBUG) Logger.log("DAMAGE INFLICTED - nominalChar "+nominalCharacter+" relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
+		if (LOG) Logger.log("nominalChar "+nominalCharacter+" relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " damageInflicted");
 			Creature damagedCreature = getCreatureAtLocation(targetPosition);
 			dungeonEventListener.damageInflicted(sequenceNumber, releventCharacter, damagedCreature, targetPosition, damageType, damageAmount);
 		}
@@ -460,7 +459,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void missed(int sequenceNumber, Character nominalCharacter, DungeonPosition targetPosition) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		if (dungeonEventListener != null && releventCharacter != null) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " missed");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " missed");
 			dungeonEventListener.missed(sequenceNumber, releventCharacter, targetPosition);
 		}
 	}
@@ -476,9 +475,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			for (AbilityEffectType effect : abilityEfectType) {
-				printEff(effect);
-				if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " abilityAdded-");
-				printEff(effect);
+				if (LOG) Logger.log("SN:%s, effect: %s" , sequenceNumber, effect);
 				dungeonEventListener.abilityAdded(sequenceNumber, releventCharacter, effect, targetPosition);
 			}
 		}
@@ -489,9 +486,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			for (AbilityEffectType effect : abilityEfectType) {
-				printEff(effect);
-				if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " abilityREsisted-");
-				printEff(effect);
+				if (LOG) Logger.log("SN:%s, effect: %s" , sequenceNumber, effect);
 				dungeonEventListener.abilityResisted(sequenceNumber, releventCharacter, effect, targetPosition);
 			}
 		}
@@ -503,7 +498,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		explosionReleventCharacter = releventCharacter;
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " explosion");
+			if (LOG) Logger.log("SN:"+sequenceNumber + " explosion");
 			dungeonEventListener.explosion(sequenceNumber, releventCharacter, targetPosition, damageType, range);
 		}
 	}
@@ -524,7 +519,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void waitingForAnimToComplete(int sequenceNumber, IAnimListener animCompleteListener) {
 		if (dungeonEventListener != null) {
-			//if (LOG_HERE && Logger.DEBUG) Logger.log("SN:"+sequenceNumber + " waitingForAnimToComplete");
+			//if (LOG) Logger.log("SN:"+sequenceNumber + " waitingForAnimToComplete");
 			dungeonEventListener.waitingForAnimToComplete(sequenceNumber, animCompleteListener);
 		}
 	}
@@ -650,106 +645,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		return null;
 	}
-
-
-
-	
-//	private void printAt(AbilityType abilityType) {
-//	switch (abilityType) {
-//		case WEAPON:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("WEAPON");
-//			break;
-//		case AMULET:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("AMULET");
-//			break;
-//		case RANGED:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("RANGED");
-//			break;
-//		case WAND:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("WAND");
-//			break;
-//		case MAGIC_ITEM:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("MAGIC_ITEM");
-//			break;
-//		case ABILITY:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("ABILITY");
-//			break;
-//		default:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("something fucked up");
-//			break;
-//	}
-//}
-
-
-//private void printDam(int damType) {
-//	switch (damType) {
-//		case AbilityCommand.NO_PHYSICAL_ATTACK:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("MAGICAL");
-//			break;
-//		case AbilityCommand.CHEMICAL_ATTACK:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("CHEMICAL");
-//			break;
-//		case AbilityCommand.ENERGY_ATTACK:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("ENERGY");
-//			break;
-//		case AbilityCommand.HARD_ATTACK:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("HARD");
-//			break;
-//		case AbilityCommand.SHARP_ATTACK:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("SHARP");
-//			break;
-//		default:
-//			if (LOG_HERE && Logger.DEBUG) Logger.log("something fucked up");
-//			break;
-//	}
-//}
-private void printEff(AbilityEffectType abilityEfectType) {
-	switch (abilityEfectType) {
-		case POISON:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("POISON");
-			break;
-		case BLESSING:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("BLESSING");
-			break;
-		case HEALING:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("HEALING");
-			break;
-		case PROTECTION:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("PROTECTION");
-			break;
-		case CURSE:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("CURSE");
-			break;
-		case SPEED:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SPEED");
-			break;
-		case SLOW:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("SLOW");
-			break;
-		case HOLD:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("HOLD");
-			break;
-		case ATTACK:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("ATTACK");
-			break;
-		case RESIST_POISON:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("RESIST_POISON");
-			break;
-		case RESIST_HELD:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("RESIST_HELD");
-			break;
-		case RESIST_STUN:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("RESIST_STUN");
-			break;
-		case STUNNED:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("STUNNED");
-			break;
-		default:
-			if (LOG_HERE && Logger.DEBUG) Logger.log("NONE_REALLY (show nothing, but look into why this is sent)");
-			break;
-	}
-}
-	
 
 	@Override
 	public Collection<Character> getCharactersVisibleFrom(DungeonPosition focusPosition, int range) {

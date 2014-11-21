@@ -284,7 +284,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	@Override
 	public boolean keyDown(int keycode) {
 		// a=29, z = 54,    r=46, z=34,   x=52
-//		if (LOG_HERE && Logger.DEBUG) Logger.log("keycode : "+keycode);
+//		if (LOG) Logger.log("keycode : "+keycode);
 //
 //		IPresenterTurnState t = model.presenterTurnState;
 //		switch (keycode) {
@@ -307,7 +307,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 //				break;
 //		}
 //		
-//		if (LOG_HERE && Logger.DEBUG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
+//		if (LOG) Logger.log("alpha : "+t.getAlpha()+"  range: "+t.getRange());
 		return false;
 	}
 

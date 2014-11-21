@@ -19,7 +19,7 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
-	public static final boolean LOG_HERE = false;
+	public static final boolean LOG = false && Logger.DEBUG;
 	// INTERFACE
 	public static final int	MAX_SPEED		= 10;
 	
@@ -120,7 +120,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	
 	@Override
 	public String toString() {
-		return super.toString() + ";" + getCreature().name + "; (" + health + "/" + calculateMaxHealth() + ")";
+		return getCreature().name;
 	}
 
 	public Creature(int creatureId, DungeonPosition p, IDungeonEvents dungeonEvents, 
@@ -1240,7 +1240,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	/*
 	 * public static void printAll() { for (int i=0; i<creatureData.size(); i++)
 	 * { CreatureData cd = (CreatureData) creatureData.elementAt(i);
-	 * if (LOG_HERE && Logger.DEBUG) Logger.log(cd.name + "level = " + calcLevel(i)); }
+	 * if (LOG) Logger.log(cd.name + "level = " + calcLevel(i)); }
 	 * 
 	 * }
 	 */
@@ -1305,12 +1305,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			List<Ability> newlyDroppedObjects = new LinkedList<Ability>();
 			for (Ability ability : abilities) {
 				if (ability.isPhysical()) {
-					if (LOG_HERE && Logger.DEBUG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
+					if (LOG) Logger.log("dropAllpysical: Ill drop "+ability.ability.name);
 					newlyDroppedObjects.add(ability);
 				}
 			}
 			for (Ability ability : newlyDroppedObjects) {
-				if (LOG_HERE && Logger.DEBUG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
+				if (LOG) Logger.log("newlyDroppedObjects: Ill drop "+ability.ability.name);
 				dropObject(ability);
 			}
 		}

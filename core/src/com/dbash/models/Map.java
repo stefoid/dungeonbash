@@ -18,7 +18,7 @@ import com.dbash.util.Randy;
 // Map doesnt know about Monsters, Characters etc...  To move creatures and items around in it, interact with the Locations
 // directly.  Those changes to Locations will emit observable Presentation events
 public class Map implements IPresenterMap {
-	public static final boolean LOG_HERE = false;
+	public static final boolean LOG = false && Logger.DEBUG;
 	public Location[][] location;
 	public int width;
 	public int height;
@@ -103,7 +103,7 @@ public class Map implements IPresenterMap {
 				dungeonNotCompleted = false;
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
-				if (LOG_HERE && Logger.DEBUG) Logger.log("TRYING AGAIN!");
+				if (LOG) Logger.log("TRYING AGAIN!");
 			}
 		}
 	}
@@ -474,12 +474,12 @@ public class Map implements IPresenterMap {
 //		// debug print
 //		for (int y=width-1; y>=0; y--) {
 //			for (int x=0; x< height; x++) {
-//				if (location(x,y).isOpaque()) if (LOG_HERE && Logger.DEBUG) Logger.log('#'); else if (LOG_HERE && Logger.DEBUG) Logger.log(' ');
+//				if (location(x,y).isOpaque()) if (LOG) Logger.log('#'); else if (LOG) Logger.log(' ');
 //			}
-//			if (LOG_HERE && Logger.DEBUG) Logger.log();
+//			if (LOG) Logger.log();
 //		}
-//		if (LOG_HERE && Logger.DEBUG) Logger.log();
-//		if (LOG_HERE && Logger.DEBUG) Logger.log();
-//		if (LOG_HERE && Logger.DEBUG) Logger.log();
+//		if (LOG) Logger.log();
+//		if (LOG) Logger.log();
+//		if (LOG) Logger.log();
 //	}
 }

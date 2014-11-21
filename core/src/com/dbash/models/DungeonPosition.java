@@ -78,7 +78,7 @@ public class DungeonPosition implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "(level"+level+":" + x + "," + y + "," + z + ")";
+		return "(X:" + x + ",Y:" + y +")";
 	}
 
 //	public DungeonPosition(DataInputStream stream) {

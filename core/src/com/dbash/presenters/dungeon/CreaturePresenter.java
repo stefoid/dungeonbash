@@ -46,7 +46,7 @@ import com.dbash.util.Rect;
 // type they are, to help it deicde how to schedule the current one, if it needs to.
 
 public class CreaturePresenter {
-	public static final boolean LOG_HERE = false;
+	public static final boolean LOG = false && Logger.DEBUG;
 	
 	public enum VisualState {
 		SHOW_STATIC,
@@ -414,7 +414,7 @@ public class CreaturePresenter {
 	}
 	
 	public void creatureDies(int sequenceNumber, Creature deadCreature, DungeonPosition deathPosition, DeathType deathType, final IAnimListener completeListener) {
-		if (LOG_HERE && Logger.DEBUG) Logger.log("creatureDies called for :" + this);
+		if (LOG) Logger.log("creatureDies called for :" + this);
 		AnimationView deathAnim = null;
 		
 		if (deathType == DeathType.HOLE) {

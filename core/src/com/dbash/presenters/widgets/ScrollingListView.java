@@ -122,7 +122,7 @@ public class ScrollingListView implements TouchEventListener {
 		// where should the first visible element be drawn? (x,y passed to us as bottom left of area)
 		float elemY = area.y + area.height - elementHeight + (float) (listPosition %  elementHeight);
 		
-//		if (LOG_HERE && Logger.DEBUG) {
+//		if (LOG) {
 //			if (listPos != listPosition) {
 //				listPos = listPosition;
 //			Logger.log("lastVE: "+lastVisibleElement + "  FirstVE: "+firstVisibleElement+ " LP: "+listPosition + " elemY: "+elemY +

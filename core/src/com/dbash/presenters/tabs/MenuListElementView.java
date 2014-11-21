@@ -21,7 +21,7 @@ import com.dbash.util.Rect;
 @SuppressWarnings("unused")
 
 public class MenuListElementView implements IListElement {
-	public static final boolean LOG_HERE = false;
+	public static final boolean LOG = false && Logger.DEBUG;
 	ISelectionListener selectionListener;
 	
 	protected UIDepend gui;
@@ -53,7 +53,7 @@ public class MenuListElementView implements IListElement {
 		bodyArea = new Rect(nominalArea);
 		bodyArea.height *= (extraElements+1);
 
-		if (LOG_HERE && Logger.DEBUG) {
+		if (LOG) {
 			Logger.log("extra "+extraElements);
 			Logger.log("nominal="+nominalArea.toString());
 			Logger.log("body="+bodyArea.toString());

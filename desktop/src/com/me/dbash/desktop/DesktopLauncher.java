@@ -12,7 +12,7 @@ import com.me.dbash.Dbash;
 @SuppressWarnings("unused")
 
 public class DesktopLauncher {
-	public static final boolean LOG_HERE = false;
+	public static final boolean LOG = false && Logger.DEBUG;
 	public static class MyApplicationConfiguration extends
 	LwjglApplicationConfiguration {
 		
@@ -33,7 +33,7 @@ public class DesktopLauncher {
 		for (DisplayMode displayMode : LwjglApplicationConfiguration
 				.getDisplayModes()) {
 			if (displayMode.width > maxWidth) {
-				if (LOG_HERE && Logger.DEBUG) Logger.log(displayMode.toString());
+				if (LOG) Logger.log(displayMode.toString());
 				width = displayMode.width;
 				height = displayMode.height;
 				maxWidth = displayMode.width;

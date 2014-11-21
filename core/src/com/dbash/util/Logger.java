@@ -15,6 +15,6 @@ public class Logger {
         String methodName = Thread.currentThread().getStackTrace()[STACK_LEVEL].getMethodName();
         int lineNumber = Thread.currentThread().getStackTrace()[STACK_LEVEL].getLineNumber();
 
-        return (className + "." + methodName + "():" + lineNumber);
+        return (className + "." + methodName + "() [" + lineNumber+"]: ");
     }
 }

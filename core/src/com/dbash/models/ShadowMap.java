@@ -282,4 +282,7 @@ public class ShadowMap {
         return losPoints;
     }
  
+    public String toString() {
+    	return "(pos "+centerPos+" - owner "+owner+")";
+    }
 }

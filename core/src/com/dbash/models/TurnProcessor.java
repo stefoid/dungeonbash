@@ -15,7 +15,7 @@ import com.me.dbash.Dbash;
 @SuppressWarnings("unused")
 
 public class TurnProcessor implements IPresenterTurnState {
-	public static final boolean LOG_HERE = false;
+	public static final boolean LOG = false && Logger.DEBUG;
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
 	private IDungeonControl dungeon;
@@ -156,7 +156,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// proceed, and then end.
 	public void gameLogicLoop() {
 		if (pauseTurnProcessing != lastPause) {
-			// if (LOG_HERE && Logger.DEBUG)
+			// if (LOG)
 			// Logger.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
 			lastPause = pauseTurnProcessing;
 		}
@@ -332,7 +332,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// turn processing will be turned on again by the callback employed by
 	// waitForAnimsToFinish
 	public void waitForPlayerInput() {
-		if (LOG_HERE && Logger.DEBUG)
+		if (LOG)
 			Logger.log("waiting for player input");
 		pauseTurnProcessing = true;
 		dungeonEvents.waitingForAnimToComplete(SequenceNumber.getNext(),
@@ -524,7 +524,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	@Override
 	public void passTurnSelected() {
-		if (LOG_HERE && Logger.DEBUG)
+		if (LOG)
 			Logger.log("Pass turn pressed");
 		characterEndsTurn(currentCharacter);
 	}
@@ -634,13 +634,13 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (currentLeader == null) {
 			currentLeader = currentCharacter;
 			leaderStatus = LeaderStatus.HAVE_LEADER;
-			if (LOG_HERE && Logger.DEBUG)
+			if (LOG)
 				Logger.log("current leader is " + currentLeader.creature.name);
 		} else {
 			currentLeader.leaderModeCleared();
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
-			if (LOG_HERE && Logger.DEBUG)
+			if (LOG)
 				Logger.log("no current leader");
 		}
 
