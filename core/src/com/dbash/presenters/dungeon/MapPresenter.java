@@ -72,6 +72,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		this.focusPosition = null;
 		this.model = model;
 		this.area = area;
+		this.creator = this; // identifies this anim op in the queue
+		this.animType = AnimType.SCROLLING;  // andthe type
 		this.viewPos = new Rect (area.width/2, area.height/2, 0, 0);
 		tileSize = area.width / (2*range+1);
 		xTween = new Tween();
@@ -224,7 +226,6 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		if (LOG) L.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
 		
 		this.sequenceNumber = sequenceNumber;
-		this.animType = AnimType.SCROLLING;
 		final Character theNewFocusCharacter = newFocusCharacter;
 		performFocusChange(newFocusCharacter, DungeonAreaPresenter.scrollPeriod, false, new IAnimListener() {
 			public void animEvent() {
@@ -290,11 +291,16 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 			currentShadowMapTween.init(0f, 1.0f, period, null);	
 		}
 		
-		// startPlaying will be called by the animQueue when the last anim on the queue has started.
-		if (characterMoving) {
-			model.animQueue.chainConcurrentWithLast(this, 0f, true);
-		} else {
-			model.animQueue.chainSequential(this, true);
+		// Only schedule an op if we havent already got one scheduled, otherwise bad things happen.
+		// but in that case the above code has still alltered the parameters of the scroll, so its all good.
+		AnimOp animOp = model.animQueue.getLastByCreator(this, AnimOp.AnimType.SCROLLING);
+		if (animOp != this) {
+			// startPlaying will be called by the animQueue when the last anim on the queue has started.
+			if (characterMoving) {
+				model.animQueue.chainConcurrentWithLast(this, 0f, true);
+			} else {
+				model.animQueue.chainSequential(this, true);
+			}
 		}
 	}
 
