@@ -26,6 +26,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public int 			creates = -1;  // Does this ability crete another?
 	public boolean oneShot;
 	public boolean isStat = false;
+	public String 		statText;
 	public int	statValue = 0;
 	public Color color;
 	
@@ -93,8 +94,15 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	}
 	
 	// constructor for stat listing
-	public AbilityInfo(String text, int value, Color color) {
-		name = text;
+	public AbilityInfo(String[] textArray, int value, Color color) {
+		
+		name = textArray[0] + textArray[1] + value;
+		
+		if (textArray.length > 2) {
+			name += textArray[2];
+		}
+		
+		statText = textArray[0];
 		statValue = value;
 		isStat = true;
 		this.color = color;

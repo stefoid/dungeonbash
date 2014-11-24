@@ -69,23 +69,14 @@ public class EffectPresenter {
 	
 	protected void processEffectList() {
 		if (LOG) L.log("character :%s", character);
-		ArrayList<AbilityInfo> addList = new ArrayList<AbilityInfo>();
-		ArrayList<AbilityInfo> subList = new ArrayList<AbilityInfo>();
 		EffectList oldList = effectList;
 		effectList = character.getEffectList();
 		
 		// process the difference between the two effects lists and display each an animation.
-		for (AbilityInfo abilityInfo : oldList) {
-			if (effectList.isInList(abilityInfo) == false) {
-				subList.add(abilityInfo);
-				if (LOG) L.log("subbed %s", abilityInfo);
-			}
-		}
-		
 		for (AbilityInfo abilityInfo : effectList) {
-			if (oldList.isInList(abilityInfo) == false) {
-				addList.add(abilityInfo);
-				if (LOG) L.log("added %s", abilityInfo);
+			int dif = oldList.difference(abilityInfo);
+			if (dif != 0) {
+				if (LOG) L.log("mod %s %s", abilityInfo.statText, abilityInfo.statValue);
 			}
 		}
 		

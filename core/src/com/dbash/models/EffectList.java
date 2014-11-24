@@ -45,47 +45,57 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		}
 		
 		if (owner.getNameUnderscore().equals("nobody") == false) {
-		
+
 			// We add character stats
 			int as = owner.calculateAttackSkill();
-			AbilityInfo attack = new AbilityInfo("ATTACK SKILL : "+as, as, Color.WHITE);
+			String[] tas = {"ATTACK SKILL", " : "};
+			AbilityInfo attack = new AbilityInfo(tas, as, Color.WHITE);
 			add(attack);
 			
 			int ds = owner.calculateDefenceSkill();
-			AbilityInfo defence = new AbilityInfo("DEFENCE SKILL : "+ds, ds, Color.WHITE);
+			String[] tds = {"DEFENCE SKILL", " : "};
+			AbilityInfo defence = new AbilityInfo(tds, ds, Color.WHITE);
 			add(defence);
 			
 			int ss = owner.calculateSpeed();
-			AbilityInfo speed = new AbilityInfo("SPEED : "+ss, ss, Color.WHITE);
+			String[] tss = {"SPEED", " : "};
+			AbilityInfo speed = new AbilityInfo(tss, ss, Color.WHITE);
 			add(speed);
 			
 			int wd = owner.calculateDamage();
-			AbilityInfo dam = new AbilityInfo("MELEE DAMAGE : "+wd, wd, Color.WHITE);
+			String[] twd = {"MELEE DAMAGE", " : "};
+			AbilityInfo dam = new AbilityInfo(twd, wd, Color.WHITE);
 			add(dam);
 			
 			int st = owner.calculateStealth();
-			AbilityInfo stealth = new AbilityInfo("STEALTH : "+st, st, Color.WHITE);
+			String[] tst = {"STEALTH", " : "};
+			AbilityInfo stealth = new AbilityInfo(tst, st, Color.WHITE);
 			add(stealth);
 			
 			int de = owner.calculateDetect();
-			AbilityInfo detect = new AbilityInfo("DETECT : "+de, de, Color.WHITE);
+			String[] tde = {"DETECT", " : "};
+			AbilityInfo detect = new AbilityInfo(tde, de, Color.WHITE);
 			add(detect);
 			
 			
 			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
-			AbilityInfo hp = new AbilityInfo("HARD DEF : "+hpv+"%", hpv , new Color(1, .3f, 0.3f, 1));
+			String[] thpv = {"HARD DEF", " : ", "%"};
+			AbilityInfo hp = new AbilityInfo(thpv, hpv , new Color(1, .3f, 0.3f, 1));
 			add(hp);
 			
 			int spv = owner.calcProtection(AbilityCommand.RESIST_SHARP);
-			AbilityInfo sp = new AbilityInfo("SHARP DEF : "+spv+"%", spv , new Color(0, 0, .7f, 1));
+			String[] tspv = {"SHARP DEF", " : ", "%"};
+			AbilityInfo sp = new AbilityInfo(tspv, spv , new Color(0, 0, .7f, 1));
 			add(sp);
 			
 			int epv = owner.calcProtection(AbilityCommand.RESIST_ENERGY);
-			AbilityInfo ep = new AbilityInfo("ENERGY DEF : "+epv+"%", epv , Color.YELLOW);
+			String[] tepv = {"ENERGY DEF", " : ", "%"};
+			AbilityInfo ep = new AbilityInfo(tepv, epv , Color.YELLOW);
 			add(ep);
 			
 			int cpv = owner.calcProtection(AbilityCommand.RESIST_CHEMICAL);
-			AbilityInfo cp = new AbilityInfo("CHEMICAL DEF : "+cpv+"%", cpv , Color.GREEN);
+			String[] tcpv = {"CHEMICAL DEF", " : ", "%"};
+			AbilityInfo cp = new AbilityInfo(tcpv, cpv , Color.GREEN);
 			add(cp);
 			
 			if (owner.hasHead() == false) {
@@ -105,12 +115,16 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		//Collections.sort(this);
 	}
 	
-	public boolean isInList(AbilityInfo abilityInfo) {
+	public int difference(AbilityInfo abilityInfo) {
+		if (abilityInfo.isStat == false) {
+			return 0;
+		}
+		
 		for (AbilityInfo info : this) {
-			if (info.name.equals(abilityInfo.name)) {
-				return true;
+			if (abilityInfo.statText.equals(info.statText)) {
+				return info.statValue - abilityInfo.statValue;
 			}
 		}
-		return false;
+		return 0;
 	}
 }
