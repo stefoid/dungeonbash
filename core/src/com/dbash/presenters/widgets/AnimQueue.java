@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IAnimListener;
 import com.dbash.util.L;
 
-
+@SuppressWarnings("unused")
 // This queue is used by things to get alerted to when an animation has started, stopped, or reached some percentage 
 // of progress in an animation cycle.  An AnimOp is put on the queue to represent an animation that may play at some stage.
 // the intention is that animations can be chained to go off when animations already in progress have

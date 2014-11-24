@@ -243,7 +243,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		if (LOG) L.log("FocusCharacter: %s", focusCharacter);
 		
 		for (ShadowMap shadowMap : deadCharactersShadowmap) {
-			if (shadowMap.owner == focusCharacter) {
+			if (shadowMap != null && shadowMap.owner == focusCharacter) {
 				return false;
 			}
 		}

@@ -84,4 +84,6 @@ public interface IDungeonPresentationEventListener {
 	void creatureMovedOutOfLOS(int sequenceNumber, Creature actingCreature,
 			DungeonPosition fromPosition, DungeonPosition toPosition,
 			int direction, MoveType moveType);
+
+	public void newCharacterFocus(Character newFocusCharacter);
 }

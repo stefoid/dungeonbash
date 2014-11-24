@@ -124,6 +124,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		if (focusCharId != TurnProcessor.NO_CURRENT_CREATURE) {
 			currentlyFocussedCharacter = (Character) allCreatures.getCreatureByUniqueId(focusCharId);
 			setMapFocus(currentlyFocussedCharacter.mapPosition, currentlyFocussedCharacter.shadowMap);
+			if (dungeonEventListener != null) {
+				dungeonEventListener.newCharacterFocus(currentlyFocussedCharacter);
+			}
 		} else {
 			// Create a new shadowmap that sees everything in its range, and a light to see with.
 			ShadowMap shadowMap = new ShadowMap();
@@ -162,7 +165,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(minion);
 				break;
 			case 2:
-				Monster orc = new Monster(Creature.getIdForName("orc"), level, map.exitPoint, this, this, turnProcessor);
+				Monster orc = new Monster(Creature.getIdForName("halfling"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = orc;
 				mobs.add(orc);
 				break;
@@ -358,6 +361,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			if (dungeonEventListener != null) {
 				if (LOG) L.log("SN:%s, newFocusCharacter:%s", sequenceNumber, newFocusCharacter);
 				mapEventListener.changeCurrentCharacterFocus(sequenceNumber, newFocusCharacter);
+				dungeonEventListener.newCharacterFocus(newFocusCharacter);
 			}
 		}
 	}

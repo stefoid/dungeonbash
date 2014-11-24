@@ -104,4 +104,13 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		// Now sort the list according to usageCount and that is the order presented to the player.
 		//Collections.sort(this);
 	}
+	
+	public boolean isInList(AbilityInfo abilityInfo) {
+		for (AbilityInfo info : this) {
+			if (info.name.equals(abilityInfo.name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

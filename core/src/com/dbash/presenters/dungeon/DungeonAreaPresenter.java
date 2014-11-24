@@ -1,5 +1,7 @@
 package com.dbash.presenters.dungeon;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Ability;
 import com.dbash.models.Ability.AbilityEffectType;
@@ -65,14 +67,17 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	private PresenterDepend 		model;
 	private MapPresenter			mapPresenter;
 	private AnimQueue				animQueue;
-	
+	private HashMap<Character, EffectPresenter> effectPresenters;
+	private Rect dungeonArea;
 	// The area passed to this presenter, like any presenter, is where it is suppsoed to draw in 'world' coordinates.
 	// the cameraViewport passed in the gui dependencies is the the one used to draw this presenter and its children.
 	public DungeonAreaPresenter(UIDepend gui, final PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		this.animQueue = new AnimQueue();
 		this.gui = new UIDepend(gui);
+		this.effectPresenters = new HashMap<Character, EffectPresenter>();
 		this.model = model;
 		this.model.animQueue= animQueue;
+		this.dungeonArea = area;
 		mapPresenter = new MapPresenter(this.gui, model, touchEventProvider, area);
 		model.presenterDungeon.onVisibleDungeonEvent(this);  // tell the dungeon model to send pressie events your way.
 		model.presenterTurnState.onChangeToLeaderStatus(new UIInfoListener() {
@@ -82,7 +87,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		});
 		setDetails(touchEventProvider, area);
 	}
-	
 
 	public void draw(SpriteBatch spriteBatch) {
 		gui.cameraViewPort.use(spriteBatch);
@@ -570,6 +574,22 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			case NONE:
 				break;
 		}
+	}
+	
+	@Override
+	public void newCharacterFocus(Character newFocusCharacter) {
+		EffectPresenter effectPresenter = effectPresenters.get(newFocusCharacter);
+		if (effectPresenter == null) {
+			Rect effectArea = new Rect(dungeonArea, .2f, .2f, .3f, .3f);
+			effectPresenter = new EffectPresenter(gui, model, newFocusCharacter, effectArea, animQueue);
+			effectPresenters.put(newFocusCharacter, effectPresenter);
+		}
+		
+		// make the current Effect presenter... current.
+		for (EffectPresenter ep : effectPresenters.values()) {
+			ep.clearCurrent();
+		}
+		effectPresenter.setCurrent();
 	}
 }
 

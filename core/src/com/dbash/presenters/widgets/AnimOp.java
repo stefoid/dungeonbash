@@ -120,6 +120,7 @@ public class AnimOp {
 		if (LOG) L.log("animOp: %s", this);
 		animating = true;
 		alertAnimStartListeners();
+		alertPercentageCompleteListeners(0f);
 	}
 	
 	// a subclass *must* call this to start a new cycle.

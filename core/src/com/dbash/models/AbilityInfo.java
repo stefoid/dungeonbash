@@ -250,4 +250,8 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		
 		return image;
 	}
+	
+	public String toString() {
+		return name + " - " + abilityType;
+	}
 }

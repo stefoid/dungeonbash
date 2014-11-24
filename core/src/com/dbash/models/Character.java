@@ -131,6 +131,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	private void initChar(final TurnProcessor turnProcessor) {
 		makeNewBagsOfListeners();
+		effectListListeners = new UIInfoListenerBag();
 		creatureStats.isCharacter = true;
 		shadowMap = new ShadowMap(this);
 	}
@@ -151,7 +152,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	private void makeNewBagsOfListeners() 
 	{
 		abilityListListeners = new UIInfoListenerBag();
-		effectListListeners = new UIInfoListenerBag();
 		characterStatListeners = new UIInfoListenerBag();
 		itemListListeners = new UIInfoListenerBag();
 	}
@@ -810,7 +810,6 @@ public class Character extends Creature implements IPresenterCharacter {
 		if (abilityWasSetter) {
 			trySetDefaultMelee();
 			updateStats(null, null);  // this will update the character stats and effects due to the selection change
-			//effectListListeners.alertListeners();
 		} else {
 			
 			if (ability.isInstant() == false) {
@@ -826,6 +825,9 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		// alert the list to reflect changes in the model.
 		abilityListListeners.alertListeners();
+		
+		// alert effectpresenter to change.
+		effectListListeners.alertListeners();
 		
 		// if a one-shot, then thats it.
 		if (ability.invokeFinishesTurn()) {
