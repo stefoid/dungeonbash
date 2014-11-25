@@ -2,7 +2,7 @@ package com.dbash.util;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
 	public static final int STACK_LEVEL = 3;
 	public static void log(String msg, Object... args) {

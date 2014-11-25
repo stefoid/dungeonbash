@@ -48,12 +48,12 @@ public class EffectList extends ArrayList<AbilityInfo>{
 
 			// We add character stats
 			int as = owner.calculateAttackSkill();
-			String[] tas = {"ATTACK SKILL", " : "};
+			String[] tas = {"ATTACK", " : "};
 			AbilityInfo attack = new AbilityInfo(tas, as, Color.WHITE);
 			add(attack);
 			
 			int ds = owner.calculateDefenceSkill();
-			String[] tds = {"DEFENCE SKILL", " : "};
+			String[] tds = {"DEFENCE", " : "};
 			AbilityInfo defence = new AbilityInfo(tds, ds, Color.WHITE);
 			add(defence);
 			
@@ -121,7 +121,8 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		}
 		
 		for (AbilityInfo info : this) {
-			if (abilityInfo.statText.equals(info.statText)) {
+		
+			if (info.isStat && abilityInfo.statText.equals(info.statText)) {
 				return info.statValue - abilityInfo.statValue;
 			}
 		}

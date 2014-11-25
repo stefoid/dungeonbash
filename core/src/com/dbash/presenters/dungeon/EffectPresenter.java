@@ -2,6 +2,7 @@ package com.dbash.presenters.dungeon;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
@@ -40,17 +41,16 @@ public class EffectPresenter {
 	private UIDepend gui;
 	private PresenterDepend model;
 	private Character character;
-	private Rect area;
 	private AnimQueue animQueue;
 	private boolean isCurrent;
 	private EffectList effectList;
-
+	private MapPresenter mapPresenter;
 	
-	public EffectPresenter(UIDepend gui, PresenterDepend model, Character theCharacter, Rect area, AnimQueue animQueue) {
+	public EffectPresenter(UIDepend gui, PresenterDepend model, Character theCharacter, MapPresenter mapPresenter, AnimQueue animQueue) {
 		this.gui = gui;
 		this.character = theCharacter;
 		this.model = model;
-		this.area = area;
+		this.mapPresenter = mapPresenter;
 		this.animQueue = animQueue;
 		this.isCurrent = false;
 		
@@ -77,10 +77,41 @@ public class EffectPresenter {
 			int dif = oldList.difference(abilityInfo);
 			if (dif != 0) {
 				if (LOG) L.log("mod %s %s", abilityInfo.statText, abilityInfo.statValue);
+				createAnim(abilityInfo, dif);
 			}
 		}
 		
 		
+	}
+	
+	private void createAnim(AbilityInfo abilityInfo, int dif) {
+		
+		Rect fromRect = getTileArea(character.getPosition());
+		float height = fromRect.height;
+		fromRect = new Rect(fromRect, 5);
+		float yOffset = fromRect.height/2;
+		Rect toRect = new Rect(fromRect);
+		fromRect.height = height;
+		fromRect.y += yOffset;
+		toRect.y = toRect.y + toRect.height - height + yOffset;
+		toRect.height = height;
+		
+		if (LOG) L.log("fromRect: %s, toRect: %s", fromRect, toRect);
+		
+		BitmapFont font = gui.defaultFonts.get(gui.defaultFonts.size() -1);
+		TextImageView message = new TextImageView(gui, font, abilityInfo.name, fromRect);
+		AnimationView messageAnim = new AnimationView(gui, message, fromRect, toRect, .3f, 1f, DungeonAreaPresenter.effectMsgPeriod, 1, null);
+		messageAnim.animType = AnimOp.AnimType.EFFECT_MSG;
+		messageAnim.sequenceNumber = 0;
+		messageAnim.creator = this;
+
+		// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
+		animQueue.chainConcurrentWithLast(messageAnim, 40f, false);
+	}
+	
+	private Rect getTileArea(DungeonPosition position) {
+		LocationPresenter locPres = mapPresenter.locationPresenter(position);
+		return locPres.getScreenArea();
 	}
 	
 	public void setCurrent() {

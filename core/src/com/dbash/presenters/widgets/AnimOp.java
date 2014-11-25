@@ -57,6 +57,7 @@ public class AnimOp {
 		SHADOW,
 		TARGETED,
 		KNOCKBACK_MOVE,
+		EFFECT_MSG,
 		DEFAULT
 	}
 	

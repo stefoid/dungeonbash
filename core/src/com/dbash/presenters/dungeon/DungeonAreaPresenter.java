@@ -61,23 +61,26 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public final static float skullPeriod = 0.7f * multiplier;
 	public final static float knockbackPeriod = 0.55f * multiplier;
 	public final static float shudderPeriod = 0.25f * multiplier;
+	public final static float effectMsgPeriod = 1f * multiplier;
 	
 	
 	private UIDepend				gui;
 	private PresenterDepend 		model;
 	private MapPresenter			mapPresenter;
 	private AnimQueue				animQueue;
+	private AnimQueue				effectAnimQueue;
 	private HashMap<Character, EffectPresenter> effectPresenters;
-	private Rect dungeonArea;
+
 	// The area passed to this presenter, like any presenter, is where it is suppsoed to draw in 'world' coordinates.
 	// the cameraViewport passed in the gui dependencies is the the one used to draw this presenter and its children.
 	public DungeonAreaPresenter(UIDepend gui, final PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		this.animQueue = new AnimQueue();
+		this.effectAnimQueue = new AnimQueue();
+		effectAnimQueue.setMaxAnims(12);
 		this.gui = new UIDepend(gui);
 		this.effectPresenters = new HashMap<Character, EffectPresenter>();
 		this.model = model;
-		this.model.animQueue= animQueue;
-		this.dungeonArea = area;
+		this.model.animQueue = animQueue;
 		mapPresenter = new MapPresenter(this.gui, model, touchEventProvider, area);
 		model.presenterDungeon.onVisibleDungeonEvent(this);  // tell the dungeon model to send pressie events your way.
 		model.presenterTurnState.onChangeToLeaderStatus(new UIInfoListener() {
@@ -92,7 +95,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		gui.cameraViewPort.use(spriteBatch);
 		spriteBatch.begin();
 		mapPresenter.draw(spriteBatch);  // will draw the map, and creatures on the map 
-		animQueue.draw(spriteBatch); // will draw special effects
+		animQueue.draw(spriteBatch); // will draw characters and so on.
+		effectAnimQueue.draw(spriteBatch);  // draws chaacter stat effects
+		
 		spriteBatch.end();
 	}
 
@@ -580,8 +585,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public void newCharacterFocus(Character newFocusCharacter) {
 		EffectPresenter effectPresenter = effectPresenters.get(newFocusCharacter);
 		if (effectPresenter == null) {
-			Rect effectArea = new Rect(dungeonArea, .2f, .2f, .3f, .3f);
-			effectPresenter = new EffectPresenter(gui, model, newFocusCharacter, effectArea, animQueue);
+			effectPresenter = new EffectPresenter(gui, model, newFocusCharacter, mapPresenter, effectAnimQueue);
 			effectPresenters.put(newFocusCharacter, effectPresenter);
 		}
 		

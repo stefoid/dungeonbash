@@ -36,6 +36,7 @@ public class AnimQueue {
 	public static final boolean LOG = false && L.DEBUG;
 	
 	protected LinkedList<AnimOp> queue;
+	protected int maxSize = 1000;
 	
 	public AnimQueue() {
 		queue = new LinkedList<AnimOp>();
@@ -44,6 +45,9 @@ public class AnimQueue {
 	// appends it to the end of the list.  pass true for 'owned' if you want to control when draw is called on the AnimOp yourself.
 	// otherwise the queue will call it.
 	public void add(AnimOp animOp, boolean owned) {
+		if (queue.size() >= maxSize) {
+			return;
+		}
 		queue.add(animOp);
 		animOp.hasCompleted = false;
 		animOp.owned = owned;
@@ -53,6 +57,10 @@ public class AnimQueue {
 				theOp.hasCompleted = true;  // not safe to actually delete here, as we might be iterating over the list inside draw()
 			}
 		});
+	}
+	
+	public void setMaxAnims(int size) {
+		maxSize = size;
 	}
 	
 	// chain this anim to the end of the queue, configured to start when the last one completes
