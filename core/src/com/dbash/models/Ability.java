@@ -402,7 +402,7 @@ public class Ability
 
 				// set the damage type, if any
 				damageType = ability.executeParam1[i];
-				
+
 				// alert the GUI to the creature using an ability, if relevant.
 				fireAbilityUseEvent(attackingCreature, pos, command.name, damageType);
 				

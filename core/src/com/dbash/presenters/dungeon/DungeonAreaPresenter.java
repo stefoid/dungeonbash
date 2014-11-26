@@ -14,6 +14,7 @@ import com.dbash.models.Data;
 import com.dbash.models.Dungeon;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
+import com.dbash.models.IDungeonEvents;
 import com.dbash.models.IDungeonPresentationEventListener;
 import com.dbash.models.IPresenterCharacter;
 import com.dbash.models.IPresenterTurnState;
@@ -288,12 +289,15 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			Rect toRect = new Rect(fromRect,1.5f);
 			AnimationView damage = new AnimationView(gui, getDamageName(damageType), fromRect, toRect, 1f, 0.3f, damagePeriod, 1, null);
 			addDamageSoundEffect(damage, damageType);
-			TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
-			Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
-			Rect toNumRect = new Rect(fromNumRect, 1.5f);
-			AnimationView damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
-			damage.sequenceNumber = damageNum.sequenceNumber = sequenceNumber;
-			damage.animType = damageNum.animType = AnimOp.AnimType.DAMAGE;
+			AnimationView damageNum = null;
+			if (damageAmount != IDungeonEvents.NO_DAMAGE) {
+				TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
+				Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
+				Rect toNumRect = new Rect(fromNumRect, 1.5f);
+				damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
+				damage.sequenceNumber = damageNum.sequenceNumber = sequenceNumber;
+				damage.animType = damageNum.animType = AnimOp.AnimType.DAMAGE;
+			}
 			
 			// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
 			if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
@@ -303,7 +307,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			}
 			
 			// chain concurrently with same sn otherwise sequentially
-			model.animQueue.chainConcurrentWithSn(damageNum, false);
+			if (damageNum != null) {
+				model.animQueue.chainConcurrentWithSn(damageNum, false);
+			}
 		}
 	}
 
@@ -322,6 +328,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 				break;
 			case AbilityCommand.SHARP_ATTACK: 
 				name = "burst_sharp";
+				break;
+			case AbilityCommand.KNOCKBACK: 
+				name = "burst_knock";
 				break;
 			case AbilityCommand.NO_PHYSICAL_ATTACK:
 			default:
@@ -497,6 +506,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		case AbilityCommand.SHARP_ATTACK: 
 			sound = Audio.SHARP_HIT;
 			break;
+		case AbilityCommand.KNOCKBACK: 
+			sound = Audio.KNOCK_HIT;
+			break;
 		case AbilityCommand.NO_PHYSICAL_ATTACK:
 		default:
 			sound = Audio.BAD_EFFECT;
@@ -519,6 +531,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 				break;
 			case AbilityCommand.SHARP_ATTACK: 
 				sound = Audio.SHARP_BURST;
+				break;
+			case AbilityCommand.KNOCKBACK: 
+				sound = Audio.KNOCK_BURST;
 				break;
 			case AbilityCommand.NO_PHYSICAL_ATTACK:
 			default:

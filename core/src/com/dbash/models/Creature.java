@@ -814,6 +814,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	/**
 	 * Knockback has been applied to the creature.  
 	 */
+	// TODO
 	private void performKnockback(Ability ability, Creature attacker) {
 		DungeonPosition targetPos = (DungeonPosition) ability.dynamicParams.get(Ability.TARGET_POS);
 		DungeonPosition sourcePos = attacker.getPosition();
@@ -833,6 +834,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 		
 		//lets just move
+		DungeonPosition oldPosition = mapPosition;
 		DungeonPosition newPosition = new DungeonPosition(mapPosition, knockbackDir);
 		int damageType = AbilityCommand.HARD_ATTACK;
 		int collisionDamage = calculateBaseHealth()/4+1;
@@ -843,6 +845,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		switch (dungeonQuery.whatIsAtLocation(newPosition)) {
 			case FREE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
+				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), getReleventCharacter(), oldPosition, AbilityCommand.KNOCKBACK, IDungeonEvents.NO_DAMAGE);
 				break;
 			case MONSTER:
 				health -= myCollisionDamage;

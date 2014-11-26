@@ -39,6 +39,8 @@ public class Audio {
 	public static final String ITEM_SELECT_MELEE = "Item Select Melee"; 
 	public static final String ITEM_SELECT_PROJ = "Item Select Projectile"; 
 	
+	public static final String KNOCK_BURST = "Knock Multiple";
+	public static final String KNOCK_HIT = "Knock Single";
 	
 	public static final String MISS = "Melee Miss";
 	public static final String NEGATIVE = "Negative";
@@ -87,6 +89,8 @@ public class Audio {
 		addSound(ITEM_SELECT_ACC);
 		addSound(ITEM_SELECT_MELEE);
 		addSound(ITEM_SELECT_PROJ);
+		addSound(KNOCK_BURST);
+		addSound(KNOCK_HIT);
 		addSound(MISS);
 		addSound(NEGATIVE);
 		addSound(RESIST);

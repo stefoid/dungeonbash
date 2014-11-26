@@ -1,12 +1,14 @@
 package com.dbash.presenters.dungeon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
+import com.dbash.models.IDungeonEvents;
 import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.IPresenterCreature;
 import com.dbash.models.IPresenterCreature.HighlightStatus;
@@ -555,6 +557,10 @@ public class CreaturePresenter {
 	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, String damageName, final float damagePeriod, int damageAmount, final String sound) {
 		
 		AnimationView previousAnim = (AnimationView) model.animQueue.getLastByCreator(this, AnimOp.AnimType.DAMAGE_NUM);
+		if (previousAnim != null && damageType == AbilityCommand.KNOCKBACK) {
+			return;
+		}
+		
 		LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
 		Rect fromRect = new Rect(loc.getScreenArea(), 0.8f);
 		Rect toRect = new Rect(fromRect,1.5f);
@@ -572,15 +578,20 @@ public class CreaturePresenter {
 			damage.sequenceNumber = sequenceNumber;
 			damage.animType = AnimOp.AnimType.DAMAGE;
 			
-			TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
-			Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
-			Rect toNumRect = new Rect(fromNumRect, 1.5f);
-			AnimationView damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
-			damageNum.animType = AnimOp.AnimType.DAMAGE_NUM;
-			damageNum.sequenceNumber = sequenceNumber;
-			damageNum.creator = this;
-			damageNum.putTag("damage", String.valueOf(damageAmount));
-			// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
+			AnimationView damageNum = null;
+			if (damageAmount != IDungeonEvents.NO_DAMAGE) {
+				TextImageView numbers = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), fromRect);
+				Rect fromNumRect = new Rect(fromRect, .34f, .34f, .25f, .25f);
+				Rect toNumRect = new Rect(fromNumRect, 1.5f);
+				damageNum = new AnimationView(gui, numbers, fromNumRect, toNumRect, 1f, 1f, damagePeriod, 1, null);
+				damageNum.animType = AnimOp.AnimType.DAMAGE_NUM;
+				damageNum.sequenceNumber = sequenceNumber;
+				damageNum.creator = this;
+				damageNum.putTag("damage", String.valueOf(damageAmount));
+				// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
+
+			}
+			
 			if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
 				model.animQueue.chainConcurrentWithLast(damage, 50f, false);
 			} else {
@@ -588,7 +599,9 @@ public class CreaturePresenter {
 			}
 			
 			// chain concurrently with same sn otherwise sequentially
-			model.animQueue.chainConcurrentWithSn(damageNum, false);
+			if (damageNum != null) {
+				model.animQueue.chainConcurrentWithSn(damageNum, false);
+			}
 		} else {
 			// add damage amount to existing animation by changing the value.
 			String oldDamage = previousAnim.getTag("damage");

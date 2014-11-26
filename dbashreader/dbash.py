@@ -254,7 +254,7 @@ class Ability:
                     cm3.grid(row=cRow+1, column=3)        
                     cm3.menu = Menu(cm3, tearoff=0)
                     cm3["menu"] = cm3.menu
-                    for j in ["NONE", "HARD","SHARP","ENERGY", "CHEMICAL"]:
+                    for j in ["NONE", "HARD","SHARP","ENERGY", "CHEMICAL", "KNOCKBACK"]:
                         cm3.menu.add_command(label=j, command=lambda i=i,j=j: setAbility("par1",j,i))  
                         
                     ll4 = Label(win, text="damage    ")
@@ -896,6 +896,8 @@ def convertAttack(attack):
             result = 3
         elif attack == "CHEMICAL":
             result = 4
+        elif attack == "KNOCKBACK":
+            result = 5
     else:
         if attack == 0:
             result = "NONE"
@@ -907,6 +909,8 @@ def convertAttack(attack):
             result = "ENERGY"
         elif attack == 4:
             result = "CHEMICAL"
+        elif attack == 5:
+            result = "KNOCKBACK"
     return result
 
 def convertClear(clear):

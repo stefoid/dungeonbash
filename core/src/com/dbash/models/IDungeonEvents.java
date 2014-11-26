@@ -42,6 +42,8 @@ import com.dbash.models.Ability.AbilityType;
 // creatures or objects (abilities)
 public interface IDungeonEvents {
 
+	public static final int NO_DAMAGE = -1;
+	
 	// creature move:  The Dungeon will update the creatures position in it, and in its own record.
 	void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
 			int direction, Dungeon.MoveType moveType, IAnimListener completeListener);

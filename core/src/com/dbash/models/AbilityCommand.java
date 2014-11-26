@@ -72,10 +72,11 @@ public class AbilityCommand
 	// INTERFACE
 	public static final int		NO_PHYSICAL_ATTACK = 0;
 	public boolean melee;
-	public static final int CHEMICAL_ATTACK = 4;
-	public static final int ENERGY_ATTACK = 3;
 	public static final int HARD_ATTACK = 1;
 	public static final int SHARP_ATTACK = 2;
+	public static final int ENERGY_ATTACK = 3;
+	public static final int CHEMICAL_ATTACK = 4;
+	public static final int KNOCKBACK = 5;
 	public Ability ability;
 	public int damage;
 	public int skill;
