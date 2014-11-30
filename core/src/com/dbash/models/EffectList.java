@@ -116,7 +116,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 	}
 	
 	public int difference(AbilityInfo abilityInfo) {
-		if (abilityInfo.isStat == false) {
+		if (abilityInfo.isStat == false || abilityInfo.statText == null) {
 			return 0;
 		}
 		
