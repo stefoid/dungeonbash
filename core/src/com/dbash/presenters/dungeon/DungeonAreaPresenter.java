@@ -61,7 +61,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public final static float deathPeriod = 1.0f * multiplier;
 	public final static float skullPeriod = 0.7f * multiplier;
 	public final static float knockbackPeriod = 0.55f * multiplier;
-	public final static float shudderPeriod = 0.25f * multiplier;
+	public final static float shudderPeriod = 0.34f * multiplier;
 	public final static float effectMsgPeriod = 1f * multiplier;
 	
 	

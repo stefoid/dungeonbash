@@ -842,25 +842,27 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		AbilityCommand collideCommand = new AbilityCommand(AbilityCommand.HARD_ATTACK, collisionDamage, true, null);
 		collideCommand.skill = 30000;  // auto hit
 		Creature hitCreature = dungeonQuery.getCreatureAtLocation(newPosition);
+		dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), getReleventCharacter(), oldPosition, AbilityCommand.KNOCKBACK, IDungeonEvents.NO_DAMAGE);
 		switch (dungeonQuery.whatIsAtLocation(newPosition)) {
 			case FREE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
-				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), getReleventCharacter(), oldPosition, AbilityCommand.KNOCKBACK, IDungeonEvents.NO_DAMAGE);
 				break;
 			case MONSTER:
 				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
+				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), oldPosition, damageType, myCollisionDamage);	
 				hitCreature.respondAttack(collideCommand, attacker);
 				break;
 			case CHARACTER:
 				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
+				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), oldPosition, damageType, myCollisionDamage);	
 				hitCreature.respondAttack(collideCommand, attacker);
 				break;
 			case WALL:
 				health -= myCollisionDamage;
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, mapPosition, knockbackDir,  Dungeon.MoveType.SHUDDER_MOVE, null);
-				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), newPosition, damageType, myCollisionDamage);	
+				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), oldPosition, damageType, myCollisionDamage);	
 				break;
 			case HOLE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
@@ -1036,8 +1038,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		{
 			// rules for damage:
 			// 1. creatures size only affects damage of melee attacks
-			if (attack.melee)
-			{
+			if (attack.melee) {
 				attack.damage += calculateSizeDamageBonus();
 			}
 
@@ -1046,15 +1047,13 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			// 3. skill effect on damage is much less than size affect on
 			// damage
 
-			if (useSkill)
-			{
+			if (useSkill) {
 				attack.damage += calculateSkillDamageBonus();
 			}
 
 			// 4. creatures magical capability (maxMagic) effects damage of
-			// magical attacks (that have a magic cost)
-			if (magicUse > 0)
-			{
+			// magical attacks (that have a magic cost)  [knockback excluded]
+			if (attack.type != AbilityCommand.KNOCKBACK && magicUse > 0) {
 				attack.damage += calculateMaxMagic() / 6;
 			}
 		}
@@ -1074,8 +1073,9 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 		else
 		{
-			if (!useSkill)
+			if (!useSkill) {
 				attack.skill = 32000; // sure thing
+			}
 
 			target.respondAttack(attack, this);
 		}

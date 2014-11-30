@@ -266,7 +266,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		actingCreature.setPositionAndFlagPresenter(toPosition);
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		
-		if (LOG) L.log("SN: %s, moveType %s, nominalChar:%s, actingCreature:%s ", sequenceNumber, moveType, nominalCharacter, releventCharacter); 
+		if (LOG) L.log("SN: %s, moveType %s, nominalChar:%s, actingCreature:%s, focussedChar: %s", 
+				sequenceNumber, moveType, nominalCharacter, releventCharacter, currentlyFocussedCharacter); 
 		
 		// creature has been moved in the model, but does it need to be animated?
 		// setting the position above has 
@@ -290,7 +291,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		} else {
 			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
-			// we wont animate, but call things that might be waiting on the animation to compelte anyway.
+			// we wont animate, but call things that might be waiting on the animation to complete anyway.
 			if (completeListener != null) {
 				completeListener.animEvent();
 			}

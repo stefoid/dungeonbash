@@ -556,17 +556,13 @@ public class CreaturePresenter {
 	
 	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, String damageName, final float damagePeriod, int damageAmount, final String sound) {
 		
-		AnimationView previousAnim = (AnimationView) model.animQueue.getLastByCreator(this, AnimOp.AnimType.DAMAGE_NUM);
-		if (previousAnim != null && damageType == AbilityCommand.KNOCKBACK) {
-			return;
-		}
-		
+		AnimationView previousAnim = (AnimationView) model.animQueue.getLastByCreator(this, AnimOp.AnimType.DAMAGE_NUM);		
 		LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
 		Rect fromRect = new Rect(loc.getScreenArea(), 0.8f);
 		Rect toRect = new Rect(fromRect,1.5f);
 		
 		// Create new damage animation
-		if (previousAnim == null) {
+		if (previousAnim == null || damageAmount == IDungeonEvents.NO_DAMAGE) {
 			AnimationView damage = new AnimationView(gui, damageName, fromRect, toRect, 1f, 0.3f, damagePeriod, 1, null);
 			
 			damage.onStart(new IAnimListener() {
