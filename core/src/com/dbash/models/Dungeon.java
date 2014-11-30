@@ -257,13 +257,15 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	@Override
 	public void creatureMove(int sequenceNumber, Character nominalCharacter,
-			Creature actingCreature, DungeonPosition fromPosition,
-			DungeonPosition toPosition, int direction, MoveType moveType,
-			IAnimListener completeListener) {
+			final Creature actingCreature, final DungeonPosition fromPosition,
+			final DungeonPosition toPosition, int direction, MoveType moveType,
+			final IAnimListener completeListener) {
 		// update the position of the creature in the model.
-		map.location(fromPosition).setCreature(null);
-		map.location(toPosition).moveCreature(actingCreature);
-		actingCreature.setPositionAndFlagPresenter(toPosition);
+		final Location toLocation = map.location(toPosition);
+		final Location fromLocation = map.location(fromPosition);
+		fromLocation.setCreature(null);   					// Does not update LocationPresetner
+		toLocation.moveCreature(actingCreature);  			// Does not update LocationPresetner
+		actingCreature.setPosition(toPosition);
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		
 		if (LOG) L.log("SN: %s, moveType %s, nominalChar:%s, actingCreature:%s, focussedChar: %s", 
@@ -287,11 +289,24 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 			
 			// ok, so presumably we can see this move, one way or the other.
-			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, completeListener);
+			final IAnimListener moveListener = new IAnimListener() {
+				@Override
+				public void animEvent() {
+					fromLocation.updatePresenter();  // we dont update the presenters until the animation has finished playing.
+					toLocation.updatePresenter();
+					if (completeListener != null) {
+						completeListener.animEvent();
+					}
+				}
+				
+			};
+			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, moveListener);
 		
 		} else {
 			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
 			// we wont animate, but call things that might be waiting on the animation to complete anyway.
+			fromLocation.updatePresenter();
+			toLocation.updatePresenter();
 			if (completeListener != null) {
 				completeListener.animEvent();
 			}
@@ -302,7 +317,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void meleeAttack(int sequenceNumber, Character nominalCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
 		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		if (LOG) L.log("SN: %s, nominalChar:%s, actingCreature:%s", sequenceNumber, nominalCharacter, releventCharacter); 
-		
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
@@ -371,9 +385,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
 		if (LOG) L.log("SN:%s, fallingCharacter: %s",sequenceNumber, fallingCharacter);
 		
-		map.location(map.startPoint).setCreature(fallingCharacter);
+		map.location(map.startPoint).setCreatureAndUpdatePresenter(fallingCharacter);
 		fallingCharacter.shadowMap.setMap(map, map.startPoint, 5);
-		fallingCharacter.setPositionAndFlagPresenter(map.startPoint);
+		fallingCharacter.setPosition(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level);
@@ -391,7 +405,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			if (LOG) L.log("SN:"+sequenceNumber + " down stairs");
 			dungeonEventListener.goDownStairs(sequenceNumber, actingCreature, new IAnimListener () {
 				public void animEvent() {
-					map.location(downer.getPosition()).setCreature(null);
+					map.location(downer.getPosition()).setCreatureAndUpdatePresenter(null);
 					complete.animEvent();
 				}
 			});
@@ -423,11 +437,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, deathType, new IAnimListener () {
 				public void animEvent() {
-					map.location(deader.getPosition()).setCreature(null);
+					map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
 				}
 			});
 		} else {
-			map.location(deader.getPosition()).setCreature(null);
+			map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
 		}
 	}
 

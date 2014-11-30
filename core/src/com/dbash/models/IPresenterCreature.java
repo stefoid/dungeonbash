@@ -18,7 +18,7 @@ public interface IPresenterCreature {
 	public CreaturePresenter getCreaturePresenter();
 	
 	// On changes to visual aspects of the creature
-	public void onChangeToVisualStatus(UIInfoListener listener);
+	//public void onChangeToVisualStatus(UIInfoListener listener);
 	public HighlightStatus getHighlightStatus();
 	public DungeonPosition getPosition();
 	

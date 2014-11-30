@@ -163,7 +163,7 @@ public class Location {
 		if (cId == TurnProcessor.NO_CURRENT_CREATURE) {
 			creature = null;
 		} else {
-			setCreature(allCreatures.getCreatureByUniqueId(cId));
+			setCreatureAndUpdatePresenter(allCreatures.getCreatureByUniqueId(cId));
 		}
 
 		//	6) Each Location reads its list of Abilities (Items)
@@ -184,8 +184,16 @@ public class Location {
 	}
 	
 	public void setCreature(Creature creature) {
-		this.creature = creature;
-		map.alertToVisualChangeAtLocation(this);   
+		this.creature = creature;  
+	}
+	
+	public void updatePresenter() {
+		map.alertToVisualChangeAtLocation(this);  
+	}
+	
+	public void setCreatureAndUpdatePresenter(Creature creature) {
+		setCreature(creature);
+		updatePresenter();
 	}
 	
 	public void moveCreature(Creature creature) {

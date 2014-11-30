@@ -158,7 +158,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		health = maximumHealth;
 		magic = maximumMagic;
 		
-		setPositionAndFlagPresenter(p); // will alert the creaturePresenter to the postion
+		setPosition(p); // will alert the creaturePresenter to the postion
 	}
 
 	public void persist(ObjectOutputStream out) throws IOException {
@@ -282,10 +282,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	
 	// these are for a CreaturePresenter to observe changes to the highlight status of the creature.
 	// the highlight status will only be manipulated by Characters.  For monsters it will remain at default NO_HIGLIGHT.
-	public void onChangeToVisualStatus(UIInfoListener listener)
-	{
-		visualStatusListener = listener;
-	}
+//	public void onChangeToVisualStatus(UIInfoListener listener)
+//	{
+//		visualStatusListener = listener;
+//	}
 	
 	public HighlightStatus getHighlightStatus()
 	{
@@ -532,19 +532,8 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return mapPosition;
 	}
 	
-	public void setPositionAndFlagPresenter(DungeonPosition newPosition) {
-		mapPosition = new DungeonPosition(newPosition);
-		flagPresenter();
-	}
-
 	public void setPosition(DungeonPosition newPosition) {
 		mapPosition = new DungeonPosition(newPosition);
-	}
-	
-	public void flagPresenter() {
-		if (visualStatusListener != null) {
-			visualStatusListener.UIInfoChanged();
-		}
 	}
 	
 	protected boolean canChargeAcross(DungeonPosition position) {
