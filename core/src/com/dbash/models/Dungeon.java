@@ -29,7 +29,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -257,10 +257,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	
 	@Override
-	public void creatureMove(int sequenceNumber, Character releventCharacter,
-			final Creature actingCreature, final DungeonPosition fromPosition,
-			final DungeonPosition toPosition, int direction, MoveType moveType,
-			final IAnimListener completeListener) {
+	public void creatureMove(int sequenceNumber, Character releventCharacter, final Creature actingCreature, final DungeonPosition fromPosition,
+			final DungeonPosition toPosition, int direction, MoveType moveType, final IAnimListener completeListener) {
+		
 		// update the position of the creature in the model.
 		final Location toLocation = map.location(toPosition);
 		final Location fromLocation = map.location(fromPosition);
@@ -300,7 +299,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				}
 				
 			};
-			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, moveListener);
+			
+			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, currentlyFocussedCharacter, moveListener);
 		
 		} else {
 			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
