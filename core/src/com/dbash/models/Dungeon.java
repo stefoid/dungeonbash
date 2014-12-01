@@ -29,7 +29,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -219,7 +219,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	private void setMapFocus(DungeonPosition pos, ShadowMap shadowMap) {
 		currentFocus = new DungeonPosition(pos);
-		mapEventListener.setFocusPosition(pos, shadowMap);
+		mapEventListener.instantFocusChange(pos, shadowMap);
 	}
 	
 	private void placeMonster(DungeonPosition dungeonLocation) {

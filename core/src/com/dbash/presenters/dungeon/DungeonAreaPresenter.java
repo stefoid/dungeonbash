@@ -173,7 +173,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		// this is the only instance of the focus changing without an explicit command from the turn processor.
 		
 		if (actingCreature instanceof Character && moveType != Dungeon.MoveType.FOLLOWER_MOVE) {
-			mapPresenter.performFocusChange(releventCharacter, moveTime, true, null);
+			mapPresenter.animatedFocusChange(sequenceNumber, releventCharacter, moveTime, true, null);
 		}
 	}
 	

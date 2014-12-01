@@ -32,7 +32,7 @@ import com.dbash.util.Tween;
 //
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
-public class MapPresenter extends AnimOp implements IMapPresentationEventListener{
+public class MapPresenter implements IMapPresentationEventListener{
 	public static final boolean LOG = true && L.DEBUG;
 	
 	private Map map;
@@ -54,14 +54,7 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	protected UIInfoListenerBag retainFocusBag;
 	protected Vector<ShadowMap> deadCharactersShadowmap;
 	protected int range = 5;
-	
-	// for scrolling
-	DungeonPosition targetDungeonPosition;
-	protected Tween xTween;
-	protected Tween yTween;
 	protected Tween currentShadowMapTween;
-	protected float currentScrollPeriod;
-	
 	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		super();  // AnimOp allows to place itself on the Anim queue when scrolling.
@@ -72,12 +65,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		this.focusPosition = null;
 		this.model = model;
 		this.area = area;
-		this.creator = this; // identifies this anim op in the queue
-		this.animType = AnimType.SCROLLING;  // andthe type
 		this.viewPos = new Rect (area.width/2, area.height/2, 0, 0);
 		tileSize = area.width / (2*range+1);
-		xTween = new Tween();
-		yTween = new Tween();
 		currentShadowMapTween = new Tween();
 		creatures = new LocationPresenter[200];
 		creatureAlpha = new float[200];
@@ -128,21 +117,6 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		for (int i=creatureCount-1; i>=0; i--) {
 			creatures[i].drawOverlayOnTile(spriteBatch, currentShadowMap, creatureAlpha[i]);
 		}
-		
-		// do scrolling if needed. 
-		if (animating) {
-			super.draw(spriteBatch);  // this is only to tick the animOps deltaTime for listeners
-			float dTime = Gdx.graphics.getDeltaTime();
-			xTween.deltaTime(dTime);
-			yTween.deltaTime(dTime);
-			currentShadowMapTween.deltaTime(dTime);
-			moveView(xTween.getValue(), yTween.getValue());
-		}
-	}
-	
-	// moves the view of the map and works out which tiles will need to be drawn at drawtime.
-	public void moveView(Rect newViewPos) {
-		moveView(newViewPos.x, newViewPos.y);
 	}
 	
 	public void moveView(float x, float y) {
@@ -225,9 +199,8 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
 		if (LOG) L.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
 		
-		this.sequenceNumber = sequenceNumber;
 		final Character theNewFocusCharacter = newFocusCharacter;
-		performFocusChange(newFocusCharacter, DungeonAreaPresenter.scrollPeriod, false, new IAnimListener() {
+		animatedFocusChange(sequenceNumber, newFocusCharacter, DungeonAreaPresenter.scrollPeriod, false, new IAnimListener() {
 			public void animEvent() {
 				// if we were holding the view steady on a dead characters focus, stop that now and callback to clear it up.
 				if (!deadCharactersShadowmap.isEmpty() && (notFocussingOnDeadCharacter(theNewFocusCharacter))) {
@@ -250,32 +223,30 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		return true;
 	}
 	
-	// This is the override of the AnimOp function.
-	public void startPlaying() {
-		if (LOG) L.log("");
-		
-		super.startPlaying();
-		super.animationCycleStarted(currentScrollPeriod);
-	}
-	
 	// animated scroll to the new focus position.  It is not that characters turn, its just scrolling to that character
 	// so they can see something interesting.
-	public void performFocusChange(Character newFocusCharacter, float period, boolean characterMoving, IAnimListener animCompleteListener) {
-		if (LOG) L.log("newFocusCharacter: %s, characterMoving: %s", newFocusCharacter, characterMoving);
-		
-		targetDungeonPosition = newFocusCharacter.getPosition();
-		currentScrollPeriod = period;
-		previousShadowMap = currentShadowMap;
-		currentShadowMap = newFocusCharacter.shadowMap;
+	public void animatedFocusChange(int sequenceNumber, final Character newFocusCharacter, final float period, boolean characterMoving, IAnimListener animCompleteListener) {
+		if (LOG) L.log("sn: %s, newFocusCharacter: %s, characterMoving: %s", sequenceNumber,newFocusCharacter, characterMoving);
+
+		final DungeonPosition targetDungeonPosition = newFocusCharacter.getPosition();
 		LocationPresenter centerLocation = locationPresenter(targetDungeonPosition);
 		Rect targetPoint = centerLocation.getScreenCenterPoint();
 		final IAnimListener animCallback = animCompleteListener;
 		
-		// init the tweens
-		xTween.init(viewPos.x, targetPoint.x, period, null);
-		yTween.init(viewPos.y, targetPoint.y, period, null);
+		MapAnim mapAnim = new MapAnim(currentShadowMapTween, viewPos, targetPoint, period, this);
+		mapAnim.sequenceNumber = sequenceNumber;
 		
-		onComplete(new IAnimListener() {
+		mapAnim.onStart(new IAnimListener() {
+		    public void animEvent() {
+		        previousShadowMap = currentShadowMap;
+		        currentShadowMap = newFocusCharacter.shadowMap;
+		        if (previousShadowMap != currentShadowMap && previousShadowMap != null) {
+		            currentShadowMapTween.init(0f, 1.0f, period, null);
+		        }
+		    }
+		});
+
+		mapAnim.onComplete(new IAnimListener() {
 			public void animEvent() {
 				focusPosition = targetDungeonPosition;
 				previousShadowMap = null;
@@ -286,28 +257,23 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 			}
 		});
 		
-		
-		if (previousShadowMap != currentShadowMap && previousShadowMap != null) {
-			currentShadowMapTween.init(0f, 1.0f, period, null);	
-		}
-		
 		// Only schedule an op if we havent already got one scheduled, otherwise bad things happen.
 		// but in that case the above code has still alltered the parameters of the scroll, so its all good.
-		AnimOp animOp = model.animQueue.getLastByCreator(this, AnimOp.AnimType.SCROLLING);
-		if (animOp != this) {
+//		AnimOp animOp = model.animQueue.getLastByCreator(this, AnimOp.AnimType.SCROLLING);
+//		if (animOp != null) {
 			// startPlaying will be called by the animQueue when the last anim on the queue has started.
 			if (characterMoving) {
-				model.animQueue.chainConcurrentWithLast(this, 0f, true);
+				model.animQueue.chainConcurrentWithLast(mapAnim, 0f, false);
 			} else {
-				model.animQueue.chainSequential(this, true);
+				model.animQueue.chainSequential(mapAnim, false);
 			}
-		}
+//		}
 	}
 
 	
 	@Override
 	// This sets the focus position on the map in one step (no anim scroll).
-	public void setFocusPosition(DungeonPosition focusPosition, ShadowMap shadowMap) {
+	public void instantFocusChange(DungeonPosition focusPosition, ShadowMap shadowMap) {
 		if (LOG) L.log("focusPosition: %s, shadowMap: %s", focusPosition, shadowMap);
 		
 		this.focusPosition = new DungeonPosition(focusPosition);
@@ -320,6 +286,10 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 		moveView(centerLocation.getScreenCenterPoint());
 	}
 
+	// moves the view of the map and works out which tiles will need to be drawn at drawtime.
+	public void moveView(Rect newViewPos) {
+		moveView(newViewPos.x, newViewPos.y);
+	}
 
 	@Override
 	public void retainViewUntilNextFocusChange(ShadowMap focussedCharacterMap, UIInfoListener nextFocusChangeListener) {
@@ -340,26 +310,4 @@ public class MapPresenter extends AnimOp implements IMapPresentationEventListene
 	public void removeLight(Light light) {
 		map.removeLight(light);
 	}
-	
-//	@Override
-//	protected void animationStopped() {
-//		super.animationStopped();
-//		if (LOG) Logger.log("map anim ended");
-//	}
-//	
-//	@Override
-//	public void onPercentComplete(float percentage, IAnimListener listener) {
-//		super.onPercentComplete(percentage, listener);
-//		if (LOG) Logger.log("listener added to map anim");
-//	}
-//	
-//	@Override
-//	protected void alertPercentageCompleteListeners(float currentPercent) {
-//		if (currentPercent >= nextCompleteTrigger) {
-//			for (PercentCompleteListener pListener : percentCompleteListeners) {
-//				if (LOG) Logger.log("percent listener alerted");
-//			}
-//		}
-//		super.alertPercentageCompleteListeners(currentPercent);
-//	}
 }
