@@ -78,10 +78,6 @@ public interface IDungeonEvents {
 	//	AbilityCommand.ENERGY_ATTACK = 3;
 	//	AbilityCommand.HARD_ATTACK = 1;
 	//	AbilityCommand.SHARP_ATTACK = 2;
-	//	a diagonal 'slashy' type of blue flash for sharp damage (short cycle anim)
-	//	an 'impacty' type of red smash for hard damage (short cycle anim)
-	//	a drippy kind of green splash for chemical damage (short cycle anim)
-	//	an explosiony/cloudy type of yellow flash for energy damage (short cycle anim)
 	void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition);
 	
 	// ranged attack
@@ -115,7 +111,7 @@ public interface IDungeonEvents {
 	
 	// area effect explosion type of thing, range in tiles
 	void explosion(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int range);
-	void explosionOver();
+//	void explosionOver();
 	
 	// character is using the eye at a certain position
 	public void setCharacterisUsingEye(boolean usingEye, DungeonPosition position, boolean showEyeAnim);
@@ -126,4 +122,7 @@ public interface IDungeonEvents {
 	// it will result in a 'dummy' animation event that goes onto the end of the aniamtion queue, to be 'executed' when 
 	// all previous events in the queue have completed, then the callback will rest
 	void waitingForAnimToComplete(int sequenceNumber, IAnimListener animCompleteListener);
+	
+	// Tells the dungeon if there is a character currently having a turn, or a monster (null).
+	public void currentCharacterHavingTurn(Character character);
 }

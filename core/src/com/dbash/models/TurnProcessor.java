@@ -242,7 +242,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			// made.
 			if (currentCreature instanceof Character) {
 				theChar = (Character) currentCreature;
-
+				dungeonEvents.currentCharacterHavingTurn((Character)currentCreature);
 				if (needToSetSoloCharacter()) {
 					theChar.setSolo(true);
 				}
@@ -258,26 +258,13 @@ public class TurnProcessor implements IPresenterTurnState {
 							level = this.level;
 							firstCharToDrop = false;
 						}
-						charactersFallingIn.removeElement(currentCreature); // no
-																			// longer
-																			// falling
+						charactersFallingIn.removeElement(currentCreature); // no longer falling
 						dungeonEvents.fallIntoLevel(SequenceNumber.getNext(),
-								(Character) currentCreature, level); // when a
-																		// character
-																		// falls
-																		// in,
-																		// it
-																		// get a
-																		// chance
-																		// to
-																		// act
-																		// (wait
-																		// for
-																		// player
-																		// control)
-
+								(Character) currentCreature, level); // when a character falls in, it get a chance to act (wait for player control)
 					}
 				}
+			} else {
+				dungeonEvents.currentCharacterHavingTurn(null);
 			}
 
 			currentCreature.processTurn();
@@ -531,13 +518,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	@Override
 	public void stairDescendSelected() {
-		if (acceptInput == false || currentCharacter == nobody) { // in case
-																	// pounding
-																	// on the
-																	// descend
-																	// key.
-																	// cheap
-																	// hack.
+		if (acceptInput == false || currentCharacter == nobody) { // in case pounding n th descent key cheap hack
 			return;
 		}
 

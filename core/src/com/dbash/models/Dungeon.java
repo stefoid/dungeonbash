@@ -54,7 +54,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	private UIInfoListener	eyeDetailsListener;
 	Character currentlyFocussedCharacter;
 	int focusCharId;
-	Character explosionReleventCharacter;
+	Character characterHavingTurn;
 	
 	public Dungeon(boolean newGame)
 	{	
@@ -140,6 +140,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	protected void initLevel() {
 		mobs = new LinkedList<Monster>();
 		eyePos = null;
+		characterHavingTurn = null;
 	}
 	
 	
@@ -256,7 +257,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	
 	@Override
-	public void creatureMove(int sequenceNumber, Character nominalCharacter,
+	public void creatureMove(int sequenceNumber, Character releventCharacter,
 			final Creature actingCreature, final DungeonPosition fromPosition,
 			final DungeonPosition toPosition, int direction, MoveType moveType,
 			final IAnimListener completeListener) {
@@ -266,10 +267,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		fromLocation.setCreature(null);   					// Does not update LocationPresetner
 		toLocation.moveCreature(actingCreature);  			// Does not update LocationPresetner
 		actingCreature.setPosition(toPosition);
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
 		
 		if (LOG) L.log("SN: %s, moveType %s, nominalChar:%s, actingCreature:%s, focussedChar: %s", 
-				sequenceNumber, moveType, nominalCharacter, releventCharacter, currentlyFocussedCharacter); 
+				sequenceNumber, moveType, releventCharacter, releventCharacter, currentlyFocussedCharacter); 
 		
 		// creature has been moved in the model, but does it need to be animated?
 		// setting the position above has 
@@ -314,9 +314,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 	
 	@Override
-	public void meleeAttack(int sequenceNumber, Character nominalCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (LOG) L.log("SN: %s, nominalChar:%s, actingCreature:%s", sequenceNumber, nominalCharacter, releventCharacter); 
+	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
+		if (LOG) L.log("SN: %s, nominalChar:%s, actingCreature:%s", sequenceNumber, releventCharacter, releventCharacter); 
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
@@ -325,8 +324,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public void rangedAttack(int sequenceNumber, Character nominalCharacter, Creature attackingCreature, AbilityType abilityType, int damageType, DungeonPosition targetPosition) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
+	public void rangedAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, AbilityType abilityType, int damageType, DungeonPosition targetPosition) {
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
@@ -336,8 +334,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 	
 	@Override
-	public void invokeAbility(int sequenceNumber, Character nominalCharacter, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
+	public void invokeAbility(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
+
 		changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
 		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " invoke abaility");
@@ -371,7 +369,21 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
-		if (currentlyFocussedCharacter != newFocusCharacter) {
+		
+		boolean changeFocus = false;
+		
+		// Only change the currently focussed character if a monster is having a turn, or it is a request to change focus to the
+		// actual character that is having a turn.
+		if (characterHavingTurn == null || characterHavingTurn == newFocusCharacter) {
+			changeFocus = true;
+		} 
+		
+		// But not if that character is already focussed.
+		if (newFocusCharacter == currentlyFocussedCharacter) {
+			changeFocus = false;
+		}
+		
+		if (changeFocus) {
 			currentlyFocussedCharacter = newFocusCharacter;
 			if (dungeonEventListener != null) {
 				if (LOG) L.log("SN:%s, newFocusCharacter:%s", sequenceNumber, newFocusCharacter);
@@ -413,9 +425,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public void creatureDies(int sequenceNumber, Character nominalCharacter, Creature deadCreature) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (LOG) L.log("nominalChar "+nominalCharacter+" relevantChar " + releventCharacter); 
+	public void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature) {
+
+		if (LOG) L.log("releventCharacter: %s", releventCharacter); 
 		final DungeonPosition deadPosition = deadCreature.getPosition();
 		final Creature deader = deadCreature;
 		boolean inLOS = false;
@@ -446,9 +458,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public void damageInflicted(int sequenceNumber, Character nominalCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
-		if (LOG) L.log("nominalChar "+nominalCharacter+" relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
+	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {
+
+		if (LOG) L.log("relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			Creature damagedCreature = getCreatureAtLocation(targetPosition);
 			dungeonEventListener.damageInflicted(sequenceNumber, releventCharacter, damagedCreature, targetPosition, damageType, damageAmount);
@@ -474,8 +486,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 	
 	@Override
-	public void missed(int sequenceNumber, Character nominalCharacter, DungeonPosition targetPosition) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
+	public void missed(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition) {
+
 		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " missed");
 			dungeonEventListener.missed(sequenceNumber, releventCharacter, targetPosition);
@@ -489,8 +501,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 	
 	@Override
-	public void abilityAdded(int sequenceNumber, Character nominalCharacter, Vector<AbilityEffectType> abilityEfectType, DungeonPosition targetPosition) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
+	public void abilityAdded(int sequenceNumber, Character releventCharacter, Vector<AbilityEffectType> abilityEfectType, DungeonPosition targetPosition) {
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			for (AbilityEffectType effect : abilityEfectType) {
 				if (LOG) L.log("SN:%s, effect: %s" , sequenceNumber, effect);
@@ -500,8 +511,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public void abilityResisted(int sequenceNumber, Character nominalCharacter, Vector<AbilityEffectType> abilityEfectType, DungeonPosition targetPosition) {
-		Character releventCharacter = getReleventCharacter(nominalCharacter);
+	public void abilityResisted(int sequenceNumber, Character releventCharacter, Vector<AbilityEffectType> abilityEfectType, DungeonPosition targetPosition) {
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			for (AbilityEffectType effect : abilityEfectType) {
 				if (LOG) L.log("SN:%s, effect: %s" , sequenceNumber, effect);
@@ -513,26 +523,24 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void explosion(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int range) {
 		
-		explosionReleventCharacter = releventCharacter;
-		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " explosion");
 			dungeonEventListener.explosion(sequenceNumber, releventCharacter, targetPosition, damageType, range);
 		}
 	}
 
-	@Override
-	public void explosionOver() {
-		explosionReleventCharacter = null;
-	}
+//	@Override
+//	public void explosionOver() {
+//		explosionReleventCharacter = null;
+//	}
 	
-	public Character getReleventCharacter(Character character) {
-		if (explosionReleventCharacter != null) {
-			return explosionReleventCharacter;
-		} else {
-			return character;
-		}
-	}
+//	public Character getReleventCharacter(Character character) {
+//		if (explosionReleventCharacter != null) {
+//			return explosionReleventCharacter;
+//		} else {
+//			return character;
+//		}
+//	}
 	
 	@Override
 	public void waitingForAnimToComplete(int sequenceNumber, IAnimListener animCompleteListener) {
@@ -727,6 +735,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void highlightTile(DungeonPosition position, boolean showIt) {
 		// turn off previous eye pos if relevent
 		dungeonEventListener.usingEye(position, showIt);
+	}
+
+
+	@Override
+	public void currentCharacterHavingTurn(Character character) {
+		characterHavingTurn = character;
 	}
 
 }

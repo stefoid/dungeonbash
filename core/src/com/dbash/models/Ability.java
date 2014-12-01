@@ -457,8 +457,6 @@ public class Ability
 					}
 				}
 				
-				dungeonEvents.explosionOver();
-				
 				// Looks like the ability was activated, so apply magic cost
 				attackingCreature.usedMagic(magicCost);
 				return true;
