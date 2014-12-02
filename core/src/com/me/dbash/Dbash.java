@@ -31,6 +31,8 @@ import com.dbash.util.Rect;
 public class Dbash implements ApplicationListener {
 	public static final boolean LOG = false && L.DEBUG;
 	
+	public static String SAVE_FILE_VERISON = "V1";
+	
 	enum GameState {
 		SPLASH,
 		INIT,
@@ -98,22 +100,24 @@ public class Dbash implements ApplicationListener {
 		FileHandle fl = Gdx.files.local("gamedata.dat");
 		if (LOG) L.log("LOADING GAMEDATA");
 		if (fl.exists() == true) {
-			newGame = false;
+			newGame = true;
 			ObjectInputStream in = null;
 			try {
 				in = new ObjectInputStream(fl.read());
 				
-				// load the entire list of creatures, so we have them available for future reference via their
-				// uniqueIds. (minus falling characters which dont appear on the map)
-				AllCreatures allCreatures = new AllCreatures(in, dungeon, dungeon, turnProcessor);
-				
-				// Now tell the turn processor and dungeon to load, and any references to creatures
-				// they have in their saved files can point into the list of allCreatures.
-				dungeon.load(in, allCreatures);
-				turnProcessor.load(in, dungeon, dungeon, dungeon, allCreatures);
-				gui.audio.load(in);
-				in.close();
-				newGame = false;
+				String version = in.readUTF();
+				if (version.equals(SAVE_FILE_VERISON)) {
+					// load the entire list of creatures, so we have them available for future reference via their
+					// uniqueIds. (minus falling characters which dont appear on the map)
+					AllCreatures allCreatures = new AllCreatures(in, dungeon, dungeon, turnProcessor);
+					
+					// Now tell the turn processor and dungeon to load, and any references to creatures
+					// they have in their saved files can point into the list of allCreatures.
+					dungeon.load(in, allCreatures);
+					turnProcessor.load(in, dungeon, dungeon, dungeon, allCreatures);
+					gui.audio.load(in);
+					newGame = false;
+				} 
 			} catch (Exception e) {
 				newGame = true;
 			} 
@@ -140,22 +144,23 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-//		if (LOG) L.log("SAVING GAMEDATA");
-//		FileHandle fl = Gdx.files.local("gamedata.dat");
-//		ObjectOutputStream out = null;
-//		try {
-//			out = new ObjectOutputStream(fl.write(false));
-//			turnProcessor.allCreatures.persist(out);
-//			dungeon.persist(out);
-//			turnProcessor.persist(out);
-//			audio.persist(out);
-//		} catch (IOException e) {
-//		} finally {
-//			try {
-//				out.close();
-//			} catch (IOException e) {
-//			}
-//		}
+		if (LOG) L.log("SAVING GAMEDATA");
+		FileHandle fl = Gdx.files.local("gamedata.dat");
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(fl.write(false));
+			out.writeUTF(SAVE_FILE_VERISON);
+			turnProcessor.allCreatures.persist(out);
+			dungeon.persist(out);
+			turnProcessor.persist(out);
+			audio.persist(out);
+		} catch (IOException e) {
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+			}
+		}
 	}
 	
 	@Override

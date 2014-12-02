@@ -973,7 +973,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	// The highlighted ability effect will be either the latest ability added to the character, or the temporary ability
 	// with the least turns left to countDown
 	// returns true if highlighted ability has changed
-	protected boolean processAbilities()
+	public boolean calculateHighlightAbility()
 	{
 		EffectList effects = new EffectList(this);
 		
@@ -1000,9 +1000,6 @@ public class Character extends Creature implements IPresenterCharacter {
 		creatureStats.abilityCountdown = 0;
 		
 		if (highlightAbility != null) {
-			if (highlightAbility.abilityEffects.size() == 0) {
-				System.out.println("it happened again");
-			}
 			creatureStats.abilityEffectType = highlightAbility.abilityEffects.firstElement();
 			creatureStats.abilityCountdown = highlightAbility.expireTime;
 		} else {

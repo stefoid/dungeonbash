@@ -460,7 +460,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {
 
-		if (LOG) L.log("relevantChar " + releventCharacter + " inLOS "+positionIsInLOSOfCharacter(releventCharacter, targetPosition)); 
+		if (LOG) L.log("relevantChar " + releventCharacter); 
 		if (dungeonEventListener != null && releventCharacter != null && positionIsInLOSOfCharacter(releventCharacter, targetPosition)) {
 			Creature damagedCreature = getCreatureAtLocation(targetPosition);
 			dungeonEventListener.damageInflicted(sequenceNumber, releventCharacter, damagedCreature, targetPosition, damageType, damageAmount);

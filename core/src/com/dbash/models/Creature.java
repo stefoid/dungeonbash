@@ -336,7 +336,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		creatureStats.magic = magic;
 		creatureStats.maxMagic = maxMagic;
 		creatureStats.experience = experience;
-		boolean tempAbilityActive = processAbilities();
+		boolean tempAbilityActive = calculateHighlightAbility();
 		
 		// set a flag that could help monsters not bother having their turn.
 		if (tempAbilityActive || health < maxHealth || magic < maxMagic) {
@@ -788,7 +788,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		
 		creatureStats.experience = experience;
 		
-		if (processAbilities()) {
+		if (calculateHighlightAbility()) {
 			someEffect = true;
 		}
 		
@@ -913,7 +913,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	// The highlighted ability effect will be either the latest ability added to the character, or the temporary ability
 	// with the least turns left to countDown
 	// returns true if highlighted ability has changed
-	protected abstract boolean processAbilities();
+	protected abstract boolean calculateHighlightAbility();
 	
 	
 	// ATTRIBUTES
