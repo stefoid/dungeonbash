@@ -174,7 +174,7 @@ public class DungeonPosition implements Serializable {
 	}
 	
 	// a special version of distance that treats orthogonal as 'closer' than diagonal for creatures in melee range
-	protected int distanceToSpecialSpecial(DungeonPosition p2) {
+	protected int distanceToSpecial(DungeonPosition p2) {
 		int distance;
 		int xDif = Math.abs(x - p2.x);
 		int yDif = Math.abs(y - p2.y);

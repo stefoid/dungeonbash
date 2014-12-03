@@ -49,11 +49,6 @@ public interface IDungeonQuery {
 	// effectively means: is there a monster in LOS of any character?
 	public Character leaderModeOK();
 
-	/**
-	 * Get a list of all the characters visible from a given position in the dungeon.
-	 * @return
-	 */
-	public Collection<Character> getCharactersVisibleFrom(DungeonPosition focusPosition, int range);
 
 	// Is the tile a valid target?
 	/**

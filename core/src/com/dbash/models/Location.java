@@ -379,24 +379,24 @@ public class Location {
 	
 	
 	// Monsters use this to zero in on the closest visible character to them.
-	public Character getClosestVisibleCharacter() {
-		int rangeOfClosestChar = 100;
-		Character closestVisibleChar = null;
-		
-		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
-		for (ShadowMap shadowMap : shadowMaps.keySet()) {
-			Character character = shadowMaps.get(shadowMap);
-			if (character != null) {
-				int d = position.distanceToSpecialSpecial(character.getPosition());
-				if (d < rangeOfClosestChar && character.isAlive()) {
-					rangeOfClosestChar = d;
-					closestVisibleChar = character;
-				}
-			}
-		}
-		
-		return closestVisibleChar;
-	}
+//	public Character getClosestVisibleCharacter() {
+//		int rangeOfClosestChar = 100;
+//		Character closestVisibleChar = null;
+//		
+//		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
+//		for (ShadowMap shadowMap : shadowMaps.keySet()) {
+//			Character character = shadowMaps.get(shadowMap);
+//			if (character != null) {
+//				int d = position.distanceToSpecial(character.getPosition());
+//				if (d < rangeOfClosestChar && character.isAlive()) {
+//					rangeOfClosestChar = d;
+//					closestVisibleChar = character;
+//				}
+//			}
+//		}
+//		
+//		return closestVisibleChar;
+//	}
 	
 	// To work out which tile to use, there are the following rules.
 	// 1. anything with a space to its south *must* be a front-facing wall (1 of 4 front-facing types)

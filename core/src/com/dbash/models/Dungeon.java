@@ -635,7 +635,28 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature) {
 		Location location = map.location(position);
-		return location.getClosestVisibleCharacter();
+//		return location.getClosestVisibleCharacter();
+//	}
+//	
+//	public Character getClosestVisibleCharacter() {
+		int rangeOfClosestChar = 100;
+		Character closestVisibleChar = null;
+		
+		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
+		for (ShadowMap shadowMap : shadowMaps.values()) {
+			if (shadowMap.locationIsVisible(location)) {
+				Character character = shadowMap.owner;
+				if (character != null) {
+					int d = position.distanceToSpecial(character.getPosition());
+					if (d < rangeOfClosestChar && character.isAlive()) {
+						rangeOfClosestChar = d;
+						closestVisibleChar = character;
+					}
+				}
+			}
+		}
+		
+		return closestVisibleChar;
 	}
 
 	@Override
@@ -669,12 +690,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 		}
 		
-		return null;
-	}
-
-	@Override
-	public Collection<Character> getCharactersVisibleFrom(DungeonPosition focusPosition, int range) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
