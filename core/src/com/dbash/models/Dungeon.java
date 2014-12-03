@@ -3,7 +3,6 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,7 +130,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			// Create a new shadowmap that sees everything in its range, and a light to see with.
 			ShadowMap shadowMap = new ShadowMap();
 			shadowMap.setMap(map, currentFocus, 5);
-			shadowMap.emptyShadowMap(true);
+			//shadowMap.emptyShadowMap(true);
 			setMapFocus(currentFocus, shadowMap);
 			map.addLight(new Light(currentFocus, 5, Light.CHAR_LIGHT_STRENGTH, false));
 		}
@@ -409,7 +408,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener) {
 
-		cleanUpAfterCharacterLeavesMap((Character)actingCreature);
+		characterLeavesMap((Character)actingCreature);
 		
 		final Creature downer = actingCreature;
 		final IAnimListener complete = completeListener;
@@ -433,7 +432,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		boolean inLOS = false;
 		if (deadCreature instanceof Character) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
-			cleanUpAfterCharacterLeavesMap((Character)deadCreature);
+			characterLeavesMap((Character)deadCreature);
 			inLOS = true;
 		} else {
 			if (releventCharacter != null) {  // we use currently focussed here because relevant character = closest character
@@ -468,21 +467,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	// get rid of the current character from the map and the current set of shadowmaps, so it is invisible to monsters
-	// but delay removing the creature from the Locations so that the map can snapshot the final view of the dead
-	// character until focus changes to the next character.
-	protected void cleanUpAfterCharacterLeavesMap(Character character) {
+	protected void characterLeavesMap(Character character) {
 		if (currentlyFocussedCharacter == character) {
 			currentlyFocussedCharacter = null;
 		}
-		
-		final ShadowMap deadCharactersMap = shadowMaps.get(character);
 		shadowMaps.remove(character);
-		
-		mapEventListener.retainViewUntilNextFocusChange(deadCharactersMap, new UIInfoListener () {
-			public void UIInfoChanged() {
-				deadCharactersMap.emptyShadowMap(false);
-			}
-		});
 	}
 	
 	@Override
@@ -635,10 +624,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature) {
 		Location location = map.location(position);
-//		return location.getClosestVisibleCharacter();
-//	}
-//	
-//	public Character getClosestVisibleCharacter() {
 		int rangeOfClosestChar = 100;
 		Character closestVisibleChar = null;
 		

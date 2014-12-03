@@ -77,11 +77,11 @@ public class ShadowMap {
 	
 	// An owning character would call this on its own shadowmap when it dies or goes down stairs
 	// so that monsters dont think it is stil there when they look through shadowmaps belonging to characters.
-	public void emptyShadowMap(boolean setVisible) {
-		for (Location location : locations) {
-			location.shadowMapChange(this, null, setVisible);
-		}
-	}
+//	public void emptyShadowMap(boolean setVisible) {
+//		for (Location location : locations) {
+//			location.shadowMapChange(this, null, setVisible);
+//		}
+//	}
 	
 	public boolean locationIsVisible(Location location)
 	{
@@ -147,7 +147,7 @@ public class ShadowMap {
 				newLocations.add(loc);
 				// if this is a character-ownned shadowmap, tell this location it is visible from this shadow map
 				if (owner != null) {
-					loc.shadowMapChange(this, owner, true);
+					loc.setDiscovered();
 				}
 				
 				// if that was not see-through, then this ray is stopped
@@ -159,13 +159,13 @@ public class ShadowMap {
     		
     	// now tell all the locations in the previous shadow map they are not visible from this shadowmap anymore.
     	// if this is a character owned shadowmap.
-    	if (owner != null && locations != null) {
-	    	for (Location location : locations) {
-	    		if (newLocations.contains(location) == false) {
-	    			location.shadowMapChange(this, owner, false); // distance is not important when removing shadowmap ref.
-	    		}
-	    	}
-	    }    
+//    	if (owner != null && locations != null) {
+//	    	for (Location location : locations) {
+//	    		if (newLocations.contains(location) == false) {
+//	    			location.shadowMapChange(this, owner, false); // distance is not important when removing shadowmap ref.
+//	    		}
+//	    	}
+//	    }    
         
     	// now make the newly calculated shadowmap the official one
     	locations = newLocations; 

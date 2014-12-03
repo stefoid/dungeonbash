@@ -103,9 +103,7 @@ public class Location {
 	public float permTint;
 	public TorchType torch = TorchType.NONE;
 	public RoughTerrainType roughTerrainType;
-	
-	// ShadowMaps in which this Location is visible, and the distance of this location form the center of that shadowmap
-	HashMap<ShadowMap, Character>  shadowMaps;  
+	 
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
 	{
@@ -119,7 +117,6 @@ public class Location {
 		tileType = null;  // cant be worked out yet
 		isDiscovered = false;
 		tileName = "CLEAR_FLOOR_IMAGE";
-		shadowMaps = new HashMap<ShadowMap, Character>();  // the set of shadowmaps (and hence characters) this Location is visible to.
 		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		clearTint();
 	}
@@ -132,7 +129,6 @@ public class Location {
 	public Location(ObjectInputStream in, Map map, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
 		this.map = map;
 		itemList = new Vector<Ability>();  // no items
-		shadowMaps = new HashMap<ShadowMap, Character>();  // the set of shadowmaps (and hence characters) this Location is visible to.
 		position = (DungeonPosition) in.readObject();
 		this.x = position.x;
 		this.y = position.y;
@@ -231,19 +227,23 @@ public class Location {
 		tint = permTint;  // darkest tile.  Lights will make it lighter.
 	}
 	
-	public void shadowMapChange(ShadowMap shadowMap, Character character, boolean isVisibleWithin)
-	{
-		if (shadowMaps.containsKey(shadowMap)) {
-			if (isVisibleWithin == false) {
-				shadowMaps.remove(shadowMap);
-			}
-		} else {
-			if (isVisibleWithin) {
-				shadowMaps.put(shadowMap, character);  // We know are visible in this shadowmap and distance from its center
-				isDiscovered = true;  // this location has been seen by a character.
-				map.alertToVisualChangeAtLocation(this);
-			}
-		}
+//	public void shadowMapChange(ShadowMap shadowMap, Character character, boolean isVisibleWithin)
+//	{
+//		if (shadowMaps.containsKey(shadowMap)) {
+//			if (isVisibleWithin == false) {
+//				shadowMaps.remove(shadowMap);
+//			}
+//		} else {
+//			if (isVisibleWithin) {
+//				shadowMaps.put(shadowMap, character);  // We know are visible in this shadowmap and distance from its center
+//				isDiscovered = true;  // this location has been seen by a character.
+//				map.alertToVisualChangeAtLocation(this);
+//			}
+//		}
+//	}
+	
+	public void setDiscovered() {
+		isDiscovered = true;
 	}
 	
 	public boolean isOpaque() {
@@ -376,27 +376,6 @@ public class Location {
 			return AtLocation.FREE;
 		}
 	}
-	
-	
-	// Monsters use this to zero in on the closest visible character to them.
-//	public Character getClosestVisibleCharacter() {
-//		int rangeOfClosestChar = 100;
-//		Character closestVisibleChar = null;
-//		
-//		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
-//		for (ShadowMap shadowMap : shadowMaps.keySet()) {
-//			Character character = shadowMaps.get(shadowMap);
-//			if (character != null) {
-//				int d = position.distanceToSpecial(character.getPosition());
-//				if (d < rangeOfClosestChar && character.isAlive()) {
-//					rangeOfClosestChar = d;
-//					closestVisibleChar = character;
-//				}
-//			}
-//		}
-//		
-//		return closestVisibleChar;
-//	}
 	
 	// To work out which tile to use, there are the following rules.
 	// 1. anything with a space to its south *must* be a front-facing wall (1 of 4 front-facing types)

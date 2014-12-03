@@ -11,19 +11,19 @@ public class LocationInfo {
 	public String tileName;
 	public IPresenterCreature creature;
 	public boolean isDiscovered;
-	public Set<ShadowMap> shadowMaps;
 	public ItemList itemList;
 	public float tint; // how dark should this tile be?
 	public Location.TorchType torch;
 	public boolean isShadowedFloor;
 	public RoughTerrainType roughTerrainType;
+	public Location location;
 	
 	public LocationInfo(Location location)
 	{
+		this.location = location;
 		this.tileName = location.tileName;
 		this.creature = location.creature;
 		this.isDiscovered = location.isDiscovered;
-		this.shadowMaps = location.shadowMaps.keySet();
 		this.itemList = location.getItemList(true);
 		this.tint = location.tint;
 		this.torch = location.torch;

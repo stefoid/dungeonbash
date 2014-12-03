@@ -46,7 +46,7 @@ public class LocationPresenter {
 		boolean drawOverlay = false;
 		float tint = locationInfo.tint;
 		
-		if (locationInfo.shadowMaps.contains(shadowMap)) {
+		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
 			tile.drawTinted(spriteBatch, tint, alpha);
 			
 			if (roughTerrain != null) {
