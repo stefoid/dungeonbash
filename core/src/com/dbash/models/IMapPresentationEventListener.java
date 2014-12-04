@@ -11,9 +11,4 @@ public interface IMapPresentationEventListener {
 
 	// This sets the focus position on the map in one step (no anim scroll).
 	public void instantFocusChange(DungeonPosition focusPosition, ShadowMap shadowMap);
-	
-	// When a character dies or goes down stairs, this will be called to tell the map just to keep the current focus
-	// until the next focus change is ordered, and when that happens, make a callback.
-	public void retainViewUntilNextFocusChange(ShadowMap focussedCharacterMap, UIInfoListener nextFocusChangeListener);
-	
 }

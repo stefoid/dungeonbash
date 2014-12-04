@@ -150,6 +150,7 @@ public class Location {
 			torchPosition.y--;
 		} 
 		map.addLight(new Light(torchPosition, 5, Light.WALL_TORCH_STRENGTH, true));
+		map.alertToVisualChangeAtLocation(this);
 	}
 	
 	public void load(ObjectInputStream in, Map map, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -225,21 +226,6 @@ public class Location {
 	public void clearTint() {
 		tint = permTint;  // darkest tile.  Lights will make it lighter.
 	}
-	
-//	public void shadowMapChange(ShadowMap shadowMap, Character character, boolean isVisibleWithin)
-//	{
-//		if (shadowMaps.containsKey(shadowMap)) {
-//			if (isVisibleWithin == false) {
-//				shadowMaps.remove(shadowMap);
-//			}
-//		} else {
-//			if (isVisibleWithin) {
-//				shadowMaps.put(shadowMap, character);  // We know are visible in this shadowmap and distance from its center
-//				isDiscovered = true;  // this location has been seen by a character.
-//				map.alertToVisualChangeAtLocation(this);
-//			}
-//		}
-//	}
 	
 	public void setDiscovered() {
 		isDiscovered = true;

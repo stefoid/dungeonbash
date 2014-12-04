@@ -51,16 +51,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected ShadowMap previousShadowMap;
 	LocationPresenter[] creatures;
 	float[] creatureAlpha;
-	protected UIInfoListenerBag retainFocusBag;
-	protected Vector<ShadowMap> deadCharactersShadowmap;
 	protected int range = 5;
 	protected Tween currentShadowMapTween;
 	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		super();  // AnimOp allows to place itself on the Anim queue when scrolling.
 		this.gui = gui;
-		retainFocusBag = new UIInfoListenerBag();
-		deadCharactersShadowmap = new Vector<ShadowMap>();
 		this.locationPresenters = null;
 		this.focusPosition = null;
 		this.model = model;
@@ -198,36 +194,16 @@ public class MapPresenter implements IMapPresentationEventListener{
 	// if we are already scrolling, chain the next scroll to the when that is completed.
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
 		if (LOG) L.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
-		
-		final Character theNewFocusCharacter = newFocusCharacter;
-		animatedFocusChange(sequenceNumber, newFocusCharacter, DungeonAreaPresenter.scrollPeriod, false, new IAnimListener() {
-			public void animEvent() {
-				// if we were holding the view steady on a dead characters focus, stop that now and callback to clear it up.
-				if (!deadCharactersShadowmap.isEmpty() && (notFocussingOnDeadCharacter(theNewFocusCharacter))) {
-					retainFocusBag.alertListeners();
-					retainFocusBag.clear();
-					deadCharactersShadowmap.clear();
-				}
-			}
-		});  // character move focus changes arent called externally
+		animatedFocusChange(sequenceNumber, newFocusCharacter, DungeonAreaPresenter.scrollPeriod, false, null);
 	}
 
-	protected boolean notFocussingOnDeadCharacter(Character focusCharacter) {
-		if (LOG) L.log("FocusCharacter: %s", focusCharacter);
-		
-		for (ShadowMap shadowMap : deadCharactersShadowmap) {
-			if (shadowMap != null && shadowMap.owner == focusCharacter) {
-				return false;
-			}
-		}
-		return true;
-	}
 	
 	// animated scroll to the new focus position.  It is not that characters turn, its just scrolling to that character
 	// so they can see something interesting.
 	public void animatedFocusChange(int sequenceNumber, final Character newFocusCharacter, final float period, boolean characterMoving, IAnimListener animCompleteListener) {
 		if (LOG) L.log("sn: %s, newFocusCharacter: %s, characterMoving: %s", sequenceNumber,newFocusCharacter, characterMoving);
 
+		final ShadowMap newShadowMap = new ShadowMap(newFocusCharacter.shadowMap);
 		final DungeonPosition targetDungeonPosition = newFocusCharacter.getPosition();
 		LocationPresenter centerLocation = locationPresenter(targetDungeonPosition);
 		Rect targetPoint = centerLocation.getScreenCenterPoint();
@@ -239,7 +215,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		mapAnim.onStart(new IAnimListener() {
 		    public void animEvent() {
 		        previousShadowMap = currentShadowMap;
-		        currentShadowMap = newFocusCharacter.shadowMap;
+		        currentShadowMap = newShadowMap;
 		        if (previousShadowMap != currentShadowMap && previousShadowMap != null) {
 		            currentShadowMapTween.init(0f, 1.0f, period, null);
 		        }
@@ -257,17 +233,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 			}
 		});
 		
-		// Only schedule an op if we havent already got one scheduled, otherwise bad things happen.
-		// but in that case the above code has still alltered the parameters of the scroll, so its all good.
-//		AnimOp animOp = model.animQueue.getLastByCreator(this, AnimOp.AnimType.SCROLLING);
-//		if (animOp != null) {
-			// startPlaying will be called by the animQueue when the last anim on the queue has started.
-			if (characterMoving) {
-				model.animQueue.chainConcurrentWithLast(mapAnim, 0f, false);
-			} else {
-				model.animQueue.chainSequential(mapAnim, false);
-			}
-//		}
+		// startPlaying will be called by the animQueue when the last anim on the queue has started.
+		if (characterMoving) {
+			model.animQueue.chainConcurrentWithLast(mapAnim, 0f, false);
+		} else {
+			model.animQueue.chainSequential(mapAnim, false);
+		}
 	}
 
 	
@@ -279,7 +250,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		this.focusPosition = new DungeonPosition(focusPosition);
 		if (shadowMap != null) {
 			previousShadowMap = currentShadowMap;
-			currentShadowMap = shadowMap;
+			currentShadowMap = new ShadowMap(shadowMap);
 		} 
 		
 		LocationPresenter centerLocation = locationPresenter(focusPosition);
@@ -291,14 +262,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 		moveView(newViewPos.x, newViewPos.y);
 	}
 
-	@Override
-	public void retainViewUntilNextFocusChange(ShadowMap focussedCharacterMap, UIInfoListener nextFocusChangeListener) {
-		if (LOG) L.log("focussedCharacterMap: %s", focussedCharacterMap);
-		
-		retainFocusBag.add(nextFocusChangeListener);
-		deadCharactersShadowmap.add(focussedCharacterMap);
-	}
-	
 	public void addLight(Light light) {
 		map.addLight(light);
 	}

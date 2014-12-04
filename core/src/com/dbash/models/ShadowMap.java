@@ -52,6 +52,14 @@ public class ShadowMap {
 		this.owner = null;
 	}
 	
+	public ShadowMap(ShadowMap shadowMap) {
+		this.centerPos = new DungeonPosition(shadowMap.centerPos);
+		this.range = shadowMap.range;
+		this.map = shadowMap.map;
+		this.owner = shadowMap.owner;
+		this.locations = new HashSet<Location>(shadowMap.locations);
+	}
+	
 	// Make a shadowmap with a certain range form the centrePos.
 	public void setMap(Map map, DungeonPosition centerPos, int range)
 	{	
@@ -155,17 +163,7 @@ public class ShadowMap {
     				break;
     			}
     		}
-    	}
-    		
-    	// now tell all the locations in the previous shadow map they are not visible from this shadowmap anymore.
-    	// if this is a character owned shadowmap.
-//    	if (owner != null && locations != null) {
-//	    	for (Location location : locations) {
-//	    		if (newLocations.contains(location) == false) {
-//	    			location.shadowMapChange(this, owner, false); // distance is not important when removing shadowmap ref.
-//	    		}
-//	    	}
-//	    }    
+    	} 
         
     	// now make the newly calculated shadowmap the official one
     	locations = newLocations; 
