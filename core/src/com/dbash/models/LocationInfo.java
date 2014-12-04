@@ -1,7 +1,5 @@
 package com.dbash.models;
 
-import java.util.Set;
-
 import com.dbash.models.Location.RoughTerrainType;
 
 // LocationInfo is information created by a Location model object for Presenter consumption.

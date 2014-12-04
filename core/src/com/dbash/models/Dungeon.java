@@ -302,8 +302,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, currentlyFocussedCharacter, moveListener);
 		
 		} else {
+			// we wont animate, but creature presenter needs to be updated.
 			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
-			// we wont animate, but call things that might be waiting on the animation to complete anyway.
 			fromLocation.updatePresenter();
 			toLocation.updatePresenter();
 			if (completeListener != null) {

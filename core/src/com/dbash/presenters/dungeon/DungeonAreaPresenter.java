@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Ability;
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
-import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
 import com.dbash.models.Dungeon;
+import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
 import com.dbash.models.IDungeonEvents;
@@ -143,7 +143,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	@Override
 	public void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, int direction, 
 			Dungeon.MoveType moveType, Character currentFocussedCharacter, IAnimListener completeListener) {
-		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		
 		float moveTime;
 		switch (moveType) {
@@ -178,33 +178,33 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	
 	@Override
 	public void creatureMovedOutOfLOS(int sequenceNumber, Creature actingCreature, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType)  {
-		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.creatureMovedOutOfLOS(sequenceNumber, fromPosition, toPosition, direction, moveType);
 	}
 	
 	@Override
 	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
 		DungeonPosition fromPosition = attackingCreature.getPosition();
-		CreaturePresenter creaturePresenter = attackingCreature.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = attackingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		int dir = fromPosition.getDirection(targetPosition);
 		creaturePresenter.creatureMeleeAttack(sequenceNumber, fromPosition, targetPosition, dir, null);
 	}
 	
 	@Override
 	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
-		CreaturePresenter creaturePresenter = fallingCharacter.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = fallingCharacter.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.fallIntoLevel(sequenceNumber, fallingCharacter, level);
 	}
 	
 	@Override
 	public void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, DeathType deathType, IAnimListener completeListener) {
-		CreaturePresenter creaturePresenter = deadCreature.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = deadCreature.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.creatureDies(sequenceNumber, deadCreature, deadPosition, deathType, completeListener);
 	}
 	
 	@Override
 	public void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener) {
-		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.goDownStairs(sequenceNumber, actingCreature, completeListener);
 	}
 	
@@ -278,7 +278,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 
 		if (damagedCreature != null) {
 			// Let the creature persenter handle it.
-			CreaturePresenter cp = damagedCreature.getCreaturePresenter();
+			CreaturePresenter cp = damagedCreature.getCreaturePresenter(gui, model, mapPresenter);
 			String damageName = getDamageName(damageType);
 			String sound = getSound(damageType);
 			cp.damageInflicted(sequenceNumber, releventCharacter, targetPosition, damageType, damageName, damagePeriod, damageAmount, sound);
@@ -409,7 +409,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 
 	@Override
 	public void invokeAbility(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
-		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter();
+		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.invokeAbility(sequenceNumber, actingCreature, targetPosition, ability);
 	}
 

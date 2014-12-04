@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.IDungeonPresentationEventListener.DeathType;
+import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.CreaturePresenter;
+import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 
 
@@ -78,7 +80,7 @@ public class NoCharacter extends Character {
 	}
 	
 	@Override
-	public CreaturePresenter getCreaturePresenter() {
+	public CreaturePresenter getCreaturePresenter(UIDepend gui, PresenterDepend model, MapPresenter mapPresenter) {
 		return presenter;
 	}
 	

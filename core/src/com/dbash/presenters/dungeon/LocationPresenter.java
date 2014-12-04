@@ -25,7 +25,7 @@ public class LocationPresenter {
 	private Rect area;
 	private UIDepend gui;
 	private PresenterDepend model;
-	private MapPresenter dungeonPresenter;
+	private MapPresenter mapPresenter;
 	private Vector<ImageView> items;
 	private AnimationView eyeAnimation = null;
 	private AnimationView torchAnimation = null;
@@ -33,11 +33,11 @@ public class LocationPresenter {
 	private ImageView shadow = null;
 	private ImageView roughTerrain = null;
 	
-	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter dungeonPresenter) {
+	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter mapPresenter) {
 		this.area = new Rect(area);
 		this.gui = gui;
 		this.model = model;
-		this.dungeonPresenter = dungeonPresenter;
+		this.mapPresenter = mapPresenter;
 		this.items = new Vector<ImageView>();
 	}
 	
@@ -134,13 +134,7 @@ public class LocationPresenter {
 		
 		// set a creature presenter if there is a creature at this location.
 		if (locationInfo.creature != null) {
-			// When a creature makes it onto any Location for the first time, we can create a presenter for it and attach
-			// it to that creature for future reference.
-			creaturePresenter = locationInfo.creature.getCreaturePresenter();
-			if (creaturePresenter == null) {
-				creaturePresenter = new CreaturePresenter(gui, model, locationInfo.creature, dungeonPresenter);
-				locationInfo.creature.setCreaturePresenter(creaturePresenter);
-			}
+			creaturePresenter = locationInfo.creature.getCreaturePresenter(gui, model, mapPresenter);
 		} else {
 			creaturePresenter = null;
 		}

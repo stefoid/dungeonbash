@@ -10,7 +10,9 @@ import java.util.Vector;
 import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.platform.TextResourceIdentifier;
+import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.CreaturePresenter;
+import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
@@ -109,12 +111,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	public boolean canCharge;
 	
 	@Override
-	public void setCreaturePresenter(CreaturePresenter creaturePresenter) {
-		this.creaturePresenter = creaturePresenter;
-	}
-	
-	@Override
-	public CreaturePresenter getCreaturePresenter() {
+	public CreaturePresenter getCreaturePresenter(UIDepend gui, PresenterDepend model, MapPresenter mapPresenter) {
+		if (creaturePresenter == null) {
+			creaturePresenter = new CreaturePresenter(gui, model, this, mapPresenter);
+		}
 		return creaturePresenter;
 	}
 	
