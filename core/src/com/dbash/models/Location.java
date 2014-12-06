@@ -102,6 +102,9 @@ public class Location {
 	public float permTint;
 	public TorchType torch = TorchType.NONE;
 	public RoughTerrainType roughTerrainType;
+	public LocationInfo locationInfo;
+	public ItemList itemInfoNoRough;
+	public ItemList itemInfoWithRough;
 	 
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
@@ -171,6 +174,7 @@ public class Location {
 			addtorch(torch);
 		}
 		
+		setItemInfos();
 		map.alertToVisualChangeAtLocation(this);
 	}
 	
@@ -209,6 +213,10 @@ public class Location {
 			tint = newTint;
 			map.alertToVisualChangeAtLocation(this);
 		}
+	}
+	
+	public float getTint() {
+		return tint;
 	}
 	
 	// Only gets lighter due to, err lights.
@@ -264,7 +272,12 @@ public class Location {
 	}
 	
 	public LocationInfo getLocationInfo() {
-		return new LocationInfo(this);
+		if (locationInfo == null) {
+			locationInfo = new LocationInfo(this);;
+		} else {
+			locationInfo.update(this);
+		}
+		return locationInfo;
 	}
 	
 	public int distanceTo(DungeonPosition p) {
@@ -281,6 +294,7 @@ public class Location {
 		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 
 		itemList.add(ability);
 		roughTerrainType = getRoughTerrain();
+		setItemInfos();
 	}
 	
 	public RoughTerrainType getRoughTerrain() {
@@ -311,11 +325,13 @@ public class Location {
 	
 	public void pickupItem(Ability item) {
 		itemList.remove(item);
+		setItemInfos();
 		map.alertToVisualChangeAtLocation(this);  
 	}
 	
 	public void dropItem(Ability item) {
 		itemList.add(item);
+		setItemInfos();
 		map.alertToVisualChangeAtLocation(this);  
 	}
 	
@@ -561,7 +577,15 @@ public class Location {
 	}
 	
 	public ItemList getItemList(boolean includeRoughTerrain) {
-		return new ItemList(itemList, includeRoughTerrain);
+		if (itemInfoWithRough == null) {
+			setItemInfos();
+		}
+		
+		if (includeRoughTerrain) {
+			return itemInfoWithRough;
+		} else {
+			return itemInfoNoRough;
+		}
 	}
 	
 	public void persistLocation(ObjectOutputStream out) throws IOException {
@@ -574,6 +598,11 @@ public class Location {
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
 		
+	}
+	
+	private void setItemInfos() {
+		itemInfoWithRough = new ItemList(itemList, true);
+		itemInfoNoRough = new ItemList(itemList, false);
 	}
 	
 	public void persistThings(ObjectOutputStream out) throws IOException {

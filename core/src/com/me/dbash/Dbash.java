@@ -31,7 +31,7 @@ import com.dbash.util.Rect;
 public class Dbash implements ApplicationListener {
 	public static final boolean LOG = false && L.DEBUG;
 	
-	public static String SAVE_FILE_VERISON = "V12";
+	public static String SAVE_FILE_VERISON = "V1";
 	
 	enum GameState {
 		SPLASH,
@@ -144,23 +144,23 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-		if (LOG) L.log("SAVING GAMEDATA");
-		FileHandle fl = Gdx.files.local("gamedata.dat");
-		ObjectOutputStream out = null;
-		try {
-			out = new ObjectOutputStream(fl.write(false));
-			out.writeUTF(SAVE_FILE_VERISON);
-			turnProcessor.allCreatures.persist(out);
-			dungeon.persist(out);
-			turnProcessor.persist(out);
-			audio.persist(out);
-		} catch (IOException e) {
-		} finally {
-			try {
-				out.close();
-			} catch (IOException e) {
-			}
-		}
+//		if (LOG) L.log("SAVING GAMEDATA");
+//		FileHandle fl = Gdx.files.local("gamedata.dat");
+//		ObjectOutputStream out = null;
+//		try {
+//			out = new ObjectOutputStream(fl.write(false));
+//			out.writeUTF(SAVE_FILE_VERISON);
+//			turnProcessor.allCreatures.persist(out);
+//			dungeon.persist(out);
+//			turnProcessor.persist(out);
+//			audio.persist(out);
+//		} catch (IOException e) {
+//		} finally {
+//			try {
+//				out.close();
+//			} catch (IOException e) {
+//			}
+//		}
 	}
 	
 	@Override

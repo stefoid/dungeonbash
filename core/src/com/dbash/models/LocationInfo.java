@@ -16,16 +16,19 @@ public class LocationInfo {
 	public RoughTerrainType roughTerrainType;
 	public Location location;
 	
-	public LocationInfo(Location location)
-	{
+	public LocationInfo(Location location) {
 		this.location = location;
-		this.tileName = location.tileName;
-		this.creature = location.creature;
-		this.isDiscovered = location.isDiscovered;
-		this.itemList = location.getItemList(true);
-		this.tint = location.tint;
-		this.torch = location.torch;
-		this.roughTerrainType = location.getRoughTerrain();
+		update(location);
+	}
+	
+	public void update(Location location) {
+		tileName = location.tileName;
+		creature = location.creature;
+		isDiscovered = location.isDiscovered;
+		itemList = location.getItemList(true);
+		tint = location.tint;
+		torch = location.torch;
+		roughTerrainType = location.getRoughTerrain();
 		if (location.locationType == Location.LocationType.FLOOR) {
 			if (location.tileName.equals("CLEAR_FLOOR_IMAGE") == false) {
 				isShadowedFloor = true;

@@ -1,6 +1,9 @@
 package com.dbash.models;
 
+import com.dbash.util.L;
+
 public class Light {
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public static float CHAR_LIGHT_STRENGTH = 2.5f;
 	public static float WALL_TORCH_STRENGTH = 1.75f;
@@ -51,12 +54,20 @@ public class Light {
 	}
 	
 	private void applyLight(float alpha) {
+		if (LOG) L.log("alpha: %s", alpha);
 		for (Location location : shadowMap.locations) {
-			float div = alpha * location.getPosition().getTrueDistance(position);
+			float div = location.getPosition().getTrueDistance(position);
+			float newTint = fStrength/div;
 			if (permanent) {
-				location.setPermTint(fStrength/div);
+				location.setPermTint(newTint);
 			} else {
-				location.setTint(fStrength/div);
+				// alpha only applies to temp lighting
+				float currentTint = location.getTint();
+				float dif = newTint - currentTint;
+				if (dif > 0) {
+					location.setTint(currentTint + alpha*dif);
+					if (LOG) L.log("currentTint: %s, newTint: %s, dif: %s, alpha: %s, result: %s", currentTint, newTint, dif, alpha, location.getTint());
+				}
 			}
 		}
 	}

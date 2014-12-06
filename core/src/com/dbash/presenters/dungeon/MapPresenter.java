@@ -151,8 +151,8 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		map.onChangeToLocationInfo(new UILocationInfoListener() {
 			public void locationInfoChanged(Location location) {
-				LocationInfo locationInfo = location.getLocationInfo();
 				LocationPresenter locationPresenter = locationPresenter(location.getPosition());
+				LocationInfo locationInfo = location.getLocationInfo();
 				locationPresenter.setLocationInfo(locationInfo);
 			}
 		});
@@ -271,5 +271,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 	
 	public void removeLight(Light light) {
 		map.removeLight(light);
+	}
+	
+	public void refreshTempLighting() {
+		map.clearTempLighting();
+		map.shineTempLighting();
 	}
 }

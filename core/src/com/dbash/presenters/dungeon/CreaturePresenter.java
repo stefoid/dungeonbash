@@ -169,27 +169,24 @@ public class CreaturePresenter {
 			public void animEvent() {
 				visualState = VisualState.SHOW_ANIMATION;
 				if (light != null) {
-					mapPresenter.removeLight(light);
+					if (LOG) L.log("onstart move");
 					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
-					toLight.setPosition(toPosition);
+					toLight.setPositionOnly(toPosition);
+					mapPresenter.addLight(toLight);
 				}
 			}
 		});
 		
 		if (light != null) {
-			
 			// draw both lights at the correct alpha 
-			for (float complete = 0f; complete <= 90f; complete += 10f) {
-				final float percent = complete/10f;
-				
-				animView.onPercentComplete(percent, new IAnimListener() {
+			for (float complete = 0f; complete < 100f; complete += 10f) {
+				final float percent = complete/100f;
+				animView.onPercentComplete(complete, new IAnimListener() {
 					public void animEvent() {
-						mapPresenter.removeLight(light);
-						mapPresenter.removeLight(toLight);
-						light.alpha = 1f-percent;
-						toLight.alpha = percent;
-						mapPresenter.addLight(light);
-						mapPresenter.addLight(toLight);
+						light.alpha = 1f-percent*.6f;
+						toLight.alpha = percent+.1f;
+						if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
+						mapPresenter.refreshTempLighting();
 					}
 				});
 			}
@@ -215,15 +212,12 @@ public class CreaturePresenter {
 				}
 				if (light != null) {
 					mapPresenter.removeLight(toLight);
-					mapPresenter.removeLight(light);
-					light.setPositionOnly(animEndPosition);
-					mapPresenter.addLight(light);
+					light.alpha = 1f;
+					mapPresenter.moveLight(light, animEndPosition);
 				}		
 			}
 		});
 	}
-	
-
 	
 	// Dungeon instructs this CreaturePresenter to play this animation rather than draw its normal static image.
 	// Because it knows when a creature moving is visible.
@@ -397,7 +391,7 @@ public class CreaturePresenter {
 	// TODO not happy with the look of this, really.  I might change it to facing north, then 'stepping' down the stairs
 	// with an animation that sinks into the ground in discrete jumps and darkens a little with each one.
 	// that means a change to ImageView to allow variable darkening of the image, which isnt a bad idea.
-	// and include in the animationView a 'darkTween' maybe?  leave until latter.
+	// onPercentagecomplete can be used to alter the image Tint maybe.
 	public void goDownStairs(int sequenceNumber, Character actingCreature, final IAnimListener completeListener) {
 		
 		Rect fromRect = new Rect(makeDrawingRectFromPosition(actingCreature.getPosition()));

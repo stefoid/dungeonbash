@@ -146,10 +146,13 @@ public class LocationPresenter {
 		final float x[] = {.38f, .25f, .50f, .30f, .45f, .38f, .00f, .70f, .15f, .63f, .38f};
 		final float y[] = {.00f, .00f, .00f, .10f, .10f, .10f, .00f, .00f, .01f, .10f, .25f};
 
-		Rect itemArea = new Rect(area);
-		itemArea.width = area.width/3;
-		itemArea.height = area.width/3;
-		items.clear();
+		Rect itemArea = null;
+		if (locationInfo.itemList.size() > 0) {
+			itemArea = new Rect(area);
+			itemArea.width = area.width/3;
+			itemArea.height = area.width/3;
+			items.clear();
+		}
 		
 		int i = 0;
 		for (AbilityInfo abilityInfo : locationInfo.itemList) {

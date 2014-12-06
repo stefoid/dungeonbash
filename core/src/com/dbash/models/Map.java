@@ -450,14 +450,14 @@ public class Map implements IPresenterMap {
 	}
 	
 	// Adds temporary lighting
-	protected void shineTempLighting() {
+	public void shineTempLighting() {
 		for (Light light : tempLights) {
 			light.applyLight();
 		}
 	}
 	
 	// removes the effect of any temporary lighting, returning locations to base permanent lighting levels
-	protected void clearTempLighting() {
+	public void clearTempLighting() {
 		for (Light light : tempLights) {
 			light.clearLight();
 		}
