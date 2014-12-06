@@ -246,7 +246,7 @@ public class Monster extends Creature
 					}
 					else // or if its not targetable, we dont want to be too far away
 					{
-						if ((targRange <= attackRange) || (attackRange == -1)) // -1 = LOS
+						if ((targRange <= attackRange) || (attackRange == Map.LOS)) // -1 = LOS
 							rangedAttacks.add(ability); // add this to the list of usable ranged attacks
 					}
 				}

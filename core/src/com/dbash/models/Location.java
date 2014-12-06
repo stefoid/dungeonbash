@@ -150,7 +150,6 @@ public class Location {
 			torchPosition.y--;
 		} 
 		map.addLight(new Light(torchPosition, 5, Light.WALL_TORCH_STRENGTH, true));
-		map.alertToVisualChangeAtLocation(this);
 	}
 	
 	public void load(ObjectInputStream in, Map map, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {

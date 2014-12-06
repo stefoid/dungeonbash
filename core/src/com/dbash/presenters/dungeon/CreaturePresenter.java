@@ -23,6 +23,7 @@ import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
+import com.dbash.util.Tween;
 
 @SuppressWarnings("unused")
 
@@ -70,6 +71,7 @@ public class CreaturePresenter {
 	private String name;
 	private ImageView highlightImage;
 	private Light light;
+	private Light toLight;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
@@ -149,16 +151,49 @@ public class CreaturePresenter {
 		}
 	}
 
-	// attach a call that turns off static drawing of this creature when this animation starts to play.
-	// (the animation complete block will turn on static images again probably (unless the creature dies)
-	// by setting to the appropriate state.
 	private void configureAnimation(AnimationView animView) {
 		animView.setCreator(this);
 		animView.onStart(new IAnimListener() {
 			public void animEvent() {
-				visualState = VisualState.SHOW_ANIMATION;		
+				visualState = VisualState.SHOW_ANIMATION;
 			}
 		});
+	}
+	
+	// attach a call that turns off static drawing of this creature when this animation starts to play.
+	// (the animation complete block will turn on static images again probably (unless the creature dies)
+	// by setting to the appropriate state.
+	private void configureAnimation(AnimationView animView, final DungeonPosition fromPosition, final DungeonPosition toPosition) {
+		animView.setCreator(this);
+		animView.onStart(new IAnimListener() {
+			public void animEvent() {
+				visualState = VisualState.SHOW_ANIMATION;
+				if (light != null) {
+					mapPresenter.removeLight(light);
+					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
+					toLight.setPosition(toPosition);
+				}
+			}
+		});
+		
+		if (light != null) {
+			
+			// draw both lights at the correct alpha 
+			for (float complete = 0f; complete <= 90f; complete += 10f) {
+				final float percent = complete/10f;
+				
+				animView.onPercentComplete(percent, new IAnimListener() {
+					public void animEvent() {
+						mapPresenter.removeLight(light);
+						mapPresenter.removeLight(toLight);
+						light.alpha = 1f-percent;
+						toLight.alpha = percent;
+						mapPresenter.addLight(light);
+						mapPresenter.addLight(toLight);
+					}
+				});
+			}
+		}
 	}
 	
 	private void updateToStaticWhenStopped(final AnimationView animView, final DungeonPosition animEndPosition, final Integer dir) {
@@ -179,7 +214,10 @@ public class CreaturePresenter {
 					updateHighlightAnimation(currentVisualPosition);
 				}
 				if (light != null) {
-					mapPresenter.moveLight(light, animEndPosition);
+					mapPresenter.removeLight(toLight);
+					mapPresenter.removeLight(light);
+					light.setPositionOnly(animEndPosition);
+					mapPresenter.addLight(light);
 				}		
 			}
 		});
@@ -256,7 +294,7 @@ public class CreaturePresenter {
 			});
 		}
 
-		configureAnimation(moveAnim);
+		configureAnimation(moveAnim, fromPosition, toPosition);
 		updateToStaticWhenStopped(moveAnim, toPosition, direction);
 		
 		// how and to what we chain this move anim depends on these rules:

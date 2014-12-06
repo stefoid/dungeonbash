@@ -31,12 +31,11 @@ public class ShadowMap {
 		}	
 	}
 	
-	
 	DungeonPosition centerPos;
 	public Character owner;
 	HashSet<Location> locations;
 	int range;
-	int totalRange = 20;  // we use a much larger map than the 5 tile radius we can see, because we want the extra rays for
+	int totalRange = 4 * Map.RANGE;  // we use a much larger map than the 5 tile radius we can see, because we want the extra rays for
 						  // for added resolution to enable us to see into corners and all the wall tiles along long, thin corridors.
 	Map map;
 	
@@ -82,14 +81,6 @@ public class ShadowMap {
 		this.centerPos = centerPos;
 		generateShadowMap();
 	}
-	
-	// An owning character would call this on its own shadowmap when it dies or goes down stairs
-	// so that monsters dont think it is stil there when they look through shadowmaps belonging to characters.
-//	public void emptyShadowMap(boolean setVisible) {
-//		for (Location location : locations) {
-//			location.shadowMapChange(this, null, setVisible);
-//		}
-//	}
 	
 	public boolean locationIsVisible(Location location)
 	{

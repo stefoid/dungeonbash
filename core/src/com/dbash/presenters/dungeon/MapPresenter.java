@@ -51,7 +51,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected ShadowMap previousShadowMap;
 	LocationPresenter[] creatures;
 	float[] creatureAlpha;
-	protected int range = 5;
 	protected Tween currentShadowMapTween;
 	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
@@ -62,7 +61,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		this.model = model;
 		this.area = area;
 		this.viewPos = new Rect (area.width/2, area.height/2, 0, 0);
-		tileSize = area.width / (2*range+1);
+		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
 		creatures = new LocationPresenter[200];
 		creatureAlpha = new float[200];
@@ -81,7 +80,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		float curAlpha = 1.0f;
 		float fadeOutAlpha = 1 - curAlpha;
 		
-		if (previousShadowMap != currentShadowMap && previousShadowMap != null) {
+		if (previousShadowMap != null) {
 			curAlpha = currentShadowMapTween.getValue();
 		}
 		
@@ -109,7 +108,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		}
 		
 		// draw the creatures that we have recorded need to be drawn, at the appropriate alphas
-		// draw in reverse order s the bottom creatures appear on top
+		// draw in reverse order so the bottom creatures appear on top
 		for (int i=creatureCount-1; i>=0; i--) {
 			creatures[i].drawOverlayOnTile(spriteBatch, currentShadowMap, creatureAlpha[i]);
 		}
@@ -123,19 +122,19 @@ public class MapPresenter implements IMapPresentationEventListener{
 		int centerTileX = (int) (x / tileSize);
 		int centerTileY = (int) (y / tileSize);
 		
-		minTileX = centerTileX - (range+1);
+		minTileX = centerTileX - (Map.RANGE+1);
 		if (minTileX < 0) {
 			minTileX = 0;
 		}
-		maxTileX = centerTileX + (range+1);
+		maxTileX = centerTileX + (Map.RANGE+1);
 		if (maxTileX >= map.width) {
 			maxTileX = map.width - 1;
 		}
-		minTileY = centerTileY - (range+1);
+		minTileY = centerTileY - (Map.RANGE+1);
 		if (minTileY < 0) {
 			minTileY = 0;
 		}
-		maxTileY = centerTileY + (range+1);	
+		maxTileY = centerTileY + (Map.RANGE+1);	
 		if (maxTileY >= map.height) {
 			maxTileY = map.height - 1;
 		}
@@ -184,8 +183,8 @@ public class MapPresenter implements IMapPresentationEventListener{
 	
 	public DungeonPosition convertXYToDungeonPosition(float x, float y) {
 		DungeonPosition dp = new DungeonPosition((int)(x/tileSize), (int)(y/tileSize));
-		dp.x += focusPosition.x - range ; // TODO range;
-		dp.y += focusPosition.y - range ;  // TODO range
+		dp.x += focusPosition.x - Map.RANGE ; 
+		dp.y += focusPosition.y - Map.RANGE ;  
 		return dp;
 	}
 
@@ -216,7 +215,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		    public void animEvent() {
 		        previousShadowMap = currentShadowMap;
 		        currentShadowMap = newShadowMap;
-		        if (previousShadowMap != currentShadowMap && previousShadowMap != null) {
+		        if (previousShadowMap != null) {
 		            currentShadowMapTween.init(0f, 1.0f, period, null);
 		        }
 		    }

@@ -214,7 +214,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 		}
 
-		setMapFocus(map.startPoint, null);
+		ShadowMap shadowMap = new ShadowMap();
+		shadowMap.setMap(map, map.startPoint, Map.RANGE);
+		setMapFocus(map.startPoint, shadowMap);
 	}
 	
 	private void setMapFocus(DungeonPosition pos, ShadowMap shadowMap) {

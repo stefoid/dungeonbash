@@ -19,6 +19,10 @@ import com.dbash.util.Randy;
 // directly.  Those changes to Locations will emit observable Presentation events
 public class Map implements IPresenterMap {
 	public static final boolean LOG = false && L.DEBUG;
+	
+	public static int RANGE = 5;
+	public static int LOS = -1;
+	
 	public Location[][] location;
 	public int width;
 	public int height;

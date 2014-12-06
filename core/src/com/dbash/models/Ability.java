@@ -414,8 +414,8 @@ public class Ability
 					dungeonEvents.explosion(SequenceNumber.getNext(), attackingCreature.getReleventCharacter(), 
 							 pos, damageType, range);
 
-					if (range == -1)     // ability code uses -1 as LSO, so we have to convert it to 0 for level
-						range = 5;// TODO RANGE L.VIEWPORT_LOS;
+					if (range == Map.LOS)     // ability code uses -1 as LSO, so we have to convert it to 0 for level
+						range = Map.RANGE;// TODO RANGE L.VIEWPORT_LOS;
 					
 					for (Creature visibleCreature : dungeonQuery.getCreaturesVisibleFrom(pos, range)) {
 						// if the ability we are using is targetable, we add the attacking creature to the list also. otherwise we dont
