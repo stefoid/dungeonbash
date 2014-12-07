@@ -494,6 +494,9 @@ public class CreaturePresenter {
 		AnimationView skullAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
 			public void animEvent() {
 				if (completeListener != null) {
+					if (light != null) {
+						mapPresenter.removeLight(light);
+					}
 					completeListener.animEvent(); // tell anyone who cares
 				}
 			}

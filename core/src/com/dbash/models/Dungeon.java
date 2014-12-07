@@ -127,12 +127,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				dungeonEventListener.newCharacterFocus(currentlyFocussedCharacter);
 			}
 		} else {
-			// Create a new shadowmap that sees everything in its range, and a light to see with.
+			// Create a new shadowmap that sees everything in its range
 			ShadowMap shadowMap = new ShadowMap();
 			shadowMap.setMap(map, currentFocus, 5);
-			//shadowMap.emptyShadowMap(true);
 			setMapFocus(currentFocus, shadowMap);
-			map.addLight(new Light(currentFocus, 5, Light.CHAR_LIGHT_STRENGTH, false));
 		}
 	}
 	
@@ -487,8 +485,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void gameOver() {
+		map.clearTempLighting();  
+		mapEventListener.updateMapPresentation();
 		dungeonEventListener.gameOver();
-		map.addLight(new Light(currentFocus, 5, Light.CHAR_LIGHT_STRENGTH, false));
 	}
 	
 	@Override
@@ -560,7 +559,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public boolean touchEvent(TouchEvent event) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

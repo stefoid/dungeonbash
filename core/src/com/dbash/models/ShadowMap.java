@@ -117,6 +117,12 @@ public class ShadowMap {
 		return false;
 	}
 	
+	public void refresh() {
+		for (Location location : locations) {
+			location.updatePresenter();
+		}
+	}
+	
 	/*------------------------------------------------*/
 
 	// So this will generate a shadow map which is a collection of positions that are visible from 

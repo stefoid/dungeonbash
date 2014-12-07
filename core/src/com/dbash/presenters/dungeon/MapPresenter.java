@@ -277,4 +277,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		map.clearTempLighting();
 		map.shineTempLighting();
 	}
+
+
+	@Override
+	public void updateMapPresentation() {
+		currentShadowMap.refresh();
+	}
 }

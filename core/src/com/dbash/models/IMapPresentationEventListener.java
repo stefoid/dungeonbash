@@ -11,4 +11,6 @@ public interface IMapPresentationEventListener {
 
 	// This sets the focus position on the map in one step (no anim scroll).
 	public void instantFocusChange(DungeonPosition focusPosition, ShadowMap shadowMap);
+	
+	public void updateMapPresentation();
 }

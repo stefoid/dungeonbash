@@ -120,6 +120,7 @@ public class Location {
 		isDiscovered = false;
 		tileName = "CLEAR_FLOOR_IMAGE";
 		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
+		updateLocationInfo();
 		clearTint();
 	}
 	
@@ -141,6 +142,7 @@ public class Location {
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
 		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
+		updateLocationInfo();
 		clearTint();
 	}
 	
@@ -174,8 +176,7 @@ public class Location {
 			addtorch(torch);
 		}
 		
-		setItemInfos();
-		map.alertToVisualChangeAtLocation(this);
+		updatePresenter(); 
 	}
 	
 	public DungeonPosition getPosition() {
@@ -187,6 +188,7 @@ public class Location {
 	}
 	
 	public void updatePresenter() {
+		updateLocationInfo();
 		map.alertToVisualChangeAtLocation(this);  
 	}
 	
@@ -211,6 +213,7 @@ public class Location {
 		}
 		if (newTint > tint) {  // cant make it darker than it already is
 			tint = newTint;
+			locationInfo.tint = tint;  // just change the tint for efficiency
 			map.alertToVisualChangeAtLocation(this);
 		}
 	}
@@ -236,6 +239,7 @@ public class Location {
 	
 	public void setDiscovered() {
 		isDiscovered = true;
+		updatePresenter();
 	}
 	
 	public boolean isOpaque() {
@@ -273,11 +277,14 @@ public class Location {
 	
 	public LocationInfo getLocationInfo() {
 		if (locationInfo == null) {
-			locationInfo = new LocationInfo(this);;
-		} else {
-			locationInfo.update(this);
+			locationInfo = new LocationInfo(this);
 		}
 		return locationInfo;
+	}
+	
+	private void updateLocationInfo() {
+		setItemInfos();
+		locationInfo = new LocationInfo(this);
 	}
 	
 	public int distanceTo(DungeonPosition p) {
@@ -294,7 +301,7 @@ public class Location {
 		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 
 		itemList.add(ability);
 		roughTerrainType = getRoughTerrain();
-		setItemInfos();
+		updateLocationInfo();
 	}
 	
 	public RoughTerrainType getRoughTerrain() {
@@ -325,14 +332,12 @@ public class Location {
 	
 	public void pickupItem(Ability item) {
 		itemList.remove(item);
-		setItemInfos();
-		map.alertToVisualChangeAtLocation(this);  
+		updatePresenter();  
 	}
 	
 	public void dropItem(Ability item) {
 		itemList.add(item);
-		setItemInfos();
-		map.alertToVisualChangeAtLocation(this);  
+		updatePresenter();  
 	}
 	
 	// cant be called until the basic dungeon map has been fully determined (as far as setting LcoationType)
@@ -436,6 +441,7 @@ public class Location {
 				map.location[x+1][y].addtorch(TorchType.EAST);
 			}
 		}
+		updateLocationInfo();
 	}
 	
 	private String calculateTileName() {
