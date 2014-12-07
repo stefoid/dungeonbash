@@ -485,6 +485,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void gameOver() {
+		// TODO would be nicer if this happened after the character died.
 		map.clearTempLighting();  
 		mapEventListener.updateMapPresentation();
 		dungeonEventListener.gameOver();

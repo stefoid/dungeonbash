@@ -151,9 +151,9 @@ public class LocationPresenter {
 			itemArea = new Rect(area);
 			itemArea.width = area.width/3;
 			itemArea.height = area.width/3;
-			items.clear();
 		}
 		
+		items.clear();
 		int i = 0;
 		for (AbilityInfo abilityInfo : locationInfo.itemList) {
 			if (abilityInfo.isRoughTerrain == false) {

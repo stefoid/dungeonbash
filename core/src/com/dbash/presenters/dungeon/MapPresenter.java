@@ -151,7 +151,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		map.onChangeToLocationInfo(new UILocationInfoListener() {
 			public void locationInfoChanged(Location location) {
-				LocationPresenter locationPresenter = locationPresenter(location.getPosition());
+				LocationPresenter locationPresenter = locationPresenter(location.position);
 				LocationInfo locationInfo = location.getLocationInfo();
 				locationPresenter.setLocationInfo(locationInfo);
 			}

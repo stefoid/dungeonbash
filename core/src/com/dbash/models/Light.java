@@ -56,7 +56,7 @@ public class Light {
 	private void applyLight(float alpha) {
 		if (LOG) L.log("alpha: %s", alpha);
 		for (Location location : shadowMap.locations) {
-			float div = location.getPosition().getTrueDistance(position);
+			float div = location.position.getTrueDistance(position);
 			float newTint = fStrength/div;
 			if (permanent) {
 				location.setPermTint(newTint);
