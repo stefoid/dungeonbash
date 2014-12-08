@@ -20,6 +20,7 @@ import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
+import com.dbash.presenters.widgets.MapAnim;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
 import com.dbash.util.Tween;

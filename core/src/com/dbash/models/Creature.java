@@ -3,6 +3,7 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -21,6 +22,28 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
+	
+	public static class DistComparator implements Comparator<Creature> {
+
+		DungeonPosition posi;
+		boolean smallestFirst;
+		
+		public DistComparator(DungeonPosition posi, boolean smallestFirst) {
+			this.posi = posi;
+		}
+		
+		@Override
+		public int compare(Creature o1, Creature o2) {
+			int d1 = o1.getPosition().distanceTo(posi);
+			int d2 = o2.getPosition().distanceTo(posi);
+			if (smallestFirst) {
+				return d1 - d2;
+			} else {
+				return d2 - d1;
+			}
+		}
+	}
+	
 	public static final boolean LOG = false && L.DEBUG;
 	// INTERFACE
 	public static final int	MAX_SPEED		= 10;
@@ -1416,7 +1439,4 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			return true;
 		}
 	}
-	
-
-
 }

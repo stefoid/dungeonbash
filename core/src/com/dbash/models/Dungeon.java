@@ -28,7 +28,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -106,6 +106,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		initLevel();
 		map = new Map();  // empty map to start
 		shadowMaps = new HashMap<Character, ShadowMap>();
+		if (dungeonEventListener != null) {
+			dungeonEventListener.clearAnimations();
+		}
 	}
 	
 	@Override

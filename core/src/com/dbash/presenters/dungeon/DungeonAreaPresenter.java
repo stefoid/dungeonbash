@@ -609,5 +609,10 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		}
 		effectPresenter.setCurrent();
 	}
+
+	@Override
+	public void clearAnimations() {
+		animQueue.clearAll();
+	}
 }
 

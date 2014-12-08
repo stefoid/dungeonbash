@@ -3,12 +3,15 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Vector;
 
 import com.dbash.platform.TextResourceIdentifier;
+import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
 
@@ -16,6 +19,8 @@ import com.dbash.util.SequenceNumber;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class Ability 
 {
+	public static final boolean LOG = true && L.DEBUG;
+	
 	// INTERFACE	
 	public static final int     RANDOM_ITEM = -2;
 	public static final int     RANDOM_MAGIC = -3;
@@ -368,6 +373,7 @@ public class Ability
 		}		
 	}
 	
+	
 	// This is the attempted execution of any ability against a target creature or location.
 	// It returns true if the ability use did happen, false otherwise 
 	// even if the ability did happen, that doesnt mean it had the desired effect, however.
@@ -425,8 +431,15 @@ public class Ability
 					}
 				}
 
+				// Sort the creatures in order of furtherst to closest.
+				Creature.DistComparator dComp = new Creature.DistComparator(pos, false);
+				ArrayList<Creature> sortedTargets = new ArrayList<Creature>();
+				sortedTargets.addAll(targets);
+				if (LOG) L.log("%s", sortedTargets);
+				Collections.sort(sortedTargets, dComp);
+				if (LOG) L.log("%s", sortedTargets);
 				// now apply the effect to the list of target creatures
-				for (Creature theCreature : targets) {
+				for (Creature theCreature : sortedTargets) {
 					DungeonPosition thePos = theCreature.getPosition();
 					
 					if (ability.executeStrategy[i] == ATTACKER)  // tell the creature to make a certain type of attack

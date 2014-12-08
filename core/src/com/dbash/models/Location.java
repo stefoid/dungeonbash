@@ -354,7 +354,6 @@ public class Location {
 		if (map.safeLocation(x,y+1).isClear()) {
 			tileType = TileType.REAR_FACE;
 		} else {
-
 			tileType =  TileType.NO_FACE;
 		}
 	}

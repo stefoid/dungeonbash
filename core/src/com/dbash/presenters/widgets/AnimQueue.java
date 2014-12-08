@@ -234,4 +234,12 @@ public class AnimQueue {
 		}
 	}
 	
+	public void clearAll() {
+		for (Iterator<AnimOp> it = queue.iterator(); it.hasNext(); ) {  
+		    AnimOp animOp = it.next(); 
+		    animOp.cancel();
+		} 
+		queue.clear();
+	}
+	
 }

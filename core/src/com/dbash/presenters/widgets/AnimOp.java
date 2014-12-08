@@ -121,7 +121,7 @@ public class AnimOp {
 		if (LOG) L.log("animOp: %s", this);
 		animating = true;
 		alertAnimStartListeners();
-		alertPercentageCompleteListeners(0f);
+		//alertPercentageCompleteListeners(0f);  // TODO did I break anything?
 	}
 	
 	// a subclass *must* call this to start a new cycle.
@@ -227,6 +227,12 @@ public class AnimOp {
 	
 	public void setCreator(Object creator) {
 		this.creator = creator;
+	}
+	
+	public void cancel() {
+		completeListeners.clear();
+		startListeners.clear();
+		percentCompleteListeners.clear();
 	}
 	
 	public String toString() {

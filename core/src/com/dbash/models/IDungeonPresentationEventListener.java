@@ -86,4 +86,6 @@ public interface IDungeonPresentationEventListener {
 			int direction, MoveType moveType);
 
 	public void newCharacterFocus(Character newFocusCharacter);
+	
+	public void clearAnimations();
 }

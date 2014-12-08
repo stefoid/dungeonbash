@@ -1,4 +1,4 @@
-package com.dbash.presenters.dungeon;
+package com.dbash.presenters.widgets;
 
 import java.util.Vector;
 
@@ -19,7 +19,7 @@ import com.dbash.models.UIInfoListener;
 import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.widgets.AnimOp;
+import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
 import com.dbash.util.Tween;
@@ -33,7 +33,7 @@ import com.dbash.util.Tween;
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapAnim extends AnimOp {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 
 	DungeonPosition targetDungeonPosition;
 	protected Tween xTween;
