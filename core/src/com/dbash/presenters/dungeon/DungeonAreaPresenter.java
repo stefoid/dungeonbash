@@ -46,7 +46,7 @@ import com.dbash.util.Rect;
 //
 public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresentationEventListener {
 
-	private static final float multiplier = 1f;
+	private static final float multiplier = 4f;
 	public final static float scrollPeriod = 0.5f * multiplier;
 	public final static float walkPeriod = 0.7f * multiplier;
 	public final static float leaderModeWalkPeriod = 0.7f * multiplier;
@@ -146,12 +146,14 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		
 		float moveTime;
+		boolean shouldScrollWithCharacter = true;
 		switch (moveType) {
 			case CHARGE_MOVE:
 				moveTime = DungeonAreaPresenter.chargePeriod;
 				break;
 			case KNOCKBACK_MOVE:
 				moveTime = DungeonAreaPresenter.knockbackPeriod;
+				shouldScrollWithCharacter = false;
 				break;
 			case FOLLOWER_MOVE:
 				moveTime = DungeonAreaPresenter.leaderModeWalkPeriod;
@@ -161,6 +163,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 				break;
 			case SHUDDER_MOVE:
 				moveTime = DungeonAreaPresenter.shudderPeriod;
+				shouldScrollWithCharacter = false;
 				break;
 			default:
 				moveTime = DungeonAreaPresenter.walkPeriod;
@@ -170,9 +173,11 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		creaturePresenter.creatureMove(sequenceNumber, fromPosition, toPosition, direction, moveType, moveTime, completeListener);
 		
 		// if the focused *character* is actually the one moving, then the focus has to move with it.
+		// unless knockback or shudder. (doesnt work well for explosions where multiple characters may be knocked back
+		// simultaneously.)
 		// this is the only instance of the focus changing without an explicit command from the turn processor.
-		if (currentFocussedCharacter == actingCreature) {
-			mapPresenter.animatedFocusChange(sequenceNumber, releventCharacter, moveTime, true, null);
+		if (currentFocussedCharacter == actingCreature && shouldScrollWithCharacter) {
+			mapPresenter.animatedFocusChange(sequenceNumber, releventCharacter.shadowMap, releventCharacter.getPosition(), moveTime, true, null);
 		}
 	}
 	

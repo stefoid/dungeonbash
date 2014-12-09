@@ -19,7 +19,7 @@ import com.dbash.util.SequenceNumber;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class Ability 
 {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	// INTERFACE	
 	public static final int     RANDOM_ITEM = -2;
@@ -364,7 +364,6 @@ public class Ability
 		if ((ability.invokingStrategy == INSTANT_ABILITY) || (ability.invokingStrategy == INSTANT_ONESHOT)) {
 			dungeonEvents.invokeAbility(SequenceNumber.getNext(), releventCharacter, user, pos, ability);
 		} else if (ability.invokingStrategy == TARGETABLE_ABILITY) {
-			//dungeonEvents.changeCurrentCharcterFocus(SequenceNumber.getNext(), releventCharacter);
 			dungeonEvents.rangedAttack(SequenceNumber.getNext(), releventCharacter, user, abilityType, damageType, pos);
 		}
 		
@@ -469,6 +468,8 @@ public class Ability
 						attackingCreature.giveAbility(theCreature, ab, thePos, magicCost, attackingCreature);
 					}
 				}
+				
+				dungeonEvents.explosionOver();
 				
 				// Looks like the ability was activated, so apply magic cost
 				attackingCreature.usedMagic(magicCost);

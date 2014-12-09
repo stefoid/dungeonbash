@@ -125,4 +125,6 @@ public interface IDungeonEvents {
 	
 	// Tells the dungeon if there is a character currently having a turn, or a monster (null).
 	public void currentCharacterHavingTurn(Character character);
+
+	void explosionOver();
 }

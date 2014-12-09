@@ -80,8 +80,6 @@ public class EffectPresenter {
 				createAnim(abilityInfo, dif);
 			}
 		}
-		
-		
 	}
 	
 	private void createAnim(AbilityInfo abilityInfo, int dif) {

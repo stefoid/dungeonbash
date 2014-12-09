@@ -28,7 +28,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -37,6 +37,16 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		KNOCKBACK_MOVE,
 		CHARGE_MOVE,
 		SHUDDER_MOVE
+	}
+	
+	private class Explosion {
+		public DungeonPosition center;
+		public boolean hasFocusedOnCenter;
+		
+		public Explosion(DungeonPosition center) {
+			this.center = center;
+			hasFocusedOnCenter = false;
+		}
 	}
 	
 	public final static int FINAL_LEVEL = 20;
@@ -54,6 +64,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	Character currentlyFocussedCharacter;
 	int focusCharId;
 	Character characterHavingTurn;
+	Explosion explosion;
 	
 	public Dungeon(boolean newGame)
 	{	
@@ -163,6 +174,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			case 1:
 				Monster minion = new Monster(Creature.getIdForName("crazed minion"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
+				minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(minion);
 				break;
 			case 2:
@@ -299,7 +311,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 						completeListener.animEvent();
 					}
 				}
-				
 			};
 			
 			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, currentlyFocussedCharacter, moveListener);
@@ -317,7 +328,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	@Override
 	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
-		if (LOG) L.log("SN: %s, nominalChar:%s, actingCreature:%s", sequenceNumber, releventCharacter, releventCharacter); 
+		if (LOG) L.log("SN: %s, releventCharacter:%s, actingCreature:%s", sequenceNumber, releventCharacter, attackingCreature); 
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
@@ -327,12 +338,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void rangedAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, AbilityType abilityType, int damageType, DungeonPosition targetPosition) {
-		
+		if (LOG) L.log("sn: %s, releventCharacter: %s, attackingCreature: %s", sequenceNumber, releventCharacter, attackingCreature);
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
-			if (LOG) L.log("SN:"+sequenceNumber + " rangedAttack");
 			dungeonEventListener.rangedAttack(sequenceNumber, releventCharacter, attackingCreature, abilityType, damageType, targetPosition);
-			}
+		}
 	}
 	
 	@Override
@@ -373,24 +383,35 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
 		
 		boolean changeFocus = false;
-		
-		// Only change the currently focussed character if a monster is having a turn, or it is a request to change focus to the
-		// actual character that is having a turn.
-		if (characterHavingTurn == null || characterHavingTurn == newFocusCharacter) {
-			changeFocus = true;
-		} 
-		
-		// But not if that character is already focussed.
-		if (newFocusCharacter == currentlyFocussedCharacter) {
-			changeFocus = false;
-		}
-		
-		if (changeFocus) {
-			currentlyFocussedCharacter = newFocusCharacter;
-			if (dungeonEventListener != null) {
-				if (LOG) L.log("SN:%s, newFocusCharacter:%s", sequenceNumber, newFocusCharacter);
-				mapEventListener.changeCurrentCharacterFocus(sequenceNumber, newFocusCharacter);
-				dungeonEventListener.newCharacterFocus(newFocusCharacter);
+		if (LOG) L.log("newFocusCharacter: %s", newFocusCharacter);
+		if (explosion != null) {
+			if (explosion.hasFocusedOnCenter == false) {
+				explosion.hasFocusedOnCenter = true;
+				// change focus to position, not character.
+				if (LOG) L.log("foucssing on position: %s", explosion.center);
+				mapEventListener.changeFocusToPosition(sequenceNumber, explosion.center);
+			}
+		} else {
+			// Only change the currently focussed character if a monster is having a turn, or it is a request to change focus to the
+			// actual character that is having a turn.
+			if (characterHavingTurn == null || characterHavingTurn == newFocusCharacter) {
+				changeFocus = true;
+			} 
+			
+			// But not if that character is already focussed.
+			if (newFocusCharacter == currentlyFocussedCharacter) {
+				changeFocus = false;
+			}
+			
+			if (LOG) L.log("changeFocus: %s", changeFocus);
+			
+			if (changeFocus) {
+				currentlyFocussedCharacter = newFocusCharacter;
+				if (dungeonEventListener != null) {
+					if (LOG) L.log("SN:%s, newFocusCharacter:%s", sequenceNumber, newFocusCharacter);
+					mapEventListener.changeCurrentCharacterFocus(sequenceNumber, newFocusCharacter);
+					dungeonEventListener.newCharacterFocus(newFocusCharacter);
+				}
 			}
 		}
 	}
@@ -516,30 +537,23 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void explosion(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int range) {
-		
+		explosion = new Explosion(targetPosition);
 		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " explosion");
 			dungeonEventListener.explosion(sequenceNumber, releventCharacter, targetPosition, damageType, range);
 		}
 	}
 
-//	@Override
-//	public void explosionOver() {
-//		explosionReleventCharacter = null;
-//	}
-	
-//	public Character getReleventCharacter(Character character) {
-//		if (explosionReleventCharacter != null) {
-//			return explosionReleventCharacter;
-//		} else {
-//			return character;
-//		}
-//	}
+	@Override
+	public void explosionOver() {
+		if (LOG) L.log("");
+		explosion = null;
+	}
 	
 	@Override
 	public void waitingForAnimToComplete(int sequenceNumber, IAnimListener animCompleteListener) {
 		if (dungeonEventListener != null) {
-			//if (LOG) Logger.log("SN:"+sequenceNumber + " waitingForAnimToComplete");
+			//if (LOG) L.log("SN:"+sequenceNumber + " waitingForAnimToComplete");
 			dungeonEventListener.waitingForAnimToComplete(sequenceNumber, animCompleteListener);
 		}
 	}

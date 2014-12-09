@@ -34,7 +34,7 @@ import com.dbash.util.Tween;
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapPresenter implements IMapPresentationEventListener{
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
@@ -194,17 +194,22 @@ public class MapPresenter implements IMapPresentationEventListener{
 	// if we are already scrolling, chain the next scroll to the when that is completed.
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
 		if (LOG) L.log("sequenceNumber: %s, newFocusCharacter: %s", sequenceNumber, newFocusCharacter);
-		animatedFocusChange(sequenceNumber, newFocusCharacter, DungeonAreaPresenter.scrollPeriod, false, null);
+		animatedFocusChange(sequenceNumber,  newFocusCharacter.shadowMap, newFocusCharacter.getPosition(), DungeonAreaPresenter.scrollPeriod, false, null);
 	}
 
+	public void changeFocusToPosition(int sequenceNumber, DungeonPosition position) {
+		if (LOG) L.log("sequenceNumber: %s, position: %s", sequenceNumber, position);
+		ShadowMap shadowMap = new ShadowMap();
+		shadowMap.setMap(map, position, Map.RANGE);
+		animatedFocusChange(sequenceNumber,  shadowMap, position, DungeonAreaPresenter.scrollPeriod, false, null);
+	}
 	
 	// animated scroll to the new focus position.  It is not that characters turn, its just scrolling to that character
 	// so they can see something interesting.
-	public void animatedFocusChange(int sequenceNumber, final Character newFocusCharacter, final float period, boolean characterMoving, IAnimListener animCompleteListener) {
-		if (LOG) L.log("sn: %s, newFocusCharacter: %s, characterMoving: %s", sequenceNumber,newFocusCharacter, characterMoving);
+	public void animatedFocusChange(int sequenceNumber, ShadowMap shadowMap, final DungeonPosition targetDungeonPosition, final float period, boolean characterMoving, IAnimListener animCompleteListener) {
+		if (LOG) L.log("sn: %s, targetDungeonPosition: %s, characterMoving: %s", sequenceNumber, targetDungeonPosition, characterMoving);
 
-		final ShadowMap newShadowMap = new ShadowMap(newFocusCharacter.shadowMap);
-		final DungeonPosition targetDungeonPosition = newFocusCharacter.getPosition();
+		final ShadowMap newShadowMap = new ShadowMap(shadowMap);
 		LocationPresenter centerLocation = locationPresenter(targetDungeonPosition);
 		Rect targetPoint = centerLocation.getScreenCenterPoint();
 		final IAnimListener animCallback = animCompleteListener;

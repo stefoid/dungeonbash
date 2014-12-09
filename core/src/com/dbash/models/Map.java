@@ -18,7 +18,7 @@ import com.dbash.util.Randy;
 // Map doesnt know about Monsters, Characters etc...  To move creatures and items around in it, interact with the Locations
 // directly.  Those changes to Locations will emit observable Presentation events
 public class Map implements IPresenterMap {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static int RANGE = 5;
 	public static int LOS = -1;
