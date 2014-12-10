@@ -55,16 +55,6 @@ public interface IDungeonPresentationEventListener {
 	void invokeAbility(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition targetPosition, Data ability);
 	
 	// ability added - could be good or bad.
-	//	a light purple skull cloud for poison effect (fade anim)
-	//	a crystal icon for magic-blesings (short cycle anim)
-	//	a 'red heart' type of icon for healing (fade anim)
-	//	a shield icon (fade anim) for extra protection 
-	//  a sword or spear icon (fade anim) for exra attack skill 
-	//	a speech bubble curse  for curses and similar negative effects
-	//	a winged icon  (fade anim) for speeding
-	//	a ball and chain icon (fade anim) for slowing
-	//  spinning stars for stunned
-	//	a grasping hand (short cycle anim)  for holding/imobilizing effect
 	void abilityAdded(int sequenceNumber, Character releventCharacter, AbilityEffectType abilityEfectType, DungeonPosition targetPosition);
 	
 	// ability resisted

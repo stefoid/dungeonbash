@@ -826,7 +826,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	/**
 	 * Knockback has been applied to the creature.  
 	 */
-	// TODO
 	private void performKnockback(Ability ability, Creature attacker) {
 		DungeonPosition targetPos = (DungeonPosition) ability.dynamicParams.get(Ability.TARGET_POS);
 		DungeonPosition sourcePos = attacker.getPosition();
@@ -1142,8 +1141,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return damage;
 	}
 	
-	private static int readNextNum(String string)
-	{
+	private static int readNextNum(String string) {
 		int n;
 		endIndex = string.indexOf(",", index);
 		n = Integer.parseInt(string.substring(index, endIndex));
@@ -1151,8 +1149,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return n;
 	}
 
-	private static int addNextCreature(String string, int startIndex)
-	{
+	private static int addNextCreature(String string, int startIndex) {
 		index = startIndex;
 		Data cd = new Data();
 
@@ -1236,8 +1233,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return finalIndex;
 	}
 
-	public static void initializeData()
-	{
+	public static void initializeData() {
 		if (dataInitialized == false)
 		{
 			int index = 0;
@@ -1259,8 +1255,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	 * 
 	 * }
 	 */
-	protected int modifyValue(int commandName, int commandValue)
-	{
+	protected int modifyValue(int commandName, int commandValue) {
 		AbilityCommand command = new AbilityCommand(commandName, commandValue, getCreature().head, getCreature().hands, getCreature().humanoid);
 
 		for (int i = 0; i < abilities.size(); i++) {
@@ -1280,18 +1275,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return 100-reduceDamage(damageType, 100);
 	}
 	
-	
-	
-	protected static int calcLevel(int id)
-	{
+	protected static int calcLevel(int id) {
 		Data cd = (Data) creatureData.elementAt(id);
-
 		return cd.value;
-
 	}
 	
-	protected boolean makeMeleeAttack(Creature target)
-	{
+	protected boolean makeMeleeAttack(Creature target) {
 		boolean attackComplete = false;
 
 		AbilityCommand command = new AbilityCommand(AbilityCommand.MELEE_ATTACK, 0, getCreature().head, getCreature().hands, getCreature().humanoid);
@@ -1306,8 +1295,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return attackComplete;  // not required any more, but I cant be bothered removing it.  Just dont pay it no mind.
 	}
 	
-	protected void death()
-	{
+	protected void death() {
 		unsetAbilities(false);
 		setDead(true);
 		if (this.myId == 0) // Nashkur the evil wizard is dead!!!
@@ -1332,8 +1320,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	}
 	
 	// Sequence number has no relevance,
-	protected void dropObject(Ability ability)
-	{
+	protected void dropObject(Ability ability) {
 		abilities.remove(ability);
 		ability.setOwned(this, false);
 		dungeonEvents.objectDrop(SequenceNumber.getCurrent(), this, ability, mapPosition);
@@ -1341,8 +1328,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 
 	// Whenever a creature ends its turn, this is called to wind down temporary abilities,
 	// such as the effects of speed potions or poison, etc...
-	public void endTurn()
-	{
+	public void endTurn() {
 		// this can get called by the character 'nobody'
 		if (turnProcessor != null) {
 			turnProcessor.waitForAnimsToFinish();

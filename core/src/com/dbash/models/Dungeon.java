@@ -174,7 +174,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			case 1:
 				Monster minion = new Monster(Creature.getIdForName("crazed minion"), level, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
-				minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
+				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(minion);
 				break;
 			case 2:
@@ -379,19 +379,25 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		}
 	}
 
+	/**
+	 * The explosion stuff isnt neccessary because a ranged attack is always at a creature.  so even if it affects multiple creatures,
+	 * it is the ranged attack or melee attack that causes a focus change, not damage or abilities being added.
+	 * the only other thing is creatures moving can cause focus to change, but not knockback or shudder which was causing
+	 * a problem when multiple characters were caught in a brst knockback.
+	 */
 	@Override
 	public void changeCurrentCharacterFocus(int sequenceNumber, Character newFocusCharacter) {
 		
 		boolean changeFocus = false;
 		if (LOG) L.log("newFocusCharacter: %s", newFocusCharacter);
-		if (explosion != null) {
-			if (explosion.hasFocusedOnCenter == false) {
-				explosion.hasFocusedOnCenter = true;
-				// change focus to position, not character.
-				if (LOG) L.log("foucssing on position: %s", explosion.center);
-				mapEventListener.changeFocusToPosition(sequenceNumber, explosion.center);
-			}
-		} else {
+//		if (explosion != null) {
+//			if (explosion.hasFocusedOnCenter == false) {
+//				explosion.hasFocusedOnCenter = true;
+//				// change focus to position, not character.
+//				if (LOG) L.log("foucssing on position: %s", explosion.center);
+//				mapEventListener.changeFocusToPosition(sequenceNumber, explosion.center);
+//			}
+//		} else {
 			// Only change the currently focussed character if a monster is having a turn, or it is a request to change focus to the
 			// actual character that is having a turn.
 			if (characterHavingTurn == null || characterHavingTurn == newFocusCharacter) {
@@ -413,7 +419,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 					dungeonEventListener.newCharacterFocus(newFocusCharacter);
 				}
 			}
-		}
+//		}
 	}
 
 	@Override
@@ -496,6 +502,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			currentlyFocussedCharacter = null;
 		}
 		shadowMaps.remove(character);
+		mapEventListener.updateMapPresentation();
 	}
 	
 	@Override

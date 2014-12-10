@@ -43,10 +43,9 @@ import com.dbash.util.Rect;
 // presenter.  The MapPresetner takes care of focus changes and scrolling.
 // What is left is basically special effects - explosions and damage indications and the like.  These are the ones that
 // DungeonAreaPresener knows how to turn into queued AniamtionViews.
-//
 public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresentationEventListener {
 
-	private static final float multiplier = 4f;
+	private static final float multiplier = 1f;
 	public final static float scrollPeriod = 0.5f * multiplier;
 	public final static float walkPeriod = 0.7f * multiplier;
 	public final static float leaderModeWalkPeriod = 0.7f * multiplier;
@@ -63,7 +62,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public final static float knockbackPeriod = 0.55f * multiplier;
 	public final static float shudderPeriod = 0.34f * multiplier;
 	public final static float effectMsgPeriod = 1f * multiplier;
-	
 	
 	private UIDepend				gui;
 	private PresenterDepend 		model;
@@ -101,7 +99,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		
 		spriteBatch.end();
 	}
-
 
 	// The Dungeon Area presenter's primary job
 	@Override
@@ -241,7 +238,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		}
 	}
 
-
 	@Override
 	public void rangedAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, AbilityType abilityType, int damageType, DungeonPosition targetPosition) {
 		DungeonPosition fromPos = attackingCreature.getPosition();
@@ -276,7 +272,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			}
 		}
 	}
-
 
 	@Override
 	public void damageInflicted(int sequenceNumber, Character releventCharacter, Creature damagedCreature, DungeonPosition targetPosition, int damageType, int damageAmount) {
@@ -316,7 +311,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			}
 		}
 	}
-
 
 	protected String getDamageName(int damageType) {
 		String name;
@@ -411,13 +405,11 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		model.animQueue.chainSequential(missed, false);
 	}
 
-
 	@Override
 	public void invokeAbility(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
 		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.invokeAbility(sequenceNumber, actingCreature, targetPosition, ability);
 	}
-
 
 	@Override
 	public void abilityAdded(int sequenceNumber, Character releventCharacter, AbilityEffectType abilityEfectType, DungeonPosition targetPosition) {
@@ -573,7 +565,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		LocationPresenter loc = mapPresenter.locationPresenter(position);
 		loc.showEyeAnimation(showEyeAnim);
 	}
-
 
 	@Override
 	public void gameOver() {

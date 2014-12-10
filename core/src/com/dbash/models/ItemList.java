@@ -47,13 +47,16 @@ public class ItemList extends ArrayList<AbilityInfo>{
 	}
 	
 	// Can just instantiate the list and add abilities to it one at a time, or in a vector below
-	public ItemList(boolean includeRoughTerrain)
-	{
+	public ItemList(boolean includeRoughTerrain) {
 		super();
 		this.includeRoughTerrain = includeRoughTerrain;
 	}
 	
-
+	public ItemList(ItemList parent) {
+		owner = parent.owner;
+		includeRoughTerrain = parent.includeRoughTerrain;
+		addAll(parent);
+	}
 	
 	public void addAbility(Ability ability) {
 		if (ability.isPhysical() || (ability.isRoughTerrain() && includeRoughTerrain)) {

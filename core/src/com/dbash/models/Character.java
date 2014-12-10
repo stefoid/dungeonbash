@@ -1035,6 +1035,9 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	@Override
 	public void itemDropSelected(Ability ability) {
+		if (currentSelectedAbility == ability) {
+			currentSelectedAbility = null;
+		}
 		dropObject(ability);
 		trySetDefaultMelee();
 		itemListListeners.alertListeners();

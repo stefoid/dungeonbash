@@ -22,9 +22,6 @@ import com.dbash.util.Rect;
 // displays it as a ScrollingList of ListElements.
 public class ItemListPresenter extends ListPresenter{
 	
-	private ItemList characterItemList;
-	private ItemList dungeonItemList;
-	
 	public ItemListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		super(model, gui, touchEventProvider, area);
 	}
@@ -34,6 +31,8 @@ public class ItemListPresenter extends ListPresenter{
 	// tell our ScrollingList to use that.
 	@Override
 	public void listInfoUpdate() {
+		ItemList characterItemList;
+		ItemList dungeonItemList;
 		// Make up the ListElements to feed the ScrollingList
 		ArrayList<IListElement> elements = new ArrayList<IListElement>();
 		final Character character = model.presenterTurnState.getCurrentCharacter();
@@ -112,7 +111,7 @@ public class ItemListPresenter extends ListPresenter{
 	public void scrollItem(ItemListElementView element) {
 		// Build new list.
 		Character character = model.presenterTurnState.getCurrentCharacter();
-		ItemList newItemList = model.presenterDungeon.getItemsAtPosition(character.getPosition());
+		ItemList newItemList = new ItemList(model.presenterDungeon.getItemsAtPosition(character.getPosition()));
 		ItemList charItems = character.getItemList();
 		for (AbilityInfo abilityInfo : charItems) {
 			newItemList.add(abilityInfo);
