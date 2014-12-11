@@ -44,116 +44,16 @@ public class AnimQueue {
 	
 	// appends it to the end of the list.  pass true for 'owned' if you want to control when draw is called on the AnimOp yourself.
 	// otherwise the queue will call it.
-	public void add(AnimOp animOp, boolean owned) {
+	public void add(final AnimOp animOp, boolean owned) {
 		if (queue.size() >= maxSize) {
 			return;
 		}
 		queue.add(animOp);
 		animOp.hasCompleted = false;
 		animOp.owned = owned;
-		final AnimOp theOp = animOp;
 		animOp.onComplete(new IAnimListener() {
 			public void animEvent() {
-				theOp.hasCompleted = true;  // not safe to actually delete here, as we might be iterating over the list inside draw()
-			}
-		});
-	}
-	
-	public void setMaxAnims(int size) {
-		maxSize = size;
-	}
-	
-	// chain this anim to the end of the queue, configured to start when the last one completes
-	// or immediately if the queue is empty
-	public void chainSequential(AnimOp animOp, boolean owner) {
-		AnimOp lastAnimOp = getLast();
-		add(animOp, owner);
-		
-		// if the queue is empty 
-		if (lastAnimOp == null) {
-			animOp.startPlaying();
-		} else {
-			final AnimOp av = animOp;
-			lastAnimOp.onComplete(new IAnimListener() {
-				public void animEvent() {
-					av.startPlaying();
-				}
-			});
-		}
-	}
-	
-	// similar to the sequential one, except the animation will start playing on a certain percentage complete, rather than 
-	// after it totally completes.
-	public void chainConcurrentWithLast(AnimOp animOp, float percentage, boolean owner) {
-		AnimOp lastAnimOp = getLast();
-		add(animOp, owner);
-		
-		// if the queue is empty 
-		if (lastAnimOp == null) {
-			animOp.startPlaying();
-		} else {
-			final AnimOp av = animOp;
-			lastAnimOp.onPercentComplete(percentage, new IAnimListener() {
-				public void animEvent() {
-					av.startPlaying();
-				}
-			});
-		}
-	}
-	
-	//  Will start immediately if queue empty 
-	// Otherwise will attempt to chain concurrently with an animation of the same sequence number as it.
-	// Otherwise will chain sequentially after last op in queue.
-	public void chainConcurrentWithSn(AnimOp animOp, boolean owner) {
-		AnimOp lastAnimOp = getLast();
-		AnimOp sameSnOp = getLast(animOp.sequenceNumber);
-		add(animOp, owner);
-		// if the queue is empty 
-		if (lastAnimOp == null) {
-			animOp.startPlaying();
-		} else {
-			final AnimOp av = animOp;
-			
-			if (sameSnOp != null) {
-				sameSnOp.onStart(new IAnimListener() {
-					public void animEvent() {
-						av.startPlaying();
-					}
-				});
-			} else {
-				lastAnimOp.onComplete(new IAnimListener() {
-					public void animEvent() {
-						av.startPlaying();
-					}
-				});
-			}
-		}
-	}
-	
-	//  Will start immediately if queue empty 
-	// Otherwise will attempt to chain concurrently with the last anim belonging to the same creator.
-	public void chainConcurrentWithMyLast(AnimOp animOp, Object creator, float percentage, boolean owner) {
-		AnimOp lastAnimOp = getLastByCreator(creator, null);
-		add(animOp, owner);
-		
-		// if the queue is empty 
-		if (lastAnimOp == null) {
-			animOp.startPlaying();
-		} else {
-			final AnimOp av = animOp;
-			lastAnimOp.onPercentComplete(percentage, new IAnimListener() {
-				public void animEvent() {
-					av.startPlaying();
-				}
-			});
-		}
-	}
-
-	public void chainSequntialToOp(final AnimOp thisOp, AnimOp afterThisOp) {
-		add(thisOp, false);
-		afterThisOp.onComplete(new IAnimListener() {
-			public void animEvent() {
-				thisOp.startPlaying();
+				animOp.hasCompleted = true;  // not safe to actually delete here, as we might be iterating over the list inside draw()
 			}
 		});
 	}
@@ -168,6 +68,118 @@ public class AnimQueue {
 		    	animOp.draw(spriteBatch);
 		    }
 		}  
+	}
+	
+	public void setMaxAnims(int size) {
+		maxSize = size;
+	}
+	
+	// chain this anim to the end of the queue, configured to start when the last one completes
+	// or immediately if the queue is empty
+	public void chainSequential(final AnimOp animOp, boolean owner) {
+		AnimOp lastAnimOp = getLast();
+		add(animOp, owner);
+		
+		// if the queue is empty 
+		if (lastAnimOp == null) {
+			animOp.startPlaying();
+		} else {
+			lastAnimOp.onComplete(new IAnimListener() {
+				public void animEvent() {
+					animOp.startPlaying();
+				}
+			});
+		}
+	}
+	
+	// similar to the sequential one, except the animation will start playing on a certain percentage complete, rather than 
+	// after it totally completes.
+	public void chainConcurrentWithLast(final AnimOp animOp, float percentage, boolean owner) {
+		AnimOp lastAnimOp = getLast();
+		add(animOp, owner);
+		
+		// if the queue is empty 
+		if (lastAnimOp == null) {
+			animOp.startPlaying();
+		} else {
+			lastAnimOp.onPercentComplete(percentage, new IAnimListener() {
+				public void animEvent() {
+					animOp.startPlaying();
+				}
+			});
+		}
+	}
+	
+	//  Will start immediately if queue empty 
+	// Otherwise will attempt to chain concurrently with an animation of the same sequence number as it.
+	// Otherwise will chain sequentially after last op in queue.
+	public void chainConcurrentWithSn(final AnimOp animOp, boolean owner) {
+		AnimOp lastAnimOp = getLast();
+		AnimOp sameSnOp = getLast(animOp.sequenceNumber);
+		add(animOp, owner);
+		// if the queue is empty 
+		if (lastAnimOp == null) {
+			animOp.startPlaying();
+		} else {
+			if (sameSnOp != null) {
+				sameSnOp.onStart(new IAnimListener() {
+					public void animEvent() {
+						animOp.startPlaying();
+					}
+				});
+			} else {
+				lastAnimOp.onComplete(new IAnimListener() {
+					public void animEvent() {
+						animOp.startPlaying();
+					}
+				});
+			}
+		}
+	}
+	
+	//  Will start immediately if queue empty 
+	// Otherwise will attempt to chain concurrently with the last anim belonging to the same creator.
+	public void chainConcurrentWithMyLast(final AnimOp animOp, Object creator, float percentage, boolean owner) {
+		AnimOp lastAnimOp = getLastByCreator(creator, null);
+		add(animOp, owner);
+		
+		// if the queue is empty 
+		if (lastAnimOp == null) {
+			animOp.startPlaying();
+		} else {
+			lastAnimOp.onPercentComplete(percentage, new IAnimListener() {
+				public void animEvent() {
+					animOp.startPlaying();
+				}
+			});
+		}
+	}
+
+	//  Will start immediately if queue empty 
+	// Otherwise will attempt to chain sequntially with the last anim belonging to the same creator.
+	// if there is none, chain sequentially to the last anim in the queue
+	public void chainSequentialWithMyLast(final AnimOp animOp, Object creator, boolean owner) {
+		AnimOp lastAnimOp = getLastByCreator(creator, null);
+		
+		if (lastAnimOp == null) {
+			chainSequential(animOp, owner);
+		} else {
+			add(animOp, owner);
+			lastAnimOp.onComplete(new IAnimListener() {
+				public void animEvent() {
+					animOp.startPlaying();
+				}
+			});
+		}
+	}
+	
+	public void chainSequntialToOp(final AnimOp thisOp, AnimOp afterThisOp) {
+		add(thisOp, false);
+		afterThisOp.onComplete(new IAnimListener() {
+			public void animEvent() {
+				thisOp.startPlaying();
+			}
+		});
 	}
 	
 	// returns the last non-completed op in the queue

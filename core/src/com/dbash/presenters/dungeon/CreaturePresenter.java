@@ -94,6 +94,7 @@ public class CreaturePresenter {
 		setStaticImage(DungeonPosition.SOUTH);
 		updateStaticImageArea();
 	}
+	
 	public CreaturePresenter(){};
 	
 	public void resume() {
@@ -325,11 +326,11 @@ public class CreaturePresenter {
 				break;
 			case CHARGE_MOVE:
 				moveAnim.animType = AnimOp.AnimType.CHARGE_MOVE;
-				model.animQueue.chainSequential(moveAnim, false);
+				model.animQueue.chainSequentialWithMyLast(moveAnim, this, false);
 				break;
 			default:
 				moveAnim.animType = AnimOp.AnimType.MOVE;
-				model.animQueue.chainSequential(moveAnim, false);
+				model.animQueue.chainSequentialWithMyLast(moveAnim, this, false);
 				break;
 		}
 		
@@ -427,11 +428,14 @@ public class CreaturePresenter {
 		}
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final Rect toRect;
-		if (creature instanceof Monster) {
+		String animName = getFullName(name, "attack", direction);
+		int numFrames = gui.spriteManager.maxFrame(animName);
+		if (numFrames == 1) {
 			toRect = new Rect(fromRect, 1.34f);
 		} else {
 			toRect = new Rect(fromRect);
 		}
+		
 		AnimationView attackAnim = new AnimationView(gui, getFullName(name, "attack", direction), fromRect, toRect, 1f, 1f, DungeonAreaPresenter.attackPeriod, 1, new IAnimListener() {
 			public void animEvent() {
 				if (animCompleteListener != null) {

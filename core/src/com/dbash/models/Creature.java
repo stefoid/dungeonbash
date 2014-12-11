@@ -354,11 +354,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			return false;
 		}
 		
-		creatureStats.health = health;
-		creatureStats.maxHealth = maxHealth;
-		creatureStats.magic = magic;
-		creatureStats.maxMagic = maxMagic;
-		creatureStats.experience = experience;
+		setCreatureStats();
 		boolean tempAbilityActive = calculateHighlightAbility();
 		
 		// set a flag that could help monsters not bother having their turn.
@@ -371,6 +367,17 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return true;
 	}
 
+	private void setCreatureStats() {
+		creatureStats.name = creature.name;
+		int maxHealth = calculateMaxHealth();
+		int maxMagic = calculateMaxMagic();
+		creatureStats.health = health;
+		creatureStats.maxHealth = maxHealth;
+		creatureStats.magic = magic;
+		creatureStats.maxMagic = maxMagic;
+		creatureStats.experience = experience; 
+	}
+	
 	private DungeonPosition		tempPos = new DungeonPosition(0, 0);
 	/**
 	 * Is it possible to move to the direction indicated?  And is it OK to move into a chaacter?
@@ -1402,19 +1409,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		else
 			return true;
 	}
+	
 	public CreatureStats getCreatureStats()
 	{
-		// initialize for first time
-		if (creatureStats.name == null) {
-			creatureStats.name = creature.name;
-			int maxHealth = calculateMaxHealth();
-			int maxMagic = calculateMaxMagic();
-			creatureStats.health = health;
-			creatureStats.maxHealth = maxHealth;
-			creatureStats.magic = magic;
-			creatureStats.maxMagic = maxMagic;
-			creatureStats.experience = experience;
-		}
+		setCreatureStats();  // make sure they are up to date.
 		return creatureStats;
 	}
 	
