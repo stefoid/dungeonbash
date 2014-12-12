@@ -28,7 +28,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -517,7 +517,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void gameOver() {
 		// TODO would be nicer if this happened after the character died.
-		map.clearTempLighting();  
+		map.refreshLighting();  
 		mapEventListener.updateMapPresentation();
 		dungeonEventListener.gameOver();
 	}

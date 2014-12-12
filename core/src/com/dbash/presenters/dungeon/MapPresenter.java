@@ -34,7 +34,7 @@ import com.dbash.util.Tween;
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapPresenter implements IMapPresentationEventListener{
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
@@ -278,13 +278,11 @@ public class MapPresenter implements IMapPresentationEventListener{
 	public void removeLight(Light light) {
 		map.removeLight(light);
 	}
-	
-	public void refreshTempLighting() {
-		map.clearTempLighting();
-		map.shineTempLighting();
+
+	public void refreshLighting() {
+		map.refreshLighting();
 	}
-
-
+	
 	@Override
 	public void updateMapPresentation() {
 		currentShadowMap.refresh();

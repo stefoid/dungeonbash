@@ -41,11 +41,13 @@ public class Light {
 	public void setMap(Map map) {
 		this.map = map;
 		shadowMap.setMap(map, position, range);
+		map.lightingChanged();
 	}
 	
 	public void setPosition(DungeonPosition position) {
 		this.position = new DungeonPosition(position);
 		shadowMap.setMap(map, position, (int)range);
+		map.lightingChanged();
 	}
 	
 	// Shine its light on the Locations it can see, according to their distance.
@@ -74,6 +76,11 @@ public class Light {
 	
 	public void setPositionOnly(DungeonPosition position) {
 		this.position = position;
+	}
+	
+	public void setAlpha(float alpha) {
+		this.alpha = alpha;
+		map.lightingChanged();
 	}
 	
 	protected float getLightDivisor(float distance) {

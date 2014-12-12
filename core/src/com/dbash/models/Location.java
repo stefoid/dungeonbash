@@ -214,7 +214,6 @@ public class Location {
 		if (newTint > tint) {  // cant make it darker than it already is
 			tint = newTint;
 			locationInfo.tint = tint;  // just change the tint for efficiency
-			map.alertToVisualChangeAtLocation(this);
 		}
 	}
 	

@@ -35,7 +35,7 @@ public class Map implements IPresenterMap {
 	
 	private Vector<UILocationInfoListener> locationInfoListeners;
 	private Location solidRock = new Location();
-	
+	private boolean lightingChanged;
 	private final int border = 2; // how thick the enclosing rock wall is
 	
 	@SuppressWarnings("serial")
@@ -422,30 +422,27 @@ public class Map implements IPresenterMap {
 			}
 		} else {
 			if (tempLights.contains(light) == false) {
-				clearTempLighting();
 				light.setMap(this);
 				tempLights.add(light);
-				shineTempLighting();
+				lightingChanged();
 			}
 		}
 	}
 	
 	public void moveLight(Light light, DungeonPosition newPosition) {
-		clearTempLighting();
 		if (tempLights.contains(light) == false) {
 			tempLights.add(light);
 			light.setMap(this);
 		} 
 		light.setPosition(newPosition);
-		shineTempLighting();
+		lightingChanged();
 	}
 	
 	// remove the effects of temp lighting, returning tile to its base level of permanent lighting.
 	public void removeLight(Light light) {
 		if (tempLights.contains(light)) {
-			clearTempLighting();
 			tempLights.remove(light);
-			shineTempLighting();
+			lightingChanged();
 		}
 	}
 	
@@ -474,6 +471,18 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
+	public void refreshLighting() {
+		if (lightingChanged) {
+			lightingChanged = false;
+			if (LOG) L.log("");
+			clearTempLighting();
+			shineTempLighting();
+		}
+	}
+	
+	public void lightingChanged() {
+		lightingChanged = true;
+	}
 //	public void dump() {
 //		// debug print
 //		for (int y=width-1; y>=0; y--) {

@@ -96,7 +96,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		mapPresenter.draw(spriteBatch);  // will draw the map, and creatures on the map 
 		animQueue.draw(spriteBatch); // will draw characters and so on.
 		effectAnimQueue.draw(spriteBatch);  // draws chaacter stat effects
-		
+		mapPresenter.refreshLighting();
 		spriteBatch.end();
 	}
 

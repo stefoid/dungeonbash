@@ -5,6 +5,7 @@ import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
+import com.dbash.models.Map;
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
@@ -81,7 +82,7 @@ public class CreaturePresenter {
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.SHOW_NOTHING;
-			light = new Light(creature.getPosition(), 5, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
+			light = new Light(creature.getPosition(), Map.RANGE-1, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
 		} else {
 			this.visualState = VisualState.SHOW_STATIC;
 		}
@@ -180,14 +181,13 @@ public class CreaturePresenter {
 		
 		if (light != null) {
 			// draw both lights at the correct alpha 
-			for (float complete = 0f; complete < 100f; complete += 10f) {
+			for (float complete = 0f; complete < 100f; complete += 20f) {
 				final float percent = complete/100f;
 				animView.onPercentComplete(complete, new IAnimListener() {
 					public void animEvent() {
-						light.alpha = 1f-percent*.6f;
-						toLight.alpha = percent+.1f;
+						light.setAlpha(1f-percent*.6f);
+						toLight.setAlpha(percent+.1f);
 						if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
-						mapPresenter.refreshTempLighting();
 					}
 				});
 			}
