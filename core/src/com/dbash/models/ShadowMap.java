@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dbash.util.L;
+
 
 // A shadowMap belongs to a character, representing the characters view of the map (which Locations the character can see).  
 // Every time the character moves, it gets an update shadowmap message.
@@ -12,7 +14,7 @@ import java.util.Vector;
 // Therefore to identify if a particular location is visible within a shadowmap, you just need to find out if the Location exists with
 // the map.
 public class ShadowMap {
-	
+	public static final boolean LOG = false && L.DEBUG;
 	// so a RayPos is just a DungeonPosition with one extra parameter - distance from the center point.
 	// the idea being that the 'rays' are generated only once at startup, and each point can store how far it is from the
 	// center, and then a shadowmap can use that info to efficiently generate an *ordered set* of Locations sorted according to proximity.
@@ -118,6 +120,7 @@ public class ShadowMap {
 	}
 	
 	public void refresh() {
+		if (LOG) L.log("");
 		for (Location location : locations) {
 			location.updatePresenter();
 		}
@@ -137,6 +140,7 @@ public class ShadowMap {
 	// So when drawing locations, you can easilly tell how to draw them depending on which shadowmap(s) are currently active.
     private void generateShadowMap()
     {
+    	if (LOG) L.log("");
     	// The algorythm is to follow each ray in the vector until it hits solid rock, or the range limit, whichever comes first
     	// Then add that location to the set
     	HashSet<Location> newLocations = new HashSet<Location>();
@@ -170,6 +174,7 @@ public class ShadowMap {
     // startTile and endStile stuff
     private void generateRays()
     {
+    	if (LOG) L.log("");
     	RayPos[] losPoints;
         int tileX;
         int tileY;

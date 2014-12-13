@@ -314,7 +314,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			};
 			
 			dungeonEventListener.creatureMove(sequenceNumber, releventCharacter, actingCreature, fromPosition, toPosition, direction, moveType, currentlyFocussedCharacter, moveListener);
-		
+			if (actingCreature == currentlyFocussedCharacter) {
+				currentFocus = toPosition;  // this stops an annoying glitch
+			}
 		} else {
 			// we wont animate, but creature presenter needs to be updated.
 			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
@@ -404,15 +406,20 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				changeFocus = true;
 			} 
 			
-			// But not if that character is already focussed.
+			// But not if that character is already focussed, unless it has been shifted when it wasnt its tun, like knockback.
 			if (newFocusCharacter == currentlyFocussedCharacter) {
-				changeFocus = false;
+				if (currentFocus.equals(newFocusCharacter.getPosition()) == false) {
+					changeFocus = true;
+				} else {
+					changeFocus = false;  // dont change focus if the character is allready in postion or moving to that position.
+				}
 			}
 			
 			if (LOG) L.log("changeFocus: %s", changeFocus);
 			
 			if (changeFocus) {
 				currentlyFocussedCharacter = newFocusCharacter;
+				currentFocus = newFocusCharacter.getPosition();
 				if (dungeonEventListener != null) {
 					if (LOG) L.log("SN:%s, newFocusCharacter:%s", sequenceNumber, newFocusCharacter);
 					mapEventListener.changeCurrentCharacterFocus(sequenceNumber, newFocusCharacter);

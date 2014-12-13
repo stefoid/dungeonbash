@@ -34,7 +34,7 @@ import com.dbash.util.Tween;
 // mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapPresenter implements IMapPresentationEventListener{
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;

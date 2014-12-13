@@ -55,6 +55,8 @@ public class Light {
 		applyLight(alpha);
 	}
 	
+	
+	
 	private void applyLight(float alpha) {
 		if (LOG) L.log("alpha: %s", alpha);
 		for (Location location : shadowMap.locations) {

@@ -4,6 +4,9 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
+	public static boolean TESTCHARS = true;
+	public static boolean NO_SAVE = false;
+	
 	public static final int STACK_LEVEL = 3;
 	public static void log(String msg, Object... args) {
 		System.out.printf(buildDebugString()+" "+msg + "\n", args);

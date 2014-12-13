@@ -181,7 +181,7 @@ public class CreaturePresenter {
 		
 		if (light != null) {
 			// draw both lights at the correct alpha 
-			for (float complete = 0f; complete < 100f; complete += 20f) {
+			for (float complete = 0f; complete < 100f; complete += 10f) {
 				final float percent = complete/100f;
 				animView.onPercentComplete(complete, new IAnimListener() {
 					public void animEvent() {
@@ -237,19 +237,20 @@ public class CreaturePresenter {
 	
 	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, 
 			MoveType moveType, final float moveTime, IAnimListener animCompleteListener) {
-
+		
 		// Work out what animation to play for the movement.
 		String animToUse = "walk";
+		int imageDirection = direction;
 		switch (moveType) {
 			case CHARGE_MOVE:
 				animToUse = "attack";
 				break;
 			case KNOCKBACK_MOVE:
-				direction = DungeonPosition.oppositeDirection(direction);
-				setStaticImage(direction);
+				imageDirection = DungeonPosition.oppositeDirection(direction);
+				direction = imageDirection;
 				break;
 			case SHUDDER_MOVE:
-				setStaticImage(DungeonPosition.oppositeDirection(direction));
+				imageDirection = DungeonPosition.oppositeDirection(direction);
 				break;
 			default:
 				animToUse = "walk";
@@ -263,7 +264,7 @@ public class CreaturePresenter {
 		// Construct the move animation and add start and end strategies.
 		if (moveType == MoveType.SHUDDER_MOVE) {
 			calcShudderRect(toRect, direction);
-			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
+			moveAnim = new AnimationView(gui, getFullName(name, animToUse, imageDirection), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
 				public void animEvent() {
 					if (tpListen != null) {
 						tpListen.animEvent(); // tell anyone who cares
@@ -290,7 +291,7 @@ public class CreaturePresenter {
 		}
 
 		configureAnimation(moveAnim, fromPosition, toPosition);
-		updateToStaticWhenStopped(moveAnim, toPosition, direction);
+		updateToStaticWhenStopped(moveAnim, toPosition, imageDirection);
 		
 		// how and to what we chain this move anim depends on these rules:
 		// 1. if the current move is a LEADER_MODE move, or a normal move, its chained sequentially to the last 

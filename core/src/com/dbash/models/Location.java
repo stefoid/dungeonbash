@@ -237,8 +237,10 @@ public class Location {
 	}
 	
 	public void setDiscovered() {
-		isDiscovered = true;
-		updatePresenter();
+		if (isDiscovered == false) {
+			isDiscovered = true;
+			updatePresenter();
+		}
 	}
 	
 	public boolean isOpaque() {

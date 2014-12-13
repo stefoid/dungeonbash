@@ -144,21 +144,23 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-		if (LOG) L.log("SAVING GAMEDATA");
-		FileHandle fl = Gdx.files.local("gamedata.dat");
-		ObjectOutputStream out = null;
-		try {
-			out = new ObjectOutputStream(fl.write(false));
-			out.writeUTF(SAVE_FILE_VERISON);
-			turnProcessor.allCreatures.persist(out);
-			dungeon.persist(out);
-			turnProcessor.persist(out);
-			audio.persist(out);
-		} catch (IOException e) {
-		} finally {
+		if (L.NO_SAVE == false) {
+			if (LOG) L.log("SAVING GAMEDATA");
+			FileHandle fl = Gdx.files.local("gamedata.dat");
+			ObjectOutputStream out = null;
 			try {
-				out.close();
+				out = new ObjectOutputStream(fl.write(false));
+				out.writeUTF(SAVE_FILE_VERISON);
+				turnProcessor.allCreatures.persist(out);
+				dungeon.persist(out);
+				turnProcessor.persist(out);
+				audio.persist(out);
 			} catch (IOException e) {
+			} finally {
+				try {
+					out.close();
+				} catch (IOException e) {
+				}
 			}
 		}
 	}
