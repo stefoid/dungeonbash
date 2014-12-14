@@ -37,7 +37,8 @@ public class TabSetPresenter implements TouchEventListener{
 	private float swipePosX;
 	private float swipeVelocity;
 	private Rect bodyArea;
-	private float swipeAmount;
+	private float minSwipeAmount;
+	private float swipeDist;
 	
 	public void create(PresenterDepend model,  UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 
@@ -45,8 +46,8 @@ public class TabSetPresenter implements TouchEventListener{
 		Rect tabArea = new Rect(area, 0, 0, SizeCalculator.LIST_AREA_SCALE, 0);
 		tabArea.width = area.width / 5;
 		
-		this.swipeAmount = gui.sizeCalculator.MIN_DRAG_PIXELS*2f;  // 4mm
-		
+		this.minSwipeAmount = gui.sizeCalculator.MIN_DRAG_PIXELS*2f;  // 4mm
+		this.swipeDist = area.width / 48f;
 		// the tab pane area takes up the remaining 85%
 		bodyArea = new Rect(area, 0, 0, 0, SizeCalculator.TAB_BUTTON_SCALE);
 		
@@ -141,13 +142,13 @@ public class TabSetPresenter implements TouchEventListener{
 		int size = tabs.size();
 		
 		if (swipeState == SwipeState.LEFT) {
-			swipeVelocity = -7f;
+			swipeVelocity = -swipeDist;
 			index++;
 			if (index >= size) {
 				index = 0;
 			}
 		} else {
-			swipeVelocity = 7f;
+			swipeVelocity = swipeDist;
 			index--;
 			if (index < 0) {
 				index = size-1;
@@ -169,12 +170,12 @@ public class TabSetPresenter implements TouchEventListener{
 	public boolean touchEvent(TouchEvent event) {
 		if (swipeState == SwipeState.NONE) {
 			if (event.getTouchType() == TouchType.MOVE) {
-				if (event.dx < -swipeAmount) {
+				if (event.dx < -minSwipeAmount) {
 					swipeState = SwipeState.LEFT;
 					startSwipe();
 				}
 				
-				if (event.dx > swipeAmount) {
+				if (event.dx > minSwipeAmount) {
 					swipeState = SwipeState.RIGHT;
 					startSwipe();
 				}
