@@ -1,27 +1,13 @@
 package com.dbash.presenters.dungeon;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
-import com.dbash.models.Creature;
-import com.dbash.models.Data;
-import com.dbash.models.UIInfoListener;
-import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.EffectList;
-import com.dbash.models.IAnimListener;
-import com.dbash.models.IDungeonPresentationEventListener.DeathType;
-import com.dbash.models.IPresenterCreature;
-import com.dbash.models.IPresenterCreature.HighlightStatus;
-import com.dbash.models.Light;
-import com.dbash.models.Monster;
 import com.dbash.models.PresenterDepend;
+import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
-import com.dbash.platform.Audio;
-import com.dbash.platform.ImageView;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
@@ -37,6 +23,7 @@ import com.dbash.util.Rect;
  */
 public class EffectPresenter {
 	public static final boolean LOG = false && L.DEBUG;
+	
 	
 	private UIDepend gui;
 	private PresenterDepend model;
@@ -63,6 +50,10 @@ public class EffectPresenter {
 				} else {
 					effectList = character.getEffectList();
 				}
+			}
+			
+			public void resetUIInfo() {
+				effectList = character.getEffectList();
 			}
 		});
 	}

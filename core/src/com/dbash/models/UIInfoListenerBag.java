@@ -15,6 +15,12 @@ public class UIInfoListenerBag extends Vector<UIInfoListener> {
 		}
 	}
 	
+	public void resetList() {
+		for (UIInfoListener listener : this) {
+			listener.resetUIInfo();
+		}
+	}
+	
 	public void empty() {
 		for (UIInfoListener listener : this) {
 			remove(listener);

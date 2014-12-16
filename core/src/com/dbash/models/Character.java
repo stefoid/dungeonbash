@@ -797,6 +797,8 @@ public class Character extends Creature implements IPresenterCharacter {
 			return false;
 		}
 		
+		effectListListeners.resetList();
+		
 		// This will set/unset selectable items such as melee weapons and armor.
 		// It will activate instant or oneshot items
 		// if the ability is targetable, we simply r it as the current

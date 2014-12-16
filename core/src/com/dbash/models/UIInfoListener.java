@@ -1,5 +1,8 @@
 package com.dbash.models;
 
-public interface UIInfoListener {
-	public void UIInfoChanged();
+public abstract class UIInfoListener {
+	public abstract void UIInfoChanged();
+	
+	public void resetUIInfo() {
+	}
 }
