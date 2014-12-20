@@ -140,11 +140,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 		return creaturePresenter;
 	}
-	
-	@Override
-	public String toString() {
-		return getCreature().name;
-	}
 
 	public Creature(int creatureId, DungeonPosition p, IDungeonEvents dungeonEvents, 
 			IDungeonQuery dungeonQuery, TurnProcessor turnProcessor)
@@ -1422,5 +1417,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		} else {
 			return true;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return getCreature().name;
 	}
 }

@@ -41,8 +41,9 @@ public class MapAnim extends AnimOp {
 	protected Tween currentShadowMapTween;
 	protected MapPresenter mapPresenter;
 	protected float period;
+	protected Rect targetPoint;
 	
-	public MapAnim(Tween currentShadowMapTween, Rect viewPos, Rect targetPoint, float period, MapPresenter mapPresenter) {
+	public MapAnim(Tween currentShadowMapTween, Rect targetPoint, float period, MapPresenter mapPresenter) {
 		super();  
 		
 		this.mapPresenter = mapPresenter;
@@ -52,10 +53,13 @@ public class MapAnim extends AnimOp {
 		this.period = period;
 		xTween = new Tween();
 		yTween = new Tween();
+		this.targetPoint = targetPoint;
+	}
+	
+	public void setViewPosOnStart(Rect viewPos) {
 		xTween.init(viewPos.x, targetPoint.x, period, null);
 		yTween.init(viewPos.y, targetPoint.y, period, null);
 	}
-	
 	
 	// viewPos is where the dungeon camera is at any given time, so we have to draw enough tiles around that point to show the map
 	// LocationPresenters are just squares of tilesize, starting from 0,0 in the bottom left corner, its no probs.

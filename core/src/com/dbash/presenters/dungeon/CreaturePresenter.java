@@ -480,6 +480,7 @@ public class CreaturePresenter {
 			deathAnim.animType = AnimOp.AnimType.SINKING;
 			deathAnim.staticFrameOnly();
 			deathAnim.setClipRect(fromRectC);
+			//deathAnim.setGreyscale(true);
 		}
 
 		deathAnim.onStart(new IAnimListener() {

@@ -28,7 +28,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -159,41 +159,41 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void createLevel(TurnProcessor turnProcessor, int level)
 	{
 		this.turnProcessor = turnProcessor;
-		currentLevel = level;
+		currentLevel = currentLevel + L.LEVEL - 1;
 		// will create a map of Locations all ready to use.
-		map = new Map(level, this, this);
+		map = new Map(currentLevel, this, this);
 		initLevel();
-		// If its the last level, put nashkur at the exit instead of an exit.
+		// If its the last currentLevel, put nashkur at the exit instead of an exit.
 		
-		switch (level) {
+		switch (currentLevel) {
 			case Dungeon.FINAL_LEVEL:
-				Monster nashkur = new Monster(Creature.getIdForName("nashkur"), level, map.exitPoint, this, this, turnProcessor);
+				Monster nashkur = new Monster(Creature.getIdForName("nashkur"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = nashkur;
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster minion = new Monster(Creature.getIdForName("crazed minion"), level, map.exitPoint, this, this, turnProcessor);
+				Monster minion = new Monster(Creature.getIdForName("crazed minion"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
 				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(minion);
 				break;
 			case 2:
-				Monster orc = new Monster(Creature.getIdForName("halfling"), level, map.exitPoint, this, this, turnProcessor);
+				Monster orc = new Monster(Creature.getIdForName("halfling"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = orc;
 				mobs.add(orc);
 				break;
 			case 3:
-				Monster priest = new Monster(Creature.getIdForName("priest"), level, map.exitPoint, this, this, turnProcessor);
+				Monster priest = new Monster(Creature.getIdForName("priest"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = priest;
 				mobs.add(priest);
 				break;
 			case 4:
-				Monster wizard = new Monster(Creature.getIdForName("wizard"), level, map.exitPoint, this, this, turnProcessor);
+				Monster wizard = new Monster(Creature.getIdForName("wizard"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = wizard;
 				mobs.add(wizard);
 				break;
 			case 5:
-				Monster dwarf = new Monster(Creature.getIdForName("dwarf"), level, map.exitPoint, this, this, turnProcessor);
+				Monster dwarf = new Monster(Creature.getIdForName("dwarf"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = dwarf;
 				mobs.add(dwarf);
 				break;
@@ -201,19 +201,19 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				break;
 		}
 		
-		if (level != Dungeon.FINAL_LEVEL) {
+		if (currentLevel != Dungeon.FINAL_LEVEL) {
 			map.location(map.exitPoint).setAsExit();
 		}
 		
 
-		// must set the map now so that it can observe changes to Locations as monsters are added to the level.
+		// must set the map now so that it can observe changes to Locations as monsters are added to the currentLevel.
 		mapEventListener.setMap(map);
 
 		// TOTO turn off monsters to test character anim for now
-		// add monsters to level
+		// add monsters to currentLevel
 		for (int i = 0; i < ((map.height - 11) * 2); i++)
 		{
-			if ((level > 4) && (Randy.getRand(1, 10) == 1))
+			if ((currentLevel > 4) && (Randy.getRand(1, 10) == 1))
 			{
 				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)]);
 			}

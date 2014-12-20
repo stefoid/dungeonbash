@@ -38,6 +38,7 @@ public class AnimationView  extends AnimOp {
 	boolean staticFrame = false;
 	float startRotation;
 	float endRotation;
+	boolean greyScale;
 	
 	Vector<ImageView> frames; 
 	ImageView image;  // the current frame
@@ -140,6 +141,10 @@ public class AnimationView  extends AnimOp {
 		this.clipBox = new Rect(clipBox);
 	}
 	
+	public void setGreyscale(boolean greyScale) {
+		this.greyScale = greyScale;
+	}
+	
 	// call to only show the one frame even though there could be multiple frames in the file system
 	public void staticFrameOnly() {
 		staticFrame = true;
@@ -222,7 +227,13 @@ public class AnimationView  extends AnimOp {
 	}
 	
 	protected void drawTheFrame(SpriteBatch spriteBatch) {
+		if (greyScale) {
+			gui.cameraViewPort.startGreyScale(spriteBatch);
+		}
 		image.draw(spriteBatch, alphaTween.getValue());
+		if (greyScale) {
+			gui.cameraViewPort.endGreyScale(spriteBatch);
+		}
 	}
 	
 	public String getTag(String key) {

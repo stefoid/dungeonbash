@@ -18,6 +18,7 @@ import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
 import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
+import com.dbash.platform.AnimationView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.MapAnim;
@@ -214,11 +215,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 		Rect targetPoint = centerLocation.getScreenCenterPoint();
 		final IAnimListener animCallback = animCompleteListener;
 		
-		MapAnim mapAnim = new MapAnim(currentShadowMapTween, viewPos, targetPoint, period, this);
+		final MapAnim mapAnim = new MapAnim(currentShadowMapTween, targetPoint, period, this);
 		mapAnim.sequenceNumber = sequenceNumber;
 		
 		mapAnim.onStart(new IAnimListener() {
 		    public void animEvent() {
+		    	mapAnim.setViewPosOnStart(viewPos);
 		        previousShadowMap = currentShadowMap;
 		        currentShadowMap = newShadowMap;
 		        if (previousShadowMap != null) {
@@ -238,11 +240,16 @@ public class MapPresenter implements IMapPresentationEventListener{
 			}
 		});
 		
+		// Is there a previous scroll anim? if so, chain concurrent
+		MapAnim myPreviousAnim = (MapAnim) model.animQueue.getLastByCreator(this, null);
+		
 		// startPlaying will be called by the animQueue when the last anim on the queue has started.
-		if (characterMoving) {
-			model.animQueue.chainConcurrentWithLast(mapAnim, 0f, false);
+		if (characterMoving == false || myPreviousAnim != null) {
+			if (LOG) L.log("chainSequential");
+			model.animQueue.chainSequentialWithMyLast(mapAnim, this, false);
 		} else {
-			model.animQueue.chainSequential(mapAnim, false);
+			if (LOG) L.log("chainConcurrentWithLast");
+			model.animQueue.chainConcurrentWithLast(mapAnim, 0f, false);
 		}
 	}
 

@@ -61,6 +61,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		public int direction;
 	}
 	final Character me = this;
+	static int charCounter = 1;
 	
 	private class Complaint {
 		public int complaints = 0;
@@ -134,6 +135,8 @@ public class Character extends Creature implements IPresenterCharacter {
 		effectListListeners = new UIInfoListenerBag();
 		creatureStats.isCharacter = true;
 		shadowMap = new ShadowMap(this);
+		charCount = charCounter;
+		charCounter++;
 	}
 	
 	// save the character to the stream in the same order that it will be read
@@ -1069,8 +1072,14 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		return result;
 	}
-}
+	
+	int charCount;
 
+	@Override
+	public String toString() {
+		return getCreature().name+"C"+charCount+")";
+	}
+}
 
 ///**
 // * return 0 if there are no characters in LOS
