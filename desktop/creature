@@ -1,0 +1,9 @@
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_attack_east_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_attack_front_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_attack_rear_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_attack_west_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_walk_east_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_walk_front_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_walk_rear_1.png
+cp pngs/Creatures/$1/$1.png pngs/Creatures/$1/m_$1_walk_west_1.png
+
