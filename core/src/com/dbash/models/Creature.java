@@ -879,7 +879,9 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				break;
 			case HOLE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
-				death();
+				if (canFly == false) {
+					death();
+				}
 				break;
 		}
 	}

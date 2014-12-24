@@ -172,7 +172,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster minion = new Monster(Creature.getIdForName("disruptor"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				Monster minion = new Monster(Creature.getIdForName("blodger"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
 				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(minion);
@@ -291,15 +291,17 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				// So we have a character in mind that the monster moving toward or away from.(relevent character)
 				// That might not be the currently focussed character, but if both source and dest are
 				// visible to the currently focussed character, then there is no need to change focus.
-				if (!positionIsInLOSOfCharacter(currentlyFocussedCharacter, fromPosition) ||
+				// Unless it is charging a character.
+				if (moveType == MoveType.CHARGE_MOVE || !positionIsInLOSOfCharacter(currentlyFocussedCharacter, fromPosition) ||
 						!positionIsInLOSOfCharacter(currentlyFocussedCharacter, toPosition)) {
 					// so at least one of the positions is not in the current focus.
 					// therefore its most correct to move the focus to the relevant character.
 					if (currentlyFocussedCharacter != releventCharacter) {
 						changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
 					}
-				}					
+				} 					
 			}
+			
 			
 			// ok, so presumably we can see this move, one way or the other.
 			final IAnimListener moveListener = new IAnimListener() {

@@ -456,7 +456,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TESTCHARS) {
 			theChars.clear();
 			p.level = 20;
-			theChars.add(new Character(Creature.getIdForName("gorgon"), p, 1, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("hell giant"), p, 1, dungeonEvents, dungeonQuery, this));
 			theChars.add(new Character(Creature.getIdForName("disruptor"), p, 2, dungeonEvents, dungeonQuery, this));
 			theChars.add(new Character(Creature.getIdForName("greater demon"), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);

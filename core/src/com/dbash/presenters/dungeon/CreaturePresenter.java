@@ -187,7 +187,7 @@ public class CreaturePresenter {
 					public void animEvent() {
 						light.setAlpha(1f-percent*.6f);
 						toLight.setAlpha(percent+.1f);
-						if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
+						//if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
 					}
 				});
 			}
@@ -237,6 +237,8 @@ public class CreaturePresenter {
 	
 	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, 
 			MoveType moveType, final float moveTime, IAnimListener animCompleteListener) {
+		
+		if (LOG) L.log("sequenceNumber: %s, fromPosition: %s, toPosition: %s, moveType:%s", sequenceNumber, fromPosition, toPosition, moveType);
 		
 		// Work out what animation to play for the movement.
 		String animToUse = "walk";
