@@ -30,6 +30,7 @@ import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.AnimQueue;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 // This is the top level presenter of the Dungeon side of things - it handles touch events for the dungeon, and
@@ -45,6 +46,8 @@ import com.dbash.util.Rect;
 // DungeonAreaPresener knows how to turn into queued AniamtionViews.
 public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresentationEventListener {
 
+	public static final boolean LOG = true && L.DEBUG;
+	
 	private static final float multiplier = 1f;
 	public final static float scrollPeriod = 0.5f * multiplier;
 	public final static float walkPeriod = 0.7f * multiplier;
@@ -593,6 +596,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	
 	@Override
 	public void newCharacterFocus(Character newFocusCharacter) {
+		if (LOG) L.log("newFocusCharacter: %s", newFocusCharacter);
 		EffectPresenter effectPresenter = effectPresenters.get(newFocusCharacter);
 		if (effectPresenter == null) {
 			effectPresenter = new EffectPresenter(gui, model, newFocusCharacter, mapPresenter, effectAnimQueue);

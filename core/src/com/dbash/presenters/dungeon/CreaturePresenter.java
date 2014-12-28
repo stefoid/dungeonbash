@@ -518,11 +518,12 @@ public class CreaturePresenter {
 		if (myPreviousAnim != null) {
 			model.animQueue.chainSequntialToOp(deathAnim, myPreviousAnim); // the creature sinking into the ground or spiral.
 			model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
-			model.animQueue.drawBeneath(deathAnim);
 		} else {
 			model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
 			model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
 		}
+		
+		model.animQueue.drawBeneath(deathAnim);
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.

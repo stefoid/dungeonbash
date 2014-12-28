@@ -704,7 +704,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	// METHODS
 	@Override
 	protected void death() {
-
+		effectListListeners.clear();
 		super.death();
 		isAlive = false;
 		boolean shouldDropstuff = turnProcessor.characterDied(this);

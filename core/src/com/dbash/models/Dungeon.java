@@ -172,7 +172,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster minion = new Monster(Creature.getIdForName("blodger"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				Monster minion = new Monster(Creature.getIdForName("crazed minion"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = minion;
 				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(minion);
@@ -555,7 +555,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void explosion(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int range) {
 		explosion = new Explosion(targetPosition);
 		if (dungeonEventListener != null && releventCharacter != null) {
-			if (LOG) L.log("SN:"+sequenceNumber + " explosion");
+			if (LOG) L.log("SN: %s, damageType: %s",sequenceNumber , damageType);
 			dungeonEventListener.explosion(sequenceNumber, releventCharacter, targetPosition, damageType, range);
 		}
 	}
