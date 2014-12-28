@@ -159,7 +159,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	public void createLevel(TurnProcessor turnProcessor, int level)
 	{
 		this.turnProcessor = turnProcessor;
-		currentLevel = currentLevel + L.LEVEL - 1;
+		if (L.DEBUG) {
+			currentLevel = L.LEVEL;
+		} else {
+			currentLevel = level;
+		}
+		
 		// will create a map of Locations all ready to use.
 		map = new Map(currentLevel, this, this);
 		initLevel();
@@ -507,6 +512,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	// get rid of the current character from the map and the current set of shadowmaps, so it is invisible to monsters
 	protected void characterLeavesMap(Character character) {
+		if (LOG) L.log("");
 		if (currentlyFocussedCharacter == character) {
 			currentlyFocussedCharacter = null;
 		}

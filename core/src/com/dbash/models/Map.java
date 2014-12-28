@@ -442,6 +442,7 @@ public class Map implements IPresenterMap {
 	// remove the effects of temp lighting, returning tile to its base level of permanent lighting.
 	public void removeLight(Light light) {
 		if (tempLights.contains(light)) {
+			light.clearLight();
 			tempLights.remove(light);
 			lightingChanged();
 		}

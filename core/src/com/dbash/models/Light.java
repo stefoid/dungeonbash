@@ -7,6 +7,7 @@ public class Light {
 	
 	public static float CHAR_LIGHT_STRENGTH = 2.5f;
 	public static float WALL_TORCH_STRENGTH = 1.75f;
+	public static int CHAR_LIGHT_RANGE = Map.RANGE;
 	
 	public DungeonPosition position;
 	public int range;

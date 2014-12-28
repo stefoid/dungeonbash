@@ -50,7 +50,7 @@ import com.dbash.util.Tween;
 // type they are, to help it deicde how to schedule the current one, if it needs to.
 
 public class CreaturePresenter {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public enum VisualState {
 		SHOW_STATIC,
@@ -82,7 +82,7 @@ public class CreaturePresenter {
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.SHOW_NOTHING;
-			light = new Light(creature.getPosition(), Map.RANGE-1, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
+			light = new Light(creature.getPosition(), Light.CHAR_LIGHT_RANGE, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
 		} else {
 			this.visualState = VisualState.SHOW_STATIC;
 		}
@@ -405,7 +405,7 @@ public class CreaturePresenter {
 				if (completeListener != null) {
 					completeListener.animEvent(); // tell anyone who cares
 				}
-				mapPresenter.removeLight(light);
+				mapPresenter.removeCharacterLightFromMap(light);
 			}
 		});
 		downAnim.setRotation(0, 360*3, 1);  // rotate 3 times
@@ -463,14 +463,7 @@ public class CreaturePresenter {
 			Rect fromRect = new Rect(makeDrawingRectFromPosition(deadCreature.getPosition()));
 			Rect toRect = new Rect(fromRect, 0.2f);
 			toRect.y -= fromRect.height/2;
-			deathAnim = new AnimationView(gui, staticImage.name, fromRect, toRect, 1f, .3f, DungeonAreaPresenter.deathPeriod, 1, new IAnimListener() {
-				public void animEvent() {
-					if (completeListener != null) {
-						completeListener.animEvent(); // tell anyone who cares
-					}
-					mapPresenter.removeLight(light);
-				}
-			});
+			deathAnim = new AnimationView(gui, staticImage.name, fromRect, toRect, 1f, .3f, DungeonAreaPresenter.deathPeriod, 1, null);
 			deathAnim.setRotation(0, 360*1.5f, 1);  // rotate 2 times
 		} else {
 			// Animation of creature sinking into the ground.
@@ -501,10 +494,8 @@ public class CreaturePresenter {
 		toRect.y += fromRect.height*.8f;
 		AnimationView skullAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
 			public void animEvent() {
+				mapPresenter.removeCharacterLightFromMap(light);
 				if (completeListener != null) {
-					if (light != null) {
-						mapPresenter.removeLight(light);
-					}
 					completeListener.animEvent(); // tell anyone who cares
 				}
 			}

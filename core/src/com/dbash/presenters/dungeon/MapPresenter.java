@@ -294,4 +294,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 	public void updateMapPresentation() {
 		currentShadowMap.refresh();
 	}
+	
+	public void removeCharacterLightFromMap(Light light) {
+		if (light != null) {
+			removeLight(light);
+		}
+		refreshLighting();
+		updateMapPresentation();
+	}
 }
