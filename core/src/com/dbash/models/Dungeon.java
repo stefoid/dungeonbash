@@ -177,30 +177,28 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster minion = new Monster(Creature.getIdForName("crazed minion"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = minion;
+				Monster mon1 = new Monster(Creature.getIdForName("gnome"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = mon1;
 				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
-				mobs.add(minion);
+				mobs.add(mon1);
 				break;
 			case 2:
-				Monster orc = new Monster(Creature.getIdForName("halfling"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = orc;
-				mobs.add(orc);
+				Monster mon2 = new Monster(Creature.getIdForName("halfling"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = mon2;
+				mobs.add(mon2);
 				break;
 			case 3:
-				Monster priest = new Monster(Creature.getIdForName("priest"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = priest;
-				mobs.add(priest);
+				Monster mon3 = new Monster(Creature.getIdForName("dwarf"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = mon3;
+				mobs.add(mon3);
 				break;
 			case 4:
-				Monster wizard = new Monster(Creature.getIdForName("wizard"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = wizard;
-				mobs.add(wizard);
+				Monster mon4 = new Monster(Creature.getIdForName("wizard"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				map.location(map.exitPoint).creature = mon4;
+				mobs.add(mon4);
 				break;
 			case 5:
-				Monster dwarf = new Monster(Creature.getIdForName("dwarf"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = dwarf;
-				mobs.add(dwarf);
+				placeSwarm(map.exitPoint, Creature.getIdForName("crazed minion"));
 				break;
 			default:
 				break;
@@ -220,7 +218,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		{
 			if ((currentLevel > 4) && (Randy.getRand(1, 10) == 1))
 			{
-				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)]);
+				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)], null);
 			}
 			else
 			{
@@ -263,8 +261,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		return new Monster(Monster.getMonsterId(currentLevel, false), currentLevel, dungeonLocation, this, this, turnProcessor);
 	}
 
-	protected void placeSwarm(DungeonPosition pos) {
-		int monsterType = Monster.getMonsterId(currentLevel / 2, true);
+	protected void placeSwarm(DungeonPosition pos, Integer monsterType) {
+		if (monsterType == null) {
+			monsterType = Monster.getMonsterId(currentLevel / 2, true);
+		}
+
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				DungeonPosition monsterPosition = new DungeonPosition(pos.x + dx, pos.y + dy, 1,currentLevel);
