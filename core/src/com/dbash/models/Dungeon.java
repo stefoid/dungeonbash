@@ -177,7 +177,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster mon1 = new Monster(Creature.getIdForName("wraith"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				Monster mon1 = new Monster(Creature.getIdForName("giant"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = mon1;
 				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(mon1);
