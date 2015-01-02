@@ -251,7 +251,7 @@
 +"phoenix,a,7,1,0,0,0,8,4,5,8,10,6,4,7,1,11,47,24,181,*"// phoenix: flame burst , nibble , flight , resist energy 90 , 
 +"blodger,a,7,1,0,0,1,12,1,12,30,4,10,2,2,0,22,19,24,*"// blodger: charge , headbutt , flight , 
 +"disruptor,a,7,1,0,0,0,12,1,8,4,10,6,1,1,0,10,24,*"// disruptor: burst knockback , flight , 
-+"gorgon,a,7,1,1,0,0,22,16,3,20,17,15,10,12,0,154,164,*"// gorgon: poison bite , ranged stun , 
++"gorgon,a,7,1,1,0,0,22,16,3,20,17,15,10,12,0,154,164,-3,*"// gorgon: poison bite , ranged stun , RANDOM MAGIC , 
 +"plate beatle,p,1,1,0,0,1,16,1,3,9,3,4,3,4,1,101,152,150,*"// plate beatle: bite , resist sharp 90 , resist hard 50 , 
 +"blob demon,n,2,1,1,0,0,12,3,2,10,8,6,6,2,0,0,21,151,*"// blob demon: bash , resist knockback , resist hard 90 , 
 +"lava man,a,4,1,1,0,0,20,1,2,16,8,11,1,4,0,44,26,57,181,116,*"// lava man: heat attack , resist poison , resistance , resist energy 90 , resist stun , 
