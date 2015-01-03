@@ -12,4 +12,8 @@ public class SequenceNumber {
 		return sequenceNumber++;
 	}
 	
+	public static final void bumpSequenceNumberforNewCharacter() {
+		sequenceNumber += 3;
+	}
+	
 }

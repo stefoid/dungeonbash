@@ -142,6 +142,8 @@ public class Monster extends Creature
 			return;
 		}
 
+		SequenceNumber.bumpSequenceNumberforNewCharacter();
+		
 		// Find the closest character
 		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this);
 

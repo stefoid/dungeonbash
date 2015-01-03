@@ -189,6 +189,8 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 		}
 		
+		SequenceNumber.bumpSequenceNumberforNewCharacter();
+		
 		// This is only set to true when a character makes an active following move
 		amActiveFollower = false;
 		
