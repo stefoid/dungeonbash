@@ -107,7 +107,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "ITEMS", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Green items are in your inventory.  Red items are on the ground.  Items that cannot be picked up by that character up will appear grey.",
+				"Green items are in your inventory.  Red items are on the ground.  Items that cannot be picked up by that character will appear grey.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
@@ -128,6 +128,17 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				"In Melee, monsters prefer to attack orthogonal enemies, allowing flank attacks from the diagonal.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "TERRAIN", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Some tiles have rough terrain: bones, mud or rocks.  These slow down non-flying creatures entering them.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "HOLES", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"There are also holes that only flying creatures can pass over.  But beware - stunning a flyer will cause it to fall into the hole and die, as will knocking a non-flyer into a hole.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		for (ImageTextListElementView helpElement: helpElements) {
 			helpElement.addToList(elements);
 		}
