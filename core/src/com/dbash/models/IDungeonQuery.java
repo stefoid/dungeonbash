@@ -3,6 +3,8 @@ package com.dbash.models;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dbash.models.Location.RoughTerrainType;
+
 
 
 //
@@ -62,4 +64,6 @@ public interface IDungeonQuery {
 	public boolean isCreatureNearEntrance(DungeonPosition creaturePosition);
 	
 	public Character getCurrentFocusedCharacter();
+
+	RoughTerrainType getTerrainAtLocation(DungeonPosition position);
 }

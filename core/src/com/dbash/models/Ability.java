@@ -41,6 +41,7 @@ public class Ability
 	public static String CHARGE_TAG = "charge";
 	public static String KNOCKBACK_TAG = "knockback";
 	public static String KNOCKEDBACK_TAG = "knockedback";
+	public static String STUNNED_TAG = "stunned";
 	
 	public enum AbilityType {
 		WEAPON(3),

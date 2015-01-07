@@ -532,7 +532,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	/**
 	 * If this character is the leader, use the target position, if the finger is lifted on a spot that is
-	 * either FREE or occupied by a CHARACTER.
+	 * either FREE or occupied by a CHARACTER.  Or a HOLE if they are a flyer.
 	 */
 	public boolean doLeaderGuestureProcessing(int direction, DungeonPosition targetPosition) {
 		if (turnProcessor.getCurrentLeader() != this) {
@@ -544,9 +544,8 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		
 		BestDir bestDir = new BestDir();
-		AtLocation targetTileType = dungeonQuery.whatIsAtLocation(targetPosition);
 		
-		if (targetTileType == AtLocation.FREE || targetTileType == AtLocation.CHARACTER) {
+		if (isValidLeaderTile(targetPosition)) {
 			setAutomaticLeaderTargetPosition(targetPosition);
 			bestDir = calcBestDir(targetPosition, true);
 			if (bestDir.hasFreeOption) {
@@ -876,12 +875,34 @@ public class Character extends Creature implements IPresenterCharacter {
 		boolean result = false;
 		if (isThereAnAutomaticLeaderTarget()) {
 			result = true;
-			AtLocation targetTileType = dungeonQuery.whatIsAtLocation(position);
-			if (targetTileType == AtLocation.FREE || targetTileType == AtLocation.CHARACTER) {
+			if (isValidLeaderTile(position)) {
 				setAutomaticLeaderTargetPosition(position);
 			}
 		}
 		return result;
+	}
+	
+	private boolean isValidLeaderTile(DungeonPosition position) {
+		AtLocation targetTileType = dungeonQuery.whatIsAtLocation(position);
+		
+		boolean validPos = false;
+		switch (targetTileType) {
+			case FREE:
+				validPos = true;
+				break;
+			case CHARACTER:
+				validPos = true;
+				break;
+			case HOLE:
+				if (creatureCanFly()) {
+					validPos = true;
+				}
+				break;
+			default:
+				break;
+		}
+		
+		return validPos;
 	}
 	
 	@Override

@@ -640,6 +640,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		}
 	}
 	
+	@Override
 	public Location.RoughTerrainType getTerrainAtLocation(DungeonPosition position) {
 		if (map.inBounds(position) == false) {
 			return null;

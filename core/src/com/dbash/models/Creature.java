@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.IDungeonQuery.AtLocation;
+import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.platform.TextResourceIdentifier;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.CreaturePresenter;
@@ -394,7 +396,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 					return false;
 				}
 			case HOLE:
-				return canFly;
+				return creatureCanFly();
 			default:
 				return true;		
 		}
@@ -565,7 +567,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		boolean result = false;
 		if (canCharge) {
 			if (dungeonQuery.getLocation(position).hasRoughTerrain()) {
-				result = canFly;
+				result = creatureCanFly();
 			} else {
 				result = true;
 			}
@@ -715,26 +717,42 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		// first work out whether you have any ability which will prevent this
 		// ability from being added (such as resist poison)
 		AbilityCommand ac = new AbilityCommand(AbilityCommand.RESIST_ABILITY, ability.myId, 1, 1, 1);
-
+		
 		for (int i = 0; i < abilities.size(); i++) {
-			if (abilities.get(i).executeCommandValue(ac, this) == Ability.RESISTED)
+			if (abilities.get(i).executeCommandValue(ac, this) == Ability.RESISTED) {
+				if (giver != null) {
+					dungeonEvents.abilityResisted(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ability.getEffectType(), mapPosition);
+				}
 				return false;
+			}
 		}
 		
 		if (ability.isRoughTerrain()) {
-			if (canFly) {
+			if (creatureCanFly()) {
 				return false;
 			}
 		}
 		
 		if (ability.hasTag(Ability.KNOCKEDBACK_TAG)) {
 			performKnockback(ability, giver);
+			if (giver != null) {
+				dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ability.getEffectType(), mapPosition);
+			}
 			return true;
-		}
-		
+		}	
+	
 		abilities.add(ability);
 		setAbilityFlags();
 		ability.setOwned(this, true);
+		
+		if (giver != null) {
+			dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ability.getEffectType(), mapPosition);
+		}
+		
+		if (mapPosition != null && dungeonQuery.getTerrainAtLocation(mapPosition) == RoughTerrainType.HOLE) {
+				death();
+		}
+		
 		return true;
 	}
 
@@ -763,6 +781,16 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				canCharge = true;
 			}
 		}
+	}
+	
+	protected boolean creatureHasAbilityTag(String tag) {
+		for (Ability ability : abilities) {
+			if (ability.hasTag(tag)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	// when an ability has an instant effect that modifies an attribute
@@ -879,7 +907,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				break;
 			case HOLE:
 				dungeonEvents.creatureMove(SequenceNumber.getCurrent(), getReleventCharacter(), this, mapPosition, newPosition, knockbackDir,  Dungeon.MoveType.KNOCKBACK_MOVE, null);
-				if (canFly == false) {
+				if (creatureCanFly() == false) {
 					death();
 				}
 				break;
@@ -1016,12 +1044,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			}
 		}
 
-		if (addedOk) {
-			dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ab.getEffectType(), pos);
-		} else {
-			// indicates a resisted ability
-			dungeonEvents.abilityResisted(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ab.getEffectType(), pos);
-		}
+//		if (addedOk) {
+//			dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ab.getEffectType(), pos);
+//		} else {
+//			// indicates a resisted ability
+//			dungeonEvents.abilityResisted(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ab.getEffectType(), pos);
+//		}
 		
 		return addedOk;
 
@@ -1405,6 +1433,13 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			return false;
 		else
 			return true;
+	}
+	
+	protected boolean creatureCanFly() {
+		if (creatureHasAbilityTag(Ability.STUNNED_TAG)) {
+			return false;
+		}
+		return canFly;
 	}
 	
 	public CreatureStats getCreatureStats()
