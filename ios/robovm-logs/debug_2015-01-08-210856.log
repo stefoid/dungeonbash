@@ -1,0 +1,524 @@
+[2015-01-08 21:09:19:700] DebugEventProcessor - started event processor thread
+[2015-01-08 21:09:32:550] DebugEventProcessor - Running
+[2015-01-08 21:09:32:588] DebugEventProcessor - Stopped rvmHookWaitForAttach (hooks.c:30), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:32:592] DebugEventProcessor - stop reason data=1
+Stacktrace:
+rvmHookWaitForAttach, hooks.c:30
+rvmHookWaitForAttach, hooks.c:34
+rvmStartup, null:0
+main, null:0
+start, null:0
+
+[2015-01-08 21:09:32:592] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:32:606] Debugger - attached to application /Users/stef/Documents/workspace/.metadata/.plugins/org.robovm.eclipse.ui/build/dbash-ios/iphone/ios/x86/IOSLauncher, pid=35804
+[2015-01-08 21:09:32:615] Debugger - Continuing
+[2015-01-08 21:09:32:619] DebugEventProcessor - Running
+[2015-01-08 21:09:32:773] DebugEventProcessor - Stopped _rvmHookBeforeMainThreadAttached (hooks.c:43), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:32:774] DebugEventProcessor - stop reason data=2
+Stacktrace:
+_rvmHookBeforeMainThreadAttached, hooks.c:43
+rvmInitThreads, null:0
+rvmStartup, null:0
+main, null:0
+start, null:0
+
+[2015-01-08 21:09:32:775] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:32:788] ClassInfoParser - Reading boot classes info
+[2015-01-08 21:09:33:603] ClassInfoParser - Took 0.8148
+[2015-01-08 21:09:33:604] ClassInfoParser - Reading classes info
+[2015-01-08 21:09:34:412] ClassInfoParser - Took 0.80828
+[2015-01-08 21:09:34:433] Debugger - Added breakpoint for symbol _rvmHookThreadAttached
+[2015-01-08 21:09:34:438] Debugger - Added breakpoint for symbol _rvmHookThreadStarting
+[2015-01-08 21:09:34:445] Debugger - Added breakpoint for symbol _rvmHookThreadDetaching
+[2015-01-08 21:09:34:458] Debugger - Added breakpoint for symbol _rvmHookBeforeAppEntryPoint
+[2015-01-08 21:09:34:458] Debugger - Continuing
+[2015-01-08 21:09:34:460] DebugEventProcessor - Running
+[2015-01-08 21:09:34:460] JavaThreadObserver - thread states: 
+[2015-01-08 21:09:34:573] DebugEventProcessor - Stopped _rvmHookThreadAttached (hooks.c:55), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:34:574] DebugEventProcessor - stop reason data=3
+Stacktrace:
+_rvmHookThreadAttached, hooks.c:55
+attachThread, null:0
+rvmInitThreads, null:0
+rvmStartup, null:0
+main, null:0
+start, null:0
+
+[2015-01-08 21:09:34:574] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:34:664] JavaThreadObserver - Thread main attached
+[2015-01-08 21:09:34:664] JavaThreadObserver - Continuing process, event consumed
+[2015-01-08 21:09:34:665] DebugEventProcessor - resume vote from [java thread observer]
+[2015-01-08 21:09:34:665] DebugEventProcessor - vote results: suspension=0 [], resume=1 [java thread observer]
+[2015-01-08 21:09:34:665] DebugEventProcessor - resume won, resuming process, state: eStateStopped
+[2015-01-08 21:09:34:668] DebugEventProcessor - Running
+[2015-01-08 21:09:34:668] JavaThreadObserver - thread states: main=running(0), 
+[2015-01-08 21:09:35:497] DebugEventProcessor - Stopped _rvmHookThreadStarting (hooks.c:59), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:35:499] DebugEventProcessor - stop reason data=4
+Stacktrace:
+_rvmHookThreadStarting, hooks.c:59
+startThreadEntryPoint, null:0
+GC_inner_start_routine, null:0
+GC_call_with_stack_base, null:0
+GC_start_routine, null:0
+_pthread_body, null:0
+_pthread_start, null:0
+thread_start, null:0
+
+[2015-01-08 21:09:35:499] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:35:502] JavaThreadObserver - Thread ReferenceQueueDaemon started
+[2015-01-08 21:09:35:502] JavaThreadObserver - Continuing process, event consumed
+[2015-01-08 21:09:35:502] DebugEventProcessor - resume vote from [java thread observer]
+[2015-01-08 21:09:35:502] DebugEventProcessor - vote results: suspension=0 [], resume=1 [java thread observer]
+[2015-01-08 21:09:35:502] DebugEventProcessor - resume won, resuming process, state: eStateStopped
+[2015-01-08 21:09:35:505] DebugEventProcessor - Running
+[2015-01-08 21:09:35:505] JavaThreadObserver - thread states: main=running(0), ReferenceQueueDaemon=running(0), 
+[2015-01-08 21:09:35:509] DebugEventProcessor - Stopped _rvmHookThreadStarting (hooks.c:59), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:35:510] DebugEventProcessor - stop reason data=4
+Stacktrace:
+_rvmHookThreadStarting, hooks.c:59
+startThreadEntryPoint, null:0
+GC_inner_start_routine, null:0
+GC_call_with_stack_base, null:0
+GC_start_routine, null:0
+_pthread_body, null:0
+_pthread_start, null:0
+thread_start, null:0
+
+[2015-01-08 21:09:35:510] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:35:514] JavaThreadObserver - Thread FinalizerDaemon started
+[2015-01-08 21:09:35:514] JavaThreadObserver - Continuing process, event consumed
+[2015-01-08 21:09:35:514] DebugEventProcessor - resume vote from [java thread observer]
+[2015-01-08 21:09:35:514] DebugEventProcessor - vote results: suspension=0 [], resume=1 [java thread observer]
+[2015-01-08 21:09:35:514] DebugEventProcessor - resume won, resuming process, state: eStateStopped
+[2015-01-08 21:09:35:517] DebugEventProcessor - Running
+[2015-01-08 21:09:35:517] JavaThreadObserver - thread states: main=running(0), ReferenceQueueDaemon=running(0), FinalizerDaemon=running(0), 
+[2015-01-08 21:09:35:521] DebugEventProcessor - Stopped _rvmHookThreadStarting (hooks.c:59), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:35:522] DebugEventProcessor - stop reason data=4
+Stacktrace:
+_rvmHookThreadStarting, hooks.c:59
+startThreadEntryPoint, null:0
+GC_inner_start_routine, null:0
+GC_call_with_stack_base, null:0
+GC_start_routine, null:0
+_pthread_body, null:0
+_pthread_start, null:0
+thread_start, null:0
+
+[2015-01-08 21:09:35:522] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:35:525] JavaThreadObserver - Thread FinalizerWatchdogDaemon started
+[2015-01-08 21:09:35:525] JavaThreadObserver - Continuing process, event consumed
+[2015-01-08 21:09:35:525] DebugEventProcessor - resume vote from [java thread observer]
+[2015-01-08 21:09:35:525] DebugEventProcessor - vote results: suspension=0 [], resume=1 [java thread observer]
+[2015-01-08 21:09:35:525] DebugEventProcessor - resume won, resuming process, state: eStateStopped
+[2015-01-08 21:09:35:528] DebugEventProcessor - Running
+[2015-01-08 21:09:35:528] JavaThreadObserver - thread states: main=running(0), ReferenceQueueDaemon=running(0), FinalizerDaemon=running(0), FinalizerWatchdogDaemon=running(0), 
+[2015-01-08 21:09:35:531] DebugEventProcessor - Stopped _rvmHookBeforeAppEntryPoint (hooks.c:47), reason: eStopReasonBreakpoint, interrupted: false
+[2015-01-08 21:09:35:533] DebugEventProcessor - stop reason data=6
+Stacktrace:
+_rvmHookBeforeAppEntryPoint, hooks.c:47
+rvmRun, null:0
+main, null:0
+start, null:0
+
+[2015-01-08 21:09:35:533] DebugEventProcessor - #stop reasons != none: 1
+[2015-01-08 21:09:35:535] Debugger - Removed breakpoint _rvmHookBeforeAppEntryPoint
+[2015-01-08 21:09:35:558] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:35:558] SocketTransport - Listening for transport dt_socket at address: 59726
+[2015-01-08 21:09:35:758] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:35:796] JdwpDebugServer - Command: ap(1 7) id = 2 length = 0
+[2015-01-08 21:09:35:799] JdwpDebugServer - Command: m(15 1) id = 3 length = 6
+[2015-01-08 21:09:35:802] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:35:810] LldbVmInterface - Executing task do_EventRequest_Set took: 0.009818secs
+[2015-01-08 21:09:35:811] JdwpDebugServer - Command: m(15 1) id = 1 length = 6
+[2015-01-08 21:09:35:812] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:35:814] LldbVmInterface - Executing task do_EventRequest_Set took: 4.77E-4secs
+[2015-01-08 21:09:35:816] JdwpDebugServer - Command: m(15 1) id = 4 length = 6
+[2015-01-08 21:09:35:816] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:35:817] LldbVmInterface - Executing task do_EventRequest_Set took: 5.52E-4secs
+[2015-01-08 21:09:35:817] JdwpDebugServer - Command: at(1 1) id = 5 length = 0
+[2015-01-08 21:09:35:818] JdwpDebugServer - Command: ag(1 4) id = 6 length = 0
+[2015-01-08 21:09:35:821] DebugEventProcessor - Executing task do_VirtualMachine_AllThreads, state: eStateStopped
+[2015-01-08 21:09:35:821] LldbVmInterface - Executing task do_VirtualMachine_AllThreads took: 0.002477secs
+[2015-01-08 21:09:35:839] JdwpDebugServer - Command: ac(11 5) id = 7 length = 8
+[2015-01-08 21:09:35:842] DebugEventProcessor - Executing task do_ThreadReference_ThreadGroup, state: eStateStopped
+[2015-01-08 21:09:35:857] LldbVmInterface - Executing task do_ThreadReference_ThreadGroup took: 0.01723secs
+[2015-01-08 21:09:35:858] JdwpDebugServer - Command: R(12 1) id = 8 length = 8
+[2015-01-08 21:09:35:859] DebugEventProcessor - Executing task do_ThreadGroupReference_Name, state: eStateStopped
+[2015-01-08 21:09:35:861] LldbVmInterface - Executing task do_ThreadGroupReference_Name took: 0.001959secs
+[2015-01-08 21:09:35:861] JdwpDebugServer - Command: S(12 2) id = 9 length = 8
+[2015-01-08 21:09:35:863] DebugEventProcessor - Executing task do_ThreadGroupReference_Parent, state: eStateStopped
+[2015-01-08 21:09:35:864] LldbVmInterface - Executing task do_ThreadGroupReference_Parent took: 0.00153secs
+[2015-01-08 21:09:35:864] JdwpDebugServer - Command: x(9 1) id = 10 length = 8
+[2015-01-08 21:09:35:866] DebugEventProcessor - Executing task do_ObjectReference_ReferenceType, state: eStateStopped
+[2015-01-08 21:09:35:866] LldbVmInterface - Executing task do_ObjectReference_ReferenceType took: 0.00184secs
+[2015-01-08 21:09:35:881] JdwpDebugServer - Command: C(2 14) id = 11 length = 8
+[2015-01-08 21:09:35:884] DebugEventProcessor - Executing task do_ReferenceType_FieldsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:35:885] LldbVmInterface - Executing task do_ReferenceType_FieldsWithGeneric took: 0.002712secs
+[2015-01-08 21:09:35:888] JdwpDebugServer - Command: E(2 10) id = 12 length = 8
+[2015-01-08 21:09:35:889] DebugEventProcessor - Executing task do_ReferenceType_Interfaces, state: eStateStopped
+[2015-01-08 21:09:35:891] LldbVmInterface - Executing task do_ReferenceType_Interfaces took: 0.002241secs
+[2015-01-08 21:09:35:892] JdwpDebugServer - Command: C(2 14) id = 13 length = 8
+[2015-01-08 21:09:35:893] DebugEventProcessor - Executing task do_ReferenceType_FieldsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:35:893] LldbVmInterface - Executing task do_ReferenceType_FieldsWithGeneric took: 0.001081secs
+[2015-01-08 21:09:35:893] JdwpDebugServer - Command: E(2 10) id = 14 length = 8
+[2015-01-08 21:09:35:895] DebugEventProcessor - Executing task do_ReferenceType_Interfaces, state: eStateStopped
+[2015-01-08 21:09:35:895] LldbVmInterface - Executing task do_ReferenceType_Interfaces took: 0.001832secs
+[2015-01-08 21:09:35:896] JdwpDebugServer - Command: j(3 1) id = 15 length = 8
+[2015-01-08 21:09:35:898] DebugEventProcessor - Executing task do_ClassType_Superclass, state: eStateStopped
+[2015-01-08 21:09:35:902] LldbVmInterface - Executing task do_ClassType_Superclass took: 0.004969secs
+[2015-01-08 21:09:35:902] JdwpDebugServer - Command: C(2 14) id = 16 length = 8
+[2015-01-08 21:09:35:904] DebugEventProcessor - Executing task do_ReferenceType_FieldsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:35:904] LldbVmInterface - Executing task do_ReferenceType_FieldsWithGeneric took: 0.00155secs
+[2015-01-08 21:09:35:904] JdwpDebugServer - Command: E(2 10) id = 17 length = 8
+[2015-01-08 21:09:35:906] DebugEventProcessor - Executing task do_ReferenceType_Interfaces, state: eStateStopped
+[2015-01-08 21:09:35:906] LldbVmInterface - Executing task do_ReferenceType_Interfaces took: 0.001905secs
+[2015-01-08 21:09:35:907] JdwpDebugServer - Command: j(3 1) id = 18 length = 8
+[2015-01-08 21:09:35:909] DebugEventProcessor - Executing task do_ClassType_Superclass, state: eStateStopped
+[2015-01-08 21:09:35:909] LldbVmInterface - Executing task do_ClassType_Superclass took: 0.00185secs
+[2015-01-08 21:09:35:910] JdwpDebugServer - Command: t(9 2) id = 19 length = 20
+[2015-01-08 21:09:35:911] DebugEventProcessor - Executing task do_ObjectReference_GetValues, state: eStateStopped
+[2015-01-08 21:09:35:912] LldbVmInterface - Executing task do_ObjectReference_GetValues took: 0.001279secs
+[2015-01-08 21:09:35:915] JdwpDebugServer - Command: Z(11 4) id = 20 length = 8
+[2015-01-08 21:09:35:916] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:917] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001123secs
+[2015-01-08 21:09:35:918] JdwpDebugServer - Command: Z(11 4) id = 21 length = 8
+[2015-01-08 21:09:35:919] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:919] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001322secs
+[2015-01-08 21:09:35:920] JdwpDebugServer - Command: ac(11 5) id = 22 length = 8
+[2015-01-08 21:09:35:922] DebugEventProcessor - Executing task do_ThreadReference_ThreadGroup, state: eStateStopped
+[2015-01-08 21:09:35:922] LldbVmInterface - Executing task do_ThreadReference_ThreadGroup took: 0.001784secs
+[2015-01-08 21:09:35:923] JdwpDebugServer - Command: x(9 1) id = 23 length = 8
+[2015-01-08 21:09:35:924] DebugEventProcessor - Executing task do_ObjectReference_ReferenceType, state: eStateStopped
+[2015-01-08 21:09:35:925] LldbVmInterface - Executing task do_ObjectReference_ReferenceType took: 0.001545secs
+[2015-01-08 21:09:35:925] JdwpDebugServer - Command: t(9 2) id = 24 length = 20
+[2015-01-08 21:09:35:927] DebugEventProcessor - Executing task do_ObjectReference_GetValues, state: eStateStopped
+[2015-01-08 21:09:35:927] LldbVmInterface - Executing task do_ObjectReference_GetValues took: 0.001438secs
+[2015-01-08 21:09:35:927] JdwpDebugServer - Command: Z(11 4) id = 25 length = 8
+[2015-01-08 21:09:35:929] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:929] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001641secs
+[2015-01-08 21:09:35:930] JdwpDebugServer - Command: Z(11 4) id = 26 length = 8
+[2015-01-08 21:09:35:932] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:932] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001782secs
+[2015-01-08 21:09:35:932] JdwpDebugServer - Command: ac(11 5) id = 27 length = 8
+[2015-01-08 21:09:35:934] DebugEventProcessor - Executing task do_ThreadReference_ThreadGroup, state: eStateStopped
+[2015-01-08 21:09:35:934] LldbVmInterface - Executing task do_ThreadReference_ThreadGroup took: 0.002034secs
+[2015-01-08 21:09:35:935] JdwpDebugServer - Command: x(9 1) id = 28 length = 8
+[2015-01-08 21:09:35:937] DebugEventProcessor - Executing task do_ObjectReference_ReferenceType, state: eStateStopped
+[2015-01-08 21:09:35:937] LldbVmInterface - Executing task do_ObjectReference_ReferenceType took: 0.002062secs
+[2015-01-08 21:09:35:938] JdwpDebugServer - Command: t(9 2) id = 29 length = 20
+[2015-01-08 21:09:35:939] DebugEventProcessor - Executing task do_ObjectReference_GetValues, state: eStateStopped
+[2015-01-08 21:09:35:940] LldbVmInterface - Executing task do_ObjectReference_GetValues took: 0.001858secs
+[2015-01-08 21:09:35:940] JdwpDebugServer - Command: Z(11 4) id = 30 length = 8
+[2015-01-08 21:09:35:942] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:942] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001647secs
+[2015-01-08 21:09:35:942] JdwpDebugServer - Command: Z(11 4) id = 31 length = 8
+[2015-01-08 21:09:35:944] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:944] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001506secs
+[2015-01-08 21:09:35:945] JdwpDebugServer - Command: ac(11 5) id = 32 length = 8
+[2015-01-08 21:09:35:947] DebugEventProcessor - Executing task do_ThreadReference_ThreadGroup, state: eStateStopped
+[2015-01-08 21:09:35:947] LldbVmInterface - Executing task do_ThreadReference_ThreadGroup took: 0.00197secs
+[2015-01-08 21:09:35:948] JdwpDebugServer - Command: x(9 1) id = 33 length = 8
+[2015-01-08 21:09:35:949] DebugEventProcessor - Executing task do_ObjectReference_ReferenceType, state: eStateStopped
+[2015-01-08 21:09:35:950] LldbVmInterface - Executing task do_ObjectReference_ReferenceType took: 0.001858secs
+[2015-01-08 21:09:35:950] JdwpDebugServer - Command: t(9 2) id = 34 length = 20
+[2015-01-08 21:09:35:952] DebugEventProcessor - Executing task do_ObjectReference_GetValues, state: eStateStopped
+[2015-01-08 21:09:35:952] LldbVmInterface - Executing task do_ObjectReference_GetValues took: 0.001759secs
+[2015-01-08 21:09:35:953] JdwpDebugServer - Command: Z(11 4) id = 35 length = 8
+[2015-01-08 21:09:35:954] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:955] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001673secs
+[2015-01-08 21:09:35:955] JdwpDebugServer - Command: Z(11 4) id = 36 length = 8
+[2015-01-08 21:09:35:957] DebugEventProcessor - Executing task do_ThreadReference_Status, state: eStateStopped
+[2015-01-08 21:09:35:957] LldbVmInterface - Executing task do_ThreadReference_Status took: 0.001548secs
+[2015-01-08 21:09:35:959] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:35:961] JdwpDebugServer - Command: m(15 1) id = 37 length = 41
+[2015-01-08 21:09:35:964] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:35:964] LldbVmInterface - Executing task do_EventRequest_Set took: 0.001491secs
+[2015-01-08 21:09:35:964] JdwpDebugServer - Command: m(15 1) id = 38 length = 43
+[2015-01-08 21:09:35:966] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:35:966] LldbVmInterface - Executing task do_EventRequest_Set took: 0.001597secs
+[2015-01-08 21:09:35:967] JdwpDebugServer - Command: ak(1 2) id = 39 length = 36
+[2015-01-08 21:09:35:969] DebugEventProcessor - Executing task do_VirtualMachine_ClassesBySignature, state: eStateStopped
+[2015-01-08 21:09:35:996] LldbVmInterface - Executing task do_VirtualMachine_ClassesBySignature took: 0.028189secs
+[2015-01-08 21:09:35:997] JdwpDebugServer - Command: m(15 1) id = 40 length = 17
+[2015-01-08 21:09:35:998] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:35:998] LldbVmInterface - Executing task do_EventRequest_Set took: 4.37E-4secs
+[2015-01-08 21:09:35:999] JdwpDebugServer - Command: I(2 1) id = 41 length = 8
+[2015-01-08 21:09:36:000] DebugEventProcessor - Executing task do_ReferenceType_Signature, state: eStateStopped
+[2015-01-08 21:09:36:001] LldbVmInterface - Executing task do_ReferenceType_Signature took: 0.001492secs
+[2015-01-08 21:09:36:003] JdwpDebugServer - Command: m(15 1) id = 42 length = 57
+[2015-01-08 21:09:36:005] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:36:005] LldbVmInterface - Executing task do_EventRequest_Set took: 0.002132secs
+[2015-01-08 21:09:36:006] JdwpDebugServer - Command: m(15 1) id = 43 length = 59
+[2015-01-08 21:09:36:008] DebugEventProcessor - Executing task do_EventRequest_Set, state: eStateStopped
+[2015-01-08 21:09:36:008] LldbVmInterface - Executing task do_EventRequest_Set took: 0.001847secs
+[2015-01-08 21:09:36:008] JdwpDebugServer - Command: ak(1 2) id = 44 length = 52
+[2015-01-08 21:09:36:010] DebugEventProcessor - Executing task do_VirtualMachine_ClassesBySignature, state: eStateStopped
+[2015-01-08 21:09:36:032] LldbVmInterface - Executing task do_VirtualMachine_ClassesBySignature took: 0.023169secs
+[2015-01-08 21:09:36:032] JdwpDebugServer - Command: G(2 15) id = 45 length = 8
+[2015-01-08 21:09:36:034] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:035] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.001952secs
+[2015-01-08 21:09:36:040] JdwpDebugServer - Command: ai(1 17) id = 46 length = 0
+[2015-01-08 21:09:36:041] JdwpDebugServer - Command: n(6 1) id = 47 length = 16
+[2015-01-08 21:09:36:042] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:058] LldbVmInterface - Executing task do_Method_LineTable took: 0.016641secs
+[2015-01-08 21:09:36:059] JdwpDebugServer - Command: n(6 1) id = 48 length = 16
+[2015-01-08 21:09:36:061] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:061] LldbVmInterface - Executing task do_Method_LineTable took: 0.001866secs
+[2015-01-08 21:09:36:062] JdwpDebugServer - Command: n(6 1) id = 49 length = 16
+[2015-01-08 21:09:36:063] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:064] LldbVmInterface - Executing task do_Method_LineTable took: 0.001399secs
+[2015-01-08 21:09:36:064] JdwpDebugServer - Command: n(6 1) id = 50 length = 16
+[2015-01-08 21:09:36:066] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:066] LldbVmInterface - Executing task do_Method_LineTable took: 0.001712secs
+[2015-01-08 21:09:36:067] JdwpDebugServer - Command: n(6 1) id = 51 length = 16
+[2015-01-08 21:09:36:068] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:069] LldbVmInterface - Executing task do_Method_LineTable took: 0.001874secs
+[2015-01-08 21:09:36:069] JdwpDebugServer - Command: n(6 1) id = 52 length = 16
+[2015-01-08 21:09:36:071] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:071] LldbVmInterface - Executing task do_Method_LineTable took: 0.001738secs
+[2015-01-08 21:09:36:072] JdwpDebugServer - Command: n(6 1) id = 53 length = 16
+[2015-01-08 21:09:36:074] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:074] LldbVmInterface - Executing task do_Method_LineTable took: 0.002076secs
+[2015-01-08 21:09:36:081] JdwpDebugServer - Command: n(6 1) id = 54 length = 16
+[2015-01-08 21:09:36:084] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:089] LldbVmInterface - Executing task do_Method_LineTable took: 0.003137secs
+[2015-01-08 21:09:36:090] JdwpDebugServer - Command: n(6 1) id = 55 length = 16
+[2015-01-08 21:09:36:091] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:091] LldbVmInterface - Executing task do_Method_LineTable took: 5.34E-4secs
+[2015-01-08 21:09:36:092] JdwpDebugServer - Command: n(6 1) id = 56 length = 16
+[2015-01-08 21:09:36:093] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:094] LldbVmInterface - Executing task do_Method_LineTable took: 0.001755secs
+[2015-01-08 21:09:36:094] JdwpDebugServer - Command: n(6 1) id = 57 length = 16
+[2015-01-08 21:09:36:098] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:098] LldbVmInterface - Executing task do_Method_LineTable took: 0.003483secs
+[2015-01-08 21:09:36:099] JdwpDebugServer - Command: n(6 1) id = 58 length = 16
+[2015-01-08 21:09:36:100] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:101] LldbVmInterface - Executing task do_Method_LineTable took: 0.001826secs
+[2015-01-08 21:09:36:102] JdwpDebugServer - Command: n(6 1) id = 59 length = 16
+[2015-01-08 21:09:36:103] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:103] LldbVmInterface - Executing task do_Method_LineTable took: 0.001552secs
+[2015-01-08 21:09:36:104] JdwpDebugServer - Command: n(6 1) id = 60 length = 16
+[2015-01-08 21:09:36:106] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:106] LldbVmInterface - Executing task do_Method_LineTable took: 0.001909secs
+[2015-01-08 21:09:36:107] JdwpDebugServer - Command: n(6 1) id = 61 length = 16
+[2015-01-08 21:09:36:108] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:109] LldbVmInterface - Executing task do_Method_LineTable took: 0.001897secs
+[2015-01-08 21:09:36:109] JdwpDebugServer - Command: n(6 1) id = 62 length = 16
+[2015-01-08 21:09:36:111] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:112] LldbVmInterface - Executing task do_Method_LineTable took: 0.001981secs
+[2015-01-08 21:09:36:113] JdwpDebugServer - Command: n(6 1) id = 63 length = 16
+[2015-01-08 21:09:36:114] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:114] LldbVmInterface - Executing task do_Method_LineTable took: 0.001516secs
+[2015-01-08 21:09:36:115] JdwpDebugServer - Command: n(6 1) id = 64 length = 16
+[2015-01-08 21:09:36:117] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:117] LldbVmInterface - Executing task do_Method_LineTable took: 0.001693secs
+[2015-01-08 21:09:36:118] JdwpDebugServer - Command: n(6 1) id = 65 length = 16
+[2015-01-08 21:09:36:120] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:120] LldbVmInterface - Executing task do_Method_LineTable took: 0.002195secs
+[2015-01-08 21:09:36:120] JdwpDebugServer - Command: n(6 1) id = 66 length = 16
+[2015-01-08 21:09:36:122] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:123] LldbVmInterface - Executing task do_Method_LineTable took: 0.001961secs
+[2015-01-08 21:09:36:123] JdwpDebugServer - Command: n(6 1) id = 67 length = 16
+[2015-01-08 21:09:36:125] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:125] LldbVmInterface - Executing task do_Method_LineTable took: 0.0019secs
+[2015-01-08 21:09:36:126] JdwpDebugServer - Command: n(6 1) id = 68 length = 16
+[2015-01-08 21:09:36:127] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:128] LldbVmInterface - Executing task do_Method_LineTable took: 0.001612secs
+[2015-01-08 21:09:36:128] JdwpDebugServer - Command: n(6 1) id = 69 length = 16
+[2015-01-08 21:09:36:130] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:130] LldbVmInterface - Executing task do_Method_LineTable took: 0.001584secs
+[2015-01-08 21:09:36:131] JdwpDebugServer - Command: n(6 1) id = 70 length = 16
+[2015-01-08 21:09:36:132] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:132] LldbVmInterface - Executing task do_Method_LineTable took: 0.001765secs
+[2015-01-08 21:09:36:133] JdwpDebugServer - Command: n(6 1) id = 71 length = 16
+[2015-01-08 21:09:36:135] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:135] LldbVmInterface - Executing task do_Method_LineTable took: 0.001991secs
+[2015-01-08 21:09:36:135] JdwpDebugServer - Command: n(6 1) id = 72 length = 16
+[2015-01-08 21:09:36:138] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:139] LldbVmInterface - Executing task do_Method_LineTable took: 0.0031secs
+[2015-01-08 21:09:36:139] JdwpDebugServer - Command: n(6 1) id = 73 length = 16
+[2015-01-08 21:09:36:141] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:141] LldbVmInterface - Executing task do_Method_LineTable took: 0.001866secs
+[2015-01-08 21:09:36:142] JdwpDebugServer - Command: n(6 1) id = 74 length = 16
+[2015-01-08 21:09:36:143] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:144] LldbVmInterface - Executing task do_Method_LineTable took: 0.001445secs
+[2015-01-08 21:09:36:144] JdwpDebugServer - Command: n(6 1) id = 75 length = 16
+[2015-01-08 21:09:36:147] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:147] LldbVmInterface - Executing task do_Method_LineTable took: 0.002584secs
+[2015-01-08 21:09:36:148] JdwpDebugServer - Command: n(6 1) id = 76 length = 16
+[2015-01-08 21:09:36:149] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:150] LldbVmInterface - Executing task do_Method_LineTable took: 0.001944secs
+[2015-01-08 21:09:36:154] JdwpDebugServer - Command: n(6 1) id = 77 length = 16
+[2015-01-08 21:09:36:156] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:156] LldbVmInterface - Executing task do_Method_LineTable took: 0.001458secs
+[2015-01-08 21:09:36:157] JdwpDebugServer - Command: n(6 1) id = 78 length = 16
+[2015-01-08 21:09:36:159] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:159] LldbVmInterface - Executing task do_Method_LineTable took: 0.001748secs
+[2015-01-08 21:09:36:159] JdwpDebugServer - Command: n(6 1) id = 79 length = 16
+[2015-01-08 21:09:36:160] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:36:161] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:161] LldbVmInterface - Executing task do_Method_LineTable took: 0.001466secs
+[2015-01-08 21:09:36:162] JdwpDebugServer - Command: n(6 1) id = 80 length = 16
+[2015-01-08 21:09:36:163] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:163] LldbVmInterface - Executing task do_Method_LineTable took: 0.001549secs
+[2015-01-08 21:09:36:164] JdwpDebugServer - Command: n(6 1) id = 81 length = 16
+[2015-01-08 21:09:36:166] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:166] LldbVmInterface - Executing task do_Method_LineTable took: 0.001994secs
+[2015-01-08 21:09:36:168] JdwpDebugServer - Command: ak(1 2) id = 82 length = 52
+[2015-01-08 21:09:36:171] DebugEventProcessor - Executing task do_VirtualMachine_ClassesBySignature, state: eStateStopped
+[2015-01-08 21:09:36:171] LldbVmInterface - Executing task do_VirtualMachine_ClassesBySignature took: 0.002699secs
+[2015-01-08 21:09:36:171] JdwpDebugServer - Command: af(1 20) id = 83 length = 0
+[2015-01-08 21:09:36:173] DebugEventProcessor - Executing task do_VirtualMachine_AllClassesWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:285] LldbVmInterface - Executing task do_VirtualMachine_AllClassesWithGeneric took: 0.112404secs
+[2015-01-08 21:09:36:342] JdwpDebugServer - Command: G(2 15) id = 84 length = 8
+[2015-01-08 21:09:36:343] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:347] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.005085secs
+[2015-01-08 21:09:36:348] JdwpDebugServer - Command: n(6 1) id = 85 length = 16
+[2015-01-08 21:09:36:350] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:351] LldbVmInterface - Executing task do_Method_LineTable took: 0.00254secs
+[2015-01-08 21:09:36:351] JdwpDebugServer - Command: n(6 1) id = 86 length = 16
+[2015-01-08 21:09:36:353] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:353] LldbVmInterface - Executing task do_Method_LineTable took: 0.001755secs
+[2015-01-08 21:09:36:354] JdwpDebugServer - Command: n(6 1) id = 87 length = 16
+[2015-01-08 21:09:36:356] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:356] LldbVmInterface - Executing task do_Method_LineTable took: 0.001864secs
+[2015-01-08 21:09:36:356] JdwpDebugServer - Command: n(6 1) id = 88 length = 16
+[2015-01-08 21:09:36:358] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:358] LldbVmInterface - Executing task do_Method_LineTable took: 0.001563secs
+[2015-01-08 21:09:36:359] JdwpDebugServer - Command: G(2 15) id = 89 length = 8
+[2015-01-08 21:09:36:360] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:36:360] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:374] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.010083secs
+[2015-01-08 21:09:36:375] JdwpDebugServer - Command: n(6 1) id = 90 length = 16
+[2015-01-08 21:09:36:376] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:378] LldbVmInterface - Executing task do_Method_LineTable took: 0.002878secs
+[2015-01-08 21:09:36:378] JdwpDebugServer - Command: n(6 1) id = 91 length = 16
+[2015-01-08 21:09:36:380] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:381] LldbVmInterface - Executing task do_Method_LineTable took: 0.001557secs
+[2015-01-08 21:09:36:381] JdwpDebugServer - Command: G(2 15) id = 92 length = 8
+[2015-01-08 21:09:36:383] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:386] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.004426secs
+[2015-01-08 21:09:36:387] JdwpDebugServer - Command: n(6 1) id = 93 length = 16
+[2015-01-08 21:09:36:388] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:389] LldbVmInterface - Executing task do_Method_LineTable took: 0.002386secs
+[2015-01-08 21:09:36:390] JdwpDebugServer - Command: n(6 1) id = 94 length = 16
+[2015-01-08 21:09:36:391] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:392] LldbVmInterface - Executing task do_Method_LineTable took: 0.001447secs
+[2015-01-08 21:09:36:392] JdwpDebugServer - Command: G(2 15) id = 95 length = 8
+[2015-01-08 21:09:36:394] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:398] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.004933secs
+[2015-01-08 21:09:36:398] JdwpDebugServer - Command: n(6 1) id = 96 length = 16
+[2015-01-08 21:09:36:400] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:401] LldbVmInterface - Executing task do_Method_LineTable took: 0.002258secs
+[2015-01-08 21:09:36:401] JdwpDebugServer - Command: n(6 1) id = 97 length = 16
+[2015-01-08 21:09:36:403] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:403] LldbVmInterface - Executing task do_Method_LineTable took: 0.001595secs
+[2015-01-08 21:09:36:404] JdwpDebugServer - Command: G(2 15) id = 98 length = 8
+[2015-01-08 21:09:36:405] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:408] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.003818secs
+[2015-01-08 21:09:36:408] JdwpDebugServer - Command: n(6 1) id = 99 length = 16
+[2015-01-08 21:09:36:410] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:412] LldbVmInterface - Executing task do_Method_LineTable took: 0.002767secs
+[2015-01-08 21:09:36:412] JdwpDebugServer - Command: n(6 1) id = 100 length = 16
+[2015-01-08 21:09:36:414] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:414] LldbVmInterface - Executing task do_Method_LineTable took: 0.002104secs
+[2015-01-08 21:09:36:415] JdwpDebugServer - Command: G(2 15) id = 101 length = 8
+[2015-01-08 21:09:36:417] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:419] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.003528secs
+[2015-01-08 21:09:36:420] JdwpDebugServer - Command: n(6 1) id = 102 length = 16
+[2015-01-08 21:09:36:421] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:422] LldbVmInterface - Executing task do_Method_LineTable took: 0.002457secs
+[2015-01-08 21:09:36:423] JdwpDebugServer - Command: n(6 1) id = 103 length = 16
+[2015-01-08 21:09:36:424] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:425] LldbVmInterface - Executing task do_Method_LineTable took: 0.001649secs
+[2015-01-08 21:09:36:425] JdwpDebugServer - Command: G(2 15) id = 104 length = 8
+[2015-01-08 21:09:36:427] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:429] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.00342secs
+[2015-01-08 21:09:36:429] JdwpDebugServer - Command: n(6 1) id = 105 length = 16
+[2015-01-08 21:09:36:431] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:432] LldbVmInterface - Executing task do_Method_LineTable took: 0.002333secs
+[2015-01-08 21:09:36:432] JdwpDebugServer - Command: n(6 1) id = 106 length = 16
+[2015-01-08 21:09:36:434] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:434] LldbVmInterface - Executing task do_Method_LineTable took: 0.001879secs
+[2015-01-08 21:09:36:435] JdwpDebugServer - Command: G(2 15) id = 107 length = 8
+[2015-01-08 21:09:36:437] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:438] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.002826secs
+[2015-01-08 21:09:36:439] JdwpDebugServer - Command: n(6 1) id = 108 length = 16
+[2015-01-08 21:09:36:440] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:441] LldbVmInterface - Executing task do_Method_LineTable took: 0.002249secs
+[2015-01-08 21:09:36:442] JdwpDebugServer - Command: n(6 1) id = 109 length = 16
+[2015-01-08 21:09:36:443] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:443] LldbVmInterface - Executing task do_Method_LineTable took: 0.001566secs
+[2015-01-08 21:09:36:444] JdwpDebugServer - Command: G(2 15) id = 110 length = 8
+[2015-01-08 21:09:36:446] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:448] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.003635secs
+[2015-01-08 21:09:36:448] JdwpDebugServer - Command: n(6 1) id = 111 length = 16
+[2015-01-08 21:09:36:450] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:451] LldbVmInterface - Executing task do_Method_LineTable took: 0.002515secs
+[2015-01-08 21:09:36:451] JdwpDebugServer - Command: n(6 1) id = 112 length = 16
+[2015-01-08 21:09:36:453] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:454] LldbVmInterface - Executing task do_Method_LineTable took: 0.001847secs
+[2015-01-08 21:09:36:454] JdwpDebugServer - Command: G(2 15) id = 113 length = 8
+[2015-01-08 21:09:36:456] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:457] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.00245secs
+[2015-01-08 21:09:36:457] JdwpDebugServer - Command: n(6 1) id = 114 length = 16
+[2015-01-08 21:09:36:459] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:460] LldbVmInterface - Executing task do_Method_LineTable took: 0.002502secs
+[2015-01-08 21:09:36:460] JdwpDebugServer - Command: n(6 1) id = 115 length = 16
+[2015-01-08 21:09:36:462] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:462] LldbVmInterface - Executing task do_Method_LineTable took: 0.001951secs
+[2015-01-08 21:09:36:463] JdwpDebugServer - Command: G(2 15) id = 116 length = 8
+[2015-01-08 21:09:36:465] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:466] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.003055secs
+[2015-01-08 21:09:36:466] JdwpDebugServer - Command: n(6 1) id = 117 length = 16
+[2015-01-08 21:09:36:468] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:469] LldbVmInterface - Executing task do_Method_LineTable took: 0.00243secs
+[2015-01-08 21:09:36:469] JdwpDebugServer - Command: n(6 1) id = 118 length = 16
+[2015-01-08 21:09:36:471] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:472] LldbVmInterface - Executing task do_Method_LineTable took: 0.00197secs
+[2015-01-08 21:09:36:472] JdwpDebugServer - Command: G(2 15) id = 119 length = 8
+[2015-01-08 21:09:36:474] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:475] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.002321secs
+[2015-01-08 21:09:36:475] JdwpDebugServer - Command: n(6 1) id = 120 length = 16
+[2015-01-08 21:09:36:477] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:478] LldbVmInterface - Executing task do_Method_LineTable took: 0.002311secs
+[2015-01-08 21:09:36:478] JdwpDebugServer - Command: n(6 1) id = 121 length = 16
+[2015-01-08 21:09:36:480] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:480] LldbVmInterface - Executing task do_Method_LineTable took: 0.001908secs
+[2015-01-08 21:09:36:481] JdwpDebugServer - Command: G(2 15) id = 122 length = 8
+[2015-01-08 21:09:36:482] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:484] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.002501secs
+[2015-01-08 21:09:36:484] JdwpDebugServer - Command: n(6 1) id = 123 length = 16
+[2015-01-08 21:09:36:486] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:487] LldbVmInterface - Executing task do_Method_LineTable took: 0.002404secs
+[2015-01-08 21:09:36:487] JdwpDebugServer - Command: n(6 1) id = 124 length = 16
+[2015-01-08 21:09:36:489] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:489] LldbVmInterface - Executing task do_Method_LineTable took: 0.00186secs
+[2015-01-08 21:09:36:489] JdwpDebugServer - Command: G(2 15) id = 125 length = 8
+[2015-01-08 21:09:36:491] DebugEventProcessor - Executing task do_ReferenceType_MethodsWithGeneric, state: eStateStopped
+[2015-01-08 21:09:36:492] LldbVmInterface - Executing task do_ReferenceType_MethodsWithGeneric took: 0.002815secs
+[2015-01-08 21:09:36:493] JdwpDebugServer - Command: n(6 1) id = 126 length = 16
+[2015-01-08 21:09:36:495] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:495] LldbVmInterface - Executing task do_Method_LineTable took: 0.002389secs
+[2015-01-08 21:09:36:496] JdwpDebugServer - Command: n(6 1) id = 127 length = 16
+[2015-01-08 21:09:36:498] DebugEventProcessor - Executing task do_Method_LineTable, state: eStateStopped
+[2015-01-08 21:09:36:498] LldbVmInterface - Executing task do_Method_LineTable took: 0.001742secs
+[2015-01-08 21:09:36:561] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:36:761] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:36:962] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:37:163] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:37:364] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:37:564] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:37:766] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:37:967] DebugLaunchPlugin - Waiting for the debugger to settle...
+[2015-01-08 21:09:38:167] DebugLaunchPlugin - Debugger has settled. Resuming inferior.
+[2015-01-08 21:09:38:171] DebugEventProcessor - resume vote from [LldbVmInterface resume]
+[2015-01-08 21:09:38:171] DebugEventProcessor - vote results: suspension=0 [], resume=1 [LldbVmInterface resume]
+[2015-01-08 21:09:38:171] DebugEventProcessor - resume won, resuming process, state: eStateStopped
+[2015-01-08 21:09:38:175] DebugEventProcessor - Running
+[2015-01-08 21:09:38:175] JavaThreadObserver - thread states: main=running(0), ReferenceQueueDaemon=running(0), FinalizerDaemon=running(0), FinalizerWatchdogDaemon=running(0), 
+[2015-01-08 21:10:19:438] DebugEventProcessor - Exited
+[2015-01-08 21:10:19:438] JdwpEventProcessor - processing vm death event
+[2015-01-08 21:10:19:445] DebugEventProcessor - event processor thread exiting
+[2015-01-08 21:10:19:520] DebugLaunchPlugin - Shutting down JDWP server
+[2015-01-08 21:10:20:614] Debugger - Debugger destroyed

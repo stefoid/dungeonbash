@@ -2,12 +2,14 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
+        jcenter()
         maven { url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
         classpath 'com.android.tools.build:gradle:0.10+'
-        classpath 'com.github.jtakakura:gradle-robovm-plugin:0.0.9'
+        classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-01'
     }
 }
 
@@ -18,8 +20,8 @@ allprojects {
     version = '1.0'
     ext {
         appName = 'dbash'
-        gdxVersion = '1.1.0'
-        roboVMVersion = '0.0.13'
+        gdxVersion = '1.5.2'
+        roboVMVersion = '1.0.0-beta-01'
     }
 
     repositories {
@@ -76,6 +78,9 @@ project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
 
+
+apply plugin: 'war'
+apply plugin: 'gwt'
 
     dependencies {
         compile project(":core")
