@@ -77,7 +77,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "LEADER_BUTTON", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use leader mode to control the team as a group - when no monsters are around the crown button  becomes enabled.",
+				"Use leader mode  to control the team as a group - when no monsters are around the crown button  becomes enabled.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,

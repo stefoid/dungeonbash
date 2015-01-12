@@ -19,6 +19,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean 		equipped = false;
 	public int			magicCost = 0;
 	public boolean 		targetable;
+	public boolean 		aimed;
 	public boolean 		isRoughTerrain;
 	public boolean		enoughMagic = false;	
 	public int			sortValue = 0;
@@ -64,6 +65,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isUsableByOwner = owner.canUseAbility(ability);
 			isCarried = true;
 			targetable = ability.isTargetable();
+			aimed = ability.isAimed();
 
 			if (owner instanceof Character) {
 				Character c = (Character) owner;

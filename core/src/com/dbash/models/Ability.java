@@ -526,6 +526,11 @@ public class Ability
     	}
     }
     
+    
+	public boolean isAimed() {
+		return ability.aimed;
+	}
+    
     public boolean isRoughTerrain() {
     	if (getTag() != null && hasTag(Ability.ROUGH_TERRAIN_TAG)) {
     		return true;
@@ -1049,6 +1054,7 @@ public class Ability
 	{
 		return tickCounter;
 	}
+
 
 }
 

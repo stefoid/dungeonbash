@@ -17,6 +17,7 @@ public class AbilityListElementView extends AbilityTypeListElement {
 	protected ImageView selectedBackground;
 	protected ImageView cantUseBackground;
 	protected ImageView targetIcon;
+	protected ImageView reticuleIcon;
 	
 	public AbilityListElementView(UIDepend gui, AbilityInfo abilityInfo, Rect area) {
 		super(gui, abilityInfo, area);
@@ -27,12 +28,21 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		selectedBackground = new ImageView(gui, "ABILITY_SELECTED_IMAGE", area);
 		cantUseBackground = new ImageView(gui, "ABILITY_DISABLED_IMAGE", area);
 		
+		Rect targetArea = new Rect(iconArea);
+		targetArea.x = area.x + iconArea.width * 2.5f;
+		
 		if (abilityInfo.targetable) {
-			Rect targetArea = new Rect(iconArea);
-			targetArea.x = area.x + iconArea.width * 2.5f;
 			targetIcon = new ImageView(gui, "TARGET_IMAGE", targetArea);
 		} else {
 			targetIcon = null;
+		}
+		
+		if (abilityInfo.aimed && abilityInfo.targetable) {
+			Rect reitculeArea = new Rect(iconArea);
+			reitculeArea.x = targetArea.x + targetArea.width * 1.5f;
+			reticuleIcon = new ImageView(gui, "RETICULE_IMAGE", reitculeArea);
+		} else {
+			reticuleIcon = null;
 		}
 	}
 	
@@ -57,8 +67,12 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		abilityType.draw(spriteBatch, x, y);
 		
 		// target
-		if (abilityInfo.targetable) {
+		if (targetIcon != null) {
 			targetIcon.draw(spriteBatch, x, y);
+		}
+		
+		if (reticuleIcon != null) {
+			reticuleIcon.draw(spriteBatch, x, y);
 		}
 		
 		// magic cost
