@@ -128,7 +128,7 @@
 +"amulet of mastery,af,13,1,3,-1,1,0,0,8,0,6,5,0,0,0,0,9,6,6,128,0,0,*"// amulet of mastery: DESELECT,SELECT,
 +"skill mastery,ia,-1,0,0,-1,0,0,0,1,0,15,1,10,0,0,0,16,1,10,0,0,0,*"// skill mastery: VALUE MODIFIER,VALUE MODIFIER,
 +"wand of speed,ac,5,2,2,-1,1,5,0,4,0,19,4,137,0,0,0,*"// wand of speed: ABILITY ADDER,
-+"extra speed,st,-1,0,0,-1,0,0,0,1,0,10,1,2,0,0,0,*"// extra speed: VALUE MODIFIER,
++"extra speed,st,-1,0,0,-1,0,0,0,1,0,10,1,3,0,0,0,*"// extra speed: VALUE MODIFIER,
 +"amulet of wizardry,af,5,1,3,-1,1,0,0,6,0,6,5,0,0,0,0,9,6,6,136,0,0,*"// amulet of wizardry: DESELECT,SELECT,
 +"amulet of strength,af,8,1,3,-1,1,0,0,4,0,6,5,0,0,0,0,9,6,6,133,0,0,*"// amulet of strength: DESELECT,SELECT,
 +"extra strength,st,-1,0,0,-1,0,0,0,1,0,12,1,20,0,0,0,*"// extra strength: VALUE MODIFIER,

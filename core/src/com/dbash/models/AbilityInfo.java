@@ -101,7 +101,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		name = textArray[0] + textArray[1] + value;
 		
 		if (textArray.length > 2) {
-			name += textArray[2];
+			for (int i=2; i<textArray.length; i++) {
+				name += textArray[2];
+			}
 		}
 		
 		statText = textArray[0];

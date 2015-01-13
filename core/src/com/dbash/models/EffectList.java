@@ -48,17 +48,17 @@ public class EffectList extends ArrayList<AbilityInfo>{
 
 			// We add character stats
 			int as = owner.calculateAttackSkill();
-			String[] tas = {"ATTACK", " : "};
+			String[] tas = {"ATTACK", " : ", getAttackDesc(as)};
 			AbilityInfo attack = new AbilityInfo(tas, as, Color.WHITE);
 			add(attack);
 			
 			int ds = owner.calculateDefenceSkill();
-			String[] tds = {"DEFENCE", " : "};
+			String[] tds = {"DEFENCE", " : ", getDefenceDesc(ds)};
 			AbilityInfo defence = new AbilityInfo(tds, ds, Color.WHITE);
 			add(defence);
 			
 			int ss = owner.calculateSpeed();
-			String[] tss = {"SPEED", " : "};
+			String[] tss = {"SPEED", " : ", getSpeedDesc(ss)};
 			AbilityInfo speed = new AbilityInfo(tss, ss, Color.WHITE);
 			add(speed);
 			
@@ -68,12 +68,12 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			add(dam);
 			
 			int st = owner.calculateStealth();
-			String[] tst = {"STEALTH", " : "};
+			String[] tst = {"STEALTH", " : ", getStealthDesc(st)};
 			AbilityInfo stealth = new AbilityInfo(tst, st, Color.WHITE);
 			add(stealth);
 			
 			int de = owner.calculateDetect();
-			String[] tde = {"DETECT", " : "};
+			String[] tde = {"DETECT", " : ", getDetectDesc(de)};
 			AbilityInfo detect = new AbilityInfo(tde, de, Color.WHITE);
 			add(detect);
 			
@@ -113,6 +113,48 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		
 		// Now sort the list according to usageCount and that is the order presented to the player.
 		//Collections.sort(this);
+	}
+	
+	private String getAttackDesc(int val) {
+		String result = " (";
+		if (val < 8) {
+			result += "poor";
+		} else if (val < 11) {
+			result += "average";
+		} else if (val < 15) {
+			result += "good";
+		} else {
+			result += "great";
+		}
+		result += ")";
+		return result;
+	}
+	
+	private String getDefenceDesc(int val) {
+		return getAttackDesc(val);
+	}
+	
+	private String getSpeedDesc(int val) {
+		String result = " (";
+		if (val < 3) {
+			result += "slow";
+		} else if (val < 5) {
+			result += "average";
+		} else if (val < 7) {
+			result += "fast";
+		} else {
+			result += "blinding";
+		}
+		result += ")";
+		return result;
+	}
+	
+	private String getStealthDesc(int val) {
+		return getAttackDesc(val);
+	}
+	
+	private String getDetectDesc(int val) {
+		return getAttackDesc(val);
 	}
 	
 	public int difference(AbilityInfo abilityInfo) {
