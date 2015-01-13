@@ -490,7 +490,7 @@ public class Ability
 		executeCommandTarget(command, targCreature, position, owned);
     }	
 
-    public int getAbilityMeleeDamage() {
+    public int getAbilityDamage() {
     	int i = 0;
     	for (int strategy : ability.executeStrategy) {
     		if (strategy == ATTACKER) {
@@ -517,6 +517,13 @@ public class Ability
     	}
     }
     
+    public boolean isMagical() {
+    	if (ability.magicCost > 0) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
     
     public boolean isTargetable() {
     	if (ability.invokingStrategy == TARGETABLE_ABILITY) {

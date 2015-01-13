@@ -983,33 +983,25 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	 */
 	
 	// METHODS
-	protected int calculateAttackSkill()
-	{
+	protected int calculateAttackSkill() {
 		int newAttack = attackSkill + (attackSkill * expRoot) / 100;
-
 		return modifyValue(AbilityCommand.MODIFY_ATTACK_SKILL, newAttack);
-
 	}
 	
-	protected int calculateDefenceSkill()
-	{
+	protected int calculateDefenceSkill() {
 		int newDefence = defenceSkill + (defenceSkill * expRoot) / 100;
-
 		return modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence);
 	}
 
-	protected int modifyHealth()
-	{
+	protected int modifyHealth() {
 		return modifyValue(AbilityCommand.MODIFY_HEALTH, health);
 	}
 
-	protected int modifyMagic()
-	{
+	protected int modifyMagic() {
 		return modifyValue(AbilityCommand.MODIFY_MAGIC, magic);
 	}
 
-	public int calculateMaxHealth()
-	{
+	public int calculateMaxHealth() {
 		return modifyValue(AbilityCommand.MODIFY_MAX_HEALTH, calculateBaseHealth());
 	}
 	
@@ -1017,20 +1009,16 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return  maximumHealth + (maximumHealth * expRoot) / 100;
 	}
 
-	public int calculateMaxMagic()
-	{
+	public int calculateMaxMagic() {
 		int newMaxMag = maximumMagic + (maximumMagic * expRoot) / 100;
-
 		return modifyValue(AbilityCommand.MODIFY_MAX_MAGIC, newMaxMag);
 	}
 
-	public boolean isSolid()
-	{
+	public boolean isSolid() {
 		return true;
 	}
 
-	public boolean giveAbility(Creature target, Ability ab, DungeonPosition pos, int magicCost, Creature giver)
-	{
+	public boolean giveAbility(Creature target, Ability ab, DungeonPosition pos, int magicCost, Creature giver) {
 		boolean addedOk = true;
 		
 		if (target != null){
@@ -1052,7 +1040,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 //		}
 		
 		return addedOk;
-
 	}
 
 	// When a creature uses magic, by virtue of executing an ability, this is called.
@@ -1097,7 +1084,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			// 4. creatures magical capability (maxMagic) effects damage of
 			// magical attacks (that have a magic cost)  [knockback excluded]
 			if (attack.type != AbilityCommand.KNOCKBACK && magicUse > 0) {
-				attack.damage += calculateMaxMagic() / 6;
+				attack.damage += calculateMagicDamageBonus();
 			}
 		}
 
@@ -1140,6 +1127,11 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return bonus;
 	}
 	
+	protected int calculateMagicDamageBonus() {
+		int bonus = calculateMaxMagic() / 6;
+		return bonus;
+	}
+	
 	public int calculateSpeed() {
 		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
 	}
@@ -1152,7 +1144,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return modifyValue(AbilityCommand.MODIFY_DETECT, detect);
 	}
 	
-	public int calculateDamage() {
+	public int calculateMeleeDamage() {
 		Ability theAbility = null;
 		
 		// First find the set weapon.
@@ -1166,8 +1158,28 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		
 		int damage = 0;
 		if (theAbility != null) {
-			damage = theAbility.getAbilityMeleeDamage();
+			damage = theAbility.getAbilityDamage();
 			damage += calculateSizeDamageBonus() + calculateSkillDamageBonus();
+		}
+		
+		return damage;
+	}
+	
+	public int calculateRangedDamage(Ability theAbility) {
+		
+		int damage = 0;
+		if (theAbility != null) {
+			damage = theAbility.getAbilityDamage();
+			
+			if (damage > 0) {
+				if (theAbility.isAimed()) {
+					damage += calculateSkillDamageBonus();
+				}
+
+				if (theAbility.isMagical()) {
+					damage += calculateMagicDamageBonus();
+				}
+			}
 		}
 		
 		return damage;

@@ -817,7 +817,6 @@ public class Character extends Creature implements IPresenterCharacter {
 			trySetDefaultMelee();
 			updateStats(null, null);  // this will update the character stats and effects due to the selection change
 		} else {
-			
 			if (ability.isInstant() == false) {
 				if (abilities.contains(ability)) {  // toggle the selection status of the ability
 					if (currentSelectedAbility != ability) {
@@ -943,7 +942,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	@Override
 	public void onChangeToEffectList(UIInfoListener listener) {
 		effectListListeners.add(listener);
-		
 	}
 
 	@Override

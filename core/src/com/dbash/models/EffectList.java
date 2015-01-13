@@ -46,7 +46,19 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		
 		if (owner.getNameUnderscore().equals("nobody") == false) {
 
+			Character theCharacter = (Character) owner;
 			// We add character stats
+			int wd = owner.calculateMeleeDamage();
+			String[] twd = {"MELEE DAMAGE", " : "};
+			AbilityInfo dam = new AbilityInfo(twd, wd, Color.BLACK);
+			add(dam);
+			
+			
+			int md = owner.calculateRangedDamage(theCharacter.currentSelectedAbility);
+			String[] tmd = {"RANGED DAMAGE", " : "};
+			AbilityInfo rdam = new AbilityInfo(tmd, md, Color.BLACK);
+			add(rdam);
+			
 			int as = owner.calculateAttackSkill();
 			String[] tas = {"ATTACK", " : ", getAttackDesc(as)};
 			AbilityInfo attack = new AbilityInfo(tas, as, Color.WHITE);
@@ -61,11 +73,6 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			String[] tss = {"SPEED", " : ", getSpeedDesc(ss)};
 			AbilityInfo speed = new AbilityInfo(tss, ss, Color.WHITE);
 			add(speed);
-			
-			int wd = owner.calculateDamage();
-			String[] twd = {"MELEE DAMAGE", " : "};
-			AbilityInfo dam = new AbilityInfo(twd, wd, Color.WHITE);
-			add(dam);
 			
 			int st = owner.calculateStealth();
 			String[] tst = {"STEALTH", " : ", getStealthDesc(st)};
