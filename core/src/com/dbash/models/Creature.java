@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
-import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.platform.TextResourceIdentifier;
@@ -745,12 +744,17 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		setAbilityFlags();
 		ability.setOwned(this, true);
 		
-		if (giver != null) {
-			dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ability.getEffectType(), mapPosition);
-		}
-		
-		if (mapPosition != null && dungeonQuery.getTerrainAtLocation(mapPosition) == RoughTerrainType.HOLE) {
-				death();
+		// OK, what if this is an ability that should be invoked straight away (ie. wand of health?)
+		if (ability.dynamicParams.containsKey(Ability.INVOKE_TAG)) {
+			ability.abilitySelected(this);
+		} else {
+			if (giver != null) {
+				dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ability.getEffectType(), mapPosition);
+			}
+			
+			if (mapPosition != null && dungeonQuery.getTerrainAtLocation(mapPosition) == RoughTerrainType.HOLE) {
+					death();
+			}
 		}
 		
 		return true;
@@ -1031,13 +1035,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				ab.changeTicksLeft(1);  // add 1 to the tick counter
 			}
 		}
-
-//		if (addedOk) {
-//			dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ab.getEffectType(), pos);
-//		} else {
-//			// indicates a resisted ability
-//			dungeonEvents.abilityResisted(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ab.getEffectType(), pos);
-//		}
 		
 		return addedOk;
 	}

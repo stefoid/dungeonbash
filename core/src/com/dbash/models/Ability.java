@@ -43,6 +43,8 @@ public class Ability
 	public static String KNOCKEDBACK_TAG = "knockedback";
 	public static String STUNNED_TAG = "stunned";
 	
+	public static String INVOKE_TAG = "invoke";  // means invoke a just added ability (oneshot) immediately after adding it.
+	
 	public enum AbilityType {
 		WEAPON(3),
 		ARMOR(6),
@@ -106,58 +108,51 @@ public class Ability
 		this(theAbility.myId, theAbility.owned, 1, theAbility.dungeonEvents, theAbility.dungeonQuery);
 	}
 	
-	public Ability(int	abilityId, Creature isOwned, int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery)
-	{
+	public Ability(int	abilityId, Creature isOwned, int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		this.dungeonEvents = dungeonEvents;
 		this.dungeonQuery = dungeonQuery;
 		
 		myId = abilityId;
 		
-		if (dataInitialized == false)
-		{
+		if (dataInitialized == false) {
 			initializeData();  // read all ability data from string
 			dataInitialized = true;
 		}
 
 		// now initilize this particular ability
-		if (abilityId < -1)
-		{
+		if (abilityId < -1) {
 			// we have to choose a random item appropriate for the level that we are on
 			boolean 	itemChosen = false;
 			
-			while (!itemChosen)
-			{
+			while (!itemChosen) {
 				int abId = Randy.getRand(0, abilityData.size()-1);
 				ability = (Data) abilityData.elementAt(abId);
 				myId = abId;
 
 				// must be a physcial item at least
-				if (ability.physicalItem == 1)
-				{
+				if (ability.physicalItem == 1) {
 					// calculate the power of this item.  is it appropriate for the level specified?
-					if (calcValue(abId) <= level)
-					{
+					if (calcValue(abId) <= level) {
 						// ok to use this item, it is not too powerful
-						if (abilityId == RANDOM_MAGIC)
-						{
-							if (ability.magicCost > 0)
+						if (abilityId == RANDOM_MAGIC) {
+							if (ability.magicCost > 0) {
 								itemChosen = true;
-							else if (ability.needs == NEEDS_HEAD)  // must be an amulet of some sort
+							}
+							else if (ability.needs == NEEDS_HEAD)  {// must be an amulet of some sort
 								// an amulet can be a magic or mundane random item
 								itemChosen = true;
-
+							}
 						}
-						else
-						{
-							if (ability.magicCost < 1)
+						else {
+							if (ability.magicCost < 1) {
 								itemChosen = true;
-						}
+							}
+						}	
 					}
 				}
 			}
 		}
-		else  // just use the exact specified ability
-		{
+		else { // just use the exact specified ability
 			ability = (Data) abilityData.elementAt(abilityId);
 		}
 
@@ -413,15 +408,15 @@ public class Ability
 				fireAbilityUseEvent(attackingCreature, pos, command.name, damageType);
 				
 				// get targets for the range of the effect
-				if (ability.executeParam4[i] != 0)  // if this is a ranged effect, add other targets in range 
-				{
+				if (ability.executeParam4[i] != 0) {// if this is a ranged effect, add other targets in range 
 					range = ability.executeParam4[i];
 
 					dungeonEvents.explosion(SequenceNumber.getNext(), attackingCreature.getReleventCharacter(), 
 							 pos, damageType, range);
 
-					if (range == Map.LOS)     // ability code uses -1 as LSO, so we have to convert it to 0 for level
+					if (range == Map.LOS) {    // ability code uses -1 as LSO, so we have to convert it to 0 for level
 						range = Map.RANGE;// TODO RANGE L.VIEWPORT_LOS;
+					}
 					
 					for (Creature visibleCreature : dungeonQuery.getCreaturesVisibleFrom(pos, range)) {
 						// if the ability we are using is targetable, we add the attacking creature to the list also. otherwise we dont
@@ -466,6 +461,9 @@ public class Ability
 					{
 						Ability  ab = new Ability(ability.executeParam1[i], theCreature, 1, dungeonEvents, dungeonQuery); // will be owned by the target
 						ab.dynamicParams.put(Ability.TARGET_POS, pos);
+						if (hasTag(Ability.INVOKE_TAG)) {
+							ab.dynamicParams.put(INVOKE_TAG, INVOKE_TAG);
+						}
 						attackingCreature.giveAbility(theCreature, ab, thePos, magicCost, attackingCreature);
 					}
 				}
@@ -784,21 +782,10 @@ public class Ability
 			}
 			
 			result = 0;
-			//dungeonQuery.getSoundControl().playSound(GameControl.LONGCONFIRMSOUND);
-		}
-
-
-		if (ability.invokingStrategy == TARGETABLE_ABILITY) 
-		{
-//			Character o = (Character) owned;
-//			currentEyeTarget = new ScreenObject(o.getTargetPosition(this), o, this);
-			//dungeonQuery.getSoundControl().playSound(GameControl.LONGCONFIRMSOUND);
-	//		currentEyeTarget = dungeonQuery.getEyeTarget();
 		}
 
 		if ((ability.invokingStrategy == INSTANT_ABILITY) ||
-		    (ability.invokingStrategy == INSTANT_ONESHOT))
-		{
+		    (ability.invokingStrategy == INSTANT_ONESHOT)) {
 			set = true;			  // ability becomes active
 
 	    	// now process the EXECUTE on this instant ability - maybe it will respond to that
@@ -816,17 +803,11 @@ public class Ability
 		return result;
 	}
 
-	private  int cancelAbilityInProgress()
-	{
-//		if (currentEyeTarget != null)
-//		{
-//			currentEyeTarget = null;
-//		}
+	private  int cancelAbilityInProgress() {
 		return 0;
 	}
 
-	public void unset(Creature  owner)
-	{
+	public void unset(Creature  owner) {
 		set = false;
 		
 		if (addedAbility != null)
