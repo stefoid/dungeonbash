@@ -46,7 +46,7 @@ import com.dbash.util.Rect;
 // DungeonAreaPresener knows how to turn into queued AniamtionViews.
 public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresentationEventListener {
 
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	private static final float multiplier = 1f;
 	public final static float scrollPeriod = 0.5f * multiplier;

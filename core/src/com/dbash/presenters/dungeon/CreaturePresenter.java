@@ -50,7 +50,7 @@ import com.dbash.util.Tween;
 // type they are, to help it deicde how to schedule the current one, if it needs to.
 
 public class CreaturePresenter {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public enum VisualState {
 		SHOW_STATIC,

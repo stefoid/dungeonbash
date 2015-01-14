@@ -23,9 +23,10 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static class DistComparator implements Comparator<Creature> {
-
+		
 		DungeonPosition posi;
 		boolean smallestFirst;
 		
@@ -45,7 +46,6 @@ public abstract class Creature implements IPresenterCreature
 		}
 	}
 	
-	public static final boolean LOG = false && L.DEBUG;
 	// INTERFACE
 	public static final int	MAX_SPEED		= 10;
 	
@@ -299,15 +299,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
         }
 	}
 	
-	// these are for a CreaturePresenter to observe changes to the highlight status of the creature.
-	// the highlight status will only be manipulated by Characters.  For monsters it will remain at default NO_HIGLIGHT.
-//	public void onChangeToVisualStatus(UIInfoListener listener)
-//	{
-//		visualStatusListener = listener;
-//	}
-	
-	public HighlightStatus getHighlightStatus()
-	{
+	public HighlightStatus getHighlightStatus() {
 		return highlightStatus;
 	}
 	
@@ -315,8 +307,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	public abstract boolean canSkipTurn();
 	// calculates changes to creature stats, and returns true if creature still alive, false otherwise
 	// called by processTurn.
-	public boolean processStatsForTurn()
-	{
+	public boolean processStatsForTurn() {
 		// all creatures get a chance to modify their stats first, according
 		// to their current abilities.
 		// first of all, health and magic get a 1:5 chance of increasing,
@@ -713,6 +704,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 
 	public boolean addAbility(Ability ability, Creature giver)
 	{
+		if (LOG) L.log("ability: %s, giver: %s", ability,giver);
 		// first work out whether you have any ability which will prevent this
 		// ability from being added (such as resist poison)
 		AbilityCommand ac = new AbilityCommand(AbilityCommand.RESIST_ABILITY, ability.myId, 1, 1, 1);
@@ -740,6 +732,8 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			return true;
 		}	
 	
+		
+		if (LOG) L.log("adding ability: %s to creature:%s", ability , this);
 		abilities.add(ability);
 		setAbilityFlags();
 		ability.setOwned(this, true);

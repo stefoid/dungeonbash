@@ -321,7 +321,7 @@ public class Map implements IPresenterMap {
 
 			// will only change the direction when the direction is legal, i.e.
 			// between 1-4
-			int nDir = Randy.getRand(0, height);
+			int nDir = Randy.getRand(0, 8);
 
 			if (nDir < 5) {
 				dir = nDir;

@@ -1,11 +1,5 @@
 package com.dbash.models;
 
-
-
-
-
-
-
 public class AbilityCommand 
 {
 	// INTERFACE
@@ -99,5 +93,36 @@ public class AbilityCommand
 		humanoid = true;
 	}
 
+	@Override
+	public String toString() {
+		String result;
+		switch (name) {
+			case		RESIST_HARD: result = "RESIST_HARD"; break;
+			case		RESIST_SHARP: result = "RESIST_SHARP"; break;
+			case		RESIST_ENERGY: result = "RESIST_ENERGY"; break;
+			case		RESIST_CHEMICAL: result = "RESIST_CHEMICAL"; break;
+			case		CLEAR_ARMOR: result = "CLEAR_ARMOR"; break;
+			case		CLEAR_AMULET: result = "CLEAR_AMULET"; break;
+			case		CLEAR_MELEE: result = "CLEAR_MELEE"; break;
+			case		MELEE_ATTACK: result = "MELEE_ATTACK"; break;
+			case		SET: result = "SET"; break;
+			case		MODIFY_SPEED: result = "MODIFY_SPEED"; break;
+			case		MODIFY_HEALTH: result = "MODIFY_HEALTH"; break;
+			case		MODIFY_MAX_HEALTH: result = "MODIFY_MAX_HEALTH"; break;
+			case		MODIFY_MAGIC: result = "MODIFY_MAGIC"; break;
+			case		MODIFY_MAX_MAGIC: result = "MODIFY_MAX_MAGIC"; break;
+			case		MODIFY_ATTACK_SKILL: result = "MODIFY_ATTACK_SKILL"; break;
+			case		MODIFY_DEFENCE_SKILL: result = "MODIFY_DEFENCE_SKILL"; break;
+			case		MODIFY_STEALTH: result = "MODIFY_STEALTH"; break;
+			case		MODIFY_DETECT: result = "MODIFY_DETECT"; break;
+			case		INVOKE: result = "INVOKE"; break;
+			case		EXECUTE: result = "EXECUTE"; break;
+			case		CANCEL: result = "CANCEL"; break;
+			case 		RESIST_ABILITY: result = "RESIST_ABILITY"; break;
+			default: result = "unknwon"; break;
+		}
+		
+		return result;
+	}
 }
 

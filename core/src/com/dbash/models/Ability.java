@@ -19,7 +19,7 @@ import com.dbash.util.SequenceNumber;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class Ability 
 {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	// INTERFACE	
 	public static final int     RANDOM_ITEM = -2;
@@ -287,19 +287,17 @@ public class Ability
 	{
 		int newValue = command.value;
 
-		if (command.name == AbilityCommand.CANCEL)
+		if (command.name == AbilityCommand.CANCEL) {
 			return cancelAbilityInProgress();
+		}
 
-		if (meetsNeeds(command.head, command.hands, command.humanoid) == false)
-		{
-			if (command.name == AbilityCommand.INVOKE)
-				;//dungeonQuery.getSoundControl().playSound(GameControl.BADSOUND);
-				
+		if (meetsNeeds(command.head, command.hands, command.humanoid) == false) {		
 			return newValue;
 		}
 
-		if  (command.name == AbilityCommand.INVOKE)
+		if  (command.name == AbilityCommand.INVOKE) {
 			return  processInvoke(command, owner);
+		}
 
 		for (int i=0; i<numberOfCommands; i++)
 		{
@@ -317,8 +315,7 @@ public class Ability
 					newCommand.name = ability.executeParam1[i];   // CLEAR ARMOUR, CLEAR MELEE, etc...
 					owner.broadcastAbilityCommand(newCommand);
 					
-					if (ability.executeParam2[i] >= 0)  // -1 means 'no ability'
-					{
+					if (ability.executeParam2[i] >= 0) {// -1 means 'no ability'
 						addedAbility = new Ability(ability.executeParam2[i], null, 0, dungeonEvents, dungeonQuery);
 						owner.addAbility(addedAbility, null);
 					}
@@ -430,7 +427,6 @@ public class Ability
 				Creature.DistComparator dComp = new Creature.DistComparator(pos, false);
 				ArrayList<Creature> sortedTargets = new ArrayList<Creature>();
 				sortedTargets.addAll(targets);
-				if (LOG) L.log("%s", sortedTargets);
 				Collections.sort(sortedTargets, dComp);
 				if (LOG) L.log("%s", sortedTargets);
 				// now apply the effect to the list of target creatures
@@ -760,6 +756,7 @@ public class Ability
 	{
 		AbilityCommand command = new AbilityCommand(AbilityCommand.INVOKE, 0, owner.creature.head, owner.creature.hands, owner.creature.humanoid);	
 		int result = executeCommandValue(command, owner);
+		if (LOG) L.log("result of invoke: %s", result);
 		if (result == 0) {
 			return true;
 		} else {
@@ -770,7 +767,7 @@ public class Ability
 	protected int processInvoke(AbilityCommand command, Creature owner)
 	{
 		int result = -1;
-
+		if (LOG) L.log("command: %s, owner: %s", command, owner);
 		AbilityCommand	newCommand = new AbilityCommand(0,0,1,1,1);
 
 		if (ability.invokingStrategy == SELECTABLE) {
@@ -796,8 +793,9 @@ public class Ability
 
 			set = false;  // ability becomes inactive once more
 
-			if (ability.invokingStrategy == INSTANT_ONESHOT)
+			if (ability.invokingStrategy == INSTANT_ONESHOT) {
 				owner.destroyAbility(this);  // ability disappears
+			}
 		}
 
 		return result;
@@ -1043,7 +1041,10 @@ public class Ability
 		return tickCounter;
 	}
 
-
+	@Override
+	public String toString() {
+		return ability.name;
+	}
 }
 
 
