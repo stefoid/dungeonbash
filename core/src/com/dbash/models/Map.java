@@ -288,7 +288,7 @@ public class Map implements IPresenterMap {
 		int ny;
 		RoughTerrainType roughTerrainType = RoughTerrainType.getRandomType();
 
-		for (int i = 0; i < (Randy.getRand(1, height-3)); i++) {
+		for (int i = 0; i < (Randy.getRand(1, height)); i++) {
 			nx = x;
 			ny = y;
 
@@ -321,7 +321,7 @@ public class Map implements IPresenterMap {
 
 			// will only change the direction when the direction is legal, i.e.
 			// between 1-4
-			int nDir = Randy.getRand(0, 8);
+			int nDir = Randy.getRand(0, 6);
 
 			if (nDir < 5) {
 				dir = nDir;

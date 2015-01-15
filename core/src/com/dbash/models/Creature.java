@@ -988,7 +988,9 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	
 	protected int calculateDefenceSkill() {
 		int newDefence = defenceSkill + (defenceSkill * expRoot) / 100;
-		return modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence);
+		int dd = modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence);
+		if (LOG) L.log("new defence: %s", dd); 
+		return dd;
 	}
 
 	protected int modifyHealth() {
@@ -1012,6 +1014,18 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return modifyValue(AbilityCommand.MODIFY_MAX_MAGIC, newMaxMag);
 	}
 
+	public int calculateSpeed() {
+		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
+	}
+	
+	public int calculateStealth() {
+		return modifyValue(AbilityCommand.MODIFY_STEALTH, stealth);
+	}
+	
+	public int calculateDetect() {
+		return modifyValue(AbilityCommand.MODIFY_DETECT, detect);
+	}
+	
 	public boolean isSolid() {
 		return true;
 	}
@@ -1121,18 +1135,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	protected int calculateMagicDamageBonus() {
 		int bonus = calculateMaxMagic() / 6;
 		return bonus;
-	}
-	
-	public int calculateSpeed() {
-		return modifyValue(AbilityCommand.MODIFY_SPEED, speed);
-	}
-	
-	public int calculateStealth() {
-		return modifyValue(AbilityCommand.MODIFY_STEALTH, stealth);
-	}
-	
-	public int calculateDetect() {
-		return modifyValue(AbilityCommand.MODIFY_DETECT, detect);
 	}
 	
 	public int calculateMeleeDamage() {

@@ -40,7 +40,7 @@ import com.dbash.util.SequenceNumber;
  */
 
 public class Character extends Creature implements IPresenterCharacter {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	private class BestDir {
 		public BestDir () {
@@ -1085,6 +1085,7 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	@Override
 	public int respondAttack(AbilityCommand attack, Creature attacker) {
+		if (LOG) L.log("attacker: %s", attacker);
 		int result = super.respondAttack(attack, attacker);
 		
 		if (result >= 0) {

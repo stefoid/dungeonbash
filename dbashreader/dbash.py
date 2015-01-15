@@ -50,6 +50,7 @@ class Ability:
         self.damageStr = [0,0,0,0,0,0]
         self.valsetStr = [0,0,0,0,0,0]
         self.valmodStr = [0,0,0,0,0,0]
+        self.valmulStr = [0,0,0,0,0,0]
         self.value = 1;
         self.offensive = 1;
     
@@ -110,6 +111,8 @@ class Ability:
                 self.commands[i].param1 = self.valsetStr[i].get()
             elif self.commands[i].execute == "VALUE_MODIFIER":
                 self.commands[i].param1 = self.valmodStr[i].get()
+            elif self.commands[i].execute == "VALUE_MULTIPLIER":
+                self.commands[i].param1 = self.valmulStr[i].get()
                 
     def draw(self, idnum):
         l1 = Label(win, text="       id         ")
@@ -244,7 +247,7 @@ class Ability:
                 cm2.grid(row=cRow+1, column=2)        
                 cm2.menu = Menu(cm2, tearoff=0)
                 cm2["menu"] = cm2.menu
-                for j in ["NO_STRATEGY","VALUE_MODIFIER","VALUE_SETTER","ATTACKER", "ABILITY_ADDER", "DESELECT","SELECT"]:
+                for j in ["NO_STRATEGY","VALUE_MODIFIER","VALUE_SETTER","VALUE_MULTIPLIER", "ATTACKER", "ABILITY_ADDER", "DESELECT","SELECT"]:
                     cm2.menu.add_command(label=j, command=lambda i=i,j=j: setAbility("exec",j,i ))                   
     
                 if self.commands[i].execute == "ATTACKER": 
@@ -314,7 +317,14 @@ class Ability:
                     self.valsetStr[i] = StringVar()
                     self.valsetStr[i].set(self.commands[i].param1)
                     tg5 = Entry(win, textvariable=self.valsetStr[i])   
-                    tg5.grid(row=cRow+1, column=3)                
+                    tg5.grid(row=cRow+1, column=3)   
+                elif self.commands[i].execute == "VALUE_MULTIPLIER":
+                    ll3 = Label(win, text="value times %")
+                    ll3.grid(row=cRow, column=3)                 
+                    self.valmulStr[i] = StringVar()
+                    self.valmulStr[i].set(self.commands[i].param1)
+                    tg5 = Entry(win, textvariable=self.valmulStr[i])   
+                    tg5.grid(row=cRow+1, column=3)              
                 elif self.commands[i].execute == "ABILITY_ADDER":
                     ll3 = Label(win, text="ability to add   ")
                     ll3.grid(row=cRow, column=3)                 
@@ -867,6 +877,8 @@ def convertStrategy(strat):
             result = 5
         elif strat == "SELECT":
             result = 6
+        elif strat == "VALUE_MULTIPLIER":
+            result = 7
     else:
         if strat == 0:
             result = "NO_STRATEGY"
@@ -882,6 +894,8 @@ def convertStrategy(strat):
             result = "DESELECT"
         elif strat == 6:
             result = "SELECT"
+        elif strat == 7:
+            result = "VALUE_MULTIPLIER"
     return result
 
 def convertAttack(attack):

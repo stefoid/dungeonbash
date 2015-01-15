@@ -42,7 +42,6 @@ public class Ability
 	public static String KNOCKBACK_TAG = "knockback";
 	public static String KNOCKEDBACK_TAG = "knockedback";
 	public static String STUNNED_TAG = "stunned";
-	
 	public static String INVOKE_TAG = "invoke";  // means invoke a just added ability (oneshot) immediately after adding it.
 	
 	public enum AbilityType {
@@ -324,8 +323,7 @@ public class Ability
 					return newValue;
 				}
 				
-				if (ability.executeStrategy[i] == DESELECT) 
-				{
+				if (ability.executeStrategy[i] == DESELECT) {
 					unset(owner);
 					return newValue;
 				}
@@ -333,14 +331,15 @@ public class Ability
 				if (isUsed() == false)
 					return newValue;
 			
-				if (ability.executeStrategy[i] == VALUE_MODIFIER)  // change the value by the specified amount
-				{
+				if (ability.executeStrategy[i] == VALUE_MODIFIER) { // change the value by the specified amount
 					newValue += ability.executeParam1[i];
 				}
-				else if (ability.executeStrategy[i] == VALUE_SETTER)  // set the value to the specified amount, if the value is smaller than the ability
-				{
+				else if (ability.executeStrategy[i] == VALUE_SETTER) { // set the value to the specified amount, if the value is smaller than the ability
 					if (newValue < ability.executeParam1[i])
 						newValue = ability.executeParam1[i];
+				} else if (ability.executeStrategy[i] == VALUE_MULTIPLIER) { // set the value to the specified amount, if the value is smaller than the ability
+					newValue *= ability.executeParam1[i];
+					newValue /= 100;
 				}
 			}
 		}
@@ -570,6 +569,7 @@ public class Ability
 	public static final int		ABILITY_ADDER = 4;  // generate an ability
 	public static final int		DESELECT = 5; // when command recieved, deselect yourself
 	public static final int		SELECT = 6; // when command recieved, select yourself & deselect others
+	public static final int		VALUE_MULTIPLIER = 7; // multiply the passed in value by x%
 
 	// needs 
 	public static final int		NEEDS_HEAD = 1;
