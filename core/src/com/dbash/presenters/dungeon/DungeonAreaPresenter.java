@@ -357,6 +357,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			case PROTECTION:
 				name = "PROTECTION_IMAGE";
 				break;
+			case DEFENDING:
+				name = "PROTECTION_IMAGE";
+				break;
 			case CURSE:
 				name = "CURSE_IMAGE";
 				break;
@@ -434,6 +437,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	protected void abilityAddedSound(AnimationView anim, AbilityEffectType abilityEfectType) {
 		final String sound;
 		switch (abilityEfectType) {
+			case DEFENDING:
+				sound = Audio.DEFEND;
+				break;
 			case POISON:
 			case CURSE:
 			case SLOW:

@@ -28,6 +28,7 @@ public class Audio {
 	public static final String CHEMICAL_HIT = "Chemical Single";
 	public static final String CLICK = "Click";
 	public static final String DEATH = "Death";
+	public static final String DEFEND = "Defend";
 	public static final String ENERGY_BURST = "Energy Multiple";
 	public static final String ENERGY_HIT = "Energy Single";
 	public static final String HARD_BURST = "Hard Multiple";
@@ -80,6 +81,7 @@ public class Audio {
 		addSound(CHEMICAL_HIT);
 		addSound(CLICK);
 		addSound(DEATH);
+		addSound(DEFEND);
 		addSound(ENERGY_BURST);
 		addSound(ENERGY_HIT);
 		addSound(HARD_BURST);

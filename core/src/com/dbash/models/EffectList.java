@@ -32,9 +32,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 
 			// 'Effects' are non-physical, non-selectable abilities.
 			if (!ability.isSelectable() && (!ability.isPhysical())) {
-				
 				// effects are currently not sorted into other order than what they come in.
-				
 				add(info);
 				
 			} else if (info.equipped) {

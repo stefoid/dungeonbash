@@ -456,12 +456,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TESTCHARS) {
 			theChars.clear();
 			p.level = 20;
-			theChars.add(new Character(Creature.getIdForName("wizard"), p, 1, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("troll"), p, 1, dungeonEvents, dungeonQuery, this));
 			theChars.add(new Character(Creature.getIdForName("gorgon"), p, 2, dungeonEvents, dungeonQuery, this));
 			theChars.add(new Character(Creature.getIdForName("imp"), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
-			c.addAbility(new Ability(Ability.getIdForName("light health potion"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("shield of bracing"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("wand of speed"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("wand of holding"), null, 20, dungeonEvents, dungeonQuery), null);
 		
 		}
 		// c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
@@ -516,10 +516,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void passTurnSelected() {
 		if (LOG) L.log("Pass turn pressed");
 		
-		Ability defendingAbility = new Ability(Ability.getIdForName("defending"), null, 1, dungeonEvents, dungeonQuery);
-		currentCharacter.addAbility(defendingAbility, null);
-		defendingAbility.abilitySelected(currentCharacter);
-		characterEndsTurn(currentCharacter);
+		currentCharacter.defending();
 	}
 
 	@Override

@@ -41,7 +41,10 @@ public class Ability
 	public static String CHARGE_TAG = "charge";
 	public static String KNOCKBACK_TAG = "knockback";
 	public static String KNOCKEDBACK_TAG = "knockedback";
+	public static String SLOWED_TAG = "slowed";
+	public static String HELD_TAG = "held";
 	public static String STUNNED_TAG = "stunned";
+	public static String DEFEND_TAG = "defend";
 	public static String INVOKE_TAG = "invoke";  // means invoke a just added ability (oneshot) immediately after adding it.
 	
 	public enum AbilityType {
@@ -85,6 +88,7 @@ public class Ability
 		RESIST_ENERGY,
 		RESIST_KNOCKBACK,
 		RESIST_ALL,
+		DEFENDING,
 		NONE_REALLY
 	}
 	
@@ -884,21 +888,39 @@ public class Ability
 			}
 			
 			// speed related
-			if (isRoughTerrain() && hasTag(HOLE_TAG) == false) {
-				abilityEffectTypeHash.add(AbilityEffectType.SLOW);
-			} else if (testEffectType(i, AbilityCommand.MODIFY_SPEED) ) {
+			if (testEffectType(i, AbilityCommand.MODIFY_SPEED) ) {
 				if (ability.executeParam1[i] > 0) {
 					abilityEffectTypeHash.add(AbilityEffectType.SPEED);
-				} else if (ability.executeParam1[i] < -5) {
-					if (ability.name.equals(HELD)) {
-						abilityEffectTypeHash.add(AbilityEffectType.HOLD);
-					} else {
-						abilityEffectTypeHash.add(AbilityEffectType.STUNNED);
-					}
+				} else if (hasTag(SLOWED_TAG)) {
+					abilityEffectTypeHash.add(AbilityEffectType.SLOW);
+				} else if (hasTag(STUNNED_TAG)) {
+					abilityEffectTypeHash.add(AbilityEffectType.STUNNED);
+				} else if (hasTag(HELD_TAG)) {
+					abilityEffectTypeHash.add(AbilityEffectType.HOLD);
 				} else {
 					abilityEffectTypeHash.add(AbilityEffectType.SLOW);
 				}
 			}
+			
+//			if (isRoughTerrain() && hasTag(HOLE_TAG) == false) {
+//				abilityEffectTypeHash.add(AbilityEffectType.SLOW);
+//			} else if (testEffectType(i, AbilityCommand.MODIFY_SPEED) ) {
+//				if (ability.executeParam1[i] > 0) {
+//					abilityEffectTypeHash.add(AbilityEffectType.SPEED);
+//				} else if (ability.executeParam1[i] < -5) {
+//					if (ability.name.equals(HELD)) {
+//						abilityEffectTypeHash.add(AbilityEffectType.HOLD);
+//					} else {
+//						abilityEffectTypeHash.add(AbilityEffectType.STUNNED);
+//					}
+//				} else {
+//					abilityEffectTypeHash.add(AbilityEffectType.SLOW);
+//				}
+//			}
+//			
+//			if (hasTag(SLOWED_TAG)) {
+//				abilityEffectTypeHash.add(AbilityEffectType.SLOW);
+//			}
 			
 			// health related
 			if (testEffectType(i, AbilityCommand.MODIFY_HEALTH) || testEffectType(i, AbilityCommand.MODIFY_MAX_HEALTH)) {
@@ -1024,7 +1046,7 @@ public class Ability
 		else if (hasTag(MAGIC_TAG)) {
 			abilityType = AbilityType.MAGIC_ITEM;
 			
-			// special case potions and orbs.   Only way to tell is to scan the name.
+			// special case potions and orbs.   Only way to tell is to scan the name.  // TODO could use tag
 			if (ability.name.contains("orb") || ability.name.contains("bomb") 
 					|| ability.name.contains("sphere")	|| ability.name.contains("crystal")) {
 				abilityType = AbilityType.ORB;

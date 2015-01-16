@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.IDungeonQuery.AtLocation;
@@ -1010,12 +1011,12 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		for (AbilityInfo abilityInfo : effects) {
 			// select the last added non-temporary ability
-			if (countDown == 1000 && abilityInfo.isStat == false) {
+			if (countDown == 1000 && abilityInfo.isStat == false && abilityInfo.isDefend == false) {
 				highlightAbility = abilityInfo; 
 			}
 			
 			// but if there is at least one temp ability, that takes precedence
-			if (abilityInfo.expireTime > 0) {
+			if (abilityInfo.expireTime > 0 && abilityInfo.isDefend == false) {
 				if (abilityInfo.expireTime < countDown) {
 					countDown = abilityInfo.expireTime;
 					highlightAbility = abilityInfo;  
@@ -1100,6 +1101,16 @@ public class Character extends Creature implements IPresenterCharacter {
 	@Override
 	public String toString() {
 		return getCreature().name+"C"+charCount+")";
+	}
+	
+	public void defending() {
+		Ability defendingAbility = new Ability(Ability.getIdForName("defending"), null, 1, dungeonEvents, dungeonQuery);
+		addAbility(defendingAbility, null);
+		defendingAbility.abilitySelected(this);
+		Vector<Ability.AbilityEffectType> shield = new Vector<Ability.AbilityEffectType>();
+		shield.add(Ability.AbilityEffectType.DEFENDING);
+		dungeonEvents.abilityAdded(SequenceNumber.getNext(), this, shield, mapPosition);
+		turnProcessor.characterEndsTurn(this);
 	}
 }
 

@@ -732,7 +732,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			return true;
 		}	
 	
-		
 		if (LOG) L.log("adding ability: %s to creature:%s", ability , this);
 		abilities.add(ability);
 		setAbilityFlags();
@@ -747,7 +746,9 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			}
 			
 			if (mapPosition != null && dungeonQuery.getTerrainAtLocation(mapPosition) == RoughTerrainType.HOLE) {
+				if (creatureCanFly() == false) {
 					death();
+				}
 			}
 		}
 		

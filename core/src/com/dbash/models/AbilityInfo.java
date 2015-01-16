@@ -30,6 +30,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public String 		statText;
 	public int	statValue = 0;
 	public Color color;
+	public boolean isDefend;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -49,6 +50,10 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 
 		if (ability.isRoughTerrain()) {
 			isRoughTerrain  = true;
+		}
+		
+		if (ability.hasTag(Ability.DEFEND_TAG)) {
+			isDefend = true;
 		}
 		
 		abilityType = ability.getAbilityType();
@@ -199,6 +204,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 				image = "HEALING_IMAGE";
 				break;
 			case PROTECTION:
+				image = "PROTECTION_IMAGE";
+				break;
+			case DEFENDING:
 				image = "PROTECTION_IMAGE";
 				break;
 			case ATTACK:
