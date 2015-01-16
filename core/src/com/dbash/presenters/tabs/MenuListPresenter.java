@@ -87,15 +87,15 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "SOLO", elementArea),     // the image
+				new ImageView(gui, "PASS", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use Solo mode to control only one character.  Other Characters will skip their turns.",
+				"Use defend to forgo an action, but gain a significant bonus to defence skill until the next turn.  A slow penalty is applied.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "PASS", elementArea),     // the image
+				new ImageView(gui, "SOLO", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use the Hand button for the current character to pass their turn.",
+				"Use Solo mode to control only one character.  Other Characters will skip their turns (defend).",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,

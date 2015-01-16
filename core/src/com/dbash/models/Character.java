@@ -185,6 +185,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		// If solo mode is on, but it aint me, then pass.
 		if (turnProcessor.getSoloStatus()) {
 			if (getSolo() == false) {
+				addDefendingAbility();
 				turnProcessor.characterEndsTurn(this);
 				return;
 			}
@@ -1103,10 +1104,14 @@ public class Character extends Creature implements IPresenterCharacter {
 		return getCreature().name+"C"+charCount+")";
 	}
 	
-	public void defending() {
+	private void addDefendingAbility() {
 		Ability defendingAbility = new Ability(Ability.getIdForName("defending"), null, 1, dungeonEvents, dungeonQuery);
 		addAbility(defendingAbility, null);
 		defendingAbility.abilitySelected(this);
+	}
+	
+	public void defending() {
+		addDefendingAbility();
 		Vector<Ability.AbilityEffectType> shield = new Vector<Ability.AbilityEffectType>();
 		shield.add(Ability.AbilityEffectType.DEFENDING);
 		dungeonEvents.abilityAdded(SequenceNumber.getNext(), this, shield, mapPosition);
