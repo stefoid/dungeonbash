@@ -227,7 +227,8 @@ class Ability:
             cm1["menu"] = cm1.menu
             for j in [0,"RESIST_HARD","RESIST_SHARP","RESIST_ENERGY","RESIST_CHEMICAL", "CLEAR_ARMOR", 
                 "CLEAR_AMULET","CLEAR_MELEE","MELEE_ATTACK","SET","MODIFY_SPEED","MODIFY_HEALTH","MODIFY_MAX_HEALTH","MODIFY_MAGIC",
-                "MODIFY_MAX_MAGIC","MODIFY_ATTACK_SKILL","MODIFY_DEFENCE_SKILL","INVOKE","EXECUTE","CANCEL","RESIST_ABILITY"]:
+                "MODIFY_MAX_MAGIC","MODIFY_ATTACK_SKILL","MODIFY_DEFENCE_SKILL","INVOKE","EXECUTE","CANCEL","RESIST_ABILITY",
+                "MODIFY_STEALTH", "MODIFY_DETECT", "MODIFY_MISSILE_DEFENCE", "RESIST_BURST"]:
                 cm1.menu.add_command(label=j, command=lambda i=i,j=j: setAbility("comname",j,i))            
             
             if self.commands[i].name == "RESIST_ABILITY":
@@ -818,6 +819,14 @@ def convertExecute(execute):
 		    result = 20
         elif execute == "RESIST_ABILITY":
 		    result = 21
+        elif execute == "MODIFY_STEALTH":
+            result = 22
+        elif execute == "MODIFY_DETECT":
+            result = 23
+        elif execute == "MODIFY_MISSILE_DEFENCE":
+            result = 24
+        elif execute == "RESIST_BURST":
+            result = 24
     else:
         if execute == 1:
             result = "RESIST_HARD"
@@ -858,7 +867,15 @@ def convertExecute(execute):
         elif execute == 20:
 		    result = "CANCEL"     
         elif execute == 21:
-		    result = "RESIST_ABILITY"        
+		    result = "RESIST_ABILITY"  
+        elif execute == 22:
+            result = "MODIFY_STEALTH" 
+        elif execute == 23:
+            result = "MODIFY_DETECT" 
+        elif execute == 24:
+            result = "MODIFY_MISSILE_DEFENCE" 
+        elif execute == 25:
+            result = "RESIST_BURST"       
     return result
 
 def convertStrategy(strat):

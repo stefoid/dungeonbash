@@ -16,9 +16,9 @@
 +"flame burst,ia,-1,0,1,-1,0,1,0,1,1,19,3,3,9,-1,1,*"// flame burst: ATTACKER,
 +"knockedback,knockedback,-1,0,0,-1,0,0,0,1,0,*"// knockedback: 
 +"acid whip,aa,4,0,3,-1,0,0,1,1,1,8,3,4,4,178,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// acid whip: ATTACKER,DESELECT,SELECT,
-+"bones,rough.slowed,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,*"// bones: VALUE MODIFIER,
++"bones,rough.slowed,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,24,7,150,0,0,0,24,1,25,0,0,0,*"// bones: VALUE MODIFIER,VALUE MULTIPLIER,VALUE MODIFIER,
 +"mud,rough.slowed,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,*"// mud: VALUE MODIFIER,
-+"rocks,rough.slowed,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,*"// rocks: VALUE MODIFIER,
++"rocks,rough.slowed,-1,0,0,2,0,0,0,1,1,10,1,-6,0,0,0,24,7,150,0,0,0,24,1,25,0,0,0,*"// rocks: VALUE MODIFIER,VALUE MULTIPLIER,VALUE MODIFIER,
 +"hole,rough.hole,-1,0,0,-1,0,0,0,1,1,*"// hole: 
 +"smash,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,16,0,7,5,0,0,0,0,9,6,7,27,0,0,*"// smash: ATTACKER,DESELECT,SELECT,
 +"headbutt,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,16,0,7,5,0,0,0,0,9,6,7,27,0,0,*"// headbutt: ATTACKER,DESELECT,SELECT,
@@ -132,7 +132,7 @@
 +"extra speed,st,-1,0,0,-1,0,0,0,1,0,10,1,3,0,0,0,*"// extra speed: VALUE MODIFIER,
 +"amulet of wizardry,af,5,1,3,-1,1,0,0,6,0,6,5,0,0,0,0,9,6,6,137,0,0,*"// amulet of wizardry: DESELECT,SELECT,
 +"amulet of strength,af,8,1,3,-1,1,0,0,4,0,6,5,0,0,0,0,9,6,6,134,0,0,*"// amulet of strength: DESELECT,SELECT,
-+"extra strength,st,-1,0,0,-1,0,0,0,1,0,12,1,20,0,0,0,*"// extra strength: VALUE MODIFIER,
++"extra strength,st,-1,0,0,-1,0,0,0,1,0,12,1,4,0,0,0,12,7,134,0,0,0,*"// extra strength: VALUE MODIFIER,VALUE MULTIPLIER,
 +"super speed,st,-1,0,0,20,0,0,0,1,0,10,1,10,0,0,0,*"// super speed: VALUE MODIFIER,
 +"speed potion,ma,6,2,4,-1,1,1,0,1,0,19,4,135,0,-1,0,*"// speed potion: ABILITY ADDER,
 +"extra magic,ia,-1,0,0,-1,0,0,0,1,0,14,1,20,0,0,0,*"// extra magic: VALUE MODIFIER,

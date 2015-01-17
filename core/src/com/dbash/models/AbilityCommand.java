@@ -26,7 +26,9 @@ public class AbilityCommand
 	public static final int		MODIFY_DEFENCE_SKILL = 16;
 	public static final int		MODIFY_STEALTH = 22;
 	public static final int		MODIFY_DETECT = 23;
-
+	public static final int		MODIFY_MISSILE_DEFENCE = 24;
+	public static final int		RESIST_BURST = 25;
+	
 	public static final int		INVOKE = 18;
 	public static final int		EXECUTE = 19;
 	public static final int		CANCEL = 20;

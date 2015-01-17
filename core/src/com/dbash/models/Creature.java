@@ -993,6 +993,22 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		if (LOG) L.log("new defence: %s", dd); 
 		return dd;
 	}
+	
+	protected int calculateDefenceAgainstMissilesSkill() {
+		int defence = calculateDefenceSkill();
+		switch (dungeonQuery.getTerrainAtLocation(mapPosition)) {
+			case BONES:
+				defence = (defence * 140) / 100;
+				break;
+			case ROCKS:
+				defence = (defence * 140) / 100;
+				break;
+			default:
+				break;
+		}
+		if (LOG) L.log("missile defence: %s", defence); 
+		return defence;
+	}
 
 	protected int modifyHealth() {
 		return modifyValue(AbilityCommand.MODIFY_HEALTH, health);
