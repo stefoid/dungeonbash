@@ -121,6 +121,8 @@ public class AbilityCommand
 			case		EXECUTE: result = "EXECUTE"; break;
 			case		CANCEL: result = "CANCEL"; break;
 			case 		RESIST_ABILITY: result = "RESIST_ABILITY"; break;
+			case		MODIFY_MISSILE_DEFENCE: result = "MODIFY_MISSILE_DEFENCE"; break;
+			case 		RESIST_BURST: result = "RESIST_BURST"; break;
 			default: result = "unknwon"; break;
 		}
 		

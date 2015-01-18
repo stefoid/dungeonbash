@@ -263,6 +263,12 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			case KNOCKBACK:
 				image = "KNOCKBACK_IMAGE";
 				break;
+			case RESIST_BURST:
+				image = "RESIST_BURST";
+				break;
+			case MISSILE_DEFENCE:
+				image = "MISSILE_DEFENCE";
+				break;
 			default:
 				image = "MAGIC_ITEM_IMAGE";
 				break;

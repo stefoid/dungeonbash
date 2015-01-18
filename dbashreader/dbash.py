@@ -826,7 +826,7 @@ def convertExecute(execute):
         elif execute == "MODIFY_MISSILE_DEFENCE":
             result = 24
         elif execute == "RESIST_BURST":
-            result = 24
+            result = 25
     else:
         if execute == 1:
             result = "RESIST_HARD"

@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
@@ -551,6 +553,33 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	
 	public void setPosition(DungeonPosition newPosition) {
 		mapPosition = new DungeonPosition(newPosition);
+		// remove existing cover effects.
+		Iterator<Ability> iter = abilities.iterator();
+		while (iter.hasNext()) {
+			Ability ability = iter.next();
+			if (ability.hasTag(Ability.COVER_TAG)) {
+				iter.remove();
+			}
+		}
+	
+		// add new cover effects
+		if (dungeonQuery != null) {
+			RoughTerrainType roughTerrainType = dungeonQuery.getTerrainAtLocation(mapPosition);
+			if (roughTerrainType != null) {
+				switch (roughTerrainType) {
+				case BONES:
+					Ability bones = new Ability(Ability.getIdForName("cover (bones)"), this, 1, dungeonEvents, dungeonQuery);
+					addAbility(bones, null);
+					break;
+				case ROCKS:
+					Ability rocks = new Ability(Ability.getIdForName("cover (rocks)"), this, 1, dungeonEvents, dungeonQuery);
+					addAbility(rocks, null);
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 	
 	protected boolean canChargeAcross(DungeonPosition position) {

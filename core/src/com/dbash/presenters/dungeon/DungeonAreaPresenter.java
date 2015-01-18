@@ -58,6 +58,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public final static float damagePeriod = 0.7f * multiplier;
 	public final static float burstPeriod = 0.3f * multiplier;
 	public final static float abilityPeriod = 0.8f * multiplier;
+	public final static float passPeriod = 0.4f * multiplier;
 	public final static float missedPeriod = 0.4f * multiplier;
 	public final static float highlightPeriod = 1.2f * multiplier;
 	public final static float deathPeriod = 1.0f * multiplier;
@@ -421,7 +422,11 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public void abilityAdded(int sequenceNumber, Character releventCharacter, AbilityEffectType abilityEfectType, DungeonPosition targetPosition) {
 		LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
 		Rect fromRect = new Rect(loc.getScreenArea());
-		AnimationView added = new AnimationView(gui, getEffectName(abilityEfectType), fromRect, fromRect, 1f, 0.3f, abilityPeriod, 1, null);
+		float effectPeriod = abilityPeriod;
+		if (abilityEfectType == AbilityEffectType.DEFENDING) {
+			effectPeriod = passPeriod;
+		}
+		AnimationView added = new AnimationView(gui, getEffectName(abilityEfectType), fromRect, fromRect, 1f, 0.3f, effectPeriod, 1, null);
 		abilityAddedSound(added, abilityEfectType);
 		added.sequenceNumber = sequenceNumber;
 		added.animType = AnimOp.AnimType.ABILITY_ADD;

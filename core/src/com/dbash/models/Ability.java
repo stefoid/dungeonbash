@@ -46,6 +46,7 @@ public class Ability
 	public static String STUNNED_TAG = "stunned";
 	public static String DEFEND_TAG = "defend";
 	public static String INVOKE_TAG = "invoke";  // means invoke a just added ability (oneshot) immediately after adding it.
+	public static String COVER_TAG = "cover";
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -89,6 +90,8 @@ public class Ability
 		RESIST_KNOCKBACK,
 		RESIST_ALL,
 		DEFENDING,
+		MISSILE_DEFENCE,
+		RESIST_BURST,
 		NONE_REALLY
 	}
 	
@@ -884,6 +887,16 @@ public class Ability
 			
 			if (testEffectType(i, AbilityCommand.RESIST_CHEMICAL)) {
 				abilityEffectTypeHash.add(AbilityEffectType.RESIST_CHEMICAL);
+				chem = true;
+			}
+			
+			if (testEffectType(i, AbilityCommand.RESIST_BURST)) {
+				abilityEffectTypeHash.add(AbilityEffectType.RESIST_BURST);
+				chem = true;
+			}
+			
+			if (testEffectType(i, AbilityCommand.MODIFY_MISSILE_DEFENCE)) {
+				abilityEffectTypeHash.add(AbilityEffectType.MISSILE_DEFENCE);
 				chem = true;
 			}
 			
