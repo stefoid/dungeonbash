@@ -23,9 +23,10 @@ public class ButtonView implements TouchEventListener {
 	private UIDepend gui;
 	private TouchEventProvider touchEventProvider;
 	private Rect area;
+	private String clickSound;
 	
 	public ButtonView(UIDepend gui, TouchEventProvider touchEventProvider, Rect area, String onImage, String offImage, 
-			String disabledImgae) {
+			String disabledImgae, String clickSound) {
 		this.touchEventProvider = touchEventProvider;
 		this.onImage = new ImageView(gui, onImage, area);
 		this.offImage = new ImageView(gui, offImage, area);
@@ -33,6 +34,7 @@ public class ButtonView implements TouchEventListener {
 		this.gui = gui;
 		enabled = true;
 		pressed = false;
+		this.clickSound = clickSound;
 		this.area = new Rect(area);
 		addYourself();
 	}
@@ -85,7 +87,9 @@ public class ButtonView implements TouchEventListener {
 		switch (event.getTouchType()) {
 			case DOWN:
 				toggleState();
-				gui.audio.playSound(Audio.CLICK);
+				if (clickSound != null) {
+					gui.audio.playSound(clickSound);
+				}
 				break;
 			case UP:
 			case UP_INSIDE:

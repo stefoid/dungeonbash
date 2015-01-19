@@ -67,6 +67,11 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			AbilityInfo defence = new AbilityInfo(tds, ds, Color.WHITE);
 			add(defence);
 			
+			int mds = owner.calculateDefenceAgainstMissilesSkill();
+			String[] mtds = {"MISSILE DEFENCE", " : ", getDefenceDesc(ds)};
+			AbilityInfo mdefence = new AbilityInfo(mtds, mds, Color.WHITE);
+			add(mdefence);
+			
 			int ss = owner.calculateSpeed();
 			String[] tss = {"SPEED", " : ", getSpeedDesc(ss)};
 			AbilityInfo speed = new AbilityInfo(tss, ss, Color.WHITE);
@@ -82,6 +87,12 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			AbilityInfo detect = new AbilityInfo(tde, de, Color.WHITE);
 			add(detect);
 			
+			int bur = owner.calcProtection(AbilityCommand.RESIST_BURST);
+			if (bur > 0) {
+				String[] bdef = {"BURST DEFENCE BONUS", " : +", "%"};
+				AbilityInfo bp = new AbilityInfo(bdef, bur , Color.BLACK);
+				add(bp);
+			}
 			
 			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
 			String[] thpv = {"HARD DEF", " : ", "%"};

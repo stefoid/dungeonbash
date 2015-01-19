@@ -8,6 +8,7 @@ import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
+import com.dbash.platform.Audio;
 import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
@@ -86,7 +87,7 @@ public class DataHeaderPresenter {
 		
 		// put the buttons in place.
 		leaderToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "LEADER_ON_IMAGE", 
-				"LEADER_OFF_IMAGE", "LEADER_DISABLED_IMAGE");
+				"LEADER_OFF_IMAGE", "LEADER_DISABLED_IMAGE", Audio.CLICK);
 		leaderToggleButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.LeaderModeToggleSelected();
@@ -95,7 +96,7 @@ public class DataHeaderPresenter {
 		
 		buttonArea.x += space;
 		passTurnButton = new ButtonView(gui, touchEventProvider, buttonArea, "PASS_TURN_ON_IMAGE", 
-				"PASS_TURN_OFF_IMAGE", "PASS_TURN_OFF_IMAGE");
+				"PASS_TURN_OFF_IMAGE", "PASS_TURN_OFF_IMAGE", null);
 		passTurnButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.passTurnSelected();
@@ -104,7 +105,7 @@ public class DataHeaderPresenter {
 		
 		buttonArea.x += space;
 		goDownButton = new ButtonView(gui, touchEventProvider, buttonArea, "STAIRS_ON_IMAGE", 
-				"STAIRS_OFF_IMAGE", "STAIRS_DISABLED_IMAGE");
+				"STAIRS_OFF_IMAGE", "STAIRS_DISABLED_IMAGE", Audio.CLICK);
 		goDownButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.stairDescendSelected();
@@ -112,7 +113,7 @@ public class DataHeaderPresenter {
 		});
 		
 		soloButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
-				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE");
+				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
 		soloButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.soloSelected();

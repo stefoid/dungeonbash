@@ -563,7 +563,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 	
 		// add new cover effects
-		if (dungeonQuery != null) {
+		if (dungeonQuery != null && creatureCanFly() == false) {
 			RoughTerrainType roughTerrainType = dungeonQuery.getTerrainAtLocation(mapPosition);
 			if (roughTerrainType != null) {
 				switch (roughTerrainType) {
@@ -651,7 +651,16 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			setReleventCharacter();
 		}
 		
-		if (Randy.getRand(1, attack.skill) > Randy.getRand(1, calculateDefenceSkill())) // attack hits
+		int defenceSkill = 0;
+		if (attack.ability != null && attack.ability.isAimed() && attack.ability.isTargetable()) {
+			defenceSkill = calculateDefenceAgainstMissilesSkill();
+		} else {
+			defenceSkill = calculateDefenceSkill();
+		}
+		
+		if (LOG) L.log("defenceSkill: %s", defenceSkill);
+		
+		if (Randy.getRand(1, attack.skill) > defenceSkill) // attack hits
 		{
 			int newDamage = attack.damage;
 			int abilityCommand = AbilityCommand.NO_PHYSICAL_ATTACK;
@@ -673,8 +682,16 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			}
 
 			if (abilityCommand != AbilityCommand.NO_PHYSICAL_ATTACK) {
+				// apply damage reduce against burst with cover
+				if (LOG) L.log("before damage reduce newDamage: %s", newDamage);
+				if (attack.ability != null && attack.ability.isBurstEffect()) {
+					newDamage = reduceDamage(AbilityCommand.RESIST_BURST, newDamage);
+					if (LOG) L.log("burst reduced newDamage: %s", newDamage);
+				}
+				
 				// reduce damage by any ability which reduces damage of that type
 				newDamage = reduceDamage(abilityCommand, newDamage);
+				if (LOG) L.log("final newDamage: %s", newDamage);
 			} 
 
 			if (newDamage < 1) {
@@ -695,8 +712,8 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), attacker.getReleventCharacter(), mapPosition, attack.type, newDamage);	
 			}
 			
-			if (attack.ability != null) {
-				if (attacker.giveAbility(this, attack.ability, this.mapPosition, 0, attacker)) {
+			if (attack.abilityToAdd != null) {
+				if (attacker.giveAbility(this, attack.abilityToAdd, this.mapPosition, 0, attacker)) {
 					// hitTime = 400;
 					// give attacker experience for inflicting ability
 					attacker.addExperience(getExpValue() / 30 + 1, false); 
@@ -908,7 +925,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		int damageType = AbilityCommand.HARD_ATTACK;
 		int collisionDamage = calculateBaseHealth()/4+1;
 		int myCollisionDamage = reduceDamage(AbilityCommand.RESIST_HARD, collisionDamage);
-		AbilityCommand collideCommand = new AbilityCommand(AbilityCommand.HARD_ATTACK, collisionDamage, true, null);
+		AbilityCommand collideCommand = new AbilityCommand(AbilityCommand.HARD_ATTACK, collisionDamage, true, null, null);
 		collideCommand.skill = 30000;  // auto hit
 		Creature hitCreature = dungeonQuery.getCreatureAtLocation(newPosition);
 		dungeonEvents.damageInflicted(SequenceNumber.getCurrent(), getReleventCharacter(), oldPosition, AbilityCommand.KNOCKBACK, IDungeonEvents.NO_DAMAGE);
@@ -1016,24 +1033,27 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return modifyValue(AbilityCommand.MODIFY_ATTACK_SKILL, newAttack);
 	}
 	
-	protected int calculateDefenceSkill() {
+	public int calculateDefenceSkill() {
 		int newDefence = defenceSkill + (defenceSkill * expRoot) / 100;
 		int dd = modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence);
 		if (LOG) L.log("new defence: %s", dd); 
 		return dd;
 	}
 	
-	protected int calculateDefenceAgainstMissilesSkill() {
+	public int calculateDefenceAgainstMissilesSkill() {
 		int defence = calculateDefenceSkill();
-		switch (dungeonQuery.getTerrainAtLocation(mapPosition)) {
-			case BONES:
-				defence = (defence * 140) / 100;
-				break;
-			case ROCKS:
-				defence = (defence * 140) / 100;
-				break;
-			default:
-				break;
+		RoughTerrainType terrain = dungeonQuery.getTerrainAtLocation(mapPosition);
+		if (terrain != null) {
+				switch (terrain) {
+				case BONES:
+					defence = (defence * 140) / 100;
+					break;
+				case ROCKS:
+					defence = (defence * 140) / 100;
+					break;
+				default:
+					break;
+			}
 		}
 		if (LOG) L.log("missile defence: %s", defence); 
 		return defence;

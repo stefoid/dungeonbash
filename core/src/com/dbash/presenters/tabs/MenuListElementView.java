@@ -111,7 +111,7 @@ public class MenuListElementView implements IListElement {
 		
 		Rect quitRect = new Rect(bodyArea, .6f, .15f, .75f, .05f);
 		helpButton = new ButtonView(gui, touchEventProvider, quitRect, "INFO_SELECTED_IMAGE", 
-				"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE");
+				"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE", Audio.CLICK);
 		
 		menuBackground = new ImageView(gui, "MENU_BGROUND_IMAGE", bodyArea);
 		
@@ -129,10 +129,10 @@ public class MenuListElementView implements IListElement {
 		
 		if (model.presenterTurnState.gameInProgress()) {
 			startButton = new ButtonView(gui, touchEventProvider, startRect, "RESTART_SELECTED_IMAGE", 
-					"RESTART_BUTTON_IMAGE", "RESTART_BUTTON_IMAGE");
+					"RESTART_BUTTON_IMAGE", "RESTART_BUTTON_IMAGE", Audio.CLICK);
 		} else {
 			startButton = new ButtonView(gui, touchEventProvider, startRect, "START_SELECTED_IMAGE", 
-					"START_BUTTON_IMAGE", "START_BUTTON_IMAGE");
+					"START_BUTTON_IMAGE", "START_BUTTON_IMAGE", Audio.CLICK);
 		}
 		
 		startButton.onClick( new IClickListener() {

@@ -41,6 +41,10 @@ public class AbilityListElementView extends AbilityTypeListElement {
 			Rect reitculeArea = new Rect(iconArea);
 			reitculeArea.x = targetArea.x + targetArea.width * 1.5f;
 			reticuleIcon = new ImageView(gui, "RETICULE_IMAGE", reitculeArea);
+		} else if (abilityInfo.burstEffect) {
+			Rect reitculeArea = new Rect(iconArea);
+			reitculeArea.x = targetArea.x + targetArea.width * 1.5f;
+			reticuleIcon = new ImageView(gui, "BURST_ICON", reitculeArea);
 		} else {
 			reticuleIcon = null;
 		}

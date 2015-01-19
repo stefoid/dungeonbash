@@ -5,10 +5,12 @@ import java.util.Vector;
 import com.badlogic.gdx.graphics.Color;
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.util.L;
 
 
 // Presentation layer
 public class AbilityInfo implements Comparable<AbilityInfo> {
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public Ability ability;
 	
@@ -19,6 +21,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean 		equipped = false;
 	public int			magicCost = 0;
 	public boolean 		targetable;
+	public boolean 		burstEffect;
 	public boolean 		aimed;
 	public boolean 		isRoughTerrain;
 	public boolean		enoughMagic = false;	
@@ -31,6 +34,8 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public int	statValue = 0;
 	public Color color;
 	public boolean isDefend;
+	public boolean isCover;
+	public boolean restrictFromHighlight;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -56,12 +61,21 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isDefend = true;
 		}
 		
+		if (ability.hasTag(Ability.COVER_TAG)) {
+			isCover = true;
+		}
+		
+		if (isDefend || isCover) {
+			restrictFromHighlight = true;
+		}
+		
 		abilityType = ability.getAbilityType();
 		equipped = ability.set;
 		magicCost = details.magicCost;
 		abilityEffects = ability.getEffectType();
 		oneShot = ability.isInstant();
 		creates = ability.findAbilityAddedWhenEquipped();
+		burstEffect = ability.isBurstEffect();
 		
 		if (owner != null) {
 			canBeCarried = true;
@@ -82,6 +96,8 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		} else {
 			isCarried = false;
 		}
+		
+		if (LOG) L.log("name: %s, aimed: %s, burst: %s",  name, aimed, burstEffect);
 	}
 
 	public AbilityInfo(String text) {

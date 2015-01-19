@@ -243,6 +243,19 @@ public class Ability
 			return false;
 	}
 
+	public boolean isBurstEffect()
+	{
+		for (int i=0; i<6; i++) {
+			if (ability.command[i] == AbilityCommand.EXECUTE)  // does the command sent from the Creature match a command that this ability responds to?
+			{
+				if (ability.executeParam4[i] != 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean isPhysical()
 	{
 		if (ability.physicalItem == 0)
@@ -452,7 +465,7 @@ public class Ability
 							melee = true;
 						}
 						
-						AbilityCommand attack = new AbilityCommand(damageType, ability.executeParam2[i], melee, a);	// type, damage, melee? and ability
+						AbilityCommand attack = new AbilityCommand(damageType, ability.executeParam2[i], melee, a, this);	// type, damage, melee? and ability
 						boolean result = attackingCreature.makeAttack(attack, theCreature, thePos, ability.aimed, magicCost, ability.magicCost);
 
 						if (result == false) {  // if an attack could not be made due to not enough magic left, bail out of this attack

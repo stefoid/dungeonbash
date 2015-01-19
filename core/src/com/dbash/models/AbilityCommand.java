@@ -73,17 +73,19 @@ public class AbilityCommand
 	public static final int ENERGY_ATTACK = 3;
 	public static final int CHEMICAL_ATTACK = 4;
 	public static final int KNOCKBACK = 5;
-	public Ability ability;
+	public Ability abilityToAdd;
+	public Ability ability; // attacking ability
 	public int damage;
 	public int skill;
 	public int type;
 
-	public AbilityCommand(int attackType, int attackDamage, boolean meleeAttack, Ability ability)
+	public AbilityCommand(int attackType, int attackDamage, boolean meleeAttack, Ability abilityToAdd, Ability attackingAbility)
 	{
 		type = attackType;
 		damage = attackDamage;
-		this.ability = ability;
+		this.abilityToAdd = abilityToAdd;
 		melee = meleeAttack;
+		this.ability = attackingAbility;
 	}
 
 	// METHODS

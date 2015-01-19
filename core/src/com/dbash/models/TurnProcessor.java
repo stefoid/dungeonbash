@@ -16,6 +16,7 @@ import com.me.dbash.Dbash;
 
 public class TurnProcessor implements IPresenterTurnState {
 	public static final boolean LOG = false && L.DEBUG;
+	
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
 	private IDungeonControl dungeon;
@@ -456,12 +457,13 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TESTCHARS) {
 			theChars.clear();
 			p.level = 20;
-			theChars.add(new Character(Creature.getIdForName("troll"), p, 1, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("gorgon"), p, 2, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("wizard"), p, 1, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("greater demon"), p, 2, dungeonEvents, dungeonQuery, this));
 			theChars.add(new Character(Creature.getIdForName("imp"), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
-			c.addAbility(new Ability(Ability.getIdForName("amulet of strength"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("wand of holding"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, dungeonEvents, dungeonQuery), null);
 		
 		}
 		// c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));

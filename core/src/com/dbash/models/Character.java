@@ -1012,12 +1012,12 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		for (AbilityInfo abilityInfo : effects) {
 			// select the last added non-temporary ability
-			if (countDown == 1000 && abilityInfo.isStat == false && abilityInfo.isDefend == false) {
+			if (countDown == 1000 && abilityInfo.isStat == false && abilityInfo.restrictFromHighlight == false) {
 				highlightAbility = abilityInfo; 
 			}
 			
 			// but if there is at least one temp ability, that takes precedence
-			if (abilityInfo.expireTime > 0 && abilityInfo.isDefend == false) {
+			if (abilityInfo.expireTime > 0 && abilityInfo.restrictFromHighlight == false) {
 				if (abilityInfo.expireTime < countDown) {
 					countDown = abilityInfo.expireTime;
 					highlightAbility = abilityInfo;  

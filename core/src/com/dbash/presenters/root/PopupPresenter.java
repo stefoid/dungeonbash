@@ -5,6 +5,7 @@ import com.dbash.models.IPopupController;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.platform.Audio;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextBoxView;
 import com.dbash.platform.UIDepend;
@@ -64,7 +65,7 @@ public class PopupPresenter implements TouchEventListener {
 			
 			Rect okButtonRect = new Rect(area, 0.75f, 0.1f, 0.75f, 0.1f);
 			okButtonRect.height = okButtonRect.width; // square it up
-			okButton = new ButtonView(gui, touchEventProvider, okButtonRect, "CONFIRM_SELECTED_IMAGE", "CONFIRM_BUTTON_IMAGE", "CONFIRM_BUTTON_IMAGE");
+			okButton = new ButtonView(gui, touchEventProvider, okButtonRect, "CONFIRM_SELECTED_IMAGE", "CONFIRM_BUTTON_IMAGE", "CONFIRM_BUTTON_IMAGE", Audio.CLICK);
 			final String id = popupId;
 			final CheckBoxView box = checkBox;
 			okButton.onClick( new IClickListener() {
