@@ -13,6 +13,7 @@ public	 class Data
 	public boolean		aimed;
 	public int			value;	   // how powerful is this ability?  if a physical item, what level should it appear in the dungeon?
 	public boolean		offensive; // is this ability used against others, or on oneself?
+	public int 			cooldown; // how many turns before can use abaility again.
 	public int			command[];			// what command, if any, does this ability respond to?
 	public int			executeStrategy[];	// what kind of operation does this ability perform in response to an execute command?
 	public int			executeParam1[];	// parameter 1 for execute strategy.  i.e. for attack, param 1 = attack type

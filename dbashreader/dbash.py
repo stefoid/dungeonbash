@@ -53,10 +53,11 @@ class Ability:
         self.valmulStr = [0,0,0,0,0,0]
         self.value = 1;
         self.offensive = 1;
+        self.cooldown = 0;
     
     def fileWrite(self, file):
         self.comment = "// "+self.name + ": "
-        st = "+\"" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+"," 
+        st = "+\"" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+"," + str(self.cooldown)+"," 
         for i in range (0,6):
             if (self.commands[i].name > 0):
                 st = st + str(self.commands[i].name) + "," + str(self.commands[i].execute)+ "," +str(self.commands[i].param1) + "," +str(self.commands[i].param2) + "," +str(self.commands[i].param3) + "," +str(self.commands[i].param4) + ","
@@ -66,7 +67,7 @@ class Ability:
         file.write(st)
 
     def fileWrite2(self, file):
-        st = "" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+","
+        st = "" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+","+ str(self.cooldown)+","
         for i in range (0,6):
             if (self.commands[i].name > 0):
                 st = st + str(self.commands[i].name) + "," + str(self.commands[i].execute)+ "," +str(self.commands[i].param1) + "," +str(self.commands[i].param2) + "," +str(self.commands[i].param3) + "," +str(self.commands[i].param4) + ","
@@ -103,6 +104,7 @@ class Ability:
         self.aimed = self.aimedStr.get()
         self.value = self.valueStr.get()
         self.offensive = self.offStr.get()
+        self.cooldown = self.coolStr.get()
         
         for i in range(0,6):
             if self.commands[i].execute == "ATTACKER":
@@ -215,6 +217,13 @@ class Ability:
         self.offStr.set(self.offensive)
         tg41 = Entry(win, textvariable=self.offStr)
         tg41.grid(row=12, column=7)
+        
+        l91 = Label(win, text="cooldown   ")
+        l91.grid(row=13, column=7)
+        self.coolStr = StringVar()
+        self.coolStr.set(self.cooldown)
+        tg41 = Entry(win, textvariable=self.coolStr)
+        tg41.grid(row=14, column=7)
         
         # now do up to 6 commands that this ability may or may not respond to
         cRow=2
@@ -985,12 +994,13 @@ def parseAbility(line):
     anAbility.aimed = int(parameters[8])
     anAbility.value = int(parameters[9])
     anAbility.offensive = int(parameters[10])
+    anAbility.cooldown = int(parameters[11])
     anAbility.commands = []
     
     # now we have the basic attributes of the ability, we need to 
     # read an optional list of commands
     
-    paramIndex = 11
+    paramIndex = 12
     
     while string.find(parameters[paramIndex], "*") == -1: # comment not found, so must be command
         aCommand = Command()

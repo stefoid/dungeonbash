@@ -262,9 +262,12 @@ public class Ability
 			return false;
 		else
 			return true;
-
 	}
 
+	public int getCooldown() {
+		return ability.cooldown;
+	}
+	
 	public void setOwned(Creature owner, boolean isOwned)
 	{
 		if (owner != null)
@@ -673,6 +676,9 @@ public class Ability
 			ad.offensive = false;
 		index = endIndex+1;
 
+		// read cooldown
+		ad.cooldown = readNextNum(string);
+		
 		abilityData.addElement(ad);
 		
 		// read an arbitary number of execute command responses.  we will settle for 6 maximum at the moment

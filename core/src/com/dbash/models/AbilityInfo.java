@@ -36,6 +36,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean isDefend;
 	public boolean isCover;
 	public boolean restrictFromHighlight;
+	public boolean isCooldown;
+	public int cooldown;
+	
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -85,7 +88,13 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isCarried = true;
 			targetable = ability.isTargetable();
 			aimed = ability.isAimed();
-
+			
+			if (ability.getCooldown() > 0) {
+				isCooldown = true;
+			}
+			
+			cooldown = ability.getCooldown();
+			
 			if (owner instanceof Character) {
 				Character c = (Character) owner;
 				// being disabled for not enough magic overrides selection status
