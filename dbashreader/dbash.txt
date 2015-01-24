@@ -166,7 +166,7 @@
 +"sting,aa,4,0,3,-1,0,0,1,1,1,0,8,3,2,1,141,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// sting: ATTACKER,DESELECT,SELECT,
 +"acid spit,ad,10,0,2,-1,0,0,1,5,1,0,19,3,4,4,-1,0,*"// acid spit: ATTACKER,
 +"axe,aa,3,2,3,-1,1,0,1,1,1,0,8,3,2,7,-1,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// axe: ATTACKER,DESELECT,SELECT,
-+"bow,ad,3,2,2,-1,1,0,1,1,1,0,19,3,2,5,-1,0,*"// bow: ATTACKER,
++"bow,ad,3,2,2,-1,1,0,1,1,1,5,19,3,2,5,-1,0,*"// bow: ATTACKER,
 +"strong poison bite,aa,3,1,3,-1,0,0,1,6,1,0,8,3,2,4,162,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// strong poison bite: ATTACKER,DESELECT,SELECT,
 +"poison spit,ad,6,1,2,-1,0,0,1,8,1,0,19,3,0,0,162,0,*"// poison spit: ATTACKER,
 +"ranged stun,ia,-1,0,2,-1,0,2,1,1,1,0,19,3,0,0,100,0,*"// ranged stun: ATTACKER,

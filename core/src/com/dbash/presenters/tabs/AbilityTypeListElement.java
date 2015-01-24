@@ -100,6 +100,16 @@ public abstract class AbilityTypeListElement implements IListElement {
 			textArea.width = area.x+area.width - textArea.x - area.width * leftSide;
 			textArea.height *= textHeightFat;
 			clockText = new TextView(gui, null, ""+abilityInfo.expireTime, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
+		} else if (!abilityInfo.isCool) {
+			iconArea.x = area.width - iconArea.width * rightSide;
+			iconArea.y = fromBottom * area.height;
+			clock =  new ImageView(gui, "CLOCK_IMAGE", iconArea);
+			
+			textArea.x = iconArea.x + iconArea.width * textSpacer;
+			textArea.y = iconArea.y + iconArea.height * textBottom;
+			textArea.width = area.x+area.width - textArea.x - area.width * leftSide;
+			textArea.height *= textHeightFat;
+			clockText = new TextView(gui, null, ""+abilityInfo.cooldownTurnsLeft, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
 		} else {
 			clock = null;
 			clockText = null;

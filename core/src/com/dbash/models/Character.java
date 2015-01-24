@@ -803,6 +803,10 @@ public class Character extends Creature implements IPresenterCharacter {
 			return false;
 		}
 		
+		if (ability.isCool() == false) {
+			return false;
+		}
+		
 		effectListListeners.resetList();
 		
 		// This will set/unset selectable items such as melee weapons and armor.
