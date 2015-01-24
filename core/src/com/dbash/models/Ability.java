@@ -168,7 +168,7 @@ public class Ability
 		setOwned(isOwned, true);
 		setAbilityType();
 		setAbilityEffectType();
-		turnsUntilCooldown = ability.cooldown;
+		turnsUntilCooldown = 0;
 	}
 
 
@@ -269,10 +269,6 @@ public class Ability
 			return false;
 		else
 			return true;
-	}
-
-	public int getCooldown() {
-		return ability.cooldown;
 	}
 	
 	public int getTurnsUntilCooldown() {
@@ -414,6 +410,7 @@ public class Ability
 		}		
 	}
 	
+	// TODO this is where use of all ablities ultimately get processed
 	
 	// This is the attempted execution of any ability against a target creature or location.
 	// It returns true if the ability use did happen, false otherwise 
@@ -425,6 +422,9 @@ public class Ability
 		if (isUsed() == false)
 			return false;
 
+		if (isCooldownAbility() && !isCool())
+			return false;
+		
 		int range = 0;
 		boolean melee = false;
 		int damageType = AbilityCommand.NO_PHYSICAL_ATTACK;
@@ -517,6 +517,9 @@ public class Ability
 				
 				// Looks like the ability was activated, so apply magic cost
 				attackingCreature.usedMagic(magicCost);
+				
+				// and set the cooldown period
+				turnsUntilCooldown = ability.cooldown + 1;
 				return true;
 			}
 		}

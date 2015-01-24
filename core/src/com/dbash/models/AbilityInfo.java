@@ -84,6 +84,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			canBeCarried = true;
 			enoughMagic = owner.hasEnoughMagic(ability);
 			expireTime = ability.getAbilityDurationLeft();
+			isUsableByOwner = owner.canUseAbility(ability);
 			
 			isCarried = true;
 			targetable = ability.isTargetable();
