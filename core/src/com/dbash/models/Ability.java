@@ -98,6 +98,8 @@ public class Ability
 	public HashMap<String, Object> dynamicParams = new HashMap<String, Object>();
 	public int usageCount = 0;  // Every time an ability is used, this number is incremented for ordering the selection list.
 	
+	public int turnsUntilCooldown;
+	
 	public static int getIdForName(String name) {
 		for (int i=0; i<abilityData.size();i++) {
 			if (abilityData.get(i).name.equals(name)) {
@@ -107,8 +109,6 @@ public class Ability
 		
 		return 0;
 	}
-	
-	
 	
 	public Ability(Ability theAbility) {
 		this(theAbility.myId, theAbility.owned, 1, theAbility.dungeonEvents, theAbility.dungeonQuery);
@@ -168,12 +168,14 @@ public class Ability
 		setOwned(isOwned, true);
 		setAbilityType();
 		setAbilityEffectType();
+		turnsUntilCooldown = ability.cooldown;
 	}
 
 
 	public void persist(ObjectOutputStream out) throws IOException {
 		out.writeInt(myId);
 		out.writeInt(tickCounter);
+		out.writeInt(turnsUntilCooldown);
 		out.writeInt(numberOfCommands); 
 		out.writeObject(set);
 	}
@@ -195,6 +197,7 @@ public class Ability
 
 		// now write the variable attributes
 		tickCounter = in.readInt();
+		turnsUntilCooldown = in.readInt();
 		numberOfCommands = in.readInt();			
 		boolean isSet = (Boolean) in.readObject();
 		
@@ -219,6 +222,10 @@ public class Ability
 				return true;
 		}
 
+		if (isCooldownAbility() && !isCool()) {
+			turnsUntilCooldown--;
+		}
+		
 		return false;
 	}
 	
@@ -266,6 +273,26 @@ public class Ability
 
 	public int getCooldown() {
 		return ability.cooldown;
+	}
+	
+	public int getTurnsUntilCooldown() {
+		return turnsUntilCooldown;
+	}
+	
+	public boolean isCooldownAbility() {
+		if (ability.cooldown > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isCool() {
+		if (turnsUntilCooldown > 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	public void setOwned(Creature owner, boolean isOwned)
@@ -612,20 +639,16 @@ public class Ability
 	static int index;
 	static int endIndex;
 
-	private int readNextNum(String string)
-	{
+	private int readNextNum(String string) {
 		int n;
 		endIndex = string.indexOf(",",index);
 		n = Integer.parseInt(string.substring(index, endIndex));
 		index = endIndex+1;		
 		return n;
 	}
-
-	
 	
 	// METHODS
-	private int addNextAbility(String string, int startIndex)
-	{
+	private int addNextAbility(String string, int startIndex) {
 		index = startIndex;
 		Data  	ad = new Data();
 
@@ -694,8 +717,7 @@ public class Ability
 		int finalIndex = string.indexOf("*",index);  // finalIndex represents the last position, so when index == finalIndex, its over
 		int i=0;
 
-		while (index != finalIndex)
-		{
+		while (index != finalIndex) {
 			ad.command[i] = readNextNum(string);
 
 			ad.executeStrategy[i] = readNextNum(string);

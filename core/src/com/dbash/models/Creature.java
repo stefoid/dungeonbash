@@ -1482,7 +1482,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		if (getCreature().humanoid == 0)
 			isHumanoid = false;
 		
-		return ability.meetsNeeds(hasHead, hasHands, isHumanoid);
+		boolean usable = ability.meetsNeeds(hasHead, hasHands, isHumanoid);
+		if (ability.isCooldownAbility() && !ability.isCool()) {
+			usable = false;
+		}
+		
+		return usable;
 	}
 
 	public boolean hasHead() {

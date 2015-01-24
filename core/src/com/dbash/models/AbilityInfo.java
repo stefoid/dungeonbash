@@ -37,8 +37,8 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean isCover;
 	public boolean restrictFromHighlight;
 	public boolean isCooldown;
-	public int cooldown;
-	
+	public boolean isCool;
+	public int cooldownTurnsLeft;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -84,16 +84,14 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			canBeCarried = true;
 			enoughMagic = owner.hasEnoughMagic(ability);
 			expireTime = ability.getAbilityDurationLeft();
-			isUsableByOwner = owner.canUseAbility(ability);
+			
 			isCarried = true;
 			targetable = ability.isTargetable();
 			aimed = ability.isAimed();
 			
-			if (ability.getCooldown() > 0) {
-				isCooldown = true;
-			}
-			
-			cooldown = ability.getCooldown();
+			isCooldown = ability.isCooldownAbility();
+			isCool = ability.isCool();
+			cooldownTurnsLeft = ability.getTurnsUntilCooldown();
 			
 			if (owner instanceof Character) {
 				Character c = (Character) owner;
