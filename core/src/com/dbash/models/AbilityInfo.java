@@ -36,9 +36,10 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean isDefend;
 	public boolean isCover;
 	public boolean restrictFromHighlight;
-	public boolean isCooldown;
-	public boolean isCool;
-	public int cooldownTurnsLeft;
+	public boolean isCooldown = false;
+	public boolean isCool = true;
+	public int cooldownTurnsLeft = 0;
+	public int cooldownPeriod = 0;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -80,6 +81,11 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		creates = ability.findAbilityAddedWhenEquipped();
 		burstEffect = ability.isBurstEffect();
 		
+		isCooldown = ability.isCooldownAbility();
+		isCool = ability.isCool();
+		cooldownTurnsLeft = ability.getTurnsUntilCooldown();
+		cooldownPeriod = ability.getCooldownPeriod();
+		
 		if (owner != null) {
 			canBeCarried = true;
 			enoughMagic = owner.hasEnoughMagic(ability);
@@ -89,10 +95,6 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isCarried = true;
 			targetable = ability.isTargetable();
 			aimed = ability.isAimed();
-			
-			isCooldown = ability.isCooldownAbility();
-			isCool = ability.isCool();
-			cooldownTurnsLeft = ability.getTurnsUntilCooldown();
 			
 			if (owner instanceof Character) {
 				Character c = (Character) owner;

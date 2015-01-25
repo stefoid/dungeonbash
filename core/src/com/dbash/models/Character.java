@@ -867,6 +867,9 @@ public class Character extends Creature implements IPresenterCharacter {
 					}
 					if (canHitTarget) {
 						currentSelectedAbility.targetSelected(position);
+						if (currentSelectedAbility.isCool() == false) {
+							currentSelectedAbility = null;
+						}
 						turnProcessor.characterEndsTurn(this);
 					} else {
 						if (LOG) L.log("WOULD HAVE CRAHSED");

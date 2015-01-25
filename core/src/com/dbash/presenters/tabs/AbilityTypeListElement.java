@@ -89,30 +89,35 @@ public abstract class AbilityTypeListElement implements IListElement {
 		// type
 		setImageType(iconArea);
 		
+		String clockImageString = null;
+		int clockNumber = 0;
+		clock = null;
+		clockText = null;
+		
 		// clock
 		if (abilityInfo.expireTime > 0) {
+			clockImageString = "CLOCK_IMAGE";
+			clockNumber = abilityInfo.expireTime;
+		} else if (abilityInfo.isCooldown) {
+			if (!abilityInfo.isCool) {
+				clockImageString = "CLOCK_IMAGE";
+				clockNumber = abilityInfo.cooldownTurnsLeft;
+			} else {
+				clockImageString = "COOLDOWN_IMAGE";
+				clockNumber = abilityInfo.cooldownPeriod;
+			}
+		}
+			
+		if (clockImageString != null) {
 			iconArea.x = area.width - iconArea.width * rightSide;
 			iconArea.y = fromBottom * area.height;
-			clock =  new ImageView(gui, "CLOCK_IMAGE", iconArea);
+			clock =  new ImageView(gui, clockImageString, iconArea);
 			
 			textArea.x = iconArea.x + iconArea.width * textSpacer;
 			textArea.y = iconArea.y + iconArea.height * textBottom;
 			textArea.width = area.x+area.width - textArea.x - area.width * leftSide;
 			textArea.height *= textHeightFat;
-			clockText = new TextView(gui, null, ""+abilityInfo.expireTime, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
-		} else if (!abilityInfo.isCool) {
-			iconArea.x = area.width - iconArea.width * rightSide;
-			iconArea.y = fromBottom * area.height;
-			clock =  new ImageView(gui, "CLOCK_IMAGE", iconArea);
-			
-			textArea.x = iconArea.x + iconArea.width * textSpacer;
-			textArea.y = iconArea.y + iconArea.height * textBottom;
-			textArea.width = area.x+area.width - textArea.x - area.width * leftSide;
-			textArea.height *= textHeightFat;
-			clockText = new TextView(gui, null, ""+abilityInfo.cooldownTurnsLeft, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
-		} else {
-			clock = null;
-			clockText = null;
+			clockText = new TextView(gui, null, "" + clockNumber, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
 		}
 		
 		// magic cost
@@ -131,8 +136,6 @@ public abstract class AbilityTypeListElement implements IListElement {
 			magicCost = null;
 		}
 	}
-	
-	
 	
 	private void setImageType(Rect iconArea)
 	{

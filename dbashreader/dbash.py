@@ -234,7 +234,7 @@ class Ability:
             cm1.grid(row=cRow+1, column=1)        
             cm1.menu = Menu(cm1, tearoff=0)
             cm1["menu"] = cm1.menu
-            for j in [0,"RESIST_HARD","RESIST_SHARP","RESIST_ENERGY","RESIST_CHEMICAL", "CLEAR_ARMOR", 
+            for j in [0,"RESIST_HARD","RESIST_SHARP","RESIST_ENERGY","RESIST_CHEMICAL", "CLEAR_NONE", "CLEAR_ARMOR",
                 "CLEAR_AMULET","CLEAR_MELEE","MELEE_ATTACK","SET","MODIFY_SPEED","MODIFY_HEALTH","MODIFY_MAX_HEALTH","MODIFY_MAGIC",
                 "MODIFY_MAX_MAGIC","MODIFY_ATTACK_SKILL","MODIFY_DEFENCE_SKILL","INVOKE","EXECUTE","CANCEL","RESIST_ABILITY",
                 "MODIFY_STEALTH", "MODIFY_DETECT", "MODIFY_MISSILE_DEFENCE", "RESIST_BURST"]:
@@ -303,7 +303,7 @@ class Ability:
                     cm3.grid(row=cRow+1, column=3)        
                     cm3.menu = Menu(cm3, tearoff=0)
                     cm3["menu"] = cm3.menu
-                    for j in ["CLEAR_ARMOUR", "CLEAR_AMULET", "CLEAR_MELEE"]:
+                    for j in ["CLEAR_NONE","CLEAR_ARMOUR", "CLEAR_AMULET", "CLEAR_MELEE"]:
                         cm3.menu.add_command(label=j, command=lambda i=i,j=j: setAbility("par1",j,i)) 
                     ll5 = Label(win, text="ability to add")
                     ll5.grid(row=cRow, column=4)
@@ -955,7 +955,9 @@ def convertAttack(attack):
 
 def convertClear(clear):
     if type(clear) == str:
-        if clear == "CLEAR_ARMOR":
+        if clear == "CLEAR_NONE":
+            result = 26
+        elif clear == "CLEAR_ARMOR":
             result = 5
         elif clear == "CLEAR_AMULET":
 		    result = 6
@@ -968,6 +970,8 @@ def convertClear(clear):
 		    result = "CLEAR_AMULET"
         elif clear == 7:
 		    result = "CLEAR_MELEE"
+        elif clear == 26:
+            result = "CLEAR_NONE"
     return result
 
 def parseAbility(line):
@@ -1232,29 +1236,29 @@ def newAbility(ab):
     global currentAbility 
     clearScreen()
     if ab == "MELEE WEAPON":
-        line = "new melee,aa,4,0,3,-1,0,0,1,1,1,8,3,1,3,-1,0,7,5,0,0,0,0,9,6,7,-1,0,0,*// melee"
+        line = "new melee,aa,4,0,3,-1,0,0,1,1,1,0,8,3,1,3,-1,0,7,5,0,0,0,0,9,6,7,-1,0,0,*// melee"
     elif ab == "MISSILE WEAPON":
-        line = "new missile,ad,6,2,2,-1,1,0,1,1,1,19,3,2,10,-1,0,*// missle"
+        line = "new missile,ad,6,2,2,-1,1,0,1,1,1,0,19,3,2,10,-1,0,*// missle"
     elif ab == "AMULET":
-        line = "new amulet,af,1,1,3,-1,1,0,0,1,0,6,5,0,0,0,0,9,6,6,-1,0,0,*// amulet"
+        line = "new amulet,af,1,1,3,-1,1,0,0,1,0,0,6,5,0,0,0,0,9,6,6,-1,0,0,*// amulet"
     elif ab == "ARMOUR":
-        line = "new armour,ab,14,3,3,-1,1,0,0,1,0,1,2,30,0,0,0,2,2,30,0,0,0,3,2,30,0,0,0,4,2,30,0,0,0,5,5,0,0,0,0,9,6,5,-1,0,0,*// armour"
+        line = "new armour,ab,14,3,3,-1,1,0,0,1,0,0,1,2,30,0,0,0,2,2,30,0,0,0,3,2,30,0,0,0,4,2,30,0,0,0,5,5,0,0,0,0,9,6,5,-1,0,0,*// armour"
     elif ab == "WAND":
-        line = "new wand,ac,6,2,2,-1,1,8,1,1,1,19,3,3,20,-1,0,*// wand"
+        line = "new wand,ac,6,2,2,-1,1,8,1,1,1,0,19,3,3,20,-1,0,*// wand"
     elif ab == "INSTANT ITEM-SELF":
-        line = "new instant,ma,5,2,1,-1,1,1,0,1,0,19,4,0,0,-1,0,*// instant"
+        line = "new instant,ma,5,2,1,-1,1,1,0,1,0,0,19,4,0,0,-1,0,*// instant"
     elif ab == "INSTANT ITEM-OTHERS":
-        line = "new instant,ma,5,2,1,-1,1,1,0,1,1,19,3,4,5,-1,-1,*// instant"
+        line = "new instant,ma,5,2,1,-1,1,1,0,1,1,0,19,3,4,5,-1,-1,*// instant"
     elif ab == "INSTANT ONESHOT-SELF":
-        line = "new oneshot,ma,5,2,4,-1,1,1,0,1,0,19,4,0,0,-1,0,*// oneshot"
+        line = "new oneshot,ma,5,2,4,-1,1,1,0,1,0,0,19,4,0,0,-1,0,*// oneshot"
     elif ab == "INSTANT ONESHOT-OTHERS":
-        line = "new oneshot,ma,5,2,4,-1,1,1,0,1,1,19,3,3,40,-1,-1,*// oneshot"
+        line = "new oneshot,ma,5,2,4,-1,1,1,0,1,1,0,19,3,3,40,-1,-1,*// oneshot"
     elif ab == "MAGIC EFFECT":
-        line = "new magic fx,st,-1,0,0,20,0,0,0,1,0,10,1,2,0,0,0,*// magic fx"
+        line = "new magic fx,st,-1,0,0,20,0,0,0,1,0,0,10,1,2,0,0,0,*// magic fx"
     elif ab == "MUNDANE EFFECT":  
-        line = "new mundand fx,ia,-1,0,0,8,0,0,0,1,0,11,1,-1,0,0,0,*// mundand fx"      
+        line = "new mundand fx,ia,-1,0,0,8,0,0,0,1,0,0,11,1,-1,0,0,0,*// mundand fx"
     elif ab == "RESISTANCE":  
-        line = "resist ,ia,-1,0,0,0,0,0,0,0,0,21,0,-1,0,0,0,*// mundand fx" 
+        line = "resist ,ia,-1,0,0,0,0,0,0,0,0,0,21,0,-1,0,0,0,*// mundand fx" 
                 
     na = parseAbility(line)
     na.convert()

@@ -283,6 +283,10 @@ public class Ability
 		}
 	}
 	
+	public int getCooldownPeriod() {
+		return ability.cooldown;
+	}
+	
 	public boolean isCool() {
 		if (turnsUntilCooldown > 0) {
 			return false;
@@ -519,7 +523,10 @@ public class Ability
 				attackingCreature.usedMagic(magicCost);
 				
 				// and set the cooldown period
-				turnsUntilCooldown = ability.cooldown + 1;
+				if (isCooldownAbility()) {
+					turnsUntilCooldown = ability.cooldown + 1;
+				}
+				
 				return true;
 			}
 		}
@@ -534,6 +541,7 @@ public class Ability
     	// now process the ability on the selected target.  A targetable ability only has an EXECUTE strategy
 		AbilityCommand  command = new AbilityCommand(AbilityCommand.EXECUTE, 0, 1, 1, 1);  // we have already verified that we can use this ability
 		executeCommandTarget(command, targCreature, position, owned);
+
     }	
 
     public int getAbilityDamage() {
@@ -655,35 +663,35 @@ public class Ability
 		index = startIndex;
 		Data  	ad = new Data();
 
-		// read name
+		// read name 1
 		endIndex = string.indexOf(",",index);
 		ad.name = string.substring(index, endIndex);
 		index = endIndex+1;
 
-		// read gifName
+		// read gifName 2
 		endIndex = string.indexOf(",",index);
 		ad.tag = string.substring(index, endIndex);
 		index = endIndex+1;
 
-		// read colour
+		// read colour 3
 		ad.colour = readNextNum(string);
 
-		// read needs
+		// read needs 4
 		ad.needs = readNextNum(string);
 
-		// read invokingStrategy
+		// read invokingStrategy 5
 		ad.invokingStrategy = readNextNum(string);
 
-		// read duration
+		// read duration 6
 		ad.duration = readNextNum(string);
 
-		// read physicalItem
+		// read physicalItem 7
 		ad.physicalItem = readNextNum(string);
 
-		// read magicItem
+		// read magicItem 8
 		ad.magicCost = readNextNum(string);
 
-		// read aimed
+		// read aimed 9
 		endIndex = string.indexOf(",",index);
 		if (Integer.parseInt(string.substring(index, endIndex)) == 1)
 			ad.aimed = true;
@@ -691,10 +699,10 @@ public class Ability
 			ad.aimed = false;
 		index = endIndex+1;
 
-		// read value
+		// read value 10
 		ad.value = readNextNum(string);
 
-		// read offensive
+		// read offensive 11
 		endIndex = string.indexOf(",",index);
 		if (Integer.parseInt(string.substring(index, endIndex)) == 1)
 			ad.offensive = true;
@@ -702,7 +710,7 @@ public class Ability
 			ad.offensive = false;
 		index = endIndex+1;
 
-		// read cooldown
+		// read cooldown 12
 		ad.cooldown = readNextNum(string);
 		
 		abilityData.addElement(ad);

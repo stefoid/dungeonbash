@@ -13,9 +13,11 @@ public class AbilityCommand
 	public static final int		CLEAR_ARMOR = 5;  // used to make this ability not the used ability of its type
 	public static final int		CLEAR_AMULET = 6;
 	public static final int		CLEAR_MELEE = 7;
+	public static final int		CLEAR_NONE = 26;  // dont clear any other ability when set
+	public static final int		CLEAR = 27;  // clear the setness of this ability only.
 	
 	public static final int		MELEE_ATTACK = 8;
-	public static final int		SET = 9;   // used to set this ability as the 'used' ability of its type.
+	public static final int		SET = 9;   // used to set this ability as the 'used' ability of any type.
 	
 	public static final int		MODIFY_SPEED = 10;
 	public static final int		MODIFY_HEALTH = 11;
