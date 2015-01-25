@@ -234,7 +234,7 @@ class Ability:
             cm1.grid(row=cRow+1, column=1)        
             cm1.menu = Menu(cm1, tearoff=0)
             cm1["menu"] = cm1.menu
-            for j in [0,"RESIST_HARD","RESIST_SHARP","RESIST_ENERGY","RESIST_CHEMICAL", "CLEAR_NONE", "CLEAR_ARMOR",
+            for j in [0,"RESIST_HARD","RESIST_SHARP","RESIST_ENERGY","RESIST_CHEMICAL", "CLEAR", "CLEAR_ARMOR",
                 "CLEAR_AMULET","CLEAR_MELEE","MELEE_ATTACK","SET","MODIFY_SPEED","MODIFY_HEALTH","MODIFY_MAX_HEALTH","MODIFY_MAGIC",
                 "MODIFY_MAX_MAGIC","MODIFY_ATTACK_SKILL","MODIFY_DEFENCE_SKILL","INVOKE","EXECUTE","CANCEL","RESIST_ABILITY",
                 "MODIFY_STEALTH", "MODIFY_DETECT", "MODIFY_MISSILE_DEFENCE", "RESIST_BURST"]:
@@ -1258,7 +1258,7 @@ def newAbility(ab):
     elif ab == "MUNDANE EFFECT":  
         line = "new mundand fx,ia,-1,0,0,8,0,0,0,1,0,0,11,1,-1,0,0,0,*// mundand fx"
     elif ab == "RESISTANCE":  
-        line = "resist ,ia,-1,0,0,0,0,0,0,0,0,0,21,0,-1,0,0,0,*// mundand fx" 
+        line = "resist ,ia,-1,0,0,0,0,0,0,0,0,0,21,0,-1,0,0,0,*// mundand fx"
                 
     na = parseAbility(line)
     na.convert()
