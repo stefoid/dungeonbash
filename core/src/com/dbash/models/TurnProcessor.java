@@ -457,13 +457,13 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TESTCHARS) {
 			theChars.clear();
 			p.level = 20;
-			theChars.add(new Character(Creature.getIdForName("wizard"), p, 1, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("greater demon"), p, 2, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("imp"), p, 3, dungeonEvents, dungeonQuery, this));
-			Creature c = theChars.get(0);
-			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("dash"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, dungeonEvents, dungeonQuery), null);
+			theChars.add(new Character(Creature.getIdForName("imp"), p, 1, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("web shooter"), p, 2, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("giant sewer rat"), p, 3, dungeonEvents, dungeonQuery, this));
+//			Creature c = theChars.get(0);
+//			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);
+//			c.addAbility(new Ability(Ability.getIdForName("dash"), null, 20, dungeonEvents, dungeonQuery), null);
+//			c.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, dungeonEvents, dungeonQuery), null);
 		
 		}
 		// c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
