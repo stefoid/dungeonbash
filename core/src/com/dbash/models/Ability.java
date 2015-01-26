@@ -526,9 +526,9 @@ public class Ability
 				// Looks like the ability was activated, so apply magic cost
 				attackingCreature.usedMagic(magicCost);
 				
-				// and set the cooldown period
 				if (isCooldownAbility()) {
 					turnsUntilCooldown = ability.cooldown + 1;
+					set = false;
 				}
 				
 				return true;
@@ -545,8 +545,20 @@ public class Ability
     	// now process the ability on the selected target.  A targetable ability only has an EXECUTE strategy
 		AbilityCommand  command = new AbilityCommand(AbilityCommand.EXECUTE, 0, 1, 1, 1);  // we have already verified that we can use this ability
 		executeCommandTarget(command, targCreature, position, owned);
-
     }	
+    
+    public void executeAbility() {
+		AbilityCommand  command = new AbilityCommand(AbilityCommand.EXECUTE, 0, 1, 1, 1);  // we have already verified that we can use this ability
+		executeCommandTarget(command, owned, owned.mapPosition, owned);
+    }
+    
+    // i.e. dash ability
+//    public void wasUsed() {
+//		if (isCooldownAbility()) {
+//			turnsUntilCooldown = ability.cooldown + 1;
+//			set = false;
+//		}
+//    }
 
     public int getAbilityDamage() {
     	int i = 0;

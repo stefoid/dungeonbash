@@ -506,7 +506,13 @@ public class Character extends Creature implements IPresenterCharacter {
 			{	
 			    case HOLE:
 			    	if (canFly) {
-						if (performCharge(position, direction, AtLocation.MONSTER, this) == false) {
+			    		boolean didSpecialMove = performCharge(position, direction, AtLocation.MONSTER, this);
+			    		
+			    		if (!didSpecialMove) {
+			    			didSpecialMove = performDash(position, direction, this);
+			    		}
+			    		
+						if (!didSpecialMove) {
 							dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, position, direction, Dungeon.MoveType.NORMAL_MOVE, null);
 						}
 						updatePath(position);
@@ -514,10 +520,16 @@ public class Character extends Creature implements IPresenterCharacter {
 			    	}
 			    	break;
 				case FREE:
-					// If the character has charge ability, and there is a monster at the end of this move, its a charge move
-					if (performCharge(position, direction, AtLocation.MONSTER, this) == false) {
+		    		boolean didSpecialMove = performCharge(position, direction, AtLocation.MONSTER, this);
+		    		
+		    		if (!didSpecialMove) {
+		    			didSpecialMove = performDash(position, direction, this);
+		    		}
+		    		
+					if (!didSpecialMove) {
 						dungeonEvents.creatureMove(SequenceNumber.getNext(), this, this, mapPosition, position, direction, Dungeon.MoveType.NORMAL_MOVE, null);
 					}
+					
 					updatePath(position);
 					turnProcessor.characterEndsTurn(this);
 					break;

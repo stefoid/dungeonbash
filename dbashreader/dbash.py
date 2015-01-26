@@ -1221,7 +1221,7 @@ def drawMainButtons():
         cm.grid(row=20, column=6)        
         cm.menu = Menu(cm, tearoff=0)
         cm["menu"] = cm.menu
-        for i in ["MELEE WEAPON","MISSILE WEAPON","AMULET","ARMOUR","WAND", "INSTANT ITEM-SELF","INSTANT ITEM-OTHERS","INSTANT ONESHOT-SELF","INSTANT ONESHOT-OTHERS","MAGIC EFFECT","MUNDANE EFFECT", "RESISTANCE"]:
+        for i in ["MELEE WEAPON","MISSILE WEAPON","AMULET","ARMOUR","WAND", "INSTANT ITEM-SELF","INSTANT ITEM-OTHERS","INSTANT ONESHOT-SELF","INSTANT ONESHOT-OTHERS","MAGIC EFFECT","MUNDANE EFFECT", "RESISTANCE", "SELECTABLE COOLDOWN"]:
             cm.menu.add_command(label=i, command=lambda i=i: newAbility(i))
     else:
         tog = Button(win, text="go abilities", command=toggle)
@@ -1259,6 +1259,8 @@ def newAbility(ab):
         line = "new mundand fx,ia,-1,0,0,8,0,0,0,1,0,0,11,1,-1,0,0,0,*// mundand fx"
     elif ab == "RESISTANCE":  
         line = "resist ,ia,-1,0,0,0,0,0,0,0,0,0,21,0,-1,0,0,0,*// mundand fx"
+    elif ab == "SELECTABLE COOLDOWN":  
+        line = "selectable cooldown,setable,1,0,3,-1,0,0,0,1,0,10,9,6,26,-1,0,0,19,0,0,0,0,0,*// SELECT NO STRATEGY "
                 
     na = parseAbility(line)
     na.convert()

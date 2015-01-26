@@ -582,9 +582,9 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 	}
 	
-	protected boolean canChargeAcross(DungeonPosition position) {
+	protected boolean canChargeAcross(DungeonPosition position, boolean creatureCanCharge) {
 		boolean result = false;
-		if (canCharge) {
+		if (creatureCanCharge) {
 			if (dungeonQuery.getLocation(position).hasRoughTerrain()) {
 				result = creatureCanFly();
 			} else {
@@ -594,12 +594,48 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return result;
 	}
 	
+	protected boolean canDashInto(DungeonPosition position) {
+		boolean result = false;
+		AtLocation atLocation = dungeonQuery.whatIsAtLocation(position);
+		if (atLocation == AtLocation.HOLE) {
+			result = creatureCanFly();
+		} else if (atLocation == AtLocation.FREE) {
+			result = true;
+		}
+		return result;
+	}
+	
+	protected Ability canDash() {
+		Ability result = null;
+		for (Ability ability : abilities) {
+			if (ability.hasTag(Ability.DASH_TAG)) {
+				if (ability.set) {
+					result = ability;
+				}
+			}
+		}
+		return result;
+	}
+	
 	protected boolean performCharge(DungeonPosition position, int direction, AtLocation targetType, Character releventCharacter) {
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
-		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position)) {
+		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position, canCharge)) {
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, Dungeon.MoveType.CHARGE_MOVE, null);
 	
 			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
+			return true;
+		}
+		
+		return false;
+	}
+
+	protected boolean performDash(DungeonPosition position, int direction, Character releventCharacter) {
+		if (LOG) L.log("position: %s", position);
+		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
+		Ability dashAbility = canDash();
+		if (dashAbility != null && canChargeAcross(position, true) && canDashInto(furtherPosition)) {
+			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, furtherPosition, direction, Dungeon.MoveType.NORMAL_MOVE, null);
+			dashAbility.executeAbility();
 			return true;
 		}
 		
@@ -632,8 +668,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 
 		// we need to modify the creatures health and maxheath based on initial
 		// experience
-		if (initialExp)
-		{
+		if (initialExp) {
 			health = calculateMaxHealth();
 			magic = calculateMaxMagic();
 		}
