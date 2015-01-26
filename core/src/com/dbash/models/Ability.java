@@ -47,6 +47,8 @@ public class Ability
 	public static String DEFEND_TAG = "defend";
 	public static String INVOKE_TAG = "invoke";  // means invoke a just added ability (oneshot) immediately after adding it.
 	public static String COVER_TAG = "cover";
+	public static String DASH_TAG = "dash";
+	public static String SETABLE_TAG = "setable";
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -58,7 +60,8 @@ public class Ability
 		ORB(6),
 		POTION(5),
 		ABILITY(1),
-		DE_NADA(8);
+		DE_NADA(8),
+		DASH(9);
 		
 		public int val;
 		private AbilityType(int val) {
@@ -92,6 +95,7 @@ public class Ability
 		DEFENDING,
 		MISSILE_DEFENCE,
 		RESIST_BURST,
+		DASH,
 		NONE_REALLY
 	}
 	
@@ -1072,6 +1076,10 @@ public class Ability
 			abilityEffectTypeHash.add(AbilityEffectType.FLIGHT);
 		}
 		
+		if (hasTag(DASH_TAG)) {
+			abilityEffectTypeHash.add(AbilityEffectType.DASH);
+		}
+		
 		// replace resist all 4 types with 'resist all'
 		if (hard && sharp && energy && chem) {
 			abilityEffectTypeHash.remove(AbilityEffectType.RESIST_HARD);
@@ -1107,6 +1115,9 @@ public class Ability
 		}
 		else if (hasTag(AMULET_TAG)) {
 			abilityType = AbilityType.AMULET;
+		}
+		else if (hasTag(DASH_TAG)) {
+			abilityType = AbilityType.DASH;
 		}
 		else if (hasTag(MAGIC_TAG)) {
 			abilityType = AbilityType.MAGIC_ITEM;

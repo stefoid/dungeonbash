@@ -54,7 +54,7 @@ public class AbilityListElementView extends AbilityTypeListElement {
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		
 		// Draw background
-		if (abilityInfo.currentySelected) {
+		if (abilityInfo.currentySelected || (abilityInfo.isSetable && abilityInfo.isSet)) {
 			selectedBackground.setPos(x, y);
 			selectedBackground.draw(spriteBatch);
 		} else if (abilityInfo.enoughMagic == false || abilityInfo.isUsableByOwner == false){

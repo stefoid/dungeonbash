@@ -28,10 +28,10 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public int			sortValue = 0;
 	public boolean 		currentySelected = false;
 	public int 			creates = -1;  // Does this ability crete another?
-	public boolean oneShot;
-	public boolean isStat = false;
+	public boolean 		oneShot;
+	public boolean 		isStat = false;
 	public String 		statText;
-	public int	statValue = 0;
+	public int			statValue = 0;
 	public Color color;
 	public boolean isDefend;
 	public boolean isCover;
@@ -40,6 +40,8 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean isCool = true;
 	public int cooldownTurnsLeft = 0;
 	public int cooldownPeriod = 0;
+	public boolean isSetable;
+	public boolean isSet;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -72,6 +74,12 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		if (isDefend || isCover) {
 			restrictFromHighlight = true;
 		}
+		
+		if (ability.hasTag(Ability.SETABLE_TAG)) {
+			isSetable = true;
+		}
+		
+		isSet = ability.set;
 		
 		abilityType = ability.getAbilityType();
 		equipped = ability.set;
@@ -200,8 +208,16 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			case ORB:
 				image = "ORB_IMAGE";
 				break;
+			case DASH:
+				image = "DASH_IMAGE";
+				break;
 			case ABILITY:
 			default:
+				if (equipped) {
+					image = "ABILITY_EQUIPPED_IMAGE";
+				} else {
+					image = "ABILITY_IMAGE";
+				}
 				break;
 		}
 		
@@ -294,6 +310,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 				break;
 			case MISSILE_DEFENCE:
 				image = "MISSILE_DEFENCE";
+				break;
+			case DASH:
+				image = "DASH_IMAGE";
 				break;
 			default:
 				image = "MAGIC_ITEM_IMAGE";
