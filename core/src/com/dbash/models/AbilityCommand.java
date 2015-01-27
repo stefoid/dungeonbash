@@ -38,13 +38,10 @@ public class AbilityCommand
 	public static final int 	RESIST_ABILITY = 21;
 
 
-	public AbilityCommand()
-	{
-
+	public AbilityCommand() {
 	}
 
-	public AbilityCommand(int commandName, int commandValue, int hasHead, int hasHands, int isHumanoid)
-	{
+	public AbilityCommand(int commandName, int commandValue, int hasHead, int hasHands, int isHumanoid) {
 		name = commandName;
 		value =  commandValue;
 		if (hasHead > 0)
@@ -81,8 +78,7 @@ public class AbilityCommand
 	public int skill;
 	public int type;
 
-	public AbilityCommand(int attackType, int attackDamage, boolean meleeAttack, Ability abilityToAdd, Ability attackingAbility)
-	{
+	public AbilityCommand(int attackType, int attackDamage, boolean meleeAttack, Ability abilityToAdd, Ability attackingAbility) {
 		type = attackType;
 		damage = attackDamage;
 		this.abilityToAdd = abilityToAdd;

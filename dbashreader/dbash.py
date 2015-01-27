@@ -836,6 +836,10 @@ def convertExecute(execute):
             result = 24
         elif execute == "RESIST_BURST":
             result = 25
+        elif execute == "CLEAR_NONE":
+            result = 26
+        elif execute == "CLEAR":
+            result = 27
     else:
         if execute == 1:
             result = "RESIST_HARD"
@@ -884,7 +888,11 @@ def convertExecute(execute):
         elif execute == 24:
             result = "MODIFY_MISSILE_DEFENCE" 
         elif execute == 25:
-            result = "RESIST_BURST"       
+            result = "RESIST_BURST"      
+        elif execute == 26:
+            result = "CLEAR_NONE" 
+        elif execute == 27:
+            result = "CLEAR"     
     return result
 
 def convertStrategy(strat):
@@ -1260,7 +1268,7 @@ def newAbility(ab):
     elif ab == "RESISTANCE":  
         line = "resist ,ia,-1,0,0,0,0,0,0,0,0,0,21,0,-1,0,0,0,*// mundand fx"
     elif ab == "SELECTABLE COOLDOWN":  
-        line = "selectable cooldown,setable,1,0,3,-1,0,0,0,1,0,10,9,6,26,-1,0,0,19,0,0,0,0,0,*// SELECT NO STRATEGY "
+        line = "selectable cooldwn,setable,1,0,3,-1,0,0,0,1,0,10,9,6,26,-1,0,0,19,0,0,0,0,0,27,5,0,0,0,0,*// dash: SELECT NO STRATEGY "
                 
     na = parseAbility(line)
     na.convert()

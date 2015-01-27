@@ -36,6 +36,9 @@ public class AbilitySelectionList extends ArrayList<AbilityInfo> {
 				// Sort list according to type
 				info.sortValue = info.abilityType.val * 1000;  // x10 so I can insert thigns between other things after this
 				info.sortValue += info.ability.myId; // group identical things together
+				if (ability.hasTag(Ability.DASH_TAG)) {
+					info.sortValue = 0;
+				}
 				add(info);
 			}
 		}

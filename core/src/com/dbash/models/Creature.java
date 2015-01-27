@@ -27,6 +27,15 @@ public abstract class Creature implements IPresenterCreature
 {
 	public static final boolean LOG = true && L.DEBUG;
 	
+	public static enum CreatureSize {
+		SMALL,
+		MEDIUM,
+		HUGE
+	}
+	
+	public static int SMALL_SIZE = 8;
+	public static int HUGE_SIZE = 24;
+	
 	public static class DistComparator implements Comparator<Creature> {
 		
 		DungeonPosition posi;
@@ -136,6 +145,8 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	public boolean canFly;
 	public boolean canCharge;
 	
+	public CreatureSize creatureSize;
+	
 	@Override
 	public CreaturePresenter getCreaturePresenter(UIDepend gui, PresenterDepend model, MapPresenter mapPresenter) {
 		if (creaturePresenter == null) {
@@ -161,8 +172,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		experience = 0;
 		expRoot = 0;
 
-		for (int i = 0; i < getCreature().abilityIds.length; i++)
-		{
+		for (int i = 0; i < getCreature().abilityIds.length; i++) {
 			if (getCreature().abilityIds[i] != -1)
 			{
 				Ability a = new Ability(getCreature().abilityIds[i], this, p.level, dungeonEvents, dungeonQuery);
@@ -173,7 +183,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		// set the default melee attack, armour and amulet for this creature
 		AbilityCommand command = new AbilityCommand(AbilityCommand.SET, 0, getCreature().head, getCreature().hands, getCreature().humanoid);
 		broadcastAbilityCommand(command);
-
+		// unset any selectable cooldowns that might have accidently been set by the aobve command.
+		command = new AbilityCommand(AbilityCommand.CLEAR, 0, 1, 1, 1);
+		broadcastAbilityCommand(command);
+		
 		// now calculate initial health and magic according to this creatures
 		// initial experience and abilities
 		health = maximumHealth;
@@ -278,6 +291,16 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		maximumHealth = getCreature().maximumHealth;
 		maximumMagic = getCreature().maximumMagic;
 
+		creatureSize = CreatureSize.MEDIUM;
+		
+		if (maximumHealth <= SMALL_SIZE) {
+			creatureSize = CreatureSize.SMALL;
+		}
+		
+		if (maximumHealth >= HUGE_SIZE) {
+			creatureSize = CreatureSize.SMALL;
+		}
+		
 		// create an ability vector for the abilities to go in
 		abilities = new LinkedList<Ability>();
 	}
@@ -721,6 +744,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				if (LOG) L.log("before damage reduce newDamage: %s", newDamage);
 				if (attack.ability != null && attack.ability.isBurstEffect()) {
 					newDamage = reduceDamage(AbilityCommand.RESIST_BURST, newDamage);
+					
 					if (LOG) L.log("burst reduced newDamage: %s", newDamage);
 				}
 				
@@ -1077,17 +1101,24 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	
 	public int calculateDefenceAgainstMissilesSkill() {
 		int defence = calculateDefenceSkill();
-		RoughTerrainType terrain = dungeonQuery.getTerrainAtLocation(mapPosition);
-		if (terrain != null) {
-				switch (terrain) {
-				case BONES:
-					defence = (defence * 140) / 100;
-					break;
-				case ROCKS:
-					defence = (defence * 140) / 100;
-					break;
-				default:
-					break;
+		if (canFly == false && creatureSize != CreatureSize.HUGE) {
+			int defenceValue = 134;
+			if (creatureSize == CreatureSize.SMALL) {
+				defenceValue = 167;
+			}
+			
+			RoughTerrainType terrain = dungeonQuery.getTerrainAtLocation(mapPosition);
+			if (terrain != null) {
+					switch (terrain) {
+					case BONES:
+						defence = (defence * defenceValue) / 100;
+						break;
+					case ROCKS:
+						defence = (defence * defenceValue) / 100;
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		if (LOG) L.log("missile defence: %s", defence); 
@@ -1405,6 +1436,19 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 
 	protected int reduceDamage(int damageType, int damageValue) {
 		int damage = damageValue * (100 - modifyValue(damageType, 0)) / 100;
+		// HACK !
+		if (damageType == AbilityCommand.RESIST_BURST) {
+			switch (creatureSize) {
+				case SMALL:
+					damage = (damage * 67) / 100;
+					break;
+				case HUGE:
+					damage = damageValue;  // no effect
+					break;
+				default:
+					break;
+			}
+		}
 		return damage;
 	}
 	

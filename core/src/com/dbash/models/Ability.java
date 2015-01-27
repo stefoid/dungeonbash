@@ -19,7 +19,7 @@ import com.dbash.util.SequenceNumber;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class Ability 
 {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	// INTERFACE	
 	public static final int     RANDOM_ITEM = -2;
@@ -338,6 +338,8 @@ public class Ability
 	
 	public int executeCommandValue(AbilityCommand	command, Creature owner)
 	{
+		if (LOG) L.log("command: %s", command.name);
+		
 		int newValue = command.value;
 
 		if (command.name == AbilityCommand.CANCEL) {
@@ -378,6 +380,7 @@ public class Ability
 				}
 				
 				if (ability.executeStrategy[i] == DESELECT) {
+					if (LOG) L.log("deselecting");
 					unset(owner);
 					return newValue;
 				}
