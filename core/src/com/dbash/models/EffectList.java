@@ -2,6 +2,7 @@ package com.dbash.models;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
+import com.dbash.models.Creature.CreatureSize;
 
 
 //each Character has a AbilitySelectionList that has the following responsibilities.
@@ -52,7 +53,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			add(dam);
 			
 			
-			int md = owner.calculateRangedDamage(theCharacter.currentSelectedAbility);
+			int md = owner.calculateMissileDamage(theCharacter.currentSelectedAbility);
 			String[] tmd = {"RANGED DAMAGE", " : "};
 			AbilityInfo rdam = new AbilityInfo(tmd, md, Color.BLACK);
 			add(rdam);
@@ -113,6 +114,14 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			String[] tcpv = {"CHEMICAL DEF", " : ", "%"};
 			AbilityInfo cp = new AbilityInfo(tcpv, cpv , Color.GREEN);
 			add(cp);
+			
+			if (owner.creatureSize == CreatureSize.SMALL) {
+				add(new AbilityInfo("Size: small (great cover bonus)", Color.BLACK));
+			} else if (owner.creatureSize == CreatureSize.MEDIUM) {
+				add(new AbilityInfo("Size: medium (cover bonus)", Color.BLACK));
+			} else if (owner.creatureSize == CreatureSize.HUGE) {
+				add(new AbilityInfo("Size: huge (no cover bonus)", Color.BLACK));
+			}
 			
 			if (owner.hasHead() == false) {
 				add(new AbilityInfo("NO HEAD", Color.BLACK));

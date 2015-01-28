@@ -298,7 +298,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 		
 		if (maximumHealth >= HUGE_SIZE) {
-			creatureSize = CreatureSize.SMALL;
+			creatureSize = CreatureSize.HUGE;
 		}
 		
 		// create an ability vector for the abilities to go in
@@ -586,7 +586,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		}
 	
 		// add new cover effects
-		if (dungeonQuery != null && creatureCanFly() == false) {
+		if (dungeonQuery != null && creatureCanFly() == false && creatureSize != CreatureSize.HUGE) {
 			RoughTerrainType roughTerrainType = dungeonQuery.getTerrainAtLocation(mapPosition);
 			if (roughTerrainType != null) {
 				switch (roughTerrainType) {
@@ -1290,7 +1290,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return damage;
 	}
 	
-	public int calculateRangedDamage(Ability theAbility) {
+	public int calculateMissileDamage(Ability theAbility) {
 		
 		int damage = 0;
 		if (theAbility != null) {
@@ -1437,10 +1437,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 	protected int reduceDamage(int damageType, int damageValue) {
 		int damage = damageValue * (100 - modifyValue(damageType, 0)) / 100;
 		// HACK !
-		if (damageType == AbilityCommand.RESIST_BURST) {
+		if (damageType == AbilityCommand.RESIST_BURST && damage < damageValue) {
 			switch (creatureSize) {
 				case SMALL:
-					damage = (damage * 67) / 100;
+					damage = (damage * 76) / 100;
 					break;
 				case HUGE:
 					damage = damageValue;  // no effect
