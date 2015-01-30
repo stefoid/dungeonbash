@@ -97,9 +97,12 @@ public class LocationPresenter {
 		// Done once at setup.
 		if (tile == null) {
 			String tileName = "sw_";
+
 			if (locationInfo.isShadowedFloor) {
 				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
 				shadow = new ImageView(gui, locationInfo.tileName, area); 
+			} else if (locationInfo.isIsland) {
+				tileName = locationInfo.tileName;
 			} else {
 				tileName = tileName.concat(locationInfo.tileName);
 			}

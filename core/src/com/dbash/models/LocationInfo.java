@@ -15,6 +15,7 @@ public class LocationInfo {
 	public boolean isShadowedFloor;
 	public RoughTerrainType roughTerrainType;
 	public Location location;
+	public boolean isIsland;
 	
 	public LocationInfo(Location location) {
 		this.location = location;
@@ -35,6 +36,9 @@ public class LocationInfo {
 			} else {
 				isShadowedFloor = false;
 			}
+		}
+		if (location.tileType == Location.TileType.ISLAND) {
+			isIsland = true;
 		}
 	}
 }

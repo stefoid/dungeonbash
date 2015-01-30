@@ -627,8 +627,16 @@ public class Location {
 		return result;
 	}
 	
+	final static String[] names = {
+			"rock","rock","rock","rock",
+			"obeliska",
+			"obeliskb",
+			"stalagmitea","stalagmitea",
+			"stalagmiteb","stalagmiteb"
+	};
+	
 	public String randomIslandTileName() {
-		return "rock";
+		return names[Randy.getRand(0,  names.length-1)];
 	}
 	
 	private void setItemInfos() {

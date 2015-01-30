@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
@@ -78,8 +79,8 @@ public class Map implements IPresenterMap {
 					// otherwise all the rooms will be most likely drawn together
 					drawRoom(roomPoints[i]);
 				
-				setStartAndExitPoints();
 				setIslands();
+				setStartAndExitPoints();
 				
 				// Now make a preliminary pass to determine Tile types
 				for (int x=0; x<width; x++) {
@@ -171,6 +172,31 @@ public class Map implements IPresenterMap {
 		return getRandomPoint(isFloorRequired, border);
 	}
 	
+	public Location getIslandLocation() {
+		try {
+			 for (int i=0;i<200;i++) {
+				 DungeonPosition island = getRandomPoint(true, border+1);
+				 boolean good = true;
+				 for (int x=-1; x<=1 && good; x++) {
+					 for (int y=-1; y<=1 && good; y++) {
+						 Location loc = location[island.x+x][island.y+y];
+						 if (loc.isOpaque()) {
+							 good = false;
+						 }
+					 }
+				 }
+				 
+				 if (good) {
+					 return location[island.x][island.y];
+				 }
+			 }
+		} catch (MapException m) {
+			return null;
+		}
+	 
+	 	return null;
+	}
+	
 	/**
 	 * Returns a random point, or null if it timed out.
 	 */
@@ -213,7 +239,13 @@ public class Map implements IPresenterMap {
 	}
 	
 	private void setIslands() {
-		// TODO
+		int numIslands = Randy.getRand(0, height/7);
+		for (int i=0;i<numIslands; i++) {
+			Location island = getIslandLocation();
+			if (island != null) {
+				island.setAsIsland();
+			}
+		}
 	}
 	
 	public void drawRoom(DungeonPosition dungeonLocation) {
