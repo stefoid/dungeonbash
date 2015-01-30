@@ -18,13 +18,15 @@ public class Location {
 	public enum LocationType {
 		WALL,
 		FLOOR,
-		EXIT};
+		EXIT
+	};
 		
 	public enum TileType {
 		CLEAR, 
 		FRONT_FACE,
 		REAR_FACE,
-		NO_FACE
+		NO_FACE,
+		ISLAND
 	};
 		
 	public enum TorchType {
@@ -181,6 +183,11 @@ public class Location {
 	
 	public DungeonPosition getPosition() {
 		return new DungeonPosition(x,y);
+	}
+	
+	public void setAsIsland() {
+		locationType = LocationType.WALL;
+		tileType = TileType.ISLAND;
 	}
 	
 	public void setCreature(Creature creature) {
@@ -344,18 +351,20 @@ public class Location {
 	// cant be called until the basic dungeon map has been fully determined (as far as setting LcoationType)
 	// This is called for the entire map before the tile name can be set.
 	public void setTileType() {
-		if (map.safeLocation(x,y).isClear()) {
-			tileType =  TileType.CLEAR;
-		} else 
-		
-		if (map.safeLocation(x,y-1).isClear()) {
-			tileType =  TileType.FRONT_FACE;
-		} else
-		
-		if (map.safeLocation(x,y+1).isClear()) {
-			tileType = TileType.REAR_FACE;
-		} else {
-			tileType =  TileType.NO_FACE;
+		if (tileType != TileType.ISLAND) {
+			if (map.safeLocation(x,y).isClear()) {
+				tileType =  TileType.CLEAR;
+			} else 
+			
+			if (map.safeLocation(x,y-1).isClear()) {
+				tileType =  TileType.FRONT_FACE;
+			} else
+			
+			if (map.safeLocation(x,y+1).isClear()) {
+				tileType = TileType.REAR_FACE;
+			} else {
+				tileType =  TileType.NO_FACE;
+			}
 		}
 	}
 	
@@ -451,6 +460,10 @@ public class Location {
 		switch(locationType) {
 			case WALL:
 				tileName = null;
+				
+				if (tileType == TileType.ISLAND) {
+					return randomIslandTileName();
+				}
 
 				// if the south of the tile is empty, it definitely a front facing tile
 				boolean eastBlank = map.safeLocation(x + 1,y).isClear();
@@ -556,9 +569,9 @@ public class Location {
 
 			case FLOOR:
 				
-				boolean northWall = map.safeLocation(x,y + 1).isOpaque();
-				boolean eastWall = map.safeLocation(x + 1,y).isOpaque();
-				boolean neWall = map.safeLocation(x + 1,y + 1).isOpaque();
+				boolean northWall = map.safeLocation(x,y + 1).castsShadow();
+				boolean eastWall = map.safeLocation(x + 1,y).castsShadow();
+				boolean neWall = map.safeLocation(x + 1,y + 1).castsShadow();
 
 				if (northWall) {
 					tileName = eastWall ? "TOP_AND_SIDE_SHADOW_FLOOR_IMAGE" : neWall ? "TOP_SHADOW_FLOOR_IMAGE" : "ANGLE_TOP_SHADOW_FLOOR_IMAGE";
@@ -604,6 +617,18 @@ public class Location {
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
 		
+	}
+	
+	public boolean castsShadow() {
+		boolean result = isOpaque();
+		if (result && tileType == TileType.ISLAND) {
+			result = false;
+		}
+		return result;
+	}
+	
+	public String randomIslandTileName() {
+		return "rock";
 	}
 	
 	private void setItemInfos() {

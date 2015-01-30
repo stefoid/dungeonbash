@@ -79,6 +79,7 @@ public class Map implements IPresenterMap {
 					drawRoom(roomPoints[i]);
 				
 				setStartAndExitPoints();
+				setIslands();
 				
 				// Now make a preliminary pass to determine Tile types
 				for (int x=0; x<width; x++) {
@@ -209,6 +210,10 @@ public class Map implements IPresenterMap {
 		}
 		// tell the exit Location 
 		location(exitPoint).setAsExit();
+	}
+	
+	private void setIslands() {
+		// TODO
 	}
 	
 	public void drawRoom(DungeonPosition dungeonLocation) {
