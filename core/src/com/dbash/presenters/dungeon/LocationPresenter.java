@@ -20,6 +20,7 @@ public class LocationPresenter {
 	
 	public LocationInfo locationInfo;
 	private ImageView tile;
+	private ImageView islandImage;
 	public CreaturePresenter creaturePresenter;
 	
 	private Rect area;
@@ -66,7 +67,7 @@ public class LocationPresenter {
 			}
 			
 			// does this tile need to draw a creature or eye overlay?.
-			if (creaturePresenter != null || drawEye) {
+			if (creaturePresenter != null || drawEye || locationInfo.isIsland) {
 				drawOverlay = true;
 			}
 		} else if (locationInfo.isDiscovered) {
@@ -89,6 +90,10 @@ public class LocationPresenter {
 			eyeAnimation.draw(spriteBatch);
 		}
 		
+		if (locationInfo.isIsland) {
+			islandImage.draw(spriteBatch, alpha);
+		}
+		
 	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
@@ -102,7 +107,10 @@ public class LocationPresenter {
 				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
 				shadow = new ImageView(gui, locationInfo.tileName, area); 
 			} else if (locationInfo.isIsland) {
-				tileName = locationInfo.tileName;
+				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
+				Rect islandArea = new Rect(area, 1.25f);
+				islandArea.y = area.y;
+				islandImage = new ImageView(gui, locationInfo.tileName, islandArea); 
 			} else {
 				tileName = tileName.concat(locationInfo.tileName);
 			}
