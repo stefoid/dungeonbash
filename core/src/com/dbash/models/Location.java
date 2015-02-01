@@ -616,7 +616,6 @@ public class Location {
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
-		
 	}
 	
 	public boolean castsShadow() {
@@ -627,13 +626,13 @@ public class Location {
 		return result;
 	}
 	
-	final static String[] names = {
-			"rock","rock","rock","rock",
-			"obeliska",
-			"obeliskb",
-			"stalagmitea","stalagmitea",
-			"stalagmiteb","stalagmiteb"
-	};
+	final static String[] names = {"Rock"};
+//			"rocka","rockb","rockc","rockd",
+//			"obeliska",
+//			"obeliskb",
+//			"stalagmitea","stalagmitea",
+//			"stalagmiteb","stalagmiteb"
+//	};
 	
 	public String randomIslandTileName() {
 		return names[Randy.getRand(0,  names.length-1)];
