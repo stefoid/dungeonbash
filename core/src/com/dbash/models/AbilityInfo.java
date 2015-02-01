@@ -48,6 +48,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean isUsableByOwner;
 	public boolean canBeCarried;
 	public boolean isCarried;
+	public int damageType;
+	public int meleeDamage;
+	public int missileDamage;
 	
 	
 	// Sets the attributes accordingly.  Items may be unowned, if lying around the dungeon, so set owner to null in that case.
@@ -103,6 +106,16 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isCarried = true;
 			targetable = ability.isTargetable();
 			aimed = ability.isAimed();
+			
+			if (abilityType == AbilityType.WEAPON) {
+				meleeDamage = owner.calculateMeleeDamageForAbility(ability);
+				damageType = ability.getAbilityDamageType();
+			}
+			
+			if (abilityType == AbilityType.RANGED || abilityType == AbilityType.WAND) {
+				missileDamage = owner.calculateMissileDamage(ability);
+				damageType = ability.getAbilityDamageType();
+			}
 			
 			if (owner instanceof Character) {
 				Character c = (Character) owner;

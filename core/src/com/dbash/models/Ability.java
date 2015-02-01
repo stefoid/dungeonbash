@@ -574,6 +574,17 @@ public class Ability
     	return 0;
     }
     
+    public int getAbilityDamageType() {
+    	int i = 0;
+    	for (int strategy : ability.executeStrategy) {
+    		if (strategy == ATTACKER) {
+    			return ability.executeParam1[i];
+    		}
+    		i++;
+    	}
+    	return 0;
+    }
+    
 	// experience value calculator
     public static int calcValue(int abilityId)
     {
@@ -631,7 +642,7 @@ public class Ability
 	// instance data
 	public Data 			ability;  // points to the AbilityData entry which describes how this ability works
 	private int				tickCounter;	   // if the ability has limited duration, this variable counts down with every tick until it must destroy itself.
-	private Creature		owned;			   // is this object owned or independent?
+	public Creature			owned;			   // is this object owned or independent?
 	private int				numberOfCommands;  // the number of commands in the command array that this ability responds to
 	
 	// invoking Strategy

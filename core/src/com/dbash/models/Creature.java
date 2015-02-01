@@ -1281,6 +1281,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			}
 		}
 		
+		return calculateMeleeDamageForAbility(theAbility);
+	}
+	
+	public int calculateMeleeDamageForAbility(Ability theAbility) {
 		int damage = 0;
 		if (theAbility != null) {
 			damage = theAbility.getAbilityDamage();

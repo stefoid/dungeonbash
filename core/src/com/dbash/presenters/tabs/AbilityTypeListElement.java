@@ -79,9 +79,30 @@ public abstract class AbilityTypeListElement implements IListElement {
 		if (abilityInfo.color != null) {
 			color = abilityInfo.color;
 		}
-
+		
+		String test = abilityInfo.name;
+		switch (abilityInfo.damageType) {
+			case 1:
+				test += " - H: ";
+				break;
+			case 2:
+				test += " - S: ";
+				break;
+			case 3:
+				test += " - E: ";
+				break;
+			case 4:
+				test += " - C: ";
+				break;
+		}
+		if (abilityInfo.meleeDamage > 0) {
+			test += abilityInfo.meleeDamage;
+		} else if (abilityInfo.missileDamage > 0) {
+			test += abilityInfo.missileDamage;
+		}
+		
 		//String rightPaddedString = new IListElement.PaddedString(abilityInfo.name).string;
-		abilityName = new TextView(gui, null, abilityInfo.name, textArea, hAlign, vAlign, color);
+		abilityName = new TextView(gui, null, test, textArea, hAlign, vAlign, color);
 		
 		// work out icon size
 		iconArea = new Rect(0, 0, .55f*area.height, .55f*area.height);
