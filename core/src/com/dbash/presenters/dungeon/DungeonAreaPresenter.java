@@ -316,7 +316,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		}
 	}
 
-	protected String getDamageName(int damageType) {
+	public static String getDamageName(int damageType) {
 		String name;
 		switch (damageType) {
 			case AbilityCommand.CHEMICAL_ATTACK:

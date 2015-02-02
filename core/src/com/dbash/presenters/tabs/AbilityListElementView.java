@@ -2,12 +2,19 @@ package com.dbash.presenters.tabs;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.AbilityCommand;
 import com.dbash.models.AbilityInfo;
 import com.dbash.platform.ImageView;
+import com.dbash.platform.TextImageView;
+import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.util.Rect;
+import com.dbash.util.Rect.HAlignment;
+import com.dbash.util.Rect.VAlignment;
 
 
 public class AbilityListElementView extends AbilityTypeListElement {
@@ -18,6 +25,8 @@ public class AbilityListElementView extends AbilityTypeListElement {
 	protected ImageView cantUseBackground;
 	protected ImageView targetIcon;
 	protected ImageView reticuleIcon;
+	protected ImageView damageIcon;
+	protected TextView damageNumber;
 	
 	public AbilityListElementView(UIDepend gui, AbilityInfo abilityInfo, Rect area) {
 		super(gui, abilityInfo, area);
@@ -28,8 +37,12 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		selectedBackground = new ImageView(gui, "ABILITY_SELECTED_IMAGE", area);
 		cantUseBackground = new ImageView(gui, "ABILITY_DISABLED_IMAGE", area);
 		
+		
+		Rect damageArea = new Rect(iconArea);
+		damageArea.x = area.x + iconArea.width * 2f;
+		
 		Rect targetArea = new Rect(iconArea);
-		targetArea.x = area.x + iconArea.width * 2.5f;
+		targetArea.x = damageArea.x + damageArea.width * 1.5f;
 		
 		if (abilityInfo.targetable) {
 			targetIcon = new ImageView(gui, "TARGET_IMAGE", targetArea);
@@ -47,6 +60,33 @@ public class AbilityListElementView extends AbilityTypeListElement {
 			reticuleIcon = new ImageView(gui, "BURST_ICON", reitculeArea);
 		} else {
 			reticuleIcon = null;
+		}
+		
+		if (abilityInfo.damageType > 0 && abilityInfo.damageType < 5) {
+			int damageAmount = abilityInfo.meleeDamage;
+			if (abilityInfo.missileDamage > 0) {
+				damageAmount = abilityInfo.missileDamage;
+			}
+			
+			Rect numRect = new Rect(damageArea, HAlignment.CENTER, VAlignment.CENTER, 1.3f*damageArea.width, 0.8f*damageArea.height);
+			Color col = Color.RED;
+			switch (abilityInfo.damageType) {
+				case AbilityCommand.CHEMICAL_ATTACK:
+					col = Color.GREEN;
+					break;
+				case AbilityCommand.ENERGY_ATTACK:
+					col = Color.YELLOW;
+					break;
+				case AbilityCommand.SHARP_ATTACK: 
+					col = Color.CYAN;
+					break;
+				default:
+					col = Color.RED;
+					break;
+			}
+			damageNumber = new TextView(gui, null,""+damageAmount, numRect, HAlignment.CENTER, VAlignment.CENTER, col);
+			//damageNumber = new TextImageView(gui, gui.numberFont, String.valueOf(damageAmount), damageNumberArea);
+			//damageIcon = new ImageView(gui, DungeonAreaPresenter.getDamageName(abilityInfo.damageType), damageArea);
 		}
 	}
 	
@@ -77,6 +117,11 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		
 		if (reticuleIcon != null) {
 			reticuleIcon.draw(spriteBatch, x, y);
+		}
+		
+		if (damageNumber != null) {
+			//damageIcon.draw(spriteBatch, x, y);
+			damageNumber.draw(spriteBatch, x, y);
 		}
 		
 		// magic cost

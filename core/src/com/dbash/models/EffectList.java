@@ -46,17 +46,6 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		if (owner.getNameUnderscore().equals("nobody") == false) {
 
 			Character theCharacter = (Character) owner;
-			// We add character stats
-			int wd = owner.calculateMeleeDamage();
-			String[] twd = {"MELEE DAMAGE", " : "};
-			AbilityInfo dam = new AbilityInfo(twd, wd, Color.BLACK);
-			add(dam);
-			
-			
-			int md = owner.calculateMissileDamage(theCharacter.currentSelectedAbility);
-			String[] tmd = {"RANGED DAMAGE", " : "};
-			AbilityInfo rdam = new AbilityInfo(tmd, md, Color.BLACK);
-			add(rdam);
 			
 			int as = owner.calculateAttackSkill();
 			String[] tas = {"ATTACK", " : ", getAttackDesc(as)};
@@ -115,12 +104,34 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			AbilityInfo cp = new AbilityInfo(tcpv, cpv , Color.GREEN);
 			add(cp);
 			
+			// We add character stats
+			int wd = owner.calculateMeleeDamage();
+			String[] twd = {"MELEE DAMAGE", " : "};
+			AbilityInfo dam = new AbilityInfo(twd, wd, Color.BLACK);
+			add(dam);
+			
+			
+			int md = owner.calculateMissileDamage(theCharacter.currentSelectedAbility);
+			String[] tmd = {"RANGED DAMAGE", " : "};
+			AbilityInfo rdam = new AbilityInfo(tmd, md, Color.BLACK);
+			add(rdam);
+			
+			String sizeDesc = "- no cover bonus";
 			if (owner.creatureSize == CreatureSize.SMALL) {
-				add(new AbilityInfo("Size: small (great cover bonus)", Color.BLACK));
+				String size = "Small";
+				if (!owner.canFly) {
+					sizeDesc = "- great cover bonus";
+				}
+				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
 			} else if (owner.creatureSize == CreatureSize.MEDIUM) {
-				add(new AbilityInfo("Size: medium (cover bonus)", Color.BLACK));
+				String size = "Medium";
+				if (!owner.canFly) {
+					sizeDesc = "- cover bonus";
+				}
+				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
 			} else if (owner.creatureSize == CreatureSize.HUGE) {
-				add(new AbilityInfo("Size: huge (no cover bonus)", Color.BLACK));
+				String size = "Huge";
+				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
 			}
 			
 			if (owner.hasHead() == false) {

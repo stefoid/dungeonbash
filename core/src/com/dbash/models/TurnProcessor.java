@@ -463,8 +463,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			Creature c = theChars.get(0);
 			c.addAbility(new Ability(Ability.getIdForName("wand of acid fountain"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("wand of blesing"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("wand of poison cloud"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
 		
 		}
