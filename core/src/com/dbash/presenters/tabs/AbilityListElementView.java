@@ -68,7 +68,7 @@ public class AbilityListElementView extends AbilityTypeListElement {
 				damageAmount = abilityInfo.missileDamage;
 			}
 			
-			Rect numRect = new Rect(damageArea, HAlignment.CENTER, VAlignment.CENTER, 1.3f*damageArea.width, 0.8f*damageArea.height);
+			Rect numRect = new Rect(damageArea, HAlignment.CENTER, VAlignment.TOP, 1.3f*damageArea.width, 0.67f*damageArea.height);
 			Color col = Color.RED;
 			switch (abilityInfo.damageType) {
 				case AbilityCommand.CHEMICAL_ATTACK:

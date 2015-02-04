@@ -118,19 +118,19 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			
 			String sizeDesc = "- no cover bonus";
 			if (owner.creatureSize == CreatureSize.SMALL) {
-				String size = "Small";
+				String size = "size Small";
 				if (!owner.canFly) {
 					sizeDesc = "- great cover bonus";
 				}
 				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
 			} else if (owner.creatureSize == CreatureSize.MEDIUM) {
-				String size = "Medium";
+				String size = "size Medium";
 				if (!owner.canFly) {
 					sizeDesc = "- cover bonus";
 				}
 				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
 			} else if (owner.creatureSize == CreatureSize.HUGE) {
-				String size = "Huge";
+				String size = "size Huge";
 				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
 			}
 			

@@ -27,6 +27,7 @@ public class Map implements IPresenterMap {
 	public Location[][] location;
 	public int width;
 	public int height;
+	public int level;
 	public DungeonPosition startPoint;
 	public DungeonPosition exitPoint;
 	public DungeonPosition[] roomPoints;
@@ -51,6 +52,7 @@ public class Map implements IPresenterMap {
 				locationInfoListeners = new Vector<UILocationInfoListener>();
 				width = 8 + level + border*2 - 2;
 				height = width;
+				this.level = level;
 				location = new Location[width][height];
 				// initialize array of locations - by default will be WALLS.
 				for (int x=0; x<width; x++) {
@@ -239,7 +241,7 @@ public class Map implements IPresenterMap {
 	}
 	
 	private void setIslands() {
-		int numIslands = Randy.getRand(0, height/7);
+		int numIslands = level/4 + Randy.getRand(0, 2);
 		for (int i=0;i<numIslands; i++) {
 			Location island = getIslandLocation();
 			if (island != null) {
