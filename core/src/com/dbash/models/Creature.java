@@ -3,6 +3,7 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -214,28 +215,34 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		out.writeObject(mapPosition);
 
 		// 5.3] Each Creature saves its list of Abilities
-		unsetAbilities(true);
+		ArrayList<Ability> unsetAbilities = unsetAbilities(true);
 		out.writeInt(abilities.size());
 		for (Ability ability : abilities) {
 			ability.persist(out);
 		}	
+		
+		// reset the abilities that were unset during the save, in case we resume without quitting.
+		for (Ability ability : unsetAbilities) {
+			AbilityCommand ac = new AbilityCommand(AbilityCommand.SET, 0, 1, 1, 1);
+			ability.executeCommandValue(ac, this);
+		}
+
 	}
 	
-	private void unsetAbilities(boolean leaveSet)
-	{
+	private ArrayList<Ability> unsetAbilities(boolean leaveSet) {
+		ArrayList<Ability> unsetAbilities  = new ArrayList<Ability>();
 		// go through abilities and unset them all to get rid of added abilities
 		// so they wont be added twice on reload
-		for (int i = abilities.size() - 1; i >= 0; i--)
-		{
+		for (int i = abilities.size() - 1; i >= 0; i--) {
 			Ability a = (Ability) abilities.get(i);
-			if (a.set)
-			{
+			if (a.set) {
+				unsetAbilities.add(a);
 				a.unset(this); // will destroy any ability associated with this thing
 				a.set = leaveSet; // reset just the setting indicator so it will
 									// be saved and restored properly.
 			}
 		}
-
+		return unsetAbilities;
 	}
 	
 	// this creates a new creature from the input stream. It assumes that the

@@ -37,12 +37,8 @@ public class AbilityListElementView extends AbilityTypeListElement {
 		selectedBackground = new ImageView(gui, "ABILITY_SELECTED_IMAGE", area);
 		cantUseBackground = new ImageView(gui, "ABILITY_DISABLED_IMAGE", area);
 		
-		
-		Rect damageArea = new Rect(iconArea);
-		damageArea.x = area.x + iconArea.width * 2f;
-		
-		Rect targetArea = new Rect(iconArea);
-		targetArea.x = damageArea.x + damageArea.width * 1.5f;
+		Rect damageArea = getIconArea(0);
+		Rect targetArea = getIconArea(1);
 		
 		if (abilityInfo.targetable) {
 			targetIcon = new ImageView(gui, "TARGET_IMAGE", targetArea);
@@ -50,14 +46,12 @@ public class AbilityListElementView extends AbilityTypeListElement {
 			targetIcon = null;
 		}
 		
+		Rect reticuleArea = getIconArea(2);
+		
 		if (abilityInfo.aimed && abilityInfo.targetable) {
-			Rect reitculeArea = new Rect(iconArea);
-			reitculeArea.x = targetArea.x + targetArea.width * 1.5f;
-			reticuleIcon = new ImageView(gui, "RETICULE_IMAGE", reitculeArea);
+			reticuleIcon = new ImageView(gui, "RETICULE_IMAGE", reticuleArea);
 		} else if (abilityInfo.burstEffect) {
-			Rect reitculeArea = new Rect(iconArea);
-			reitculeArea.x = targetArea.x + targetArea.width * 1.5f;
-			reticuleIcon = new ImageView(gui, "BURST_ICON", reitculeArea);
+			reticuleIcon = new ImageView(gui, "BURST_ICON", reticuleArea);
 		} else {
 			reticuleIcon = null;
 		}

@@ -58,7 +58,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			add(defence);
 			
 			int mds = owner.calculateDefenceAgainstMissilesSkill();
-			String[] mtds = {"MISSILE DEFENCE", " : ", getDefenceDesc(ds)};
+			String[] mtds = {"MISSILE DEF", " : ", getDefenceDesc(ds)};
 			AbilityInfo mdefence = new AbilityInfo(mtds, mds, Color.WHITE);
 			add(mdefence);
 			

@@ -46,12 +46,13 @@ public abstract class AbilityTypeListElement implements IListElement {
 	protected Rect iconArea;
 	
 	// spacing and position
+	final static float maxIcons = 4;
 	final static float iconSpacer = 1.05f;
 	final static float leftSide = 0.05f;
 	final static float fromBottom = 0.05f;
 	final static float effectSpacer = 1.05f;
 	final static float textBottom = 0.25f;
-	final static float rightSide = 1.9f;
+	final static float rightSide = 2.3f;
 	final static float textSpacer = .9f;
 	final static float textHeightFat = 1.1f;
 	
@@ -135,6 +136,17 @@ public abstract class AbilityTypeListElement implements IListElement {
 			magicIcon = null;
 			magicCost = null;
 		}
+	}
+	
+	protected Rect getIconArea(int i) {
+		Rect thisArea = new Rect(0, 0, .55f*area.height, .55f*area.height);
+		thisArea.width = area.width/8;
+		if (thisArea.width < thisArea.height){
+			thisArea.height = thisArea.width;
+		}
+		thisArea.x = thisArea.height*(i+1.5f)*1.2f;
+		thisArea.width = thisArea.height;
+		return thisArea;
 	}
 	
 	private void setImageType(Rect iconArea)
