@@ -619,16 +619,16 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void LeaderModeToggleSelected() {
 		if (currentLeader == null) {
-			currentLeader = currentCharacter;
-			leaderStatus = LeaderStatus.HAVE_LEADER;
-			if (LOG)
-				L.log("current leader is " + currentLeader.creature.name);
+			if (currentCharacter.isPlayerCharacter()) {
+				currentLeader = currentCharacter;
+				leaderStatus = LeaderStatus.HAVE_LEADER;
+				if (LOG) L.log("current leader is " + currentLeader.creature.name);
+			}
 		} else {
 			currentLeader.leaderModeCleared();
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
-			if (LOG)
-				L.log("no current leader");
+			if (LOG) L.log("no current leader");
 		}
 
 		leaderStatusListeners.alertListeners();
