@@ -52,6 +52,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected ShadowMap currentShadowMap;
 	protected ShadowMap previousShadowMap;
 	LocationPresenter[] creatures;
+	LocationPresenter[] islands;
 	float[] creatureAlpha;
 	protected Tween currentShadowMapTween;
 	
@@ -66,6 +67,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
 		creatures = new LocationPresenter[200];
+		islands = new LocationPresenter[200];
 		creatureAlpha = new float[200];
 		model.presenterDungeon.onMapEvent(this);
 	}
@@ -79,6 +81,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		}
 		
 		int creatureCount = 0;
+		int islandCount = 0;
 		float curAlpha = 1.0f;
 		float fadeOutAlpha = 1 - curAlpha;
 		
@@ -94,6 +97,11 @@ public class MapPresenter implements IMapPresentationEventListener{
 				boolean drawPrevCreature = loc.drawTile(spriteBatch, previousShadowMap, 1f);
 				boolean drawOnTopOfTile = loc.drawTile(spriteBatch, currentShadowMap, curAlpha);
 				creatures[creatureCount] = loc;
+				
+				if (loc.isIsland()) {
+					islands[islandCount] = loc;
+					islandCount++;
+				}
 				
 				// determine if we need to draw a creature and what alpha to draw it
 				if (drawPrevCreature && drawOnTopOfTile) {
@@ -113,6 +121,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		// draw in reverse order so the bottom creatures appear on top
 		for (int i=creatureCount-1; i>=0; i--) {
 			creatures[i].drawOverlayOnTile(spriteBatch, currentShadowMap, creatureAlpha[i]);
+		}
+		
+		for (int i=islandCount-1; i>=0; i--) {
+			islands[i].drawIsland(spriteBatch, currentShadowMap, curAlpha);
 		}
 	}
 	

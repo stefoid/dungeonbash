@@ -42,17 +42,17 @@ public class LocationPresenter {
 		this.items = new Vector<ImageView>();
 	}
 	
+	public boolean isIsland() {
+		return locationInfo.isIsland;
+	}
+	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
 	public boolean drawTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
 		boolean drawOverlay = false;
 		float tint = locationInfo.tint;
 		
 		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
-			tile.drawTinted(spriteBatch, tint, alpha);
-			
-			if (roughTerrain != null) {
-				roughTerrain.drawTinted(spriteBatch, tint, alpha);
-			}
+			drawTile(spriteBatch, tint, alpha);
 			
 			if (shadow != null) {
 				shadow.drawTinted(spriteBatch, tint, alpha);
@@ -67,17 +67,23 @@ public class LocationPresenter {
 			}
 			
 			// does this tile need to draw a creature or eye overlay?.
-			if (creaturePresenter != null || drawEye || locationInfo.isIsland) {
+			if (creaturePresenter != null || drawEye) {
 				drawOverlay = true;
 			}
 		} else if (locationInfo.isDiscovered) {
-			tile.drawTinted(spriteBatch, Location.minTint, alpha);
-			if (roughTerrain != null) {
-				roughTerrain.drawTinted(spriteBatch, tint, alpha);
-			}
+			drawTile(spriteBatch, Location.minTint, alpha);
 		} 
 
 		return drawOverlay;
+	}
+	
+	
+	private void drawTile(SpriteBatch spriteBatch, float tint, float alpha) {
+		tile.drawTinted(spriteBatch, tint, alpha);
+		if (roughTerrain != null) {
+			roughTerrain.drawTinted(spriteBatch, tint, alpha);
+		}
+
 	}
 	
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
@@ -85,15 +91,16 @@ public class LocationPresenter {
 		if (creaturePresenter != null) {
 			creaturePresenter.draw(spriteBatch, alpha);
 		}
-
 		if (drawEye) {
 			eyeAnimation.draw(spriteBatch);
 		}
-		
-		if (locationInfo.isIsland) {
-			islandImage.draw(spriteBatch, alpha);
+	}
+	
+	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
+		islandImage.drawTinted(spriteBatch, locationInfo.tint, alpha);
+		if (drawEye) {
+			eyeAnimation.draw(spriteBatch);
 		}
-		
 	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
