@@ -83,7 +83,6 @@ public class LocationPresenter {
 		if (roughTerrain != null) {
 			roughTerrain.drawTinted(spriteBatch, tint, alpha);
 		}
-
 	}
 	
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
@@ -97,9 +96,12 @@ public class LocationPresenter {
 	}
 	
 	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
-		islandImage.drawTinted(spriteBatch, locationInfo.tint, alpha);
-		if (drawEye) {
-			eyeAnimation.draw(spriteBatch);
+		if (islandImage != null) {
+			if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
+				islandImage.drawTinted(spriteBatch, locationInfo.tint, alpha);
+			} else if (locationInfo.isDiscovered) {
+				islandImage.drawTinted(spriteBatch, Location.minTint, alpha);
+			} 
 		}
 	}
 	

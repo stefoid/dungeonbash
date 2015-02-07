@@ -174,7 +174,7 @@ public class Map implements IPresenterMap {
 		return getRandomPoint(isFloorRequired, border);
 	}
 	
-	public Location getIslandLocation() {
+	public Location getWideSpaceLocation() {
 		try {
 			 for (int i=0;i<200;i++) {
 				 DungeonPosition island = getRandomPoint(true, border+1);
@@ -182,7 +182,7 @@ public class Map implements IPresenterMap {
 				 for (int x=-1; x<=1 && good; x++) {
 					 for (int y=-1; y<=1 && good; y++) {
 						 Location loc = location[island.x+x][island.y+y];
-						 if (loc.isOpaque()) {
+						 if (loc.isTotallyEmpty()) {
 							 good = false;
 						 }
 					 }
@@ -243,7 +243,7 @@ public class Map implements IPresenterMap {
 	private void setIslands() {
 		int numIslands = level/4 + Randy.getRand(0, 2);
 		for (int i=0;i<numIslands; i++) {
-			Location island = getIslandLocation();
+			Location island = getWideSpaceLocation();
 			if (island != null) {
 				island.setAsIsland();
 			}
@@ -319,13 +319,12 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	private void drawSquigglyRoughTerrainLine(DungeonPosition pos, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
+	private void drawSquigglyRoughTerrainLine(DungeonPosition pos, RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int x = pos.x;
 		int y = pos.y;
 		int dir = Randy.getRand(0, 4);
 		int nx;
 		int ny;
-		RoughTerrainType roughTerrainType = RoughTerrainType.getRandomType();
 
 		for (int i = 0; i < (Randy.getRand(1, height)); i++) {
 			nx = x;
@@ -505,9 +504,18 @@ public class Map implements IPresenterMap {
 		int numberRoughLines = Randy.getRand(width/5,  width/3);
 		for (int i=0; i < numberRoughLines; i++) {
 			try {
-				drawSquigglyRoughTerrainLine(getRandomPoint(true), dungeonEvents, dungeonQuery);
+				drawSquigglyRoughTerrainLine(getRandomPoint(true), RoughTerrainType.getRandomType(), dungeonEvents, dungeonQuery);
 			} catch (MapException e) {
 
+			}
+		}
+		
+		// now add a few more rock terrain for stealth in wide open spaces.
+		int numberRockTerrain = level - 1;
+		for (int i=0; i < numberRockTerrain; i++) {
+			Location l = getWideSpaceLocation();
+			if (l != null) {
+				drawSquigglyRoughTerrainLine(l.position, RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
 			}
 		}
 	}
