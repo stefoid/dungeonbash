@@ -19,7 +19,7 @@ import com.dbash.util.Randy;
 // Map doesnt know about Monsters, Characters etc...  To move creatures and items around in it, interact with the Locations
 // directly.  Those changes to Locations will emit observable Presentation events
 public class Map implements IPresenterMap {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static int RANGE = 5;
 	public static int LOS = -1;
@@ -159,7 +159,7 @@ public class Map implements IPresenterMap {
 	// locationPresenter that it belongs to.
 	public void alertToVisualChangeAtLocation(Location location)
 	{
-		if (LOG) L.log("");
+		//if (LOG) L.log("");
 		for (UILocationInfoListener listeners : locationInfoListeners) {
 			listeners.locationInfoChanged(location);
 		}
@@ -176,13 +176,13 @@ public class Map implements IPresenterMap {
 	
 	public Location getWideSpaceLocation() {
 		try {
-			 for (int i=0;i<200;i++) {
+			 for (int i=0;i<500;i++) {
 				 DungeonPosition island = getRandomPoint(true, border+1);
 				 boolean good = true;
 				 for (int x=-1; x<=1 && good; x++) {
 					 for (int y=-1; y<=1 && good; y++) {
 						 Location loc = location[island.x+x][island.y+y];
-						 if (loc.isTotallyEmpty()) {
+						 if (loc.isTotallyEmpty() == false) {
 							 good = false;
 						 }
 					 }
@@ -515,6 +515,7 @@ public class Map implements IPresenterMap {
 		for (int i=0; i < numberRockTerrain; i++) {
 			Location l = getWideSpaceLocation();
 			if (l != null) {
+				if (LOG) L.log("PLACING EXTRA ROCKS: %s", i);
 				drawSquigglyRoughTerrainLine(l.position, RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
 			}
 		}

@@ -626,7 +626,7 @@ public class Location {
 		return result;
 	}
 	
-	final static String[] names = {"Rock"};
+	final static String[] names = {"rock"};
 //			"rocka","rockb","rockc","rockd",
 //			"obeliska",
 //			"obeliskb",
