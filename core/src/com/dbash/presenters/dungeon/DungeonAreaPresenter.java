@@ -177,7 +177,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		// unless knockback or shudder. (doesnt work well for explosions where multiple characters may be knocked back
 		// simultaneously.)
 		// this is the only instance of the focus changing without an explicit command from the turn processor.
-		if (currentFocussedCharacter == actingCreature && shouldScrollWithCharacter) {
+		if (currentFocussedCharacter == actingCreature){// && shouldScrollWithCharacter) {
 			mapPresenter.animatedFocusChange(sequenceNumber, releventCharacter.shadowMap, releventCharacter.getPosition(), moveTime*.85f, true, null);
 		}
 	}

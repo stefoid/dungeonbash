@@ -457,12 +457,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TESTCHARS) {
 			theChars.clear();
 			p.level = 20;
-			theChars.add(new Character(Creature.getIdForName("stoneshell"), p, 1, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("ironhide"), p, 2, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("plate beatle"), p, 3, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("wizard"), p, 1, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("orc"), p, 2, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName("orc"), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
-			c.addAbility(new Ability(Ability.getIdForName("amulet of deflection"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("amulet of strength"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
 		

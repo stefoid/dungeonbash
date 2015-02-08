@@ -262,7 +262,7 @@
 +"green dragon,j,10,1,0,0,0,35,10,4,20,15,15,1,7,0,113,91,198,-3,36,33,*"// green dragon: bite , resist chem 50 , acid blast , RANDOM MAGIC , flight , resist knockback , 
 +"vampire bat,r,13,1,0,0,1,6,6,6,9,9,7,6,12,1,7,18,36,34,*"// vampire bat: dash , mesmeric bite , flight , charge , 
 +"vampire,a,13,1,1,1,0,20,20,5,18,14,9,1,1,0,18,-3,-2,112,36,7,*"// vampire: mesmeric bite , RANDOM MAGIC , RANDOM ITEM , regeneration , flight , dash , 
-+"phoenix,a,7,1,0,0,0,8,4,5,8,10,6,4,7,1,7,21,36,59,195,*"// phoenix: dash , flame burst , flight , nibble , resist energy 90 , 
++"phoenix,a,7,1,0,0,0,8,4,5,8,8,6,4,7,1,7,21,36,59,195,*"// phoenix: dash , flame burst , flight , nibble , resist energy 90 , 
 +"blodger,a,7,1,0,0,1,12,1,12,30,4,10,2,2,0,34,31,36,*"// blodger: charge , headbutt , flight , 
 +"disruptor,a,7,1,0,0,0,12,1,8,4,10,6,1,1,0,20,36,*"// disruptor: burst knockback , flight , 
 +"gorgon,a,7,1,1,0,0,22,16,3,20,17,15,10,12,0,167,177,-3,*"// gorgon: poison bite , ranged stun , RANDOM MAGIC , 

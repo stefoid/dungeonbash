@@ -179,7 +179,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			case 1:
 				Monster mon1 = new Monster(Creature.getIdForName("gnome"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = mon1;
-				//minion.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
+				//mon1.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(mon1);
 				break;
 			case 2:
