@@ -26,7 +26,7 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static enum CreatureSize {
 		SMALL,
@@ -312,20 +312,16 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		abilities = new LinkedList<Ability>();
 	}
 
-	public boolean isReadyForTurn()
-	{
+	public boolean isReadyForTurn() {
 		int speedCheck = calculateSpeed() + missedTurns; 
 
 		// every time this creature misses a turn, it is more likely to get a turn next time.
 		// this is to help prevent randomness depriving a creature of a turn for an undesirably long time
 	
-        if (Randy.getRand(1, MAX_SPEED) <= speedCheck)
-        {
+        if (Randy.getRand(1, MAX_SPEED) <= speedCheck || missedTurns >= 20) {
         	missedTurns = 0;
         	return true;
-        }
-        else
-        {
+        } else {
         	missedTurns += 2;
         	return false;
         }
@@ -723,9 +719,12 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			defenceSkill = calculateDefenceSkill();
 		}
 		
-		if (LOG) L.log("defenceSkill: %s", defenceSkill);
+		int rndAttack = Randy.getRand(1, attack.skill);
+		int rndDefence = Randy.getRand(1, defenceSkill);
 		
-		if (Randy.getRand(1, attack.skill) > defenceSkill) // attack hits
+		if (LOG) L.log("ATTACK!! rndAttack:%s/%s rndDefence: %s/%s", rndAttack, attack.skill, rndDefence, defenceSkill);
+		
+		if (rndAttack > rndDefence) // attack hits
 		{
 			int newDamage = attack.damage;
 			int abilityCommand = AbilityCommand.NO_PHYSICAL_ATTACK;
@@ -751,7 +750,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				if (LOG) L.log("before damage reduce newDamage: %s", newDamage);
 				if (attack.ability != null && attack.ability.isBurstEffect()) {
 					newDamage = reduceDamage(AbilityCommand.RESIST_BURST, newDamage);
-					
 					if (LOG) L.log("burst reduced newDamage: %s", newDamage);
 				}
 				
