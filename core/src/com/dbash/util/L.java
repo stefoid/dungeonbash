@@ -2,11 +2,11 @@ package com.dbash.util;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
-	public static boolean TESTCHARS = true;
+	public static boolean TESTCHARS = false;
 	public static boolean NO_SAVE = false;
-	public static int LEVEL = 3;
+	public static int LEVEL = 1;
 	
 	public static final int STACK_LEVEL = 3;
 	public static void log(String msg, Object... args) {

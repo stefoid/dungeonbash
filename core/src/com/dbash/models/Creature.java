@@ -682,18 +682,11 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		if (getCreature().head == 0)
 			percentage += 15;
 
-		int xp = ((exp * percentage) / 100);
-		experience += xp;
-		if (this instanceof Character) {
-			turnProcessor.gameStats.xpGiven(xp);
-		}
-		
-		expRoot = (int)Math.sqrt(experience);// pre-calculate the squre root
-												// of the experience which is
-												// used in many places
+		experience += exp;
+		int xp = ((experience * percentage) / 100);
+		expRoot = (int)Math.sqrt(xp);// pre-calculate the squre root of the experience which is used in many places
 
-		// we need to modify the creatures health and maxheath based on initial
-		// experience
+		// we need to modify the creatures health and maxheath based on initial experience
 		if (initialExp) {
 			health = calculateMaxHealth();
 			magic = calculateMaxMagic();
@@ -762,10 +755,10 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				newDamage = 0;
 			}
 
-			if (newDamage > 0) {
-				// give attacker the experience for causing damage
-				attacker.addExperience(getExpValue() / 50 + 1, false);
-			}
+//			if (newDamage > 0) {
+//				// give attacker the experience for causing damage
+//				attacker.addExperience(getExpValue() / 50 + 1, false);
+//			}
 			
 			if (newDamage > 99)
 				newDamage = 99;
@@ -780,7 +773,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 				if (attacker.giveAbility(this, attack.abilityToAdd, this.mapPosition, 0, attacker)) {
 					// hitTime = 400;
 					// give attacker experience for inflicting ability
-					attacker.addExperience(getExpValue() / 30 + 1, false); 
+					//attacker.addExperience(getExpValue() / 30 + 1, false); 
 				}
 			}
 
@@ -788,7 +781,7 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 			
 			if (health < 1) {
 				// give killer the experience for killing you
-				attacker.addExperience(getExpValue(), false);
+				turnProcessor.addExperience(getExpValue());
 				death();
 				return 0;
 			}

@@ -39,6 +39,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean soloStatus;
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
+	public static final int INITIAL_EXP = 500;
 	public GameStats gameStats;
 
 	public Character savedLeader;
@@ -92,6 +93,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (level == 1) {
 			allCharacters = new Vector<Character>();
 			allCharacters.addAll(createRandomCharacters());
+			addInitialExperience();
 			charactersFallingIn = new Vector<Character>();
 			charactersFallingIn.addAll(allCharacters);
 		} else {
@@ -102,6 +104,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		allCreatures = new AllCreatures();
 		allCreatures.addAll(charactersFallingIn);
 		allCreatures.addAll(dungeonQuery.getAllMonsters());
+		addExperience(level * 500);
 	}
 
 	public void resume() {
@@ -424,7 +427,6 @@ public class TurnProcessor implements IPresenterTurnState {
 			Character c = Character.getNewCharacter(p, 1, dungeonEvents,
 					dungeonQuery, this);
 			if (c.isHumanid() && noDuplicate(theChars, c)) {
-				c.addExperience(1000, true);
 				theChars.add(c);
 				foundChar = true;
 			}
@@ -436,7 +438,6 @@ public class TurnProcessor implements IPresenterTurnState {
 			Character c = Character.getNewCharacter(p, 2, dungeonEvents,
 					dungeonQuery, this);
 			if (c.hasHands() == false && noDuplicate(theChars, c)) {
-				c.addExperience(1000, true);
 				theChars.add(c);
 				foundChar = true;
 			}
@@ -448,7 +449,6 @@ public class TurnProcessor implements IPresenterTurnState {
 			Character c = Character.getNewCharacter(p, 3, dungeonEvents,
 					dungeonQuery, this);
 			if (noDuplicate(theChars, c)) {
-				c.addExperience(1000, true);
 				theChars.add(c);
 				foundChar = true;
 			}
@@ -521,7 +521,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		
 		currentCharacter.defending();
 	}
-
+	
 	@Override
 	public void stairDescendSelected() {
 		if (acceptInput == false || currentCharacter == nobody) { // in case pounding n th descent key cheap hack
@@ -559,6 +559,20 @@ public class TurnProcessor implements IPresenterTurnState {
 		characterEndsTurn(currentCharacter);
 	}
 
+	public void addExperience(int exp) {
+		for (Character character : allCharacters) {
+			character.addExperience(exp, false);
+		}
+		gameStats.xpGiven(exp);
+	}
+	
+	public void addInitialExperience() {
+		for (Character character : allCharacters) {
+			character.addExperience(INITIAL_EXP, true);
+		}
+		gameStats.xpGiven(INITIAL_EXP);
+	}
+	
 	/**
 	 * Clear all the characters solo status, then set the solo status for
 	 * TPaccordingly. When a character is about to have a turn, if
