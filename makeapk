@@ -1,0 +1,5 @@
+export ANDROID_HOME=/Users/stef/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/bin
+export PATH=$PATH:$ANDROID_HOME/build-tools/21/1/2
+./gradlew android:assembleRelease
+cp android/build/outputs/apk/android-release.apk '/Users/stef/Desktop/dbashout/android builds/dbash-android.apk'
