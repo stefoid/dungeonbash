@@ -52,7 +52,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 	final static float fromBottom = 0.05f;
 	final static float effectSpacer = 1.05f;
 	final static float textBottom = 0.25f;
-	final static float rightSide = 2.3f;
+	final static float rightSide = 1.8f;
 	final static float textSpacer = .9f;
 	final static float textHeightFat = 1.1f;
 	
@@ -116,7 +116,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 			
 			textArea.x = iconArea.x + iconArea.width * textSpacer;
 			textArea.y = iconArea.y + iconArea.height * textBottom;
-			textArea.width = area.x+area.width - textArea.x - area.width * leftSide;
+			textArea.width = area.x+area.width - textArea.x;
 			textArea.height *= textHeightFat;
 			clockText = new TextView(gui, null, "" + clockNumber, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
 		}
@@ -129,7 +129,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 			
 			textArea.x = iconArea.x + iconArea.width * textSpacer;
 			textArea.y = iconArea.y + iconArea.height * textBottom;
-			textArea.width = area.x+area.width - textArea.x - area.width * leftSide;
+			textArea.width = area.x+area.width - textArea.x ;
 			textArea.height *= textHeightFat;
 			magicCost = new TextView(gui, null,""+abilityInfo.magicCost, textArea, HAlignment.LEFT, VAlignment.BOTTOM, Color.BLACK);
 		} else {
@@ -146,6 +146,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 		}
 		thisArea.x = thisArea.height*(i+1.5f)*1.2f;
 		thisArea.width = thisArea.height;
+		thisArea.y += thisArea.height/10;
 		return thisArea;
 	}
 	

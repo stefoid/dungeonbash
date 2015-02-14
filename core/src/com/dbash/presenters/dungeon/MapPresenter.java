@@ -37,6 +37,12 @@ import com.dbash.util.Tween;
 public class MapPresenter implements IMapPresentationEventListener{
 	public static final boolean LOG = false && L.DEBUG;
 	
+	public static class CreatureDraw {
+		LocationPresenter loc;
+		float alpha;
+		boolean drawMe;
+	}
+	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
 	protected DungeonPosition focusPosition;
@@ -51,8 +57,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected float tileSize;
 	protected ShadowMap currentShadowMap;
 	protected ShadowMap previousShadowMap;
-	LocationPresenter[] creatures;
-	float[] creatureAlpha;
+	CreatureDraw[][] creaturesToDraw;
 	protected Tween currentShadowMapTween;
 	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
@@ -65,8 +70,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 		this.viewPos = new Rect (area.width/2, area.height/2, 0, 0);
 		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
-		creatures = new LocationPresenter[200];
-		creatureAlpha = new float[200];
 		model.presenterDungeon.onMapEvent(this);
 	}
 	
@@ -91,37 +94,40 @@ public class MapPresenter implements IMapPresentationEventListener{
 		for (int x=minTileX; x<=maxTileX; x++) {
 			for (int y=minTileY; y<=maxTileY;y++) {
 				// draw the current shadowmap details
+				CreatureDraw creatureDraw = creaturesToDraw[x][y];
 				LocationPresenter loc = locationPresenter(x,y);
 				boolean drawPrevCreature = loc.drawTile(spriteBatch, previousShadowMap, 1f);
 				boolean drawOnTopOfTile = loc.drawTile(spriteBatch, currentShadowMap, curAlpha);
-				creatures[creatureCount] = loc;
-				
+				creatureDraw.drawMe = false;
 				// determine if we need to draw a creature and what alpha to draw it
 				if (drawPrevCreature && drawOnTopOfTile) {
-					creatureAlpha[creatureCount] = 1f;
-					creatureCount++;
+					creatureDraw.drawMe = true;
+					creatureDraw.alpha = 1f;
+					creatureDraw.loc = loc;
 				} else if (!drawPrevCreature && drawOnTopOfTile) {
-					creatureAlpha[creatureCount] = curAlpha;
-					creatureCount++;
+					creatureDraw.drawMe = true;
+					creatureDraw.alpha = curAlpha;
+					creatureDraw.loc = loc;
 				} else if (drawPrevCreature && !drawOnTopOfTile) {
-					creatureAlpha[creatureCount] = fadeOutAlpha;
-					creatureCount++;
+					creatureDraw.drawMe = true;
+					creatureDraw.alpha = fadeOutAlpha;
+					creatureDraw.loc = loc;
 				}
 			}
 		}
 		
 		// draw the creatures that we have recorded need to be drawn, at the appropriate alphas
 		// draw in reverse order so the bottom creatures appear on top
-		for (int i=creatureCount-1; i>=0; i--) {
-			creatures[i].drawOverlayOnTile(spriteBatch, currentShadowMap, creatureAlpha[i]);
-		}
 		
 		for (int x=minTileX; x<=maxTileX; x++) {
-			for (int y=minTileY; y<=maxTileY;y++) {
+			for (int y=maxTileY; y>=minTileY;y--) {
 				// draw the current shadowmap details
 				LocationPresenter loc = locationPresenter(x,y);
 				loc.drawIsland(spriteBatch, previousShadowMap, 1f);
 				loc.drawIsland(spriteBatch, currentShadowMap, curAlpha);
+				if (creaturesToDraw[x][y].drawMe) {
+					creaturesToDraw[x][y].loc.drawOverlayOnTile(spriteBatch, currentShadowMap, creaturesToDraw[x][y].alpha);
+				}
 			}
 		}
 	}
@@ -160,7 +166,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 	public void setMap(Map map)
 	{
 		this.map = map;
-		
+		creaturesToDraw = new CreatureDraw[map.width][map.height];
+		for (int x=0;x<map.width;x++) {
+			for (int y=0;y<map.height;y++) {
+				creaturesToDraw[x][y] = new CreatureDraw();
+			}
+		}
 		map.onChangeToLocationInfo(new UILocationInfoListener() {
 			public void locationInfoChanged(Location location) {
 				LocationPresenter locationPresenter = locationPresenter(location.position);

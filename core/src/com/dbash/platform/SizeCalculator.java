@@ -50,7 +50,12 @@ public class SizeCalculator {
 	}
 	
 	public SizeCalculator() {
-		ppcy = Gdx.graphics.getPpcY();
+		if (L.DEBUG){
+			ppcy = L.PPI / 2.54f;
+		} else {
+			ppcy = Gdx.graphics.getPpcY();
+		}
+		
 	}
 	
 //	given the pixels per centimetre, I can work out how many centimetres the list will be

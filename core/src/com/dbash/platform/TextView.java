@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
@@ -37,10 +38,11 @@ public class TextView {
 	// these coordinates calculated to draw the text within the specified rectangle, according to the alignment passed in
 	float textX;
 	float textY;
+	ImageView itest; 
+
 	
 	// defaults to left-aligned
 	public TextView(UIDepend gui, String text, Rect area, Color color) {
-		
 		this(gui, gui.defaultFonts, text, area, HAlignment.LEFT, VAlignment.BOTTOM, color);
 	}
 	
@@ -58,17 +60,19 @@ public class TextView {
 		setArea(area);
 		setColor(color);
 		
-		//itest = new ImageView(gui, "UNCHECKED_IMAGE", area); // TODO debug
+		if (L.SHOWTEXTBOXES) {
+			itest = new ImageView(gui, "UNCHECKED_IMAGE", area); 
+		}
 	}
-	
-	//ImageView itest; // TODO debug
 	
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		if (text.length() == 0) {
 			return;
 		}
 		
-		//itest.draw(spriteBatch, x, y); // TODO debug
+		if (L.SHOWTEXTBOXES) {
+			itest.draw(spriteBatch, x, y); 
+		}
 		
 		font.setScale(scale);
 		font.setColor(color);

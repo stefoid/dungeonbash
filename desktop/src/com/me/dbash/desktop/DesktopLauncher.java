@@ -76,17 +76,8 @@ public class DesktopLauncher {
 	}
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
-		//config.width = 1920;
-		//config.height = 1280;
-		
-		//config.width = 480;
-		//config.height = 320;
-		
-		config.width = 1280;
-		config.height = 720;
-		
-//		config.width = 800;
-//		config.height = 480;
+		config.width = L.SCREENX;
+		config.height = L.SCREENY;
 		
 		new LwjglApplication(new Dbash(0), config);
 	}

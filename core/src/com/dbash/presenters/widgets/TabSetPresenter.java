@@ -16,7 +16,7 @@ import com.dbash.platform.UIDepend;
 import com.dbash.presenters.tabs.AbilityTab;
 import com.dbash.presenters.tabs.EffectTab;
 import com.dbash.presenters.tabs.EyeTab;
-import com.dbash.presenters.tabs.InventoryTab;
+import com.dbash.presenters.tabs.ItemTab;
 import com.dbash.presenters.tabs.MenuTab;
 import com.dbash.util.Rect;
 
@@ -57,7 +57,7 @@ public class TabSetPresenter implements TouchEventListener{
 		// shift each tab across by the tab width
 		configTab(new EyeTab(model, gui, touchEventProvider, tabArea, bodyArea));
 		tabArea.x += tabArea.width;
-		configTab(new InventoryTab(model, gui, touchEventProvider, tabArea, bodyArea));
+		configTab(new ItemTab(model, gui, touchEventProvider, tabArea, bodyArea));
 		tabArea.x += tabArea.width;
 		configTab(new AbilityTab(model, gui, touchEventProvider, tabArea, bodyArea));
 		tabArea.x += tabArea.width;

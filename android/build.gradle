@@ -16,9 +16,9 @@ android {
     signingConfigs {
         release {
             storeFile file("/Users/stef/Desktop/dbashout/androidkey/db")
-            storePassword "insertpasswordhere"
+            storePassword "***REMOVED***66"
             keyAlias "dbashkey"
-            keyPassword "insertpasswordhere"
+            keyPassword "***REMOVED***66"
         }
     }
     buildTypes {

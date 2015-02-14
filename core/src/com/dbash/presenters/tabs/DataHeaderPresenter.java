@@ -76,7 +76,7 @@ public class DataHeaderPresenter {
 
 		Rect textArea = new Rect (heartArea, 0f, 0f, .015f, 0.15f);
 		textArea.x += heartArea.width * 1.0f;
-		textArea.width *= 2.6f;
+		textArea.width *= 2.5f;
 		healthText = new TextView(gui,gui.numericalFonts, new String(""), textArea, HAlignment.CENTER, VAlignment.CENTER, Color.RED);
 		
 		heartArea.x += area.width*.45f;

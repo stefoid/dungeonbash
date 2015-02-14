@@ -2,13 +2,20 @@ package com.dbash.util;
 
 public class L {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
-	public static boolean TESTCHARS = false;
+	public static boolean TESTCHARS = true;
 	public static boolean NO_SAVE = false;
-	public static int LEVEL = 1;
+	public static int LEVEL = 3;
+	
+	public static float PPI = 100;
+	public static int SCREENX = 1280;
+	public static int SCREENY = 720;
+	
+	public static boolean SHOWTEXTBOXES = false;
 	
 	public static final int STACK_LEVEL = 3;
+	
 	public static void log(String msg, Object... args) {
 		System.out.printf(buildDebugString()+" "+msg + "\n", args);
 	}

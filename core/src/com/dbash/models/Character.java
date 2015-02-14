@@ -766,20 +766,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		return super.giveAbility(target, ab, pos, magicCost, giver);
 	}
 
-
-	private int getNumberOfPhysicalItemsCarried() {
-		int items = 0;
-
-		for (Ability ability : abilities) {
-			if (ability.isPhysical()) {
-				items++;
-			}
-		}
-		return items;
-	}
-
-	public boolean isPlayerCharacter()
-	{
+	public boolean isPlayerCharacter() {
 		return true;
 	}
 	
@@ -990,19 +977,35 @@ public class Character extends Creature implements IPresenterCharacter {
 		} 
 	}
 	
-	@Override
+	@Override	
 	public boolean itemPickupSelected(Ability ability) {
-		boolean pickupAllowed = true;
-
-		// first check carry limit
-		int items = getNumberOfPhysicalItemsCarried();
-		if (items >= MAX_ITEMS) {
-			pickupAllowed = false;
+		if (getNumberOfPhysicalItemsCarried() < getCapacity()) {
+			return canCarry(ability);
 		} else {
-			pickupAllowed = canCarry(ability);
+			return false;
 		}
-		
-		return pickupAllowed;
+	}
+	
+	public int getNumberOfPhysicalItemsCarried() {
+		int items = 0;
+
+		for (Ability ability : abilities) {
+			if (ability.isPhysical()) {
+				items++;
+			}
+		}
+		return items;
+	}
+	
+	public int getCapacity() {
+		int capacity = MAX_ITEMS;
+		if (creature.hands == 0) {
+			capacity = 1;
+		}
+		if (creature.head == 0) {
+			capacity = 0;
+		}
+		return capacity;
 	}
 
 	public boolean canCarry(Ability ability) {
