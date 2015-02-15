@@ -647,7 +647,6 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
 		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position, canCharge)) {
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, Dungeon.MoveType.CHARGE_MOVE, null);
-	
 			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
 			return true;
 		}
@@ -655,16 +654,17 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		return false;
 	}
 
+	// this is only going to be called if the dash ability should be set
 	protected boolean performDash(DungeonPosition position, int direction, Character releventCharacter) {
 		if (LOG) L.log("position: %s", position);
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
 		Ability dashAbility = canDash();
 		if (dashAbility != null && canChargeAcross(position, true) && canDashInto(furtherPosition)) {
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, furtherPosition, direction, Dungeon.MoveType.NORMAL_MOVE, null);
+			dashAbility.set = true;
 			dashAbility.executeAbility();
 			return true;
 		}
-		
 		return false;
 	}
 	

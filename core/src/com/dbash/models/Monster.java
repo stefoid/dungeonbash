@@ -156,14 +156,13 @@ public class Monster extends Creature
 
 			// Work out the best direction
 			moveDirection = findBestDirection(LastCharacterPos, true, canMove);
-
+			
 			// if you are almost dead, run away!
 			if ((health < calculateMaxHealth() / 5) ||
 					((health < calculateMaxHealth() / 3) && (health < 10)) ||
 					((myId == 0)  && (Randy.getRand(1, 2) < 2)) ) {// 1/2 the time, nashkur will run away!!!
 				moveDirection = oppositeDirection(moveDirection); // run
 			}
-
 		} else { // Get the strategy when there is no character
 			
 			// two options: either go to the last known location of a
@@ -282,8 +281,11 @@ public class Monster extends Creature
 				if (releventCharacter == null) {
 					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this);
 				} 
-				
-				if (performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter) == false) {
+				boolean specialMove = performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter);
+				if (!specialMove) {
+					specialMove = performDash(newPosition, direction, releventCharacter);
+				}
+				if (!specialMove) {
 					dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
 				}
 			break;
@@ -301,7 +303,19 @@ public class Monster extends Creature
 	// If they are, then no focus change is required.  If they arent, then focus is changed to the target character of the action.
 	// targetPos will either be where the monster wants to walk, or the position of a character targeted for a ranged attack
 	protected void optionalFocusChange(DungeonPosition monsterPos, DungeonPosition targetPos) {
-		
+	}
+	
+	@Override
+	protected Ability canDash() {
+		Ability result = null;
+		for (Ability ability : abilities) {
+			if (ability.hasTag(Ability.DASH_TAG)) {
+				if (ability.isCool()) {
+					result= ability;
+				}
+			}
+		}
+		return result;
 	}
 	
 	// if the monster actually does something, pass the turnFinishedBlock to the dungeon for asynch callback, otherwise call it immediately.
