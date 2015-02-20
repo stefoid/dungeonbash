@@ -6,15 +6,15 @@ import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 import com.dbash.models.IDungeonQuery.AtLocation;
+import com.dbash.util.L;
 import com.dbash.util.Randy;
-
-
-
 
 // A Location embodies everything about a particular tile in the dungeon, including which characters can currently see it
 // (Each character has a shadowMap that informs Locations that it can see them)
 public class Location {
 	
+	public static boolean LOG = true && L.DEBUG;
+	 
 	public enum LocationType {
 		WALL,
 		FLOOR,
@@ -87,7 +87,9 @@ public class Location {
 	    }
 	}
 	
-	public static final float minTint = 0.3f;
+	public static final float minNotVisibleTint = 0.18f;
+	public static final float minVisibleTint = 0.3f;
+	public static final float maxVisibileTint = 1f;
 	
 	public Map map;
 	public LocationType locationType;
@@ -121,7 +123,7 @@ public class Location {
 		tileType = null;  // cant be worked out yet
 		isDiscovered = false;
 		tileName = "CLEAR_FLOOR_IMAGE";
-		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
+		permTint = minVisibleTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		updateLocationInfo();
 		clearTint();
 	}
@@ -143,20 +145,20 @@ public class Location {
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
-		permTint = minTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
+		permTint = minVisibleTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		updateLocationInfo();
 		clearTint();
 	}
 	
 	public void addtorch(TorchType torch) {
-		this.torch = torch;
 		DungeonPosition torchPosition = new DungeonPosition(position);
-		
+		this.torch = torch;
 		// Front facing torches cast their light in front of them
 		if (torch == TorchType.FRONT) {
 			torchPosition.y--;
 		} 
-		map.addLight(new Light(torchPosition, 5, Light.WALL_TORCH_STRENGTH, true));
+		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
+		updateLocationInfo();
 	}
 	
 	public void load(ObjectInputStream in, Map map, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -441,16 +443,25 @@ public class Location {
 	 */
 	public void doPostMapGenerationPrcessing() {
 		// torches
-		if (Randy.getRand(1,  30) == 1) {
+		if (Randy.getRand(1, 5) == 1 && map.notTooCloseToOtherTorches(this)) {
 			if (tileType == TileType.FRONT_FACE) {
 				addtorch(TorchType.FRONT);
 			} else if (tileName.startsWith("VertWest")) {
+				if (LOG) L.log("x: %s, y: %s, WEST TORCH CREATED", x-1, y);
 				map.location[x-1][y].addtorch(TorchType.WEST);
 			} else if (tileName.startsWith("VertEast")) {
 				map.location[x+1][y].addtorch(TorchType.EAST);
 			}
 		}
 		updateLocationInfo();
+	}
+	
+	public boolean hasTorch() {
+		if (torch == TorchType.NONE) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	private String calculateTileName() {
@@ -645,7 +656,6 @@ public class Location {
 	
 	public void persistThings(ObjectOutputStream out) throws IOException {
 
-		
 		//	5) Each Location saves its Creature
 		if (creature == null) {
 			out.writeInt(TurnProcessor.NO_CURRENT_CREATURE);
@@ -660,4 +670,7 @@ public class Location {
 		}
 	}
 	
+	public String toString() {
+		return "x:"+x+" y:"+y+" name:"+tileName+" torch:"+torch;
+	}
 }

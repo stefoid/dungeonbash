@@ -32,7 +32,7 @@ import com.dbash.util.Tween;
 // it defers drawing Locations to individual LocationPresenters, and creatures to creaturePresenters.
 // but it knows about layout and dimensions and so on.
 //
-// mappresenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
+// map presenter is an AnimOp so it can add itself to the anim queue so that things can schedule themselves wrt. scrolling.
 // 
 public class MapPresenter implements IMapPresentationEventListener{
 	public static final boolean LOG = false && L.DEBUG;
@@ -316,7 +316,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		currentShadowMap.refresh();
 	}
 	
-	public void removeCharacterLightFromMap(Light light) {
+	public void removeCreatureLightFromMap(Light light) {
 		if (light != null) {
 			removeLight(light);
 		}

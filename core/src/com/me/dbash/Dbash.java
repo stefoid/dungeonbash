@@ -98,8 +98,8 @@ public class Dbash implements ApplicationListener {
 
 		// load previously saved game, if it exists.
 		FileHandle fl = Gdx.files.local("gamedata.dat");
-		if (LOG) L.log("LOADING GAMEDATA");
-		if (fl.exists() == true) {
+		if (!L.NO_LOAD && fl.exists() == true) {
+			if (LOG) L.log("LOADING GAMEDATA");
 			newGame = true;
 			ObjectInputStream in = null;
 			try {

@@ -19,7 +19,7 @@ public interface IPresenterCreature {
 	//public void onChangeToVisualStatus(UIInfoListener listener);
 	public HighlightStatus getHighlightStatus();
 	public DungeonPosition getPosition();
-	
+	public Light getLight();
 	public String getNameUnderscore();
 
 

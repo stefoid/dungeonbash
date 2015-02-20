@@ -8,6 +8,7 @@ public class Light {
 	public static float CHAR_LIGHT_STRENGTH = 2.5f;
 	public static float WALL_TORCH_STRENGTH = 1.75f;
 	public static int CHAR_LIGHT_RANGE = Map.RANGE;
+	public static int WALL_TORCH_RANGE = Map.RANGE;
 	
 	public DungeonPosition position;
 	public int range;
@@ -55,8 +56,6 @@ public class Light {
 	public void applyLight() {
 		applyLight(alpha);
 	}
-	
-	
 	
 	private void applyLight(float alpha) {
 		if (LOG) L.log("alpha: %s", alpha);

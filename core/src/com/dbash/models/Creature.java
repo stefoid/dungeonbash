@@ -26,7 +26,7 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public static enum CreatureSize {
 		SMALL,
@@ -82,8 +82,9 @@ public abstract class Creature implements IPresenterCreature
 		MONSTER
 	}
 
-protected CanMoveStrategy canMove = new CanMoveStrategy();
-
+	protected CanMoveStrategy canMove = new CanMoveStrategy();
+	protected Light light = null;
+	
 	// instance data
 	protected HighlightStatus highlightStatus;
 	
@@ -1612,6 +1613,17 @@ protected CanMoveStrategy canMove = new CanMoveStrategy();
 		} else {
 			return true;
 		}
+	}
+	
+	public Light getLight() {
+		
+		float lightStrength = (float) detect / 6f;
+		if (lightStrength > Light.CHAR_LIGHT_STRENGTH) {
+			lightStrength = Light.CHAR_LIGHT_STRENGTH;
+		}
+		
+		light = new Light(getPosition(), Light.CHAR_LIGHT_RANGE, lightStrength, false); 
+		return light;
 	}
 	
 	@Override

@@ -41,4 +41,8 @@ public class LocationInfo {
 			isIsland = true;
 		}
 	}
+	
+	public String toString() {
+		return "TORCH: "+torch;
+	}
 }

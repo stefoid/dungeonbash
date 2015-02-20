@@ -12,11 +12,14 @@ import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 // a LocationPresenter is the partner of a Location in the model.  it handles the presentation of the corresponding Location, duh.
 // it gets updates of presentation-related data in the form of LocationInfo when the visual representation of the Location changes.
 public class LocationPresenter {
+	
+	public static boolean LOG = true && L.DEBUG;
 	
 	public LocationInfo locationInfo;
 	private ImageView tile;
@@ -71,7 +74,7 @@ public class LocationPresenter {
 				drawOverlay = true;
 			}
 		} else if (locationInfo.isDiscovered) {
-			drawTile(spriteBatch, Location.minTint, alpha);
+			drawTile(spriteBatch, Location.minNotVisibleTint, alpha);
 		} 
 
 		return drawOverlay;
@@ -100,7 +103,7 @@ public class LocationPresenter {
 			if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
 				islandImage.drawTinted(spriteBatch, locationInfo.tint, alpha);
 			} else if (locationInfo.isDiscovered) {
-				islandImage.drawTinted(spriteBatch, Location.minTint, alpha);
+				islandImage.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
 			} 
 		}
 	}
@@ -127,24 +130,27 @@ public class LocationPresenter {
 			this.tile = new ImageView(gui, tileName, area); 
 			
 			Rect torchArea; 
+			
+			if (LOG) L.log("location info: %s, location * %s", locationInfo, locationInfo.location);
+			
 			switch (locationInfo.torch) {
-			case FRONT:
-				torchArea = new Rect(area, 0.8f);
-				torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-				torchAnimation.startPlaying();
-				break;
-			case WEST:
-				torchArea = new Rect(area, .2f, 0f, 0.0f, .3f);
-				torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-				torchAnimation.startPlaying();
-				break;
-			case EAST:
-				torchArea = new Rect(area, 0f, 0.2f, .0f, .3f);
-				torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-				torchAnimation.startPlaying();
-				break;
-			default:
-				break;
+				case FRONT:
+					torchArea = new Rect(area, 0.8f);
+					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+					torchAnimation.startPlaying();
+					break;
+				case WEST:
+					torchArea = new Rect(area, .2f, 0f, 0.0f, .3f);
+					torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+					torchAnimation.startPlaying();
+					break;
+				case EAST:
+					torchArea = new Rect(area, 0f, 0.2f, .0f, .3f);
+					torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+					torchAnimation.startPlaying();
+					break;
+				default:
+					break;
 			}
 		}
 		

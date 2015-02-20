@@ -80,20 +80,22 @@ public class CreaturePresenter {
 		this.name = creature.getNameUnderscore();
 		this.model = model;
 		
+		this.mapPresenter = mapPresenter;
+		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.SHOW_NOTHING;
-			light = new Light(creature.getPosition(), Light.CHAR_LIGHT_RANGE, Light.CHAR_LIGHT_STRENGTH, false); // Characters have lights.
 		} else {
-			this.visualState = VisualState.SHOW_STATIC;
+			this.visualState = VisualState.SHOW_STATIC; 
+			light = creature.getLight();
+			mapPresenter.addLight(light);
 		}
-		
-		this.mapPresenter = mapPresenter;
 		this.area = new Rect(0,0,0,0);
 		this.currentVisualPosition = creature.getPosition();
 		highlightImage = new ImageView(gui, "RANGED_DOT", this.area);
 		updateHighlightAnimation(currentVisualPosition);
 		setStaticImage(DungeonPosition.SOUTH);
 		updateStaticImageArea();
+		
 	}
 	
 	public CreaturePresenter(){};
@@ -355,6 +357,9 @@ public class CreaturePresenter {
 	
 	// This is an indication to the creaturePresenter of a move event that cant be seen
 	public void creatureMovedOutOfLOS(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType) {
+		if (light != null) {
+			mapPresenter.moveLight(light, toPosition);
+		}
 		currentVisualPosition = toPosition;
 		updateStaticImageArea();
 		updateHighlightAnimation(toPosition);
@@ -405,7 +410,7 @@ public class CreaturePresenter {
 				if (completeListener != null) {
 					completeListener.animEvent(); // tell anyone who cares
 				}
-				mapPresenter.removeCharacterLightFromMap(light);
+				mapPresenter.removeCreatureLightFromMap(light);
 			}
 		});
 		downAnim.setRotation(0, 360*3, 1);  // rotate 3 times
@@ -494,7 +499,7 @@ public class CreaturePresenter {
 		toRect.y += fromRect.height*.8f;
 		AnimationView skullAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
 			public void animEvent() {
-				mapPresenter.removeCharacterLightFromMap(light);
+				mapPresenter.removeCreatureLightFromMap(light);
 				if (completeListener != null) {
 					completeListener.animEvent(); // tell anyone who cares
 				}

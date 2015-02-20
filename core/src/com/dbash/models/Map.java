@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
@@ -19,7 +18,7 @@ import com.dbash.util.Randy;
 // Map doesnt know about Monsters, Characters etc...  To move creatures and items around in it, interact with the Locations
 // directly.  Those changes to Locations will emit observable Presentation events
 public class Map implements IPresenterMap {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static int RANGE = 5;
 	public static int LOS = -1;
@@ -109,11 +108,28 @@ public class Map implements IPresenterMap {
 				addExitLight();
 				addRoughTerrain(dungeonEvents, dungeonQuery);
 				dungeonNotCompleted = false;
+				
+				if (LOG) dump();
+				
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
 				if (LOG) L.log("TRYING AGAIN!");
 			}
 		}
+	}
+	
+	public boolean notTooCloseToOtherTorches(Location location) {
+
+		for (int x=0; x<width; x++) {
+			for (int y=0; y< height; y++) {
+				if (location(x,y).hasTorch()) {
+					if (location(x,y).position.distanceTo(location.position) < 5) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
@@ -471,10 +487,12 @@ public class Map implements IPresenterMap {
 	public void moveLight(Light light, DungeonPosition newPosition) {
 		if (tempLights.contains(light) == false) {
 			tempLights.add(light);
+			light.setPosition(newPosition);
 			light.setMap(this);
-		} 
-		light.setPosition(newPosition);
-		lightingChanged();
+		}  else {
+			light.clearLight();
+			light.setPosition(newPosition);
+		}
 	}
 	
 	// remove the effects of temp lighting, returning tile to its base level of permanent lighting.
@@ -533,16 +551,13 @@ public class Map implements IPresenterMap {
 	public void lightingChanged() {
 		lightingChanged = true;
 	}
-//	public void dump() {
-//		// debug print
-//		for (int y=width-1; y>=0; y--) {
-//			for (int x=0; x< height; x++) {
-//				if (location(x,y).isOpaque()) if (LOG) Logger.log('#'); else if (LOG) Logger.log(' ');
-//			}
-//			if (LOG) Logger.log();
-//		}
-//		if (LOG) Logger.log();
-//		if (LOG) Logger.log();
-//		if (LOG) Logger.log();
-//	}
+	
+	public void dump() {
+		// debug print
+		for (int y=width-1; y>=0; y--) {
+			for (int x=0; x< height; x++) {
+				if (LOG) L.log("location: %s - locationInfo: %s", location(x,y), location(x,y).locationInfo);
+			}
+		}
+	}
 }
