@@ -58,6 +58,7 @@ public interface IDungeonQuery {
 	 * @return
 	 */
 	public boolean positionIsInLOSOfCharacter(Character character, DungeonPosition position);
+	boolean positionCouldBeSeen(DungeonPosition position);
 	
 	// Stair related API - is the character in focus currently over the stairs?
 	public boolean isCreatureOnStairs(Creature creature);

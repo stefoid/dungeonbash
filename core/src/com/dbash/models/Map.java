@@ -23,7 +23,8 @@ public class Map implements IPresenterMap {
 	public static int RANGE = 5;
 	public static int LOS = -1;
 	
-	public Location[][] location;
+	public Location[][] location;  // all the locations
+	public ArrayList<Location> drawableLocations = new ArrayList<Location>(); // for clearing lights.
 	public int width;
 	public int height;
 	public int level;
@@ -33,6 +34,8 @@ public class Map implements IPresenterMap {
 	protected UIInfoListenerBag retainFocusBag;
 	protected ArrayList<Light> tempLights;
 	protected ArrayList<Light> permLights;
+	
+	private IDungeonQuery dungeonQuery;
 	
 	private Vector<UILocationInfoListener> locationInfoListeners;
 	private Location solidRock = new Location();
@@ -45,6 +48,7 @@ public class Map implements IPresenterMap {
 	
 	public Map(int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		boolean dungeonNotCompleted = true;
+		this.dungeonQuery = dungeonQuery;
 		while (dungeonNotCompleted) {
 			try {
 				retainFocusBag = new UIInfoListenerBag();
@@ -102,6 +106,9 @@ public class Map implements IPresenterMap {
 				for (int x=0; x<width; x++) {
 					for (int y=0; y< height; y++) {
 						location(x,y).doPostMapGenerationPrcessing();
+						if (location(x,y).isDrawable()) {
+							drawableLocations.add(location(x,y));
+						}
 					}
 				}
 				
@@ -134,6 +141,7 @@ public class Map implements IPresenterMap {
 	
 	public Map (ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {
 		retainFocusBag = new UIInfoListenerBag();
+		this.dungeonQuery = dungeonQuery;
 		locationInfoListeners = new Vector<UILocationInfoListener>();
 		width = in.readInt();
 		height = in.readInt();
@@ -490,32 +498,39 @@ public class Map implements IPresenterMap {
 			light.setPosition(newPosition);
 			light.setMap(this);
 		}  else {
-			light.clearLight();
+			//light.clearLight();
 			light.setPosition(newPosition);
 		}
 	}
 	
 	// remove the effects of temp lighting, returning tile to its base level of permanent lighting.
 	public void removeLight(Light light) {
-		if (tempLights.contains(light)) {
-			light.clearLight();
-			tempLights.remove(light);
-			lightingChanged();
-		}
+//		if (tempLights.contains(light)) {
+//			light.clearLight();
+//			tempLights.remove(light);
+//			lightingChanged();
+//		}
+		tempLights.remove(light);
+		lightingChanged();
 	}
 	
-	// Adds temporary lighting
+	// Adds temporary lighting if the light is somewhere that can be seen.
 	public void shineTempLighting() {
 		for (Light light : tempLights) {
-			light.applyLight();
+			if (dungeonQuery.positionCouldBeSeen(light.position)) {
+				light.applyLight();
+			}
 		}
 	}
 	
 	// removes the effect of any temporary lighting, returning locations to base permanent lighting levels
 	public void clearTempLighting() {
-		for (Light light : tempLights) {
-			light.clearLight();
+		for (Location location : drawableLocations) {
+			location.clearTint();
 		}
+//		for (Light light : tempLights) {
+//			light.clearLight();
+//		}
 	}
 	
 	protected void addRoughTerrain(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {

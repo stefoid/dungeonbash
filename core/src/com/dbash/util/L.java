@@ -7,7 +7,7 @@ public class L {
 	public static boolean TESTCHARS = true;
 	public static boolean NO_LOAD = true;
 	public static boolean NO_SAVE = false;
-	public static int LEVEL = 1;
+	public static int LEVEL = 18;
 	
 	public static float PPI = 100;
 	public static int SCREENX = 1280;

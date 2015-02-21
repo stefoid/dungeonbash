@@ -723,6 +723,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public boolean positionIsInLOSOfCharacter(Character character, DungeonPosition position) {
 		ShadowMap shadowMap = character.shadowMap;
+		return testPositionInShadowMap(shadowMap, position);
+	}
+	
+	private boolean testPositionInShadowMap(ShadowMap shadowMap, DungeonPosition position) {
 		Location location = null;
 		if (map.inBounds(position)) {
 			location = map.location(position);
@@ -732,6 +736,17 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		} else {
 			return shadowMap.locationIsVisible(location);
 		}
+	}
+	
+	@Override
+	public boolean positionCouldBeSeen(DungeonPosition position) {
+		
+		for (ShadowMap shadowMap : shadowMaps.values()) {
+			if (testPositionInShadowMap(shadowMap, position) == false) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override

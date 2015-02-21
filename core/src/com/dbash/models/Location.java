@@ -15,6 +15,8 @@ public class Location {
 	
 	public static boolean LOG = true && L.DEBUG;
 	 
+	public static final String SOLID_ROCK = "SolidRock";
+	
 	public enum LocationType {
 		WALL,
 		FLOOR,
@@ -443,7 +445,7 @@ public class Location {
 	 */
 	public void doPostMapGenerationPrcessing() {
 		// torches
-		if (Randy.getRand(1, 5) == 1 && map.notTooCloseToOtherTorches(this)) {
+		if (Randy.getRand(1, 500) == 1 && map.notTooCloseToOtherTorches(this)) {
 			if (tileType == TileType.FRONT_FACE) {
 				addtorch(TorchType.FRONT);
 			} else if (tileName.startsWith("VertWest")) {
@@ -574,7 +576,7 @@ public class Location {
 								return "RearEastCorner";
 							case NO_FACE:
 							default:
-								return "RearDouble";  // is this case possible?
+								return SOLID_ROCK;  // is this case possible?
 						}
 					}
 
@@ -615,6 +617,14 @@ public class Location {
 			return itemInfoWithRough;
 		} else {
 			return itemInfoNoRough;
+		}
+	}
+	
+	public boolean isDrawable() {
+		if (tileName.equals(SOLID_ROCK)) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 	
