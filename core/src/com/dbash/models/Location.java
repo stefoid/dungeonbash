@@ -89,7 +89,7 @@ public class Location {
 	    }
 	}
 	
-	public static final float minNotVisibleTint = 0.18f;
+	public static final float minNotVisibleTint = 0.22f;
 	public static final float minVisibleTint = 0.3f;
 	public static final float maxVisibileTint = 1f;
 	

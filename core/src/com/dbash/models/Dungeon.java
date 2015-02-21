@@ -474,6 +474,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		if (LOG) L.log("releventCharacter: %s", releventCharacter); 
 		final DungeonPosition deadPosition = deadCreature.getPosition();
 		final Creature deader = deadCreature;
+		
 		boolean inLOS = false;
 		if (deadCreature instanceof Character) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
@@ -498,6 +499,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			});
 		} else {
 			map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
+			map.removeLight(deader.light);
+			mapEventListener.updateMapPresentation();
 		}
 	}
 
@@ -740,13 +743,13 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	@Override
 	public boolean positionCouldBeSeen(DungeonPosition position) {
-		
+		boolean result = true;
 		for (ShadowMap shadowMap : shadowMaps.values()) {
 			if (testPositionInShadowMap(shadowMap, position) == false) {
-				return false;
+				return result;
 			}
 		}
-		return true;
+		return result;
 	}
 
 	@Override

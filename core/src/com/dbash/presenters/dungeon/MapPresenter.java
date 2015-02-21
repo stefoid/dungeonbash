@@ -301,10 +301,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 	
 	public void moveLight(Light light, DungeonPosition newPosition) {
 		map.moveLight(light, newPosition);
+		updateMapPresentation();
 	}
 	
 	public void removeLight(Light light) {
 		map.removeLight(light);
+		updateMapPresentation();
 	}
 
 	public void refreshLighting() {
@@ -313,7 +315,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 	
 	@Override
 	public void updateMapPresentation() {
-		currentShadowMap.refresh();
+		for (Location location : map.drawableLocations) {
+			location.updatePresenter();
+		}
+		//currentShadowMap.refresh();
 	}
 	
 	public void removeCreatureLightFromMap(Light light) {

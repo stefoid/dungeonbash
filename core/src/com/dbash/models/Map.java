@@ -510,8 +510,10 @@ public class Map implements IPresenterMap {
 //			tempLights.remove(light);
 //			lightingChanged();
 //		}
-		tempLights.remove(light);
-		lightingChanged();
+		if (light != null) {
+			tempLights.remove(light);
+			lightingChanged();
+		}
 	}
 	
 	// Adds temporary lighting if the light is somewhere that can be seen.

@@ -216,6 +216,9 @@ public class DungeonPosition implements Serializable {
 				float X = x + 0.5f;
 				float Y = y + 0.5f;
 				distances[x][y] = (float) Math.sqrt((float) X*X+Y*Y);
+				if (distances[x][y] < 1) {
+					distances[x][y] = 1f;
+				}
 			}
 		}
 	}
