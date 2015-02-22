@@ -61,10 +61,6 @@ public class LocationPresenter {
 				shadow.drawTinted(spriteBatch, tint, alpha);
 			}
 			
-			if (torchAnimation != null) {
-				torchAnimation.draw(spriteBatch);
-			}
-			
 			for (ImageView image : items) {
 				image.draw(spriteBatch);
 			}
@@ -98,14 +94,19 @@ public class LocationPresenter {
 		}
 	}
 	
-	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
-		if (islandImage != null) {
-			if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
+	public void drawIslandAndTorches(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
+		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
+			if (islandImage != null) {
 				islandImage.drawTinted(spriteBatch, locationInfo.tint, alpha);
-			} else if (locationInfo.isDiscovered) {
+			}
+			if (torchAnimation != null) {
+				torchAnimation.draw(spriteBatch);
+			}
+		} else if (locationInfo.isDiscovered) {
+			if (islandImage != null) {
 				islandImage.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
-			} 
-		}
+			}
+		} 
 	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
@@ -136,6 +137,13 @@ public class LocationPresenter {
 			switch (locationInfo.torch) {
 				case FRONT:
 					torchArea = new Rect(area, 0.8f);
+					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
+					torchAnimation.startPlaying();
+					break;
+				case CENTRAL:
+					torchArea = new Rect(area, 0.8f);
+					torchArea.x -= area.width/4f;
+					torchArea.y += area.height/9f;
 					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					torchAnimation.startPlaying();
 					break;

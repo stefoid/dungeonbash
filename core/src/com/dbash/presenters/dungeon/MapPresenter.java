@@ -123,8 +123,8 @@ public class MapPresenter implements IMapPresentationEventListener{
 			for (int y=maxTileY; y>=minTileY;y--) {
 				// draw the current shadowmap details
 				LocationPresenter loc = locationPresenter(x,y);
-				loc.drawIsland(spriteBatch, previousShadowMap, 1f);
-				loc.drawIsland(spriteBatch, currentShadowMap, curAlpha);
+				loc.drawIslandAndTorches(spriteBatch, previousShadowMap, 1f);
+				loc.drawIslandAndTorches(spriteBatch, currentShadowMap, curAlpha);
 				if (creaturesToDraw[x][y].drawMe) {
 					creaturesToDraw[x][y].loc.drawOverlayOnTile(spriteBatch, currentShadowMap, creaturesToDraw[x][y].alpha);
 				}

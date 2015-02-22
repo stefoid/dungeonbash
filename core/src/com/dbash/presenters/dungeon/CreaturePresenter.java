@@ -102,7 +102,9 @@ public class CreaturePresenter {
 	
 	public void resume() {
 		this.visualState = VisualState.SHOW_STATIC;
-		mapPresenter.addLight(light);
+		if (light != null) {
+			mapPresenter.addLight(light);
+		}
 	}
 	
 	private void updateHighlightAnimation(DungeonPosition position) {

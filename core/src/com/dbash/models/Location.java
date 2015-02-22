@@ -34,6 +34,7 @@ public class Location {
 	public enum TorchType {
 		NONE,
 		FRONT,
+		CENTRAL,
 		EAST,
 		WEST
 	}
@@ -155,11 +156,26 @@ public class Location {
 	public void addtorch(TorchType torch) {
 		DungeonPosition torchPosition = new DungeonPosition(position);
 		this.torch = torch;
-		// Front facing torches cast their light in front of them
-		if (torch == TorchType.FRONT) {
+		
+		if (torch == TorchType.CENTRAL) {
+			map.addLight(new Light(torchPosition, 1, Light.CENTRAL_TORCH_STRENGTH, true));
 			torchPosition.y--;
-		} 
-		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+			torchPosition.y += 2;
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+			torchPosition.y--;
+			torchPosition.x--;
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+			torchPosition.x +=2;
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+		} else {
+			// Front facing torches cast their light in front of them
+			if (torch == TorchType.FRONT ) {
+				torchPosition.y--;
+			} 
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
+		}
+
 		updateLocationInfo();
 	}
 	
@@ -444,8 +460,11 @@ public class Location {
 	 * whatnot.
 	 */
 	public void doPostMapGenerationPrcessing() {
+		if (LOG) L.log("tileName: %s", tileName);
 		// torches
-		if (Randy.getRand(1, 500) == 1 && map.notTooCloseToOtherTorches(this)) {
+		if (tileName.equals("statue")) {
+			addtorch(TorchType.CENTRAL);
+		} else if (Randy.getRand(1, 5) == 1 && map.notTooCloseToOtherTorches(this)) {
 			if (tileType == TileType.FRONT_FACE) {
 				addtorch(TorchType.FRONT);
 			} else if (tileName.startsWith("VertWest")) {
@@ -647,7 +666,7 @@ public class Location {
 		return result;
 	}
 	
-	final static String[] names = {"rock"};
+	final static String[] names = {"rock", "rock", "rock", "statue"};
 //			"rocka","rockb","rockc","rockd",
 //			"obeliska",
 //			"obeliskb",
