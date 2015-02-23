@@ -165,6 +165,9 @@ public class Map implements IPresenterMap {
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
 				location[x][y].load(in, this, allCreatures, dungeonEvents, dungeonQuery);
+				if (location[x][y].isDrawable()) {
+					drawableLocations.add(location(x,y));
+				}
 			}
 		}
 	}
