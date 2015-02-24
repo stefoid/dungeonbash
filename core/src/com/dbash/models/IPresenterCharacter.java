@@ -33,6 +33,9 @@ public interface IPresenterCharacter {
 	public void onChangeToCharacterStats(UIInfoListener listener);
 	public CreatureStats getCharacterStats();
 	
+	// Character abilities of whichever character this is
+	public void onChangeToStealthStatus(UIInfoListener listener);
+	
 	// Character effects affecting whichever character this is
 	public void onChangeToEffectList(UIInfoListener listener);
 	public EffectList getEffectList();

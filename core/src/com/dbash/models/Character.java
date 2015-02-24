@@ -160,6 +160,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		abilityListListeners = new UIInfoListenerBag();
 		characterStatListeners = new UIInfoListenerBag();
 		itemListListeners = new UIInfoListenerBag();
+		stealthStatusListeners = new UIInfoListenerBag();
 	}
 
 	
@@ -717,6 +718,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	private UIInfoListenerBag effectListListeners;
 	private UIInfoListenerBag characterStatListeners;
 	private UIInfoListenerBag itemListListeners;
+	private UIInfoListenerBag stealthStatusListeners;
 	
 	// METHODS
 	@Override
@@ -930,9 +932,13 @@ public class Character extends Creature implements IPresenterCharacter {
 	@Override
 	public void onChangeToCharacterStats(UIInfoListener listener) {
 		characterStatListeners.add(listener);
-		
 	}
 
+	@Override
+	public void onChangeToStealthStatus(UIInfoListener listener) {
+		stealthStatusListeners.add(listener);
+	}
+	
 	@Override
 	public CreatureStats getCharacterStats() {
 		return getCreatureStats();
@@ -1149,7 +1155,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			stealthStatus = StealthStatus.HIDING;
 		}
 
-		//leaderStatusListeners.alertListeners();
+		stealthStatusListeners.alertListeners();
 	}
 }
 

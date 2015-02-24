@@ -199,8 +199,7 @@ public abstract class Creature implements IPresenterCreature
 		stealthStatus = StealthStatus.HIDING_POSSIBLE;
 
 		for (int i = 0; i < getCreature().abilityIds.length; i++) {
-			if (getCreature().abilityIds[i] != -1)
-			{
+			if (getCreature().abilityIds[i] != -1) {
 				Ability a = new Ability(getCreature().abilityIds[i], this, p.level, dungeonEvents, dungeonQuery);
 				addAbility(a, null);
 			}
@@ -303,8 +302,7 @@ public abstract class Creature implements IPresenterCreature
 	    
 		// read abilities now
 		int numberOfAbilities = in.readInt();
-		for (int i=0; i < numberOfAbilities; i++)
-		{
+		for (int i=0; i < numberOfAbilities; i++) {
 			Ability ability = new Ability(in, this, dungeonEvents, dungeonQuery);
 			abilities.add(ability);
 		}
@@ -312,8 +310,7 @@ public abstract class Creature implements IPresenterCreature
 	}
 
 	// this function sets all the data that can be derived form the creature id
-	private void setCreatureData(int creatureId)
-	{
+	private void setCreatureData(int creatureId) {
 		speed = getCreature().speed;
 		attackSkill = getCreature().attackSkill;
 		defenceSkill = getCreature().defenceSkill;

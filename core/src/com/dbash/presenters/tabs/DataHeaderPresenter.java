@@ -50,7 +50,6 @@ public class DataHeaderPresenter {
 	private ImageView magicIcon;
 	private ImagePatchView border;
 	
-	
 	public DataHeaderPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		
 		this.area = new Rect(area);
@@ -87,9 +86,7 @@ public class DataHeaderPresenter {
 		textArea.x += area.width*.42f;
 		magicText = new TextView(gui,gui.numericalFonts, new String(""), textArea, HAlignment.CENTER, VAlignment.CENTER, Color.BLUE);
 		
-		
 		// put the buttons in place.
-		
 		passTurnButton = new ButtonView(gui, touchEventProvider, buttonArea, "PASS_TURN_ON_IMAGE", 
 				"PASS_TURN_OFF_IMAGE", "PASS_TURN_OFF_IMAGE", null);
 		passTurnButton.onClick( new IClickListener() {
@@ -113,6 +110,16 @@ public class DataHeaderPresenter {
 		
 		buttonArea.x += space;
 		
+		leaderToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "LEADER_ON_IMAGE", 
+				"LEADER_OFF_IMAGE", "LEADER_DISABLED_IMAGE", Audio.CLICK);
+		leaderToggleButton.onClick( new IClickListener() {
+			public void processClick() {
+				presenterTurnState.leaderModeToggleSelected();
+			}
+		});
+		
+		buttonArea.x += space;
+		
 		soloButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
 				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
 		soloButton.onClick( new IClickListener() {
@@ -126,16 +133,6 @@ public class DataHeaderPresenter {
 		goDownButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.stairDescendSelected();
-			}
-		});
-		
-		buttonArea.x += space;
-		
-		leaderToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "LEADER_ON_IMAGE", 
-				"LEADER_OFF_IMAGE", "LEADER_DISABLED_IMAGE", Audio.CLICK);
-		leaderToggleButton.onClick( new IClickListener() {
-			public void processClick() {
-				presenterTurnState.leaderModeToggleSelected();
 			}
 		});
 		
@@ -182,6 +179,12 @@ public class DataHeaderPresenter {
 			public void UIInfoChanged() {
 				CreatureStats stats = currentCharacter.getCharacterStats();
 				updateStats(stats);
+			}
+		}));
+		
+		character.onChangeToStealthStatus((new UIInfoListener() {
+			public void UIInfoChanged() {
+				processStealthStatus(currentCharacter.getStealthStatus());
 			}
 		}));
 		
