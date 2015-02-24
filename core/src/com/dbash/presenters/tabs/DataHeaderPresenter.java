@@ -3,6 +3,7 @@ package com.dbash.presenters.tabs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
+import com.dbash.models.Creature;
 import com.dbash.models.CreatureStats;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
@@ -41,6 +42,7 @@ public class DataHeaderPresenter {
 	private ButtonView passTurnButton;
 	private ButtonView goDownButton;
 	private ButtonView soloButton;
+	private ButtonView sneakToggleButton;
 	private ImageView background;
 	private TextView healthText;
 	private TextView magicText;
@@ -58,13 +60,14 @@ public class DataHeaderPresenter {
 		// set up views;
 		this.background = new ImageView(gui, "HEADER_IMAGE", area);
 		this.border = new ImagePatchView(gui, "9patchborder", area); 
+		
 		// buttons
 		float centre = area.width / 2;
-		float space = area.width / 3.3f;
+		float space = area.width / 4f;
 		float buttonWidth = area.width * .25f;  // each button is 25% of the width of the entire area
 		float buttonHeight = buttonWidth;  // square buttons
 		float buttonY = area.y + area.height*.95f - buttonHeight;   // 5% from the top
-		float buttonX = area.x + centre - buttonWidth/2 - space;
+		float buttonX = area.x;// + buttonWidth/2;
 		Rect buttonArea = new Rect (buttonX, buttonY, buttonWidth, buttonHeight);
 		
 		// stats
@@ -86,15 +89,7 @@ public class DataHeaderPresenter {
 		
 		
 		// put the buttons in place.
-		leaderToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "LEADER_ON_IMAGE", 
-				"LEADER_OFF_IMAGE", "LEADER_DISABLED_IMAGE", Audio.CLICK);
-		leaderToggleButton.onClick( new IClickListener() {
-			public void processClick() {
-				presenterTurnState.LeaderModeToggleSelected();
-			}
-		});
 		
-		buttonArea.x += space;
 		passTurnButton = new ButtonView(gui, touchEventProvider, buttonArea, "PASS_TURN_ON_IMAGE", 
 				"PASS_TURN_OFF_IMAGE", "PASS_TURN_OFF_IMAGE", null);
 		passTurnButton.onClick( new IClickListener() {
@@ -104,6 +99,28 @@ public class DataHeaderPresenter {
 		});
 		
 		buttonArea.x += space;
+		
+		sneakToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "SNEAK_SELECTED_IMAGE", 
+				"SNEAK_ENABLED_IMAGE", "SNEAK_DISABLED_IMAGE", Audio.CLICK);
+		sneakToggleButton.onClick( new IClickListener() {
+			public void processClick() {
+				Character character = mod.presenterTurnState.getCurrentCharacter();
+				if (character != null) {
+					character.stealthToggleSelected();
+				}
+			}
+		});
+		
+		buttonArea.x += space;
+		
+		soloButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
+				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		soloButton.onClick( new IClickListener() {
+			public void processClick() {
+				presenterTurnState.soloSelected();
+			}
+		});
+		
 		goDownButton = new ButtonView(gui, touchEventProvider, buttonArea, "STAIRS_ON_IMAGE", 
 				"STAIRS_OFF_IMAGE", "STAIRS_DISABLED_IMAGE", Audio.CLICK);
 		goDownButton.onClick( new IClickListener() {
@@ -112,11 +129,13 @@ public class DataHeaderPresenter {
 			}
 		});
 		
-		soloButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
-				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
-		soloButton.onClick( new IClickListener() {
+		buttonArea.x += space;
+		
+		leaderToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "LEADER_ON_IMAGE", 
+				"LEADER_OFF_IMAGE", "LEADER_DISABLED_IMAGE", Audio.CLICK);
+		leaderToggleButton.onClick( new IClickListener() {
 			public void processClick() {
-				presenterTurnState.soloSelected();
+				presenterTurnState.leaderModeToggleSelected();
 			}
 		});
 		
@@ -178,6 +197,8 @@ public class DataHeaderPresenter {
 			soloButton.setEnabled(true);
 			goDownButton.setEnabled(false);
 		}
+	
+		processStealthStatus(currentCharacter.getStealthStatus());
 	}
 	
 	public void updateStats(CreatureStats stats)
@@ -211,6 +232,25 @@ public class DataHeaderPresenter {
 		}
 	}
 	
+	protected  void processStealthStatus(Creature.StealthStatus stealthStatus) {
+
+		switch(stealthStatus) {
+			case HIDING_POSSIBLE:
+				sneakToggleButton.setEnabled(true);
+				sneakToggleButton.setState(false);
+				break;
+			case HIDING:
+				sneakToggleButton.setEnabled(true);
+				sneakToggleButton.setState(true);
+				break;
+			case HIDING_IMPOSSIBLE:
+			default:
+				sneakToggleButton.setEnabled(false);
+				sneakToggleButton.setState(false);
+				break;
+		}
+	}
+	
 	public void draw(SpriteBatch spriteBatch) {
 		background.draw(spriteBatch);
 		leaderToggleButton.draw(spriteBatch);
@@ -220,6 +260,7 @@ public class DataHeaderPresenter {
 		} else {
 			soloButton.draw(spriteBatch);
 		}
+		sneakToggleButton.draw(spriteBatch);
 		healthText.draw(spriteBatch);
 		magicText.draw(spriteBatch);
 		healthIcon.draw(spriteBatch);

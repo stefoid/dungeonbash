@@ -28,7 +28,7 @@ public interface IPresenterTurnState {
 	
 	// data header area buttons - all of these affect turn-processing
 	public void passTurnSelected();
-	public void LeaderModeToggleSelected();
+	public void leaderModeToggleSelected();
 	public void stairDescendSelected();
 	public void soloSelected();
 	

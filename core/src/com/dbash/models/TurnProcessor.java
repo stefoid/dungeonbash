@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dbash.models.Creature.StealthStatus;
 import com.dbash.presenters.root.GameOverPopupPresenter;
 import com.dbash.util.L;
 import com.dbash.util.SequenceNumber;
@@ -603,7 +604,7 @@ public class TurnProcessor implements IPresenterTurnState {
 				if (acceptInput && currentCreature instanceof Character) {
 					currentCharacter.setSolo(true);
 					if (leaderStatus != LeaderStatus.LEADER_DISABLED) {
-						LeaderModeToggleSelected();
+						leaderModeToggleSelected();
 					}
 				}
 			}
@@ -631,7 +632,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	@Override
-	public void LeaderModeToggleSelected() {
+	public void leaderModeToggleSelected() {
 		if (currentLeader == null) {
 			if (currentCharacter.isPlayerCharacter()) {
 				currentLeader = currentCharacter;
@@ -680,7 +681,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void clearLeaderMode() {
 		currentLeader = getCurrentLeader();
 		if (currentLeader != null) {
-			LeaderModeToggleSelected();
+			leaderModeToggleSelected();
 		}
 	}
 

@@ -8,7 +8,9 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Creature.StealthStatus;
 import com.dbash.models.IDungeonQuery.AtLocation;
+import com.dbash.models.IPresenterTurnState.LeaderStatus;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
@@ -1138,6 +1140,16 @@ public class Character extends Creature implements IPresenterCharacter {
 		shield.add(Ability.AbilityEffectType.DEFENDING);
 		dungeonEvents.abilityAdded(SequenceNumber.getNext(), this, shield, mapPosition);
 		turnProcessor.characterEndsTurn(this);
+	}
+	
+	public void stealthToggleSelected() {
+		if (stealthStatus == StealthStatus.HIDING) {
+			stealthStatus = StealthStatus.HIDING_POSSIBLE;
+		} else {
+			stealthStatus = StealthStatus.HIDING;
+		}
+
+		//leaderStatusListeners.alertListeners();
 	}
 }
 

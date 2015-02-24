@@ -34,6 +34,28 @@ public abstract class Creature implements IPresenterCreature
 		HUGE
 	}
 	
+	public enum StealthStatus
+	{
+		HIDING(1),
+		HIDING_POSSIBLE(2),
+		HIDING_IMPOSSIBLE(3);
+		
+        int id;
+        private StealthStatus(int id){this.id = id;}
+        public int getvalue(){return id;}
+        public static StealthStatus fromInt(int id) {
+            switch (id) {
+            case  1: 
+            	return HIDING;
+            case  2: 
+            	return HIDING_POSSIBLE;
+            default:
+            	break;
+            }
+            return HIDING_IMPOSSIBLE;
+        }
+	}
+	
 	public static int SMALL_SIZE = 8;
 	public static int HUGE_SIZE = 24;
 	
@@ -84,6 +106,7 @@ public abstract class Creature implements IPresenterCreature
 
 	protected CanMoveStrategy canMove = new CanMoveStrategy();
 	protected Light light = null;
+	protected StealthStatus stealthStatus;
 	
 	// instance data
 	protected HighlightStatus highlightStatus;
@@ -173,6 +196,7 @@ public abstract class Creature implements IPresenterCreature
 		uniqueId = uniqueIdCounter++;
 		experience = 0;
 		expRoot = 0;
+		stealthStatus = StealthStatus.HIDING_POSSIBLE;
 
 		for (int i = 0; i < getCreature().abilityIds.length; i++) {
 			if (getCreature().abilityIds[i] != -1)
@@ -211,6 +235,7 @@ public abstract class Creature implements IPresenterCreature
 		out.writeInt(health); // the creatures current health points
 		out.writeInt(magic); // the creatures current magic points
 		out.writeInt(missedTurns);
+		out.writeInt(stealthStatus.getvalue());
 
 		// position.
 		out.writeObject(mapPosition);
@@ -270,7 +295,8 @@ public abstract class Creature implements IPresenterCreature
 		expRoot = in.readInt();
 		health = in.readInt(); // the creatures current healthpoints
 		magic = in.readInt(); // the creatures current magic/points
-	    missedTurns = in.readInt(); 
+	    missedTurns = in.readInt();
+	    stealthStatus = StealthStatus.fromInt(in.readInt());
 
 	    // position
 	    mapPosition = (DungeonPosition) in.readObject();
@@ -1624,6 +1650,10 @@ public abstract class Creature implements IPresenterCreature
 		
 		light = new Light(getPosition(), Light.CHAR_LIGHT_RANGE, lightStrength, false); 
 		return light;
+	}
+	
+	public StealthStatus getStealthStatus() {
+		return stealthStatus;
 	}
 	
 	@Override
