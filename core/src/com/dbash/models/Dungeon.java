@@ -667,16 +667,17 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature) {
+	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature, boolean includeHidden) {
 		Location location = map.location(position);
 		int rangeOfClosestChar = 100;
 		Character closestVisibleChar = null;
-		
+		boolean  seen;
 		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
 		for (ShadowMap shadowMap : shadowMaps.values()) {
 			if (shadowMap.locationIsVisible(location)) {
 				Character character = shadowMap.owner;
-				if (character != null) {
+				seen = includeHidden || character.canBeSeen();
+				if (character != null && seen) {
 					int d = position.distanceToSpecial(character.getPosition());
 					if (d < rangeOfClosestChar && character.isAlive()) {
 						rangeOfClosestChar = d;

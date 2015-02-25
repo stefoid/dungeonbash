@@ -1148,11 +1148,21 @@ public class Character extends Creature implements IPresenterCharacter {
 		turnProcessor.characterEndsTurn(this);
 	}
 	
+	public void hiding() {
+		Ability hidingAbility = new Ability(Ability.getIdForName("hiding"), null, 1, dungeonEvents, dungeonQuery);
+		addAbility(hidingAbility, null);
+		Vector<Ability.AbilityEffectType> tiptoe = new Vector<Ability.AbilityEffectType>();
+		tiptoe.add(Ability.AbilityEffectType.HIDING);
+		dungeonEvents.abilityAdded(SequenceNumber.getNext(), this, tiptoe, mapPosition);
+		turnProcessor.characterEndsTurn(this);
+	}
+	
 	public void stealthToggleSelected() {
 		if (stealthStatus == StealthStatus.HIDING) {
 			stealthStatus = StealthStatus.HIDING_POSSIBLE;
 		} else {
 			stealthStatus = StealthStatus.HIDING;
+			hiding();
 		}
 
 		stealthStatusListeners.alertListeners();

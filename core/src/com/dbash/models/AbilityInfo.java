@@ -264,6 +264,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			case DEFENDING:
 				image = "PROTECTION_IMAGE";
 				break;
+			case HIDING:
+				image = "SNEAK_IMAGE";
+				break;
 			case ATTACK:
 				image = "ATTACK_IMAGE";
 				break;

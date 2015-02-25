@@ -361,6 +361,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 			case DEFENDING:
 				name = "PROTECTION_IMAGE";
 				break;
+			case HIDING:
+				name = "SNEAK_IMAGE";
+				break;
 			case CURSE:
 				name = "CURSE_IMAGE";
 				break;
@@ -423,7 +426,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		LocationPresenter loc = mapPresenter.locationPresenter(targetPosition);
 		Rect fromRect = new Rect(loc.getScreenArea());
 		float effectPeriod = abilityPeriod;
-		if (abilityEfectType == AbilityEffectType.DEFENDING) {
+		if (abilityEfectType == AbilityEffectType.DEFENDING || abilityEfectType == AbilityEffectType.HIDING) {
 			effectPeriod = passPeriod;
 		}
 		AnimationView added = new AnimationView(gui, getEffectName(abilityEfectType), fromRect, fromRect, 1f, 0.3f, effectPeriod, 1, null);
@@ -444,6 +447,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		switch (abilityEfectType) {
 			case DEFENDING:
 				sound = Audio.DEFEND;
+				break;
+			case HIDING:
+				sound = Audio.HIDING;
 				break;
 			case POISON:
 			case CURSE:

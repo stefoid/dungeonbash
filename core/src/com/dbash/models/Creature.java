@@ -1653,6 +1653,14 @@ public abstract class Creature implements IPresenterCreature
 		return stealthStatus;
 	}
 	
+	public boolean canBeSeen() {
+		if (stealthStatus == StealthStatus.HIDING) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return getCreature().name;

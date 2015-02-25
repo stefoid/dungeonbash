@@ -51,7 +51,7 @@ public class Monster extends Creature
 		turnProcessor.gameStats.monsterKilled();
 		
 		// if a monster dies in a dungeon, and there is no character there to see it, did it really die?
-		Character observer = dungeonQuery.findClosestCharacterInSight(mapPosition, this);
+		Character observer = dungeonQuery.findClosestCharacterInSight(mapPosition, this, true);
 		turnProcessor.monsterDied(this, observer);
 		dungeonEvents.waitingForAnimToComplete(SequenceNumber.getCurrent(), new IAnimListener() {
 			public void animEvent() {
@@ -145,7 +145,7 @@ public class Monster extends Creature
 		SequenceNumber.bumpSequenceNumberforNewCharacter();
 		
 		// Find the closest character
-		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this);
+		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false);
 
 		// 1.  So if we have a character in LOS, we can act towards it.
 		if (null != closestCharacter)
@@ -277,14 +277,17 @@ public class Monster extends Creature
 			case FREE:
 			case HOLE:
 				Character releventCharacter = closestCharacter;
+				boolean specialMove = false;
 				// This could be a random move that just happens to end up in a character LOS.
 				if (releventCharacter == null) {
-					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this);
-				} 
-				boolean specialMove = performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter);
-				if (!specialMove) {
-					specialMove = performDash(newPosition, direction, releventCharacter);
+					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this, true);
+				} else {
+					specialMove = performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter);
+					if (!specialMove) {
+						specialMove = performDash(newPosition, direction, releventCharacter);
+					}
 				}
+
 				if (!specialMove) {
 					dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
 				}
@@ -373,7 +376,7 @@ public class Monster extends Creature
 	
 	@Override 
 	public void setReleventCharacter() {
-		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this);
+		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, true);
 	}
 
 	// the monster version of this function simply returns true if there are any temproary 

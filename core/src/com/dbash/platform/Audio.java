@@ -33,6 +33,7 @@ public class Audio {
 	public static final String ENERGY_HIT = "Energy Single";
 	public static final String HARD_BURST = "Hard Multiple";
 	public static final String HARD_HIT = "Hard Single";
+	public static final String HIDING = "Hiding";
 
 	public static final String ITEM_DROP = "Item Drop";	
 	public static final String ITEM_PICKUP = "Item Pickup";
@@ -86,6 +87,7 @@ public class Audio {
 		addSound(ENERGY_HIT);
 		addSound(HARD_BURST);
 		addSound(HARD_HIT);
+		addSound(HIDING);
 		addSound(ITEM_DROP);	
 		addSound(ITEM_PICKUP);
 		addSound(ITEM_SELECT_ACC);
