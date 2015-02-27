@@ -209,6 +209,13 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
+	public void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature, DungeonPosition foundPosition) {
+		abilityResisted(sequenceNumber, releventCharacter, AbilityEffectType.HIDING, foundPosition);
+		//		CreaturePresenter creaturePresenter = foundCreature.getCreaturePresenter(gui, model, mapPresenter);
+//		creaturePresenter.creatureFound(sequenceNumber, foundCreature, foundPosition);
+	}
+	
+	@Override
 	public void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener) {
 		CreaturePresenter creaturePresenter = actingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		creaturePresenter.goDownStairs(sequenceNumber, actingCreature, completeListener);

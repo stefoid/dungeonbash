@@ -1160,12 +1160,17 @@ public class Character extends Creature implements IPresenterCharacter {
 	public void stealthToggleSelected() {
 		if (stealthStatus == StealthStatus.HIDING) {
 			stealthStatus = StealthStatus.HIDING_POSSIBLE;
+			dungeonEvents.creatureFound(SequenceNumber.getNext(), this, this);
 		} else {
 			stealthStatus = StealthStatus.HIDING;
 			hiding();
 		}
 
 		stealthStatusListeners.alertListeners();
+	}
+	
+	public void discovered() {
+		
 	}
 }
 

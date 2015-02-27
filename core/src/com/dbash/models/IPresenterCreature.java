@@ -22,5 +22,7 @@ public interface IPresenterCreature {
 	public Light getLight();
 	public String getNameUnderscore();
 
+	public boolean canBeSeen();
+
 
 }

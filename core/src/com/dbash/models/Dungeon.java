@@ -503,6 +503,39 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			mapEventListener.updateMapPresentation();
 		}
 	}
+	
+	@Override
+	public void creatureFound(int sequenceNumber, Character releventCharacter, Creature theFoundCreature) {
+
+		if (LOG) L.log("releventCharacter: %s", releventCharacter); 
+		final DungeonPosition foundPosition = theFoundCreature.getPosition();
+		final Creature foundCreature = theFoundCreature;
+		
+		boolean inLOS = false;
+		if (theFoundCreature instanceof Character) {
+			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
+			inLOS = true;
+		} else {
+			if (releventCharacter != null) {  // we use currently focussed here because relevant character = closest character
+				inLOS = positionIsInLOSOfCharacter(releventCharacter, foundPosition);
+			}
+		}
+		
+		if (dungeonEventListener != null && releventCharacter != null && inLOS) {
+			if (LOG) L.log("SN:"+sequenceNumber + " creatureFound");
+			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, theFoundCreature, foundPosition);
+//			, deathType, new IAnimListener () {
+//				public void animEvent() {
+//					map.location(foundCreature.getPosition()).setCreatureAndUpdatePresenter(null);
+//				}
+//			});
+		} 
+//		else {
+//			map.location(foundCreature.getPosition()).setCreatureAndUpdatePresenter(null);
+//			map.removeLight(foundCreature.light);
+//			mapEventListener.updateMapPresentation();
+//		}
+	}
 
 	@Override
 	public void damageInflicted(int sequenceNumber, Character releventCharacter, DungeonPosition targetPosition, int damageType, int damageAmount) {

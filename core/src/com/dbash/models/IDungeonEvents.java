@@ -66,6 +66,8 @@ public interface IDungeonEvents {
 	// creature dies
 	void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature);
 
+	void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature);
+	
 	//////////////////////////
 	// Abilities use and effects = These can be broken down to save Dungeon from having to interpret.
 	/////////////////////////

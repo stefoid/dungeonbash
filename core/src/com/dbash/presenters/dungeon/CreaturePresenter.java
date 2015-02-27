@@ -52,6 +52,8 @@ import com.dbash.util.Tween;
 public class CreaturePresenter {
 	public static final boolean LOG = false && L.DEBUG;
 	
+	public static final float HIDING_ALPHA = 0.4f;
+	
 	public enum VisualState {
 		SHOW_STATIC,
 		SHOW_NOTHING,
@@ -73,6 +75,7 @@ public class CreaturePresenter {
 	private ImageView highlightImage;
 	private Light light;
 	private Light toLight;
+	private float creatureAlpha;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
@@ -152,6 +155,10 @@ public class CreaturePresenter {
 				highlightAnimation.draw(spriteBatch);
 			}
 			
+			creatureAlpha = getCreatureAlpha();
+			if (alpha > creatureAlpha) {
+				alpha = creatureAlpha;
+			}
 			shadowImage.draw(spriteBatch, alpha);
 			staticImage.draw(spriteBatch, alpha);
 		}
@@ -264,13 +271,14 @@ public class CreaturePresenter {
 		}
 		
 		AnimationView moveAnim = null;
+		creatureAlpha = getCreatureAlpha();
 		Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final IAnimListener tpListen = animCompleteListener;
 		// Construct the move animation and add start and end strategies.
 		if (moveType == MoveType.SHUDDER_MOVE) {
 			calcShudderRect(toRect, direction);
-			moveAnim = new AnimationView(gui, getFullName(name, animToUse, imageDirection), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
+			moveAnim = new AnimationView(gui, getFullName(name, animToUse, imageDirection), fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, new IAnimListener() {
 				public void animEvent() {
 					if (tpListen != null) {
 						tpListen.animEvent(); // tell anyone who cares
@@ -287,7 +295,7 @@ public class CreaturePresenter {
 			});
 		} else {
 			// normal moving from tile to tile.
-			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, 1f, 1f, moveTime, 1, new IAnimListener() {
+			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, new IAnimListener() {
 				public void animEvent() {
 					if (tpListen != null) {
 						tpListen.animEvent(); // tell anyone who cares
@@ -343,7 +351,7 @@ public class CreaturePresenter {
 		
 		// Moving shadow animation
 		if (moveType != MoveType.SHUDDER_MOVE) {
-			final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, 1f, 1f, moveTime, 1, null);
+			final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, null);
 			shadowAnim.staticFrameOnly();
 			model.animQueue.add(shadowAnim, false);
 			shadowAnim.animType = AnimOp.AnimType.SHADOW;
@@ -436,6 +444,7 @@ public class CreaturePresenter {
 		if (previousAnim != null) {
 			return; // charge move covers attack as well.
 		}
+		creatureAlpha = getCreatureAlpha();
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
 		final Rect toRect;
 		String animName = getFullName(name, "attack", direction);
@@ -446,7 +455,7 @@ public class CreaturePresenter {
 			toRect = new Rect(fromRect);
 		}
 		
-		AnimationView attackAnim = new AnimationView(gui, getFullName(name, "attack", direction), fromRect, toRect, 1f, 1f, DungeonAreaPresenter.attackPeriod, 1, new IAnimListener() {
+		AnimationView attackAnim = new AnimationView(gui, getFullName(name, "attack", direction), fromRect, toRect, creatureAlpha, creatureAlpha, DungeonAreaPresenter.attackPeriod, 1, new IAnimListener() {
 			public void animEvent() {
 				if (animCompleteListener != null) {
 					animCompleteListener.animEvent(); // tell anyone who cares
@@ -523,6 +532,25 @@ public class CreaturePresenter {
 		
 		model.animQueue.drawBeneath(deathAnim);
 	}
+	
+//	public void creatureFound(int sequenceNumber, Creature foundCreature, DungeonPosition foundPosition) {
+//		if (LOG) L.log("creatureFound called for :" + this);
+//		AnimationView foundAnim = null;
+//		
+//		
+//		define found anim here
+//		
+//		foundAnim.onStart(new IAnimListener() {
+//			public void animEvent() {
+//				gui.audio.playSound(Audio.DEATH);
+//			}
+//		});
+//		
+//		configureAnimation(foundAnim);
+//		foundAnim.sequenceNumber = sequenceNumber;
+//		foundAnim.animType = AnimOp.AnimType.DEATH;
+//		model.animQueue.chainConcurrentWithSn(foundAnim, false);
+//	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
 	private Rect makeDrawingRectFromPosition(DungeonPosition position) {
@@ -651,6 +679,14 @@ public class CreaturePresenter {
 	
 	public void invokeAbility(int sequenceNumber, Creature actingCreature, DungeonPosition targetPosition, Data ability) {
 		// we dont have an animtion for this yet.
+	}
+	
+	private float getCreatureAlpha() {
+		if (creature.canBeSeen()) {
+			return 1f;
+		} else {
+			return HIDING_ALPHA;
+		}
 	}
 	
 }
