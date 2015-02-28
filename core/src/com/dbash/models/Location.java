@@ -16,6 +16,9 @@ public class Location {
 	public static boolean LOG = true && L.DEBUG;
 	 
 	public static final String SOLID_ROCK = "SolidRock";
+	public static final float minNotVisibleTint = 0.22f;
+	public static final float minVisibleTint = 0.3f;
+	public static final float maxVisibileTint = 1f;
 	
 	public enum LocationType {
 		WALL,
@@ -89,10 +92,6 @@ public class Location {
 	    	return RoughTerrainType.fromInt(Randy.getRand(1,  HOLE.getNum()));
 	    }
 	}
-	
-	public static final float minNotVisibleTint = 0.22f;
-	public static final float minVisibleTint = 0.3f;
-	public static final float maxVisibileTint = 1f;
 	
 	public Map map;
 	public LocationType locationType;
@@ -235,8 +234,8 @@ public class Location {
 	
 	// Onlt gets lighter due to, err lights.
 	public void setTint(float newTint) {
-		if (newTint > 1f) {
-			newTint = 1f;
+		if (newTint > maxVisibileTint) {
+			newTint = maxVisibileTint;
 		}
 		if (newTint > tint) {  // cant make it darker than it already is
 			tint = newTint;
@@ -250,8 +249,8 @@ public class Location {
 	
 	// Only gets lighter due to, err lights.
 	public void setPermTint(float newTint) {
-		if (newTint > 1f) {
-			newTint = 1f;
+		if (newTint > maxVisibileTint) {
+			newTint = maxVisibileTint;
 		}
 		if (newTint > permTint) {  // cant make it darker than it already is
 			permTint = newTint;

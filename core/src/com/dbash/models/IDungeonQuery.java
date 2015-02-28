@@ -49,6 +49,8 @@ public interface IDungeonQuery {
 	
 	// effectively means: is there a monster in LOS of any character?
 	public Character leaderModeOK();
+	
+	public boolean canCharacterSeeMonster(Character character);
 
 
 	// Is the tile a valid target?

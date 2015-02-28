@@ -315,6 +315,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				public void animEvent() {
 					fromLocation.updatePresenter();  // we dont update the presenters until the animation has finished playing.
 					toLocation.updatePresenter();
+					
+					// Now is the time to check that any hiding character has not been discovered by this move
+					processCharacterStealth();
+					
 					if (completeListener != null) {
 						completeListener.animEvent();
 					}
@@ -756,7 +760,23 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		return null;
 	}
+	
+	@Override
+	public boolean canCharacterSeeMonster(Character character) {
+		ShadowMap shadowMap = shadowMaps.get(character);
+		if (shadowMap.monsterVisible()) {
+			return true;
+		}
+		return false;
+	}
 
+	private void processCharacterStealth() {
+		for (ShadowMap shadowMap : shadowMaps.values()) {
+			Character character = shadowMap.owner;
+			character.testStealth();
+		}
+	}
+	
 	@Override
 	public boolean positionIsInLOSOfCharacter(Character character, DungeonPosition position) {
 		ShadowMap shadowMap = character.shadowMap;

@@ -681,6 +681,7 @@ public abstract class Creature implements IPresenterCreature
 		
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
 		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position, canCharge)) {
+			notHiding(releventCharacter);
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, Dungeon.MoveType.CHARGE_MOVE, null);
 			makeMeleeAttack(dungeonQuery.getCreatureAtLocation(furtherPosition));
 			return true;
@@ -695,6 +696,7 @@ public abstract class Creature implements IPresenterCreature
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
 		Ability dashAbility = canDash();
 		if (dashAbility != null && canChargeAcross(position, true) && canDashInto(furtherPosition)) {
+			notHiding(releventCharacter);
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, furtherPosition, direction, Dungeon.MoveType.NORMAL_MOVE, null);
 			dashAbility.set = true;
 			dashAbility.executeAbility();
@@ -1686,7 +1688,8 @@ public abstract class Creature implements IPresenterCreature
 		}
 	}
 	
-	public void hiding(Character releventCharacter) {
+	public void hide(Character releventCharacter) {
+		stealthStatus = StealthStatus.HIDING;
 		Ability hidingAbility = new Ability(Ability.getIdForName("hiding"), null, 1, dungeonEvents, dungeonQuery);
 		addAbility(hidingAbility, null);
 		Vector<Ability.AbilityEffectType> tiptoe = new Vector<Ability.AbilityEffectType>();
@@ -1695,9 +1698,30 @@ public abstract class Creature implements IPresenterCreature
 		turnProcessor.characterEndsTurn(this);
 	}
 	
+	public void notHiding(Character releventCharacter) {
+		if (stealthStatus == StealthStatus.HIDING) {
+			stealthStatus = StealthStatus.HIDING_POSSIBLE;
+			dungeonEvents.creatureFound(SequenceNumber.getNext(), releventCharacter, this);
+		}
+	}
+	
 	protected void addAmbushAbility() {
 		Ability ambushAbility = new Ability(Ability.getIdForName("ambush"), null, 1, dungeonEvents, dungeonQuery);
 		addAbility(ambushAbility, null);
+	}
+	
+	// The more visible the tile, the harder it is to hide
+	
+	public boolean canHide() {
+		boolean result = false;
+		
+		Location location = dungeonQuery.getLocation(mapPosition);
+		float tint = location.getTint();
+		int visibility = (int) (tint / 0.03f) - 5;  // 0.3 to 1... = 5 to 28
+		if (calculateStealth() >= visibility) {
+			result = true;
+		}
+		return result;
 	}
 	
 	@Override

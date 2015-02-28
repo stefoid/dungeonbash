@@ -1149,18 +1149,45 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	public void stealthToggleSelected() {
 		if (stealthStatus == StealthStatus.HIDING) {
-			stealthStatus = StealthStatus.HIDING_POSSIBLE;
-			dungeonEvents.creatureFound(SequenceNumber.getNext(), this, this);
+			notHiding(this);
 		} else {
-			stealthStatus = StealthStatus.HIDING;
-			hiding(this);
+			hide(this);
 		}
 
 		stealthStatusListeners.alertListeners();
 	}
 	
-	public void discovered() {
-		
+	public void testStealth() {
+		boolean canHide = canHide();
+		switch (stealthStatus) {
+		case HIDING:
+			if (canHide == false) {
+				notHiding(this);
+				stealthStatus = StealthStatus.HIDING_IMPOSSIBLE;
+				stealthStatusListeners.alertListeners();
+			}
+			break;
+		case HIDING_POSSIBLE:
+			if (canHide == false) {
+				stealthStatus = StealthStatus.HIDING_IMPOSSIBLE;
+				stealthStatusListeners.alertListeners();
+			}
+			break;
+		case HIDING_IMPOSSIBLE:
+			if (canHide) {
+				stealthStatus = StealthStatus.HIDING_POSSIBLE;
+				stealthStatusListeners.alertListeners();
+			}
+			break;
+		}
+	}
+	
+	public boolean canHide() {
+		if (dungeonQuery.canCharacterSeeMonster(this)) {
+			return super.canHide();
+		} else {
+			return true;
+		}
 	}
 }
 

@@ -414,13 +414,16 @@ public class Ability
 		Character releventCharacter = user.getReleventCharacter();
 		
 		if ((ability.invokingStrategy == INSTANT_ABILITY) || (ability.invokingStrategy == INSTANT_ONESHOT)) {
+			user.notHiding(releventCharacter);
 			dungeonEvents.invokeAbility(SequenceNumber.getNext(), releventCharacter, user, pos, ability);
 		} else if (ability.invokingStrategy == TARGETABLE_ABILITY) {
+			user.notHiding(releventCharacter);
 			dungeonEvents.rangedAttack(SequenceNumber.getNext(), releventCharacter, user, abilityType, damageType, pos);
 		}
 		
 		if (command == AbilityCommand.MELEE_ATTACK) {
-			dungeonEvents.meleeAttack(SequenceNumber.getNext(), user.getReleventCharacter(), user, pos);
+			user.notHiding(releventCharacter);
+			dungeonEvents.meleeAttack(SequenceNumber.getNext(), releventCharacter, user, pos);
 		}		
 	}
 	
