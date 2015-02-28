@@ -33,7 +33,6 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public String 		statText;
 	public int			statValue = 0;
 	public Color color;
-	public boolean isDefend;
 	public boolean isCover;
 	public boolean restrictFromHighlight;
 	public boolean isCooldown = false;
@@ -66,15 +65,11 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 			isRoughTerrain  = true;
 		}
 		
-		if (ability.hasTag(Ability.DEFEND_TAG)) {
-			isDefend = true;
-		}
-		
 		if (ability.hasTag(Ability.COVER_TAG)) {
 			isCover = true;
 		}
 		
-		if (isDefend || isCover) {
+		if (isCover || ability.hasTag(Ability.NO_HIGHLIGHT_TAG)) {
 			restrictFromHighlight = true;
 		}
 		

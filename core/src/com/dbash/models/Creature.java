@@ -403,6 +403,11 @@ public abstract class Creature implements IPresenterCreature
 			creatureIsStable = true;
 		}
 		
+		// If we get to here, we have to wait for player input
+		if (canBeSeen() == false) {
+			addAmbushAbility();
+		}
+		
 		return true;
 	}
 
@@ -634,6 +639,7 @@ public abstract class Creature implements IPresenterCreature
 	
 	protected boolean canChargeAcross(DungeonPosition position, boolean creatureCanCharge) {
 		boolean result = false;
+		
 		if (creatureCanCharge) {
 			if (dungeonQuery.getLocation(position).hasRoughTerrain()) {
 				result = creatureCanFly();
@@ -668,6 +674,11 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	protected boolean performCharge(DungeonPosition position, int direction, AtLocation targetType, Character releventCharacter) {
+		
+		if (canBeSeen() == false) {
+			return false; // hiding creatures dont charge.
+		}
+		
 		DungeonPosition furtherPosition = new DungeonPosition(position, direction);
 		if (dungeonQuery.whatIsAtLocation(furtherPosition) == targetType && canChargeAcross(position, canCharge)) {
 			dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, position, direction, Dungeon.MoveType.CHARGE_MOVE, null);
@@ -1277,12 +1288,12 @@ public abstract class Creature implements IPresenterCreature
 	static int	endIndex;
 
 	protected int calculateSizeDamageBonus() {
-		int bonus = (calculateMaxHealth() * calculateMaxHealth()) / 100;
+		int bonus = (calculateMaxHealth() * calculateMaxHealth()) / 150;
 		return bonus;
 	}
 	
 	protected int calculateSkillDamageBonus() {
-		int bonus = calculateAttackSkill() / 8;
+		int bonus = calculateAttackSkill() / 5;
 		return bonus;
 	}
 	
@@ -1324,7 +1335,11 @@ public abstract class Creature implements IPresenterCreature
 			
 			if (damage > 0) {
 				if (theAbility.isAimed()) {
-					damage += calculateSkillDamageBonus();
+					float mod = .75f;
+					if (hasAmbushActive()) {
+						mod = .4f;
+					}
+					damage += calculateSkillDamageBonus() * mod;
 				}
 
 				if (theAbility.isMagical()) {
@@ -1334,6 +1349,15 @@ public abstract class Creature implements IPresenterCreature
 		}
 		
 		return damage;
+	}
+	
+	public boolean hasAmbushActive() {
+		for (Ability ability : abilities) {
+			if (ability.hasTag(Ability.AMBUSH_TAG)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private static int readNextNum(String string) {
@@ -1660,6 +1684,20 @@ public abstract class Creature implements IPresenterCreature
 		} else {
 			return true;
 		}
+	}
+	
+	public void hiding(Character releventCharacter) {
+		Ability hidingAbility = new Ability(Ability.getIdForName("hiding"), null, 1, dungeonEvents, dungeonQuery);
+		addAbility(hidingAbility, null);
+		Vector<Ability.AbilityEffectType> tiptoe = new Vector<Ability.AbilityEffectType>();
+		tiptoe.add(Ability.AbilityEffectType.HIDING);
+		dungeonEvents.abilityAdded(SequenceNumber.getNext(), releventCharacter, tiptoe, mapPosition);
+		turnProcessor.characterEndsTurn(this);
+	}
+	
+	protected void addAmbushAbility() {
+		Ability ambushAbility = new Ability(Ability.getIdForName("ambush"), null, 1, dungeonEvents, dungeonQuery);
+		addAbility(ambushAbility, null);
 	}
 	
 	@Override

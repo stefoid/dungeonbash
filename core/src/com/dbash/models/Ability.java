@@ -49,6 +49,8 @@ public class Ability
 	public static String COVER_TAG = "cover";
 	public static String DASH_TAG = "dash";
 	public static String SETABLE_TAG = "setable";
+	public static String NO_HIGHLIGHT_TAG = "nohighlight";
+	public static String AMBUSH_TAG = "ambush";
 	
 	public enum AbilityType {
 		WEAPON(3),

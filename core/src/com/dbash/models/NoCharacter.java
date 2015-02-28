@@ -108,4 +108,8 @@ public class NoCharacter extends Character {
 	public boolean addAbility(Ability ability, Creature giver) {
 		return false;
 	}
+	
+	@Override
+	public void stealthToggleSelected() {
+	}
 }
