@@ -317,7 +317,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 					toLocation.updatePresenter();
 					
 					// Now is the time to check that any hiding character has not been discovered by this move
-					processCharacterStealth();
+					turnProcessor.creatureMoved();
 					
 					if (completeListener != null) {
 						completeListener.animEvent();
@@ -770,7 +770,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		return false;
 	}
 
-	private void processCharacterStealth() {
+	@Override
+	public void processCharacterStealth() {
 		for (ShadowMap shadowMap : shadowMaps.values()) {
 			Character character = shadowMap.owner;
 			character.testStealth();

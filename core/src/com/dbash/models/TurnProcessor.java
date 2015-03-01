@@ -152,7 +152,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	boolean lastPause = false;
-
+	boolean creatureMoved = false;
 	// This will process any automatic actions, such as an entire monster turn
 	// or any part of a character
 	// turn that can proceed without further player input.
@@ -161,6 +161,11 @@ public class TurnProcessor implements IPresenterTurnState {
 	// one of the player inputs that will cause the current characters turn to
 	// proceed, and then end.
 	public void gameLogicLoop() {
+		if (creatureMoved) {
+			creatureMoved = false;
+			dungeonEvents.processCharacterStealth();
+		}
+		
 		if (pauseTurnProcessing != lastPause) {
 			// if (LOG)
 			// Logger.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
@@ -171,7 +176,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			processNextCreature();
 		}
 	}
-
+	
 	// The TurnProcessor iterates over the entire list, giving each creature a
 	// chance to act.
 	// If there are falling characters, the first falling character in the queue
@@ -865,6 +870,10 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 	}
 
+	public void creatureMoved() {
+		creatureMoved = true;
+	}
+	
 	@Override
 	public void infoSelected() {
 		// app.quit();
