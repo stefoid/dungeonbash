@@ -1075,7 +1075,7 @@ public class Ability
 			// stealth related
 			if (testEffectType(i, AbilityCommand.MODIFY_STEALTH)) {
 				if (ability.executeParam1[i] > 0) {
-					abilityEffectTypeHash.add(AbilityEffectType.ATTACK);
+					abilityEffectTypeHash.add(AbilityEffectType.HIDING);
 				} else {
 					abilityEffectTypeHash.add(AbilityEffectType.CURSE);
 				}

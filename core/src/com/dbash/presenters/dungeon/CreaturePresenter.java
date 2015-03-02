@@ -6,6 +6,7 @@ import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
 import com.dbash.models.Map;
+import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
@@ -535,40 +536,45 @@ public class CreaturePresenter {
 	
 	public void creatureFound(int sequenceNumber, Creature foundCreature, DungeonPosition foundPosition) {
 		if (LOG) L.log("creatureFound called for :" + this);
-		AnimationView foundAnim = null;
+		final Rect fromRect = makeDrawingRectFromPosition(foundPosition);
+		final Rect toRect = new Rect(fromRect);
+		int cycles = 8;
+		final float totalPeriod = DungeonAreaPresenter.abilityPeriod/(cycles+2);
 		
+		final AnimationView hideOp = new AnimationView(gui, "SNEAK_IMAGE", fromRect, fromRect, 1f, 0.3f, totalPeriod, cycles, null);
+		hideOp.animType = AnimOp.AnimType.ABILITY_ADD;
 		
-		define found anim here
-		
-		foundAnim.onStart(new IAnimListener() {
+		hideOp.onPercentComplete(50, new IAnimListener() {
 			public void animEvent() {
-				gui.audio.playSound(Audio.DEATH);
+				hideOp.setAlpha(0f, 0f, totalPeriod/2);
 			}
 		});
 		
-		configureAnimation(foundAnim);
-		foundAnim.sequenceNumber = sequenceNumber;
-		foundAnim.animType = AnimOp.AnimType.DEATH;
-		model.animQueue.chainConcurrentWithSn(foundAnim, false);
+		hideOp.onStart(new IAnimListener() {
+			public void animEvent() {
+				gui.audio.playSound(Audio.RESIST);
+			}
+		});
+		
+		model.animQueue.chainPlayImmediate(hideOp);
 	}
 	
 	public void creatureHides(int sequenceNumber, Creature hidingCreature, DungeonPosition hidingPosition) {
-		if (LOG) L.log("creatureFound called for :" + this);
-		AnimationView hidingAnim = null;
+		if (LOG) L.log("creatureHides called for :" + this);
 		
+		final Rect fromRect = makeDrawingRectFromPosition(hidingPosition);
+		final Rect toRect = new Rect(fromRect);
 		
-		define hiding anim here
+		AnimationView foundOp = new AnimationView(gui, "SNEAK_IMAGE", fromRect, fromRect, 1f, 0.3f, DungeonAreaPresenter.abilityPeriod, 1, null);
+		foundOp.animType = AnimOp.AnimType.ABILITY_ADD;
 		
-		hidingAnim.onStart(new IAnimListener() {
+		foundOp.onStart(new IAnimListener() {
 			public void animEvent() {
-				gui.audio.playSound(Audio.DEATH);
+				gui.audio.playSound(Audio.HIDING);
 			}
 		});
 		
-		configureAnimation(hidingAnim);
-		hidingAnim.sequenceNumber = sequenceNumber;
-		hidingAnim.animType = AnimOp.AnimType.DEATH;
-		model.animQueue.chainConcurrentWithSn(hidingAnim, false);
+		model.animQueue.chainPlayImmediate(foundOp);
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
