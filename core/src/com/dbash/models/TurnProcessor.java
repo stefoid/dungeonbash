@@ -152,7 +152,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	boolean lastPause = false;
-	boolean creatureMoved = false;
+	private boolean creatureMoved = false;
 	// This will process any automatic actions, such as an entire monster turn
 	// or any part of a character
 	// turn that can proceed without further player input.
@@ -270,6 +270,7 @@ public class TurnProcessor implements IPresenterTurnState {
 							firstCharToDrop = false;
 						}
 						charactersFallingIn.removeElement(currentCreature); // no longer falling
+						currentCreature.stealthStatus = StealthStatus.HIDING;
 						dungeonEvents.fallIntoLevel(SequenceNumber.getNext(),
 								(Character) currentCreature, level); // when a character falls in, it get a chance to act (wait for player control)
 					}

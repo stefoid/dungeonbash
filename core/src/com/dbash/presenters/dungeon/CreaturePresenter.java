@@ -377,13 +377,13 @@ public class CreaturePresenter {
 	
 	// when falling into a level, we dont have anywhere visible to come from, so we turn off static drawing of this
 	// creature as soon as we get this event, then turn it back on again after the animation is completed.
-	public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level) {
+	public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level,  IAnimListener completeListener) {
 		visualState = VisualState.SHOW_NOTHING;
 		Rect toRect = makeDrawingRectFromPosition(fallingCharacter.getPosition());
 		Rect fromRect = new Rect(toRect);
 		fromRect.y += toRect.height*4;
 		
-		AnimationView fallAnim = new AnimationView(gui, getFullName(name, "walk", DungeonPosition.SOUTH), fromRect, toRect, 0.1f, 1f, DungeonAreaPresenter.fallPeriod, 1,null);
+		AnimationView fallAnim = new AnimationView(gui, getFullName(name, "walk", DungeonPosition.SOUTH), fromRect, toRect, 0.1f, 1f, DungeonAreaPresenter.fallPeriod, 1, completeListener);
 
 		configureAnimation(fallAnim);
 		updateToStaticWhenStopped(fallAnim, fallingCharacter.getPosition(), DungeonPosition.SOUTH);
@@ -533,24 +533,43 @@ public class CreaturePresenter {
 		model.animQueue.drawBeneath(deathAnim);
 	}
 	
-//	public void creatureFound(int sequenceNumber, Creature foundCreature, DungeonPosition foundPosition) {
-//		if (LOG) L.log("creatureFound called for :" + this);
-//		AnimationView foundAnim = null;
-//		
-//		
-//		define found anim here
-//		
-//		foundAnim.onStart(new IAnimListener() {
-//			public void animEvent() {
-//				gui.audio.playSound(Audio.DEATH);
-//			}
-//		});
-//		
-//		configureAnimation(foundAnim);
-//		foundAnim.sequenceNumber = sequenceNumber;
-//		foundAnim.animType = AnimOp.AnimType.DEATH;
-//		model.animQueue.chainConcurrentWithSn(foundAnim, false);
-//	}
+	public void creatureFound(int sequenceNumber, Creature foundCreature, DungeonPosition foundPosition) {
+		if (LOG) L.log("creatureFound called for :" + this);
+		AnimationView foundAnim = null;
+		
+		
+		define found anim here
+		
+		foundAnim.onStart(new IAnimListener() {
+			public void animEvent() {
+				gui.audio.playSound(Audio.DEATH);
+			}
+		});
+		
+		configureAnimation(foundAnim);
+		foundAnim.sequenceNumber = sequenceNumber;
+		foundAnim.animType = AnimOp.AnimType.DEATH;
+		model.animQueue.chainConcurrentWithSn(foundAnim, false);
+	}
+	
+	public void creatureHides(int sequenceNumber, Creature hidingCreature, DungeonPosition hidingPosition) {
+		if (LOG) L.log("creatureFound called for :" + this);
+		AnimationView hidingAnim = null;
+		
+		
+		define hiding anim here
+		
+		hidingAnim.onStart(new IAnimListener() {
+			public void animEvent() {
+				gui.audio.playSound(Audio.DEATH);
+			}
+		});
+		
+		configureAnimation(hidingAnim);
+		hidingAnim.sequenceNumber = sequenceNumber;
+		hidingAnim.animType = AnimOp.AnimType.DEATH;
+		model.animQueue.chainConcurrentWithSn(hidingAnim, false);
+	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.
 	private Rect makeDrawingRectFromPosition(DungeonPosition position) {

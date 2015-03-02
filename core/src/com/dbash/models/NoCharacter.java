@@ -17,7 +17,7 @@ public class NoCharacter extends Character {
 		@Override
 		public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType,  float moveTime, IAnimListener animCompleteListener) {}
 		@Override
-		public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level) {}
+		public void fallIntoLevel(int sequenceNumber, final Character fallingCharacter, int level, IAnimListener listener) {}
 		@Override
 		public void goDownStairs(int sequenceNumber, Character actingCreature, IAnimListener completeListener) {}
 		@Override
@@ -43,12 +43,10 @@ public class NoCharacter extends Character {
 	}
 	
 	public void targetTileSelected(DungeonPosition postition) {
-		
 	}
 	
 	@Override
-	public boolean isPlayerCharacter()
-	{
+	public boolean isPlayerCharacter() {
 		return false;
 	}
 	
@@ -57,17 +55,14 @@ public class NoCharacter extends Character {
 	}
 	
 	public void movementGesture(int direction, DungeonPosition postition) {
-
 	}
 
 	@Override
 	public void onChangeToAbilitySelectionList(UIInfoListener listener) {
-		
 	};
 	
 	@Override
 	public void onChangeToCharacterStats(UIInfoListener listener) {
-		
 	};
 	
 	@Override
@@ -92,7 +87,6 @@ public class NoCharacter extends Character {
 	
 	@Override
 	public void defending() {
-	
 	}
 	
 	@Override

@@ -197,9 +197,9 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
-	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
+	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level,  IAnimListener completeListener) {
 		CreaturePresenter creaturePresenter = fallingCharacter.getCreaturePresenter(gui, model, mapPresenter);
-		creaturePresenter.fallIntoLevel(sequenceNumber, fallingCharacter, level);
+		creaturePresenter.fallIntoLevel(sequenceNumber, fallingCharacter, level, completeListener);
 	}
 	
 	@Override
@@ -210,9 +210,15 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	
 	@Override
 	public void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature, DungeonPosition foundPosition) {
-		abilityResisted(sequenceNumber, releventCharacter, AbilityEffectType.HIDING, foundPosition);
-		//		CreaturePresenter creaturePresenter = foundCreature.getCreaturePresenter(gui, model, mapPresenter);
-//		creaturePresenter.creatureFound(sequenceNumber, foundCreature, foundPosition);
+		//abilityResisted(sequenceNumber, releventCharacter, AbilityEffectType.HIDING, foundPosition);
+		CreaturePresenter creaturePresenter = foundCreature.getCreaturePresenter(gui, model, mapPresenter);
+		creaturePresenter.creatureFound(sequenceNumber, foundCreature, foundPosition);
+	}
+	
+	@Override
+	public void creatureHides(int sequenceNumber, Character releventCharacter, Creature hidingCreature, DungeonPosition hidingPosition) {
+		CreaturePresenter creaturePresenter = hidingCreature.getCreaturePresenter(gui, model, mapPresenter);
+		creaturePresenter.creatureHides(sequenceNumber, hidingCreature, hidingPosition);
 	}
 	
 	@Override
@@ -638,5 +644,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public void clearAnimations() {
 		animQueue.clearAll();
 	}
+
 }
 

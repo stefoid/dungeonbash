@@ -66,8 +66,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	Character characterHavingTurn;
 	Explosion explosion;
 	
-	public Dungeon(boolean newGame)
-	{	
+	public Dungeon(boolean newGame) {	
 		initLevel();
 		map = new Map();  // empty map to start
 		shadowMaps = new HashMap<Character, ShadowMap>();
@@ -146,6 +145,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			shadowMap.setMap(map, currentFocus, 5);
 			setMapFocus(currentFocus, shadowMap);
 		}
+		
+		processCharacterStealth();
 	}
 	
 	protected void initLevel() {
@@ -156,8 +157,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	
 	@Override
-	public void createLevel(TurnProcessor turnProcessor, int level)
-	{
+	public void createLevel(TurnProcessor turnProcessor, int level) {
 		this.turnProcessor = turnProcessor;
 		if (L.DEBUG) {
 			currentLevel = L.LEVEL;
@@ -245,7 +245,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		dungeonLocation.level = currentLevel;
 		Monster monster = createMonster(dungeonLocation);
 		putMonsterOnMap(monster, dungeonLocation);
-
 	}
 
 	protected void putMonsterOnMap(Monster monster, DungeonPosition dungeonPosition) {
@@ -450,7 +449,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		fallingCharacter.setPosition(map.startPoint);
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
-			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level);
+			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level, new IAnimListener() {
+				public void animEvent() {
+					turnProcessor.creatureMoved();
+				}
+			});
 		}
 	}
 
@@ -499,6 +502,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, deathType, new IAnimListener () {
 				public void animEvent() {
 					map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
+					turnProcessor.creatureMoved();
 				}
 			});
 		} else {
@@ -510,35 +514,22 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	@Override
 	public void creatureFound(int sequenceNumber, Character releventCharacter, Creature theFoundCreature) {
-
 		if (LOG) L.log("releventCharacter: %s", releventCharacter); 
-		final DungeonPosition foundPosition = theFoundCreature.getPosition();
-		final Creature foundCreature = theFoundCreature;
-		
-		boolean inLOS = false;
-		if (theFoundCreature instanceof Character) {
-			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
-			inLOS = true;
-		} else {
-			if (releventCharacter != null) {  // we use currently focussed here because relevant character = closest character
-				inLOS = positionIsInLOSOfCharacter(releventCharacter, foundPosition);
-			}
-		}
-		
-		if (dungeonEventListener != null && releventCharacter != null && inLOS) {
+
+		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " creatureFound");
-			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, theFoundCreature, foundPosition);
-//			, deathType, new IAnimListener () {
-//				public void animEvent() {
-//					map.location(foundCreature.getPosition()).setCreatureAndUpdatePresenter(null);
-//				}
-//			});
-		} 
-//		else {
-//			map.location(foundCreature.getPosition()).setCreatureAndUpdatePresenter(null);
-//			map.removeLight(foundCreature.light);
-//			mapEventListener.updateMapPresentation();
-//		}
+			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, theFoundCreature, theFoundCreature.getPosition());
+		}
+	}
+	
+	@Override
+	public void creatureHides(int sequenceNumber, Character releventCharacter, Creature hidingCreature) {
+		if (LOG) L.log("releventCharacter: %s", releventCharacter); 
+
+		if (dungeonEventListener != null && releventCharacter != null) {
+			if (LOG) L.log("SN:"+sequenceNumber + " creatureFound");
+			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, hidingCreature, hidingCreature.getPosition());
+		}
 	}
 
 	@Override

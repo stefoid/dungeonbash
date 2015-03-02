@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.presenters.dungeon.CreaturePresenter;
 
 
 //
@@ -67,7 +68,9 @@ public interface IDungeonEvents {
 	void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature);
 
 	void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature);
-	
+
+	public void creatureHides(int sequenceNumber, Character releventCharacter, Creature hidingCreature);
+
 	//////////////////////////
 	// Abilities use and effects = These can be broken down to save Dungeon from having to interpret.
 	/////////////////////////

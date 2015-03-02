@@ -182,6 +182,11 @@ public class AnimQueue {
 		});
 	}
 	
+	public void chainPlayImmediate(final AnimOp thisOp) {
+		add(thisOp, false);
+		thisOp.startPlaying();
+	}
+	
 	// returns the last non-completed op in the queue
 	public AnimOp getLast() {
 		AnimOp op = null;
