@@ -621,13 +621,17 @@ public abstract class Creature implements IPresenterCreature
 		if (dungeonQuery != null && creatureCanFly() == false && creatureSize != CreatureSize.HUGE) {
 			RoughTerrainType roughTerrainType = dungeonQuery.getTerrainAtLocation(mapPosition);
 			if (roughTerrainType != null) {
+				String size = "medium";
+				if (creatureSize == CreatureSize.SMALL) {
+					size = "small";
+				}
 				switch (roughTerrainType) {
 				case BONES:
-					Ability bones = new Ability(Ability.getIdForName("cover (bones)"), this, 1, dungeonEvents, dungeonQuery);
+					Ability bones = new Ability(Ability.getIdForName("cover (bones) "+size), this, 1, dungeonEvents, dungeonQuery);
 					addAbility(bones, null);
 					break;
 				case ROCKS:
-					Ability rocks = new Ability(Ability.getIdForName("cover (rocks)"), this, 1, dungeonEvents, dungeonQuery);
+					Ability rocks = new Ability(Ability.getIdForName("cover (rocks) "+size), this, 1, dungeonEvents, dungeonQuery);
 					addAbility(rocks, null);
 					break;
 				default:
@@ -791,11 +795,6 @@ public abstract class Creature implements IPresenterCreature
 			if (newDamage < 1) {
 				newDamage = 0;
 			}
-
-//			if (newDamage > 0) {
-//				// give attacker the experience for causing damage
-//				attacker.addExperience(getExpValue() / 50 + 1, false);
-//			}
 			
 			if (newDamage > 99)
 				newDamage = 99;
@@ -1135,27 +1134,8 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	public int calculateDefenceAgainstMissilesSkill() {
-		int defence = calculateDefenceSkill();
-		if (canFly == false && creatureSize != CreatureSize.HUGE) {
-			int defenceValue = 134;
-			if (creatureSize == CreatureSize.SMALL) {
-				defenceValue = 167;
-			}
-			
-			RoughTerrainType terrain = dungeonQuery.getTerrainAtLocation(mapPosition);
-			if (terrain != null) {
-					switch (terrain) {
-					case BONES:
-						defence = (defence * defenceValue) / 100;
-						break;
-					case ROCKS:
-						defence = (defence * defenceValue) / 100;
-						break;
-					default:
-						break;
-				}
-			}
-		}
+		int defence = calculateDefenceSkill();	
+		defence = modifyValue(AbilityCommand.MODIFY_MISSILE_DEFENCE, defence);
 		if (LOG) L.log("missile defence: %s", defence); 
 		return defence;
 	}
@@ -1488,19 +1468,6 @@ public abstract class Creature implements IPresenterCreature
 
 	protected int reduceDamage(int damageType, int damageValue) {
 		int damage = damageValue * (100 - modifyValue(damageType, 0)) / 100;
-		// HACK !
-		if (damageType == AbilityCommand.RESIST_BURST && damage < damageValue) {
-			switch (creatureSize) {
-				case SMALL:
-					damage = (damage * 76) / 100;
-					break;
-				case HUGE:
-					damage = damageValue;  // no effect
-					break;
-				default:
-					break;
-			}
-		}
 		return damage;
 	}
 	
@@ -1520,8 +1487,7 @@ public abstract class Creature implements IPresenterCreature
 		AbilityCommand command = new AbilityCommand(AbilityCommand.MELEE_ATTACK, 0, getCreature().head, getCreature().hands, getCreature().humanoid);
 
 		// first try to attack with the currently selected melee ability
-		for (int i = 0; !attackComplete && i < abilities.size(); i++)
-		{
+		for (int i = 0; !attackComplete && i < abilities.size(); i++) {
 			// We dont tell the dungeon about the attack here, becaues the Ability will do that...
 			attackComplete = abilities.get(i).executeCommandTarget(command, target, target.getPosition(), this);
 		}
