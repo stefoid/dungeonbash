@@ -91,7 +91,9 @@ public class CreaturePresenter {
 		} else {
 			this.visualState = VisualState.SHOW_STATIC; 
 			light = creature.getLight();
-			mapPresenter.addLight(light);
+			if (light != null) {
+				mapPresenter.addLight(light);
+			}
 		}
 		this.area = new Rect(0,0,0,0);
 		this.currentVisualPosition = creature.getPosition();
@@ -99,16 +101,13 @@ public class CreaturePresenter {
 		updateHighlightAnimation(currentVisualPosition);
 		setStaticImage(DungeonPosition.SOUTH);
 		updateStaticImageArea();
-		
 	}
 	
 	public CreaturePresenter(){};
 	
 	public void resume() {
 		this.visualState = VisualState.SHOW_STATIC;
-		if (light != null) {
-			mapPresenter.addLight(light);
-		}
+		processLight();
 	}
 	
 	private void updateHighlightAnimation(DungeonPosition position) {
@@ -711,6 +710,18 @@ public class CreaturePresenter {
 			return 1f;
 		} else {
 			return HIDING_ALPHA;
+		}
+	}
+	
+	public void lightChanged() {
+		processLight();
+	}
+	
+	private void processLight() {
+		mapPresenter.removeCreatureLightFromMap(light);
+		light = creature.getLight();
+		if (light != null) {
+			mapPresenter.addLight(light);
 		}
 	}
 	

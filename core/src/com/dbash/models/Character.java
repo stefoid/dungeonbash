@@ -1111,6 +1111,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	public void resume(Map map) {
 		shadowMap.setMap(map, mapPosition, 5);
 		creaturePresenter.resume();
+		testStealth();
 	}
 
 
@@ -1157,8 +1158,24 @@ public class Character extends Creature implements IPresenterCharacter {
 		stealthStatusListeners.alertListeners();
 	}
 	
+	private boolean fallComplete = true;
+	
+	public void fallStarted() {
+		fallComplete = false;
+	}
+	
+	public void fallComplete() {
+		fallComplete = true;
+	}
+	
 	public void testStealth() {
-		boolean canHide = canHide();
+		if (!fallComplete) {
+			return;
+		}
+		
+		boolean canBeSeenByMonster = dungeonQuery.canCharacterSeeMonster(this);
+		boolean canHide = canHide(canBeSeenByMonster);
+		
 		switch (stealthStatus) {
 		case HIDING:
 			if (canHide == false) {
@@ -1180,14 +1197,39 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 			break;
 		}
+		
+		if (stealthStatus != StealthStatus.HIDING && canBeSeenByMonster) {
+			setCharacterLight(true);
+		} else {
+			setCharacterLight(false);
+		}
 	}
 	
-	public boolean canHide() {
-		if (dungeonQuery.canCharacterSeeMonster(this)) {
+	public boolean canHide(boolean canBeSeenByMonster) {
+		if (canBeSeenByMonster) {
 			return super.canHide();
 		} else {
 			return true;
 		}
+	}
+	
+	private void setCharacterLight(boolean on) {
+		if (on) {
+			if (light == null) {
+				light = new Light(mapPosition, Light.WALL_TORCH_RANGE, Light.SPOTTED_CHARCTER_LIGHT_STRENGTH, false);
+				creaturePresenter.lightChanged();
+			}
+		} else {
+			if (light != null) {
+				light = null;
+				creaturePresenter.lightChanged();
+			}
+		}
+	}
+	
+	@Override
+	public Light getLight() {
+		return light;
 	}
 }
 

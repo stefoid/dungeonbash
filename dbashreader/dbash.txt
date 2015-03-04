@@ -29,8 +29,8 @@
 +"rocks,rough.slowed,-1,0,0,2,0,0,0,1,1,0,10,1,-6,0,0,0,*"// rocks: VALUE MODIFIER,
 +"cover (bones) medium,ia.cover,-1,0,0,-1,0,0,0,1,0,0,24,7,150,0,0,0,25,1,34,0,0,0,*"// cover (bones) medium: VALUE MULTIPLIER,VALUE MODIFIER,
 +"cover (bones) small,ia.cover,-1,0,0,-1,0,0,0,1,0,0,24,7,175,0,0,0,25,1,50,0,0,0,*"// cover (bones) small: VALUE MULTIPLIER,VALUE MODIFIER,
-+"cover (rocks) medium,ia.cover,-1,0,0,-1,0,0,0,1,0,0,24,7,150,0,0,0,25,1,34,0,0,0,22,1,5,0,0,0,*"// cover (rocks) medium: VALUE MULTIPLIER,VALUE MODIFIER,VALUE MODIFIER,
-+"cover (rocks) small,ia.cover,-1,0,0,-1,0,0,0,1,0,0,24,7,175,0,0,0,25,1,50,0,0,0,22,1,10,0,0,0,*"// cover (rocks) small: VALUE MULTIPLIER,VALUE MODIFIER,VALUE MODIFIER,
++"cover (rocks) medium,ia.cover,-1,0,0,-1,0,0,0,1,0,0,24,7,150,0,0,0,25,1,34,0,0,0,22,1,6,0,0,0,*"// cover (rocks) medium: VALUE MULTIPLIER,VALUE MODIFIER,VALUE MODIFIER,
++"cover (rocks) small,ia.cover,-1,0,0,-1,0,0,0,1,0,0,24,7,175,0,0,0,25,1,50,0,0,0,22,1,12,0,0,0,*"// cover (rocks) small: VALUE MULTIPLIER,VALUE MODIFIER,VALUE MODIFIER,
 +"hole,rough.hole,-1,0,0,-1,0,0,0,1,1,0,*"// hole: 
 +"smash,aa,4,0,3,-1,0,0,1,1,1,0,8,3,1,3,24,0,7,5,0,0,0,0,9,6,7,39,0,0,*"// smash: ATTACKER,DESELECT,SELECT,
 +"headbutt,aa,4,0,3,-1,0,0,1,1,1,0,8,3,1,3,24,0,7,5,0,0,0,0,9,6,7,39,0,0,*"// headbutt: ATTACKER,DESELECT,SELECT,

@@ -128,8 +128,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		// This is how we tell the map that Characters are associated with it.
 		for (Character character : charactersOnMap) {
-			character.resume(map);
 			shadowMaps.put(character, character.shadowMap);
+			character.resume(map);
 		}
 		
 		// focus the map on the currently focused character
@@ -145,8 +145,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			shadowMap.setMap(map, currentFocus, 5);
 			setMapFocus(currentFocus, shadowMap);
 		}
-		
-		processCharacterStealth();
 	}
 	
 	protected void initLevel() {
@@ -177,7 +175,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster mon1 = new Monster(Creature.getIdForName("giant sewer rat"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				Monster mon1 = new Monster(Creature.getIdForName("gnome"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = mon1;
 				//mon1.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(mon1);
@@ -441,16 +439,18 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level) {
+	public void fallIntoLevel(int sequenceNumber,final Character fallingCharacter, int level) {
 		if (LOG) L.log("SN:%s, fallingCharacter: %s",sequenceNumber, fallingCharacter);
 		
 		map.location(map.startPoint).setCreatureAndUpdatePresenter(fallingCharacter);
 		fallingCharacter.shadowMap.setMap(map, map.startPoint, 5);
 		fallingCharacter.setPosition(map.startPoint);
+		fallingCharacter.fallStarted();
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level, new IAnimListener() {
 				public void animEvent() {
+					fallingCharacter.fallComplete();
 					turnProcessor.creatureMoved();
 				}
 			});
