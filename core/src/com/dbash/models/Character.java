@@ -1176,8 +1176,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			return;
 		}
 		
-		boolean canBeSeenByMonster = dungeonQuery.canCharacterSeeMonster(this);
-		boolean canHide = canHide(canBeSeenByMonster);
+		boolean canHide = canHide();
 		
 		switch (stealthStatus) {
 		case HIDING:
@@ -1201,15 +1200,15 @@ public class Character extends Creature implements IPresenterCharacter {
 			break;
 		}
 		
-		if (stealthStatus != StealthStatus.HIDING && canBeSeenByMonster) {
+		if (stealthStatus != StealthStatus.HIDING && inLOSOfMonster) {
 			setCharacterLight(true);
 		} else {
 			setCharacterLight(false);
 		}
 	}
 	
-	public boolean canHide(boolean canBeSeenByMonster) {
-		if (canBeSeenByMonster) {
+	public boolean canHide() {
+		if (inLOSOfMonster) {
 			return super.canHide();
 		} else {
 			return true;
@@ -1235,8 +1234,12 @@ public class Character extends Creature implements IPresenterCharacter {
 		return light;
 	}
 	
-	public void  setInLOSOfMosnter(boolean val) {
+	public void  setInLOSOfMonster(boolean val) {
 		inLOSOfMonster = val;
+	}
+	
+	public boolean  getInLOSOfMonster() {
+		return inLOSOfMonster;
 	}
 	
 	public void setAmClosestToMonster(boolean val) {

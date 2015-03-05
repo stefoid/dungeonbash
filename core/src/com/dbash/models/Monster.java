@@ -53,7 +53,7 @@ public class Monster extends Creature
 		turnProcessor.gameStats.monsterKilled();
 		
 		// if a monster dies in a dungeon, and there is no character there to see it, did it really die?
-		Character observer = dungeonQuery.findClosestCharacterInSight(mapPosition, this, true);
+		Character observer = dungeonQuery.findClosestCharacterInSight(mapPosition, this, true, false);
 		turnProcessor.monsterDied(this, observer);
 		dungeonEvents.waitingForAnimToComplete(SequenceNumber.getCurrent(), new IAnimListener() {
 			public void animEvent() {
@@ -108,7 +108,7 @@ public class Monster extends Creature
 		// if a monster is fully fit and has no temporary abilities, then we can skip its
 		// turn if it is far from any character to speed up turn processing in lower levels.
 		if (creatureIsStable) {
-			if (turnProcessor.amFarFromCharacters(mapPosition)) {
+			if (isNearCharacter == false) {
 				return true;
 			}
 		}
@@ -146,9 +146,6 @@ public class Monster extends Creature
 
 		SequenceNumber.bumpSequenceNumberforNewCharacter();
 		
-		// Find the closest character
-		 closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false);
-
 		// 1.  So if we have a character in LOS, we can act towards it.
 		if (null != closestCharacter)
 		{
@@ -282,7 +279,7 @@ public class Monster extends Creature
 				boolean specialMove = false;
 				// This could be a random move that just happens to end up in a character LOS.
 				if (releventCharacter == null) {
-					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this, true);
+					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this, true, false);
 				} else {
 					specialMove = performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter);
 					if (!specialMove) {
@@ -378,7 +375,7 @@ public class Monster extends Creature
 	
 	@Override 
 	public void setReleventCharacter() {
-		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, true);
+		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, true, false);
 	}
 
 	// the monster version of this function simply returns true if there are any temproary 
@@ -393,34 +390,11 @@ public class Monster extends Creature
 	}
 	
 	// Determine if a character is visible and/or the closest
-	public void checkProximityToCharacters(Set<Character> characters) {
+	public void findClosestCharacter(Set<Character> characters) {
 		for (Character character : characters) {
 			ShadowMap shadowMap = character.shadowMap;
-			
+			closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false, true);
 		}
-	}
-	
-	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature, boolean includeHidden) {
-		Location location = map.location(position);
-		int rangeOfClosestChar = 100;
-		Character closestVisibleChar = null;
-		boolean  seen;
-		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
-		for (ShadowMap shadowMap : shadowMaps.values()) {
-			if (shadowMap.locationIsVisible(location)) {
-				Character character = shadowMap.owner;
-				seen = includeHidden || character.canBeSeen();
-				if (character != null && seen) {
-					int d = position.distanceToSpecial(character.getPosition());
-					if (d < rangeOfClosestChar && character.isAlive()) {
-						rangeOfClosestChar = d;
-						closestVisibleChar = character;
-					}
-				}
-			}
-		}
-		
-		return closestVisibleChar;
 	}
 	
 	public void persist(ObjectOutputStream out) throws IOException {

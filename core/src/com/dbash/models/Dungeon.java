@@ -316,7 +316,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 					toLocation.updatePresenter();
 					
 					// Now is the time to check that any hiding character has not been discovered by this move
-					turnProcessor.creatureMoved();
+					processCreatureMovement();
 					
 					if (completeListener != null) {
 						completeListener.animEvent();
@@ -453,7 +453,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level, new IAnimListener() {
 				public void animEvent() {
 					fallingCharacter.fallComplete();
-					turnProcessor.creatureMoved();
+					processCreatureMovement();
 				}
 			});
 		}
@@ -505,7 +505,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, deathType, new IAnimListener () {
 				public void animEvent() {
 					map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
-					turnProcessor.creatureMoved();
+					processCreatureMovement();
 				}
 			});
 		} else {
@@ -698,7 +698,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 
 	@Override
-	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature, boolean includeHidden) {
+	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature, boolean includeHidden, boolean setCharacterProx) {
 		Location location = map.location(position);
 		int rangeOfClosestChar = 100;
 		Character closestVisibleChar = null;
@@ -709,6 +709,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				Character character = shadowMap.owner;
 				seen = includeHidden || character.canBeSeen();
 				if (character != null && seen) {
+					if (setCharacterProx) {
+						character.setInLOSOfMonster(true);
+					}
 					int d = position.distanceToSpecial(character.getPosition());
 					if (d < rangeOfClosestChar && character.isAlive()) {
 						rangeOfClosestChar = d;
@@ -718,6 +721,9 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 		}
 		
+		if (setCharacterProx) {
+			closestVisibleChar.setAmClosestToMonster(true);
+		}
 		return closestVisibleChar;
 	}
 
@@ -744,25 +750,14 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public Character leaderModeOK() {
-		// TODO inefficient really.
 		for (Character character : shadowMaps.keySet()) {
-			ShadowMap shadowMap = shadowMaps.get(character);
-			if (shadowMap.monsterVisible()) {
+			if (character.getInLOSOfMonster()) {
 				return character;
 			}
 		}
 		
 		return null;
 	}
-	
-//	@Override
-//	public boolean canCharacterSeeMonster(Character character) {
-//		ShadowMap shadowMap = shadowMaps.get(character);
-//		if (shadowMap.monsterVisible()) {
-//			return true;
-//		}
-//		return false;
-//	}
 	
 //	4) this function now goes through all monsters and sets their ‘isNearCharacter’ flag.
 //	5) if isNearCharacter is true, which will be a smaller subset of all monsters, it updates their 
@@ -777,16 +772,23 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 //	  if it also determines the closest character it can see it sets amClosestToMonster = true;
 	private void processCreatureMovement() {
 		Set<Character> characters = shadowMaps.keySet();
+		// reset flags
+		for (Character character : characters) {
+			character.setAmClosestToMonster(false);
+			character.setInLOSOfMonster(false);
+		}
+		
 		for (Monster monster : mobs) {
 			if (isFarFromCharacters(characters, monster.getPosition())) {
 				monster.setIsNearCharacter(false);
 			} else {
 				monster.setIsNearCharacter(true);
-				monster.checkProximityToCharacters(characters);
+				monster.findClosestCharacter(characters);
 			}
 		}
+		
+		turnProcessor.creatureMoved();
 	}
-	
 
 	// returns true if the position passed in is far from all characters
 	// and far from the stairs (if a creature skips a turn whilst camping on the
