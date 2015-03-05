@@ -110,6 +110,9 @@ public class Character extends Creature implements IPresenterCharacter {
 	boolean isAlive = true;
 	private Complaint mood = new Complaint();
 	
+	boolean inLOSOfMonster;
+	boolean amClosestToMonster;
+	
 	// INTERFACE
 	public Character(int creatureId, DungeonPosition p, int charNumber, IDungeonEvents dungeonEvents, 
 			IDungeonQuery dungeonQuery, TurnProcessor turnProcessor) {
@@ -1231,6 +1234,15 @@ public class Character extends Creature implements IPresenterCharacter {
 	public Light getLight() {
 		return light;
 	}
+	
+	public void  setInLOSOfMosnter(boolean val) {
+		inLOSOfMonster = val;
+	}
+	
+	public void setAmClosestToMonster(boolean val) {
+		amClosestToMonster = val;
+	}
+
 }
 
 ///**

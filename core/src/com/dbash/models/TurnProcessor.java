@@ -135,22 +135,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 	}
 
-	// returns true if the position passed in is far from all characters
-	// and far from the stairs (if a creature skips a turn whilst camping on the
-	// stairs, then the next character cannot
-	// fall-in)
-	public boolean amFarFromCharacters(DungeonPosition position) {
-		for (Character character : allCharacters) {
-			if (position.distanceTo(character.getPosition()) < 5 + 3) {
-				return false;
-			}
-			if (dungeonQuery.isCreatureNearEntrance(position)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	boolean lastPause = false;
 	private boolean creatureMoved = false;
 	// This will process any automatic actions, such as an entire monster turn

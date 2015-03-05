@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.util.L;
@@ -21,6 +22,7 @@ public class Monster extends Creature
 	private int					moveDirection				= DungeonPosition.WEST;				
 	private Ability				rangedAttack;	 				// ranged attack to use
 	private Character			closestCharacter;				// character  to act against
+	private boolean 			isNearCharacter;
 
 	private DungeonPosition		LastCharacterPos			= new DungeonPosition(0, 0, 0, 0);
 	
@@ -145,7 +147,7 @@ public class Monster extends Creature
 		SequenceNumber.bumpSequenceNumberforNewCharacter();
 		
 		// Find the closest character
-		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false);
+		 closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false);
 
 		// 1.  So if we have a character in LOS, we can act towards it.
 		if (null != closestCharacter)
@@ -390,9 +392,47 @@ public class Monster extends Creature
 		return false;
 	}
 	
+	// Determine if a character is visible and/or the closest
+	public void checkProximityToCharacters(Set<Character> characters) {
+		for (Character character : characters) {
+			ShadowMap shadowMap = character.shadowMap;
+			
+		}
+	}
+	
+	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature, boolean includeHidden) {
+		Location location = map.location(position);
+		int rangeOfClosestChar = 100;
+		Character closestVisibleChar = null;
+		boolean  seen;
+		// Each entry in this list of shadowmaps is a character that can see the monster, and hence, vice-versa.
+		for (ShadowMap shadowMap : shadowMaps.values()) {
+			if (shadowMap.locationIsVisible(location)) {
+				Character character = shadowMap.owner;
+				seen = includeHidden || character.canBeSeen();
+				if (character != null && seen) {
+					int d = position.distanceToSpecial(character.getPosition());
+					if (d < rangeOfClosestChar && character.isAlive()) {
+						rangeOfClosestChar = d;
+						closestVisibleChar = character;
+					}
+				}
+			}
+		}
+		
+		return closestVisibleChar;
+	}
+	
 	public void persist(ObjectOutputStream out) throws IOException {
 		out.writeObject(CreatureType.MONSTER);
 		super.persist(out);
 	}
 	
+	public void setClosestCharacter(Character val) {
+		closestCharacter = val;
+	}
+	
+	public void setIsNearCharacter(boolean val) {
+		isNearCharacter = val;
+	}
 }

@@ -3,9 +3,11 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityEffectType;
@@ -175,7 +177,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster mon1 = new Monster(Creature.getIdForName("gnome"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				Monster mon1 = new Monster(Creature.getIdForName("g"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = mon1;
 				//mon1.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(mon1);
@@ -490,6 +492,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		} else {
 			if (releventCharacter != null) {  // we use currently focussed here because relevant character = closest character
 				inLOS = positionIsInLOSOfCharacter(releventCharacter, deadPosition);
+				mobs.remove(deadCreature); // keep this list up to date.
 			}
 		}
 		
@@ -752,15 +755,54 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		return null;
 	}
 	
-	@Override
-	public boolean canCharacterSeeMonster(Character character) {
-		ShadowMap shadowMap = shadowMaps.get(character);
-		if (shadowMap.monsterVisible()) {
-			return true;
+//	@Override
+//	public boolean canCharacterSeeMonster(Character character) {
+//		ShadowMap shadowMap = shadowMaps.get(character);
+//		if (shadowMap.monsterVisible()) {
+//			return true;
+//		}
+//		return false;
+//	}
+	
+//	4) this function now goes through all monsters and sets their ‘isNearCharacter’ flag.
+//	5) if isNearCharacter is true, which will be a smaller subset of all monsters, it updates their 
+// closestCharacter setting as well.
+//	6) the character can also have another flag set at this time that tells it if it is currently in LOS of a monster.  
+// two flags =  inLOSOfMosnter   &  amClosestToMonster
+//	7) When updating the closest character setting, you could have the monster call functions on the characters in the shadowmaps.
+//
+//	i.e.   a)   set inLOSOfMonster = false
+//	  the monster goes through all the shadowmaps, and if it appear in one, it calls  character .monsterCanSee().  
+//    This sets inLOSOfMosnter = true;
+//	  if it also determines the closest character it can see it sets amClosestToMonster = true;
+	private void processCreatureMovement() {
+		Set<Character> characters = shadowMaps.keySet();
+		for (Monster monster : mobs) {
+			if (isFarFromCharacters(characters, monster.getPosition())) {
+				monster.setIsNearCharacter(false);
+			} else {
+				monster.setIsNearCharacter(true);
+				monster.checkProximityToCharacters(characters);
+			}
 		}
-		return false;
 	}
+	
 
+	// returns true if the position passed in is far from all characters
+	// and far from the stairs (if a creature skips a turn whilst camping on the
+	// stairs, then the next character cannot fall-in)
+	private boolean isFarFromCharacters(Set<Character> characters, DungeonPosition position) {
+		for (Character character : characters) {
+			if (position.distanceTo(character.getPosition()) < 5 + 3) {
+				return false;
+			}
+			if (isCreatureNearEntrance(position)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public void processCharacterStealth() {
 		for (ShadowMap shadowMap : shadowMaps.values()) {
@@ -807,8 +849,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		}
 	}
 	
-	public boolean isCreatureNearEntrance(DungeonPosition creaturePosition)
-	{
+	public boolean isCreatureNearEntrance(DungeonPosition creaturePosition) {
 		if (creaturePosition.distanceTo(map.startPoint) < 4) {
 			return true;
 		} else {
@@ -836,13 +877,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		return currentlyFocussedCharacter;
 	}
 
-
 	@Override
 	public void highlightTile(DungeonPosition position, boolean showIt) {
 		// turn off previous eye pos if relevent
 		dungeonEventListener.usingEye(position, showIt);
 	}
-
 
 	@Override
 	public void currentCharacterHavingTurn(Character character) {

@@ -107,18 +107,6 @@ public class ShadowMap {
 		return result;
 	}
 	
-	public boolean monsterVisible() {
-		for (Location location : locations) {
-			if (location.creature != null) {
-				if (location.creature instanceof Monster) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
 	public void refresh() {
 		if (LOG) L.log("");
 		for (Location location : locations) {
