@@ -96,6 +96,10 @@ public class Light {
 			return distance;
 	}
 	
+	public float getStrength() {
+		return fStrength;
+	}
+	
 	public void clearLight() {
 		for (Location location : shadowMap.locations) {
 			location.clearTint();  // will reset this location to the minimum light level.

@@ -116,6 +116,9 @@ public class Monster extends Creature
 		return false;
 	}
 	
+	public boolean getIsNearCharacter() {
+		return isNearCharacter;
+	}
 	
 	@Override
 	// This is the decision making function for the Monster.  It could be broken up, but for now leave it.

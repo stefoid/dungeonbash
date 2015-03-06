@@ -1185,6 +1185,10 @@ public class Character extends Creature implements IPresenterCharacter {
 				notHiding(this);
 				stealthStatus = StealthStatus.HIDING_IMPOSSIBLE;
 				stealthStatusListeners.alertListeners();
+				// special case when a hidden character is uncovered, we have to reset its own visual flags.
+				if (currentlySeenByMonster == false) {
+					dungeonQuery.checkForCloseToMonster(this);
+				}
 			}
 			break;
 		case HIDING_POSSIBLE:
@@ -1218,11 +1222,12 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	private void setCharacterLight(boolean on) {
 		if (on) {
-			if (light == null) {
-				float lightStrength = Light.SPOTTED_CHARCTER_LIGHT_STRENGTH;
-				if (amClosestToMonster) {
-					lightStrength = Light.CLOSEST_CHARCTER_LIGHT_STRENGTH;
-				} 
+			float lightStrength = Light.SPOTTED_CHARCTER_LIGHT_STRENGTH;
+			if (amClosestToMonster) {
+				lightStrength = Light.CLOSEST_CHARCTER_LIGHT_STRENGTH;
+			} 
+			
+			if (light == null || light.getStrength() != lightStrength) {
 				light = new Light(mapPosition, Light.WALL_TORCH_RANGE, lightStrength, false);
 				creaturePresenter.lightChanged();
 			}

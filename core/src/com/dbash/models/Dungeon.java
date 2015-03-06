@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -798,6 +799,20 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		}
 		
 		turnProcessor.creatureMoved();
+	}
+	
+	@Override
+	public void checkForCloseToMonster(Character character) {
+		HashSet<Character> characters = new HashSet<Character>();
+		characters.add(character);
+		character.setAmClosestToMonster(false);
+		character.setInLOSOfMonster(false);
+		character.setCurrentlySeenByMonster(false);
+		for (Monster monster : mobs) {
+			if (monster.getIsNearCharacter()) {
+				monster.findClosestCharacter(characters);
+			}
+		}
 	}
 
 	// returns true if the position passed in is far from all characters
