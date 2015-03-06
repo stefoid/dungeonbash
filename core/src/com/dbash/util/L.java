@@ -13,7 +13,7 @@ public class L {
 	public static int SCREENX = 1280;
 	public static int SCREENY = 720;
 	
-	public static int TORCH_DENSITY = 500;  // higher is less dense. default is 5
+	public static int TORCH_DENSITY = 7;  // higher is less dense. default is 5
 	
 	public static boolean SHOWTEXTBOXES = false;
 	

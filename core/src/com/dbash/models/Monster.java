@@ -135,9 +135,7 @@ public class Monster extends Creature
 	// 3.  if we have a ranged attack and/or the selected direction to move is feasible, take the turn.
 	//
 	// At the end of the monsters turn, it will call endTurn
-	public void processTurn()
-	{
-		closestCharacter = null;
+	public void processTurn() {
 		rangedAttack = null; 
 
 		boolean creatureStillAlive = processStatsForTurn();
