@@ -706,7 +706,7 @@ public class CreaturePresenter {
 	}
 	
 	private float getCreatureAlpha() {
-		if (creature.canBeSeen()) {
+		if (creature.isNotHiding()) {
 			return 1f;
 		} else {
 			return HIDING_ALPHA;

@@ -404,7 +404,7 @@ public abstract class Creature implements IPresenterCreature
 		}
 		
 		// If we get to here, we have to wait for player input
-		if (canBeSeen() == false) {
+		if (isNotHiding() == false) {
 			addAmbushAbility();
 		}
 		
@@ -679,7 +679,7 @@ public abstract class Creature implements IPresenterCreature
 	
 	protected boolean performCharge(DungeonPosition position, int direction, AtLocation targetType, Character releventCharacter) {
 		
-		if (canBeSeen() == false) {
+		if (isNotHiding() == false) {
 			return false; // hiding creatures dont charge.
 		}
 		
@@ -1646,7 +1646,7 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	@Override
-	public boolean canBeSeen() {
+	public boolean isNotHiding() {
 		if (stealthStatus == StealthStatus.HIDING) {
 			return false;
 		} else {

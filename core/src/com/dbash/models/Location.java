@@ -152,7 +152,7 @@ public class Location {
 		clearTint();
 	}
 	
-	public void addtorch(TorchType torch) {
+	public void addTorch(TorchType torch) {
 		DungeonPosition torchPosition = new DungeonPosition(position);
 		this.torch = torch;
 		
@@ -194,7 +194,7 @@ public class Location {
 		}
 		
 		if (torch != TorchType.NONE) {
-			addtorch(torch);
+			addTorch(torch);
 		}
 		
 		updatePresenter(); 
@@ -462,15 +462,15 @@ public class Location {
 		if (LOG) L.log("tileName: %s", tileName);
 		// torches
 		if (tileName.equals("statue")) {
-			addtorch(TorchType.CENTRAL);
-		} else if (Randy.getRand(1, 5) == 1 && map.notTooCloseToOtherTorches(this)) {
+			addTorch(TorchType.CENTRAL);
+		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.notTooCloseToOtherTorches(this)) {
 			if (tileType == TileType.FRONT_FACE) {
-				addtorch(TorchType.FRONT);
+				addTorch(TorchType.FRONT);
 			} else if (tileName.startsWith("VertWest")) {
 				if (LOG) L.log("x: %s, y: %s, WEST TORCH CREATED", x-1, y);
-				map.location[x-1][y].addtorch(TorchType.WEST);
+				map.location[x-1][y].addTorch(TorchType.WEST);
 			} else if (tileName.startsWith("VertEast")) {
-				map.location[x+1][y].addtorch(TorchType.EAST);
+				map.location[x+1][y].addTorch(TorchType.EAST);
 			}
 		}
 		updateLocationInfo();

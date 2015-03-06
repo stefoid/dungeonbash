@@ -110,7 +110,8 @@ public class Character extends Creature implements IPresenterCharacter {
 	boolean isAlive = true;
 	private Complaint mood = new Complaint();
 	
-	boolean inLOSOfMonster;
+	boolean inLOSOfMonster;   // Simply if it is in line of sight, hidden or not
+	boolean currentlySeenByMonster;  // If there is a monster curently seeing it.
 	boolean amClosestToMonster;
 	
 	// INTERFACE
@@ -1200,7 +1201,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			break;
 		}
 		
-		if (stealthStatus != StealthStatus.HIDING && inLOSOfMonster) {
+		if (stealthStatus != StealthStatus.HIDING && currentlySeenByMonster) {
 			setCharacterLight(true);
 		} else {
 			setCharacterLight(false);
@@ -1218,7 +1219,11 @@ public class Character extends Creature implements IPresenterCharacter {
 	private void setCharacterLight(boolean on) {
 		if (on) {
 			if (light == null) {
-				light = new Light(mapPosition, Light.WALL_TORCH_RANGE, Light.SPOTTED_CHARCTER_LIGHT_STRENGTH, false);
+				float lightStrength = Light.SPOTTED_CHARCTER_LIGHT_STRENGTH;
+				if (amClosestToMonster) {
+					lightStrength = Light.CLOSEST_CHARCTER_LIGHT_STRENGTH;
+				} 
+				light = new Light(mapPosition, Light.WALL_TORCH_RANGE, lightStrength, false);
 				creaturePresenter.lightChanged();
 			}
 		} else {
@@ -1234,11 +1239,19 @@ public class Character extends Creature implements IPresenterCharacter {
 		return light;
 	}
 	
+	public void  setCurrentlySeenByMonster(boolean val) {
+		currentlySeenByMonster = val;
+	}
+	
+	public boolean getCurrentlySeenByMonster() {
+		return currentlySeenByMonster;
+	}
+	
 	public void  setInLOSOfMonster(boolean val) {
 		inLOSOfMonster = val;
 	}
 	
-	public boolean  getInLOSOfMonster() {
+	public boolean getInLOSOfMonster() {
 		return inLOSOfMonster;
 	}
 	

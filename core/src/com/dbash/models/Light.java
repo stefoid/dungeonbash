@@ -6,7 +6,8 @@ public class Light {
 	public static final boolean LOG = false && L.DEBUG;
 	
 	public static float MAX_CREATURE_LIGHT_STRENGTH = 2.5f;
-	public static float SPOTTED_CHARCTER_LIGHT_STRENGTH = 1.2f;
+	public static float SPOTTED_CHARCTER_LIGHT_STRENGTH = 1.0f;
+	public static float CLOSEST_CHARCTER_LIGHT_STRENGTH = 1.67f;
 	public static float WALL_TORCH_STRENGTH = 1.75f;
 	public static float CENTRAL_TORCH_STRENGTH = 1.3f;
 	public static int CHAR_LIGHT_RANGE = Map.RANGE;

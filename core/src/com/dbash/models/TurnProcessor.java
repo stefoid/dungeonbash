@@ -43,8 +43,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final int INITIAL_EXP = 500;
 	public GameStats gameStats;
 
-	public Character savedLeader;
-
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character. We
 	// iterate over this list to give everything a chance to act.
@@ -128,7 +126,8 @@ public class TurnProcessor implements IPresenterTurnState {
 			waitForPlayerInput();
 		}
 
-		getCurrentLeader(); // will update leader status and alert observers
+		processLeaderMode();
+		// TODO POO getCurrentLeader(); // will update leader status and alert observers
 
 		if (gameInProgress() == false) {
 			new GameOverPopupPresenter(gameStats);
@@ -147,6 +146,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void gameLogicLoop() {
 		if (creatureMoved) {
 			creatureMoved = false;
+			processLeaderMode();
 			dungeonEvents.processCharacterStealth();
 		}
 		
@@ -642,24 +642,24 @@ public class TurnProcessor implements IPresenterTurnState {
 	// When a character is having a turn, they will ask this, initiating a
 	// leadership validity check.
 	public Character getCurrentLeader() {
-		if (currentLeader == null) {
-			leaderStatus = LeaderStatus.NO_LEADER;
-		} else {
-			leaderStatus = LeaderStatus.HAVE_LEADER;
-		}
-
-		Character sawMonster = dungeonQuery.leaderModeOK();
-		if (sawMonster != null) {
-
-			leaderStatus = LeaderStatus.LEADER_DISABLED;
-			if (currentLeader != null) {
-				savedLeader = currentLeader;
-				currentLeader.leaderStatusOff();
-				currentLeader = null;
-			}
-		}
-
-		leaderStatusListeners.alertListeners();
+//		if (currentLeader == null) {
+//			leaderStatus = LeaderStatus.NO_LEADER;
+//		} else {
+//			leaderStatus = LeaderStatus.HAVE_LEADER;
+//		}
+		
+//		Character sawMonster = dungeonQuery.leaderModeOK();
+//		if (sawMonster != null) {
+//
+//			leaderStatus = LeaderStatus.LEADER_DISABLED;
+//			if (currentLeader != null) {
+//				savedLeader = currentLeader;
+//				currentLeader.leaderStatusOff();
+//				currentLeader = null;
+//			}
+//		}
+//
+//		leaderStatusListeners.alertListeners();
 
 		return currentLeader;
 	}
@@ -857,6 +857,25 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	public void creatureMoved() {
 		creatureMoved = true;
+	}
+	
+	public void processLeaderMode() {
+		if (currentLeader == null) {
+			leaderStatus = LeaderStatus.NO_LEADER;
+		} else {
+			leaderStatus = LeaderStatus.HAVE_LEADER;
+		}
+		
+		Character sawMonster = dungeonQuery.leaderModeOK();
+		if (sawMonster != null) {
+			leaderStatus = LeaderStatus.LEADER_DISABLED;
+			if (currentLeader != null) {
+				currentLeader.leaderStatusOff();
+				currentLeader = null;
+			}
+		}
+
+		leaderStatusListeners.alertListeners();
 	}
 	
 	@Override
