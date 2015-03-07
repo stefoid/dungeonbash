@@ -758,18 +758,13 @@ public class Character extends Creature implements IPresenterCharacter {
 		return new Character(random, p, index, dungeonEvents, dungeonQuery, turnProcessor);
 	}
 
-	public boolean makeAttack(AbilityCommand attack, Creature target,
-			DungeonPosition targetPosition, boolean useSkill, int magicCost,
-			int magicUse) {
+	public boolean makeAttack(AbilityCommand attack, Creature target, DungeonPosition targetPosition, boolean useSkill, int magicCost, int magicUse) {
 		// perform the attack
-		boolean result = super.makeAttack(attack, target, targetPosition,
-				useSkill, magicCost, magicUse);
-		
+		boolean result = super.makeAttack(attack, target, targetPosition, useSkill, magicCost, magicUse);
 		return result;
 	}
 
-	public boolean giveAbility(Creature target, Ability ab, DungeonPosition pos,
-			int magicCost, Creature giver) {
+	public boolean giveAbility(Creature target, Ability ab, DungeonPosition pos, int magicCost, Creature giver) {
 		return super.giveAbility(target, ab, pos, magicCost, giver);
 	}
 

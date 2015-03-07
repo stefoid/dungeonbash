@@ -7,6 +7,7 @@ public class Light {
 	
 	public static float MAX_CREATURE_LIGHT_STRENGTH = 2.5f;
 	public static float SPOTTED_CHARCTER_LIGHT_STRENGTH = 1.0f;
+	public static float MIN_DETECT_LIGHT = 0.8f;
 	public static float CLOSEST_CHARCTER_LIGHT_STRENGTH = 1.67f;
 	public static float WALL_TORCH_STRENGTH = 1.75f;
 	public static float CENTRAL_TORCH_STRENGTH = 1.3f;

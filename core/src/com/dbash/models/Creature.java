@@ -1226,9 +1226,14 @@ public abstract class Creature implements IPresenterCreature
 			// damage
 
 			if (useSkill) {
-				attack.damage += calculateSkillDamageBonus();
+				Ability.AbilityType abilityType = attack.ability.getAbilityType();
+				if (abilityType == AbilityType.RANGED || abilityType == AbilityType.WAND) {
+					attack.damage += calculateSkillMissileDamageBonus();
+				} else {
+					attack.damage += calculateSkillDamageBonus();
+				}
 			}
-
+			
 			// 4. creatures magical capability (maxMagic) effects damage of
 			// magical attacks (that have a magic cost)  [knockback excluded]
 			if (attack.type != AbilityCommand.KNOCKBACK && magicUse > 0) {
@@ -1256,12 +1261,10 @@ public abstract class Creature implements IPresenterCreature
 			}
 
 			attack.skill += L.TEST_SKILL_BONUS;
-			
 			target.respondAttack(attack, this);
 		}
 
 		return result;
-
 	}
 
 	static int	index;
@@ -1315,11 +1318,7 @@ public abstract class Creature implements IPresenterCreature
 			
 			if (damage > 0) {
 				if (theAbility.isAimed()) {
-					float mod = .75f;
-					if (hasAmbushActive()) {
-						mod = .4f;
-					}
-					damage += calculateSkillDamageBonus() * mod;
+					damage += calculateSkillMissileDamageBonus();
 				}
 
 				if (theAbility.isMagical()) {
@@ -1329,6 +1328,14 @@ public abstract class Creature implements IPresenterCreature
 		}
 		
 		return damage;
+	}
+	
+	private int calculateSkillMissileDamageBonus() {
+		float mod = .75f;
+		if (hasAmbushActive()) {
+			mod = .4f;
+		}
+		return (int) (calculateSkillDamageBonus() * mod);
 	}
 	
 	public boolean hasAmbushActive() {
@@ -1629,12 +1636,13 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	public Light getLight() {
-		
 		float lightStrength = (float) detect / 6f;
 		if (lightStrength > Light.MAX_CREATURE_LIGHT_STRENGTH) {
 			lightStrength = Light.MAX_CREATURE_LIGHT_STRENGTH;
 		}
-		
+		if (lightStrength < Light.MIN_DETECT_LIGHT) {
+			lightStrength = Light.MIN_DETECT_LIGHT;
+		}
 		light = new Light(getPosition(), Light.CHAR_LIGHT_RANGE, lightStrength, false); 
 		return light;
 	}
