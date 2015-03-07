@@ -58,7 +58,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			add(defence);
 			
 			int mds = owner.calculateDefenceAgainstMissilesSkill();
-			String[] mtds = {"MISSILE DEF", " : ", getDefenceDesc(ds)};
+			String[] mtds = {"RANGED DEF", " : ", getDefenceDesc(ds)};
 			AbilityInfo mdefence = new AbilityInfo(mtds, mds, Color.WHITE);
 			add(mdefence);
 			
@@ -79,60 +79,51 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			
 			int bur = owner.calcProtection(AbilityCommand.RESIST_BURST);
 			if (bur > 0) {
-				String[] bdef = {"BURST DEFENCE BONUS", " : +", "%"};
+				String[] bdef = {"BURST PROTECT", " : +", "%"};
 				AbilityInfo bp = new AbilityInfo(bdef, bur , Color.BLACK);
 				add(bp);
 			}
 			
 			int hpv = owner.calcProtection(AbilityCommand.RESIST_HARD);
-			String[] thpv = {"HARD DEF", " : ", "%"};
+			String[] thpv = {"HARD PROTECT", " : ", "%"};
 			AbilityInfo hp = new AbilityInfo(thpv, hpv , new Color(1, .3f, 0.3f, 1));
 			add(hp);
 			
 			int spv = owner.calcProtection(AbilityCommand.RESIST_SHARP);
-			String[] tspv = {"SHARP DEF", " : ", "%"};
+			String[] tspv = {"SHARP PROTECT", " : ", "%"};
 			AbilityInfo sp = new AbilityInfo(tspv, spv , new Color(0, 0, .7f, 1));
 			add(sp);
 			
 			int epv = owner.calcProtection(AbilityCommand.RESIST_ENERGY);
-			String[] tepv = {"ENERGY DEF", " : ", "%"};
+			String[] tepv = {"ENERGY PROTECT", " : ", "%"};
 			AbilityInfo ep = new AbilityInfo(tepv, epv , Color.YELLOW);
 			add(ep);
 			
 			int cpv = owner.calcProtection(AbilityCommand.RESIST_CHEMICAL);
-			String[] tcpv = {"CHEMICAL DEF", " : ", "%"};
+			String[] tcpv = {"CHEM PROTECT", " : ", "%"};
 			AbilityInfo cp = new AbilityInfo(tcpv, cpv , Color.GREEN);
 			add(cp);
 			
 			// We add character stats
-			int wd = owner.calculateMeleeDamage();
-			String[] twd = {"MELEE DAMAGE", " : "};
-			AbilityInfo dam = new AbilityInfo(twd, wd, Color.BLACK);
-			add(dam);
+//			int wd = owner.calculateMeleeDamage();
+//			String[] twd = {"MELEE DAMAGE", " : "};
+//			AbilityInfo dam = new AbilityInfo(twd, wd, Color.BLACK);
+//			add(dam);
+//			
+//			
+//			int md = owner.calculateMissileDamage(theCharacter.currentSelectedAbility);
+//			String[] tmd = {"RANGED DAMAGE", " : "};
+//			AbilityInfo rdam = new AbilityInfo(tmd, md, Color.BLACK);
+//			add(rdam);
 			
-			
-			int md = owner.calculateMissileDamage(theCharacter.currentSelectedAbility);
-			String[] tmd = {"RANGED DAMAGE", " : "};
-			AbilityInfo rdam = new AbilityInfo(tmd, md, Color.BLACK);
-			add(rdam);
-			
-			String sizeDesc = "- no cover bonus";
+			//String sizeDesc = "- no cover bonus";
+			String size = "size: Huge";
 			if (owner.creatureSize == CreatureSize.SMALL) {
-				String size = "size Small";
-				if (!owner.canFly) {
-					sizeDesc = "- great cover bonus";
-				}
-				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
+				size = "size: Small";
 			} else if (owner.creatureSize == CreatureSize.MEDIUM) {
-				String size = "size Medium";
-				if (!owner.canFly) {
-					sizeDesc = "- cover bonus";
-				}
-				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
-			} else if (owner.creatureSize == CreatureSize.HUGE) {
-				String size = "size Huge";
-				add(new AbilityInfo(size+sizeDesc, Color.BLACK));
-			}
+				size = "size: Medium";
+			} 
+			add(new AbilityInfo(size, Color.BLACK));
 			
 			if (owner.hasHead() == false) {
 				add(new AbilityInfo("NO HEAD", Color.BLACK));
@@ -156,11 +147,13 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		if (val < 8) {
 			result += "poor";
 		} else if (val < 11) {
-			result += "average";
+			result += "ok";
 		} else if (val < 15) {
 			result += "good";
-		} else {
+		} else if (val < 25) {
 			result += "great";
+		} else {
+			result += "super";
 		}
 		result += ")";
 		return result;
@@ -175,7 +168,7 @@ public class EffectList extends ArrayList<AbilityInfo>{
 		if (val < 3) {
 			result += "slow";
 		} else if (val < 5) {
-			result += "average";
+			result += "ok";
 		} else if (val < 7) {
 			result += "fast";
 		} else {
@@ -186,11 +179,24 @@ public class EffectList extends ArrayList<AbilityInfo>{
 	}
 	
 	private String getStealthDesc(int val) {
-		return getAttackDesc(val);
+		String result = " (";
+		if (val < 8) {
+			result += "poor";
+		} else if (val < 11) {
+			result += "ok";
+		} else if (val < 13) {
+			result += "good";
+		} else if (val < 16) {
+			result += "great";
+		} else {
+			result += "super";
+		}
+		result += ")";
+		return result;
 	}
 	
 	private String getDetectDesc(int val) {
-		return getAttackDesc(val);
+		return getStealthDesc(val);
 	}
 	
 	public int difference(AbilityInfo abilityInfo) {

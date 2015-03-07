@@ -5,6 +5,12 @@ public class L {
 	public static boolean DEBUG = false;
 	
 	public static boolean TESTCHARS = false;
+	public static String c1 = "vampire bat";
+	public static String c2 = "web shooter";
+	public static String c3 = "pit viper";
+	
+	public static String FIRST_MONSTER = "gnome";
+	
 	public static boolean NO_LOAD = false;
 	public static boolean NO_SAVE = false;
 	public static int LEVEL = 1;

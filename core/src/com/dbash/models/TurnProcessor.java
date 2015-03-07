@@ -41,6 +41,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
 	public static final int INITIAL_EXP = 500;
+	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
 
 	// Lists to maintain what is going on.
@@ -103,7 +104,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		allCreatures = new AllCreatures();
 		allCreatures.addAll(charactersFallingIn);
 		allCreatures.addAll(dungeonQuery.getAllMonsters());
-		addExperience(level * 500);
+		addExperience(level * EXP_PER_LEVEL);
 	}
 
 	public void resume() {
@@ -448,9 +449,9 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TESTCHARS) {
 			theChars.clear();
 			p.level = 20;
-			theChars.add(new Character(Creature.getIdForName("halfling"), p, 1, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("halfling"), p, 2, dungeonEvents, dungeonQuery, this));
-			theChars.add(new Character(Creature.getIdForName("halfling"), p, 3, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName(L.c1), p, 1, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName(L.c2), p, 2, dungeonEvents, dungeonQuery, this));
+			theChars.add(new Character(Creature.getIdForName(L.c3), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
 			c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);

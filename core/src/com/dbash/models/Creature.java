@@ -738,8 +738,7 @@ public abstract class Creature implements IPresenterCreature
 
 	// if you want to make the attack disregard defenders skill, simply set the
 	// attackers skill level to 32000
-	public int respondAttack(AbilityCommand attack, Creature attacker)
-	{
+	public int respondAttack(AbilityCommand attack, Creature attacker) {
 		// If monster hasnt had a turn yet (say after new game load, it may need to find the closest character to respond to an attack
 		// so lets set that now.
 		if (getReleventCharacter() == null) {
@@ -831,13 +830,11 @@ public abstract class Creature implements IPresenterCreature
 		return -1;
 	}
 	
-	public int getExpValue()
-	{
+	public int getExpValue() {
 		return 10 * calcLevel(myId) + experience / 20;
 	}
 
-	public int getLevelValue()
-	{
+	public int getLevelValue() {
 		return calcLevel(myId);
 	}
 
@@ -894,8 +891,7 @@ public abstract class Creature implements IPresenterCreature
 		return true;
 	}
 
-	public void broadcastAbilityCommand(AbilityCommand command)
-	{
+	public void broadcastAbilityCommand(AbilityCommand command) {
 		for (int i = 0; i < abilities.size(); i++) {
 			abilities.get(i).executeCommandValue(command, this);
 		}
