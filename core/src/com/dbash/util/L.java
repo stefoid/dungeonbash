@@ -4,21 +4,21 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean TESTCHARS = true;
+	public static boolean TESTCHARS = false;
 	public static String c1 = "halfling";
 	public static String c2 = "web shooter";
 	public static String c3 = "pit viper";
 	
-	public static String FIRST_MONSTER = "troll";
+	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;
 	public static boolean NO_SAVE = false;
 	public static int LEVEL = 1;
 	
-	public static int TORCH_DENSITY = 7;  // higher is less dense. default is 5
+	public static int TORCH_DENSITY = 8;  // higher is less dense. default is 5
 	public static boolean SHOWTEXTBOXES = false;
 	
-	public static int TEST_STEALTH_BONUS = 40;
+	public static int TEST_STEALTH_BONUS = 0;
 	public static int TEST_SKILL_BONUS = 0;
 	
 	public static float PPI = 100;

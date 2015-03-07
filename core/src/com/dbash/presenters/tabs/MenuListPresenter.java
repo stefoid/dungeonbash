@@ -139,6 +139,25 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"There are also holes that only flying creatures can pass over.  But beware - stunning a flyer will cause it to fall into the hole and die, as will knocking a non-flyer into a hole.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "STEALTH", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"The stealth button enables when the character has the option to hide.  Characters automatically try to hide when entering a new level.  Hiding characters get a big attack skill bonus for ambush.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "LIGHT", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Sticking to the shadows helps characters hide.  Rocks are great cover for stealth, particularly for small-sized characters.  Getting noticed by monsters makes it harder to hide - being the closest to a monster attracts the most attention (displayed by light around the noticed character).",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "HIDING", elementArea),     // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Use larger characetrs with poor steath skills to attract attention away from stealthy characters.  Then use shadow and rocks to move into ambush position.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
 		for (ImageTextListElementView helpElement: helpElements) {
 			helpElement.addToList(elements);
 		}
@@ -160,7 +179,6 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	public void activate() {
 		super.activate();
 		menuElement.activate();
-		
 	}
 	@Override
 	public void deactivate() {
@@ -173,7 +191,6 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 	 * intercept touch registration from the menu element view so we can add a y offset and list position.
 	 */
 	public void addTouchEventListener(TouchEventListener listener, Rect touchArea, Rect viewport) {
-		
 		// Pass in a viewport that 'moves' according to the scroll position.
 		Rect vp = new Rect(listArea) {
 			@Override
@@ -186,7 +203,6 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		vp.y += viewport.y;
 
 		touchEventProvider.addTouchEventListener(listener, touchArea, vp);
-		
 	}
 
 	@Override
