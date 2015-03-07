@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Creature.StealthStatus;
 import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.L;
@@ -342,12 +343,20 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 	
 	@Override
-	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
+	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, final DungeonPosition targetPosition) {
 		if (LOG) L.log("SN: %s, releventCharacter:%s, actingCreature:%s", sequenceNumber, releventCharacter, attackingCreature); 
 		
 		if (dungeonEventListener != null && releventCharacter != null) {
 			changeCurrentCharacterFocus(sequenceNumber, releventCharacter);
-			dungeonEventListener.meleeAttack(sequenceNumber, releventCharacter, attackingCreature, targetPosition);
+			dungeonEventListener.meleeAttack(sequenceNumber, releventCharacter, attackingCreature, targetPosition, new IAnimListener () {
+				public void animEvent() {
+					Creature damagedCreature = getCreatureAtLocation(targetPosition);
+					if (damagedCreature != null && !damagedCreature.isDead() && damagedCreature.stealthStatus == StealthStatus.HIDING) {
+						damagedCreature.wasAccidentlyDiscovered();
+						processCreaturePositions();
+					}
+				}
+			});
 		}
 	}
 
@@ -524,7 +533,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " creatureFound");
-			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, theFoundCreature, theFoundCreature.getPosition());
+			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, theFoundCreature, theFoundCreature.getPosition(), new IAnimListener () {
+				public void animEvent() {
+					processCreaturePositions();
+				}
+			});
 		}
 	}
 	
@@ -534,7 +547,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 		if (dungeonEventListener != null && releventCharacter != null) {
 			if (LOG) L.log("SN:"+sequenceNumber + " creatureFound");
-			dungeonEventListener.creatureFound(sequenceNumber, releventCharacter, hidingCreature, hidingCreature.getPosition());
+			dungeonEventListener.creatureHides(sequenceNumber, releventCharacter, hidingCreature, hidingCreature.getPosition());
 		}
 	}
 
@@ -803,19 +816,19 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		turnProcessor.creatureMoved();
 	}
 	
-	@Override
-	public void checkForCloseToMonster(Character character) {
-		HashSet<Character> characters = new HashSet<Character>();
-		characters.add(character);
-		character.setAmClosestToMonster(false);
-		character.setInLOSOfMonster(false);
-		character.setCurrentlySeenByMonster(false);
-		for (Monster monster : mobs) {
-			if (monster.getIsNearCharacter()) {
-				monster.findClosestCharacter(characters);
-			}
-		}
-	}
+//	@Override
+//	public void checkForCloseToMonster(Character character) {
+//		HashSet<Character> characters = new HashSet<Character>();
+//		characters.add(character);
+//		character.setAmClosestToMonster(false);
+//		character.setInLOSOfMonster(false);
+//		character.setCurrentlySeenByMonster(false);
+//		for (Monster monster : mobs) {
+//			if (monster.getIsNearCharacter()) {
+//				monster.findClosestCharacter(characters);
+//			}
+//		}
+//	}
 
 	// returns true if the position passed in is far from all characters
 	// and far from the stairs (if a creature skips a turn whilst camping on the

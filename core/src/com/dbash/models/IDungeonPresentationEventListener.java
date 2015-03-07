@@ -18,7 +18,7 @@ public interface IDungeonPresentationEventListener {
 	void creatureMove(int sequenceNumber, Character releventCharacter, Creature actingCreature, DungeonPosition fromPosition, DungeonPosition toPosition, 
 			int direction, Dungeon.MoveType moveType, Character focussedCharacter, IAnimListener completeListener);
 	
-	void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition);
+	void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition, final IAnimListener animCompleteListener);
 	
 	// object drop
 	void objectDrop(int sequenceNumber, Creature releventCharacter, Ability abilityObjectDropped,
@@ -32,7 +32,7 @@ public interface IDungeonPresentationEventListener {
 	void fallIntoLevel(int sequenceNumber, Character fallingCharacter, int level,  IAnimListener completeListener);
 	
 	void creatureHides(int sequenceNumber, Character releventCharacter, Creature hidingCreature, DungeonPosition hidingPosition);
-	void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature, DungeonPosition foundPosition);
+	void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature, DungeonPosition foundPosition, final IAnimListener completeListener);
 	
 	// These two events have complete listeners so the dungeon can remove the creature from the map after it is shown to be dead.
 	void creatureDies(int sequenceNumber, Character releventCharacter, Creature deadCreature, DungeonPosition deadPosition, DeathType deathType, IAnimListener completeListener);

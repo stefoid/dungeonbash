@@ -189,11 +189,11 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
-	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition) {
+	public void meleeAttack(int sequenceNumber, Character releventCharacter, Creature attackingCreature, DungeonPosition targetPosition, final IAnimListener animCompleteListener) {
 		DungeonPosition fromPosition = attackingCreature.getPosition();
 		CreaturePresenter creaturePresenter = attackingCreature.getCreaturePresenter(gui, model, mapPresenter);
 		int dir = fromPosition.getDirection(targetPosition);
-		creaturePresenter.creatureMeleeAttack(sequenceNumber, fromPosition, targetPosition, dir, null);
+		creaturePresenter.creatureMeleeAttack(sequenceNumber, fromPosition, targetPosition, dir, animCompleteListener);
 	}
 	
 	@Override
@@ -209,10 +209,10 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	}
 	
 	@Override
-	public void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature, DungeonPosition foundPosition) {
+	public void creatureFound(int sequenceNumber, Character releventCharacter, Creature foundCreature, DungeonPosition foundPosition, final IAnimListener completeListener) {
 		//abilityResisted(sequenceNumber, releventCharacter, AbilityEffectType.HIDING, foundPosition);
 		CreaturePresenter creaturePresenter = foundCreature.getCreaturePresenter(gui, model, mapPresenter);
-		creaturePresenter.creatureFound(sequenceNumber, foundCreature, foundPosition);
+		creaturePresenter.creatureFound(sequenceNumber, foundCreature, foundPosition, completeListener);
 	}
 	
 	@Override

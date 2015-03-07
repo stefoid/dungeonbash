@@ -1,4 +1,4 @@
-+"bash,aa,4,0,3,-1,0,0,0,1,1,0,8,3,1,3,-1,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// bash: ATTACKER,DESELECT,SELECT,
++"bash,aa,4,0,3,-1,0,0,1,1,1,0,8,3,1,3,-1,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// bash: ATTACKER,DESELECT,SELECT,
 +"resist hard 70,ia,-1,0,0,-1,0,0,0,3,0,0,1,2,70,0,0,0,*"// resist hard 70: VALUE SETTER,
 +"resist sharp 70,ia,-1,0,0,-1,0,0,0,3,0,0,2,2,70,0,0,0,*"// resist sharp 70: VALUE SETTER,
 +"resist chem 70,ia,-1,0,0,-1,0,0,0,3,0,0,4,2,70,0,0,0,*"// resist chem 70: VALUE SETTER,

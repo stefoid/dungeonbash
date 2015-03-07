@@ -272,7 +272,8 @@ public class Monster extends Creature
 		DungeonPosition newPosition = new DungeonPosition(mapPosition, direction);
 		switch (dungeonQuery.whatIsAtLocation(newPosition)) {
 			case CHARACTER:
-				makeMeleeAttack(dungeonQuery.getCreatureAtLocation(newPosition));
+				closestCharacter = (Character) dungeonQuery.getCreatureAtLocation(newPosition);  // in case it was blundering into a hidden character by accident.
+				makeMeleeAttack(closestCharacter);
 				break;
 			case FREE:
 			case HOLE:

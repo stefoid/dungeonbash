@@ -37,7 +37,7 @@ public interface IDungeonQuery {
 	// nearest character in LOS - used by Monsters to hunt characters
 	public Character findClosestCharacterInSight(DungeonPosition position, Creature askingCreature, boolean includeHidden , boolean setCharacterProx);
 	
-	public void checkForCloseToMonster(Character character);
+	// public void checkForCloseToMonster(Character character);
 	
 	// all creatures in range of a position (1->LOS) for abilities
 	// if range == 0, it means in LOS

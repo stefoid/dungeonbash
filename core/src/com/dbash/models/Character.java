@@ -1186,9 +1186,9 @@ public class Character extends Creature implements IPresenterCharacter {
 				stealthStatus = StealthStatus.HIDING_IMPOSSIBLE;
 				stealthStatusListeners.alertListeners();
 				// special case when a hidden character is uncovered, we have to reset its own visual flags.
-				if (currentlySeenByMonster == false) {
-					dungeonQuery.checkForCloseToMonster(this);
-				}
+//				if (currentlySeenByMonster == false) {
+//					dungeonQuery.checkForCloseToMonster(this);
+//				}
 			}
 			break;
 		case HIDING_POSSIBLE:

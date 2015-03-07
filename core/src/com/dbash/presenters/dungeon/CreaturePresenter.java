@@ -533,14 +533,14 @@ public class CreaturePresenter {
 		model.animQueue.drawBeneath(deathAnim);
 	}
 	
-	public void creatureFound(int sequenceNumber, Creature foundCreature, DungeonPosition foundPosition) {
+	public void creatureFound(int sequenceNumber, Creature foundCreature, DungeonPosition foundPosition, final IAnimListener completeListener) {
 		if (LOG) L.log("creatureFound called for :" + this);
 		final Rect fromRect = makeDrawingRectFromPosition(foundPosition);
 		final Rect toRect = new Rect(fromRect);
 		int cycles = 8;
 		final float totalPeriod = DungeonAreaPresenter.abilityPeriod/(cycles+2);
 		
-		final AnimationView hideOp = new AnimationView(gui, "SNEAK_IMAGE", fromRect, fromRect, 1f, 0.3f, totalPeriod, cycles, null);
+		final AnimationView hideOp = new AnimationView(gui, "SNEAK_IMAGE", fromRect, fromRect, 1f, 0.3f, totalPeriod, cycles, completeListener);
 		hideOp.animType = AnimOp.AnimType.ABILITY_ADD;
 		
 		hideOp.onPercentComplete(50, new IAnimListener() {

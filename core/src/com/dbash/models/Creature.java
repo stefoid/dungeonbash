@@ -1259,6 +1259,8 @@ public abstract class Creature implements IPresenterCreature
 				attack.skill = 32000; // sure thing
 			}
 
+			attack.skill += L.TEST_SKILL_BONUS;
+			
 			target.respondAttack(attack, this);
 		}
 
@@ -1483,7 +1485,7 @@ public abstract class Creature implements IPresenterCreature
 	
 	protected boolean makeMeleeAttack(Creature target) {
 		boolean attackComplete = false;
-
+		
 		AbilityCommand command = new AbilityCommand(AbilityCommand.MELEE_ATTACK, 0, getCreature().head, getCreature().hands, getCreature().humanoid);
 
 		// first try to attack with the currently selected melee ability
@@ -1677,14 +1679,21 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	// The more visible the tile, the harder it is to hide
-	
+	public boolean wasAccidentlyDiscovered;
+	public void wasAccidentlyDiscovered() {
+		wasAccidentlyDiscovered = true;
+	}
 	public boolean canHide() {
 		boolean result = false;
+		if (wasAccidentlyDiscovered) {
+			wasAccidentlyDiscovered = false;
+			return false;
+		}
 		
 		Location location = dungeonQuery.getLocation(mapPosition);
 		float tint = location.getTint();
 		int visibility = (int) (tint / 0.03f) - 5;  // 0.3 to 1... = 5 to 28
-		if ((calculateStealth() + L.STEALTH_BONUS) >= visibility) {
+		if ((calculateStealth() + L.TEST_STEALTH_BONUS) >= visibility) {
 			result = true;
 		}
 		return result;
