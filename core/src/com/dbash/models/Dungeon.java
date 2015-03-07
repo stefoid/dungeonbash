@@ -178,7 +178,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				mobs.add(nashkur);
 				break;
 			case 1:
-				Monster mon1 = new Monster(Creature.getIdForName("gnome"), currentLevel, map.exitPoint, this, this, turnProcessor);
+				Monster mon1 = new Monster(Creature.getIdForName("zombie"), currentLevel, map.exitPoint, this, this, turnProcessor);
 				map.location(map.exitPoint).creature = mon1;
 				//mon1.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
 				mobs.add(mon1);
@@ -513,6 +513,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		} else {
 			map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
 			map.removeLight(deader.light);
+			processCreaturePositions();
 			mapEventListener.updateMapPresentation();
 		}
 	}
@@ -791,6 +792,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		for (Monster monster : mobs) {
 			if (isFarFromCharacters(characters, monster.getPosition())) {
+				monster.setClosestCharacter(null);
 				monster.setIsNearCharacter(false);
 			} else {
 				monster.setIsNearCharacter(true);

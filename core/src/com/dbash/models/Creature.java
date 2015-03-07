@@ -1684,7 +1684,7 @@ public abstract class Creature implements IPresenterCreature
 		Location location = dungeonQuery.getLocation(mapPosition);
 		float tint = location.getTint();
 		int visibility = (int) (tint / 0.03f) - 5;  // 0.3 to 1... = 5 to 28
-		if (calculateStealth() >= visibility) {
+		if ((calculateStealth() + L.STEALTH_BONUS) >= visibility) {
 			result = true;
 		}
 		return result;

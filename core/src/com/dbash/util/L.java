@@ -4,10 +4,12 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean TESTCHARS = false;
+	public static boolean TESTCHARS = true;
 	public static boolean NO_LOAD = false;
 	public static boolean NO_SAVE = false;
 	public static int LEVEL = 1;
+	
+	public static int STEALTH_BONUS = 30;
 	
 	public static float PPI = 100;
 	public static int SCREENX = 1280;
