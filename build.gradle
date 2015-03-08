@@ -5,11 +5,14 @@ buildscript {
         jcenter()
         maven { url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'http://download.crashlytics.com/maven' }
+        
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
         classpath 'com.android.tools.build:gradle:0.11+'
         classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-03'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
 
@@ -46,15 +49,21 @@ project(":desktop") {
 
 project(":android") {
     apply plugin: "android"
-
+	apply plugin: "crashlytics"
+   
     configurations { natives }
 
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+    
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+        compile 'com.crashlytics.android:crashlytics:1.+'
     }
 }
 
