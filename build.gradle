@@ -10,8 +10,8 @@ buildscript {
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        classpath 'com.android.tools.build:gradle:0.11+'
-        classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-03'
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-04'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
@@ -23,8 +23,8 @@ allprojects {
     version = '1.0'
     ext {
         appName = 'dbash'
-        gdxVersion = '1.5.3'
-        roboVMVersion = '1.0.0-beta-03'
+        gdxVersion = '1.5.4'
+        roboVMVersion = '1.0.0-beta-04'
     }
 
     repositories {
@@ -37,7 +37,6 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-
 
     dependencies {
         compile project(":core")
@@ -69,6 +68,7 @@ project(":android") {
 
 project(":ios") {
     apply plugin: "java"
+    
     apply plugin: "robovm"
 
     configurations { natives }
@@ -79,7 +79,6 @@ project(":ios") {
         compile "org.robovm:robovm-cocoatouch:${roboVMVersion}"
         compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        compile fileTree(dir: 'libs', include: '*.jar')
     }
 }
 
