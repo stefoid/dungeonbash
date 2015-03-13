@@ -4,8 +4,6 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dbash.models.IPopupController;
-import com.dbash.models.OverlayQueues;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEvent.TouchType;
@@ -27,6 +25,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	private Rect 					dataArea;
 	private Rect 					dungeonArea;
 	private Rect					screenArea;
+	private GameStatePresenter		gameStatePresenter;
 	
 	UIDepend 						gui;
 	PresenterDepend 				model;
@@ -116,7 +115,10 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		// The third viewport is the entire screen for popups.
 		CameraViewPort overlayViewPort = new CameraViewPort(screenArea);
 		gui.cameraViewPort = overlayViewPort;
+		
 		overlayQueues = new OverlayQueues(gui, screenArea, this);  // the area passed to the presenter is the area it draws in the 'world'
+		gui.overlayQueues = overlayQueues;
+		gameStatePresenter = new GameStatePresenter(gui);
 	}
 	
 	

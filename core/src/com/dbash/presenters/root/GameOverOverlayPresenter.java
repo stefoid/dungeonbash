@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.dbash.models.GameStats;
-import com.dbash.models.OverlayPresenter;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
@@ -16,9 +15,7 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class GameOverPopupPresenter extends OverlayPresenter implements TouchEventListener {
-
-	final static String POPUP_ID = "GameOver";
+public class GameOverOverlayPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	ImageView backgroundImage;
 	TextView gameOverText;
@@ -28,7 +25,7 @@ public class GameOverPopupPresenter extends OverlayPresenter implements TouchEve
 	GameStats gameStats;
 	boolean startDrawing;
 	
-	public GameOverPopupPresenter(GameStats gameStats) {
+	public GameOverOverlayPresenter(GameStats gameStats) {
 		this.startDrawing = false;
 		this.gameStats = gameStats;
 	}
@@ -41,12 +38,12 @@ public class GameOverPopupPresenter extends OverlayPresenter implements TouchEve
 	@Override
 	public void start(Rect area, TouchEventProvider touchEventProvider) {
 		this.touchEventProvider = touchEventProvider;
+		// Needs to swallow all touches to the screen to be modal
+		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
+		
 		this.area = new Rect(gui.sizeCalculator.dungeonArea);
 		Rect backgroundArea = new Rect(area, .04f, .04f, .15f, .35f);
 		this.backgroundImage = new ImageView(gui, "GAME_OVER_BACKGROUND", backgroundArea);
-		
-		// Needs to swallow all touches to the screen to be modal
-		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
 		
 		Rect gameOverRect = new Rect(area, .5f);
 		gameOverRect.y += area.height/4;

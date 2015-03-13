@@ -1,4 +1,6 @@
-package com.dbash.models;
+package com.dbash.util;
+
+import com.dbash.models.IEventAction;
 
 public class Event {
 

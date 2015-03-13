@@ -1,6 +1,7 @@
 package com.dbash.models;
 
 import com.dbash.presenters.widgets.AnimQueue;
+import com.dbash.util.EventBus;
 
 
 
@@ -11,4 +12,5 @@ public class PresenterDepend {
 	public IPresenterDungeon presenterDungeon;
 	public IPresenterTurnState presenterTurnState;
 	public AnimQueue animQueue;
+	public EventBus eventBus;
 }

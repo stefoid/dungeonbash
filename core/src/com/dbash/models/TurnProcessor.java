@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.models.Creature.StealthStatus;
-import com.dbash.presenters.root.GameOverPopupPresenter;
+import com.dbash.presenters.root.GameOverOverlayPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.SequenceNumber;
 import com.me.dbash.Dbash;
@@ -17,6 +18,9 @@ import com.me.dbash.Dbash;
 
 public class TurnProcessor implements IPresenterTurnState {
 	public static final boolean LOG = false && L.DEBUG;
+	
+	public static final String GAME_OVER_EVENT = "gameover";
+	public static final String NEW_GAME_EVENT = "newgame";
 	
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
@@ -43,8 +47,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final int INITIAL_EXP = 500;
 	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
-	
-	private GameOverPopupPresenter gameOverPopupPresenter;
 
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character. We
@@ -72,9 +74,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	public void startNewGame() {
-		if (gameOverPopupPresenter != null) {
-			gameOverPopupPresenter.dismiss();
-		}
+		EventBus.getDefault().event(NEW_GAME_EVENT,  null);
 		gameStats = new GameStats();
 		setGameInProgress(true);
 		currentLeader = null;
@@ -135,8 +135,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		// TODO POO getCurrentLeader(); // will update leader status and alert observers
 
 		if (gameInProgress() == false) {
-			gameOverPopupPresenter = new GameOverPopupPresenter(gameStats);
-			sdf
+			EventBus.getDefault().event(GAME_OVER_EVENT,  gameStats);
 		}
 	}
 
@@ -378,7 +377,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			// game over man, game over.
 			dungeon.gameOver();
 			setGameInProgress(false);
-			new GameOverPopupPresenter(gameStats);
+			new GameOverOverlayPresenter(gameStats);
 		} else
 		// What if that was the last character on this level?
 		// If so, go to the next level

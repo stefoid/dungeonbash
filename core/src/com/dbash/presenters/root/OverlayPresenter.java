@@ -1,6 +1,7 @@
-package com.dbash.models;
+package com.dbash.presenters.root;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
 import com.dbash.util.Rect;
 

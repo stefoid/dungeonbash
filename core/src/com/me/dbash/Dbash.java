@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AllCreatures;
 import com.dbash.models.Dungeon;
-import com.dbash.models.OverlayQueues;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TurnProcessor;
 import com.dbash.platform.Audio;
@@ -23,7 +22,9 @@ import com.dbash.platform.FatOutlineFont;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.SmoothBitmapFont;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.OverlayQueues;
 import com.dbash.presenters.root.RootPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
 
@@ -93,6 +94,7 @@ public class Dbash implements ApplicationListener {
 		PresenterDepend model = new PresenterDepend();
 		model.presenterDungeon = dungeon;
 		model.presenterTurnState = turnProcessor;
+		model.eventBus = new EventBus();
 		
 		this.rootPresenter = new RootPresenter(gui, model);
 		Gdx.input.setInputProcessor(rootPresenter);

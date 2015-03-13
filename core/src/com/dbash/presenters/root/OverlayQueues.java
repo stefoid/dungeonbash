@@ -1,10 +1,10 @@
-package com.dbash.models;
+package com.dbash.presenters.root;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.root.PopupPresenter;
 import com.dbash.util.Rect;
 
 //OVERLAY_PRESENTER_QUEUES

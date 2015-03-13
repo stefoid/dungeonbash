@@ -1,8 +1,10 @@
-package com.dbash.models;
+package com.dbash.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import com.dbash.models.IEventAction;
 
 //EVENT BUS.
 //Put this in the model bag.
@@ -19,6 +21,15 @@ import java.util.Iterator;
 public class EventBus {
 	
 	HashMap<String, ArrayList<Event>> eventListeners;
+	
+	private static EventBus defaultEventBus = null;
+
+   public static EventBus getDefault() {
+      if(defaultEventBus == null) {
+    	  defaultEventBus = new EventBus();
+      }
+      return defaultEventBus;
+   }
 	
 	public EventBus() {
 		eventListeners = new  HashMap<String, ArrayList<Event>>();
@@ -45,12 +56,12 @@ public class EventBus {
 		}
 	}
 	
-	public void event(String eventType) {
+	public void event(String eventType, Object param) {
 		ArrayList<Event> list = eventListeners.get(eventType);
 		// create a copy of the list for traversal, in case the action wants to concurrently remove Listeners.
 		ArrayList<Event> iterList = new ArrayList<Event>(list);
 		for (Event event : iterList) {
-			event.action.action();
+			event.action.action(param);
 		}
 	}
 }
