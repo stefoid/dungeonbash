@@ -10,6 +10,5 @@ public class PresenterDepend {
 
 	public IPresenterDungeon presenterDungeon;
 	public IPresenterTurnState presenterTurnState;
-	public IPopupController popupController;
 	public AnimQueue animQueue;
 }

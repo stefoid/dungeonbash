@@ -4,19 +4,23 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.dbash.models.GameStats;
+import com.dbash.models.OverlayPresenter;
 import com.dbash.models.TouchEvent;
+import com.dbash.models.TouchEventListener;
+import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
+import com.dbash.platform.UIDepend;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class GameOverPopupPresenter extends PopupPresenter {
+public class GameOverPopupPresenter extends OverlayPresenter implements TouchEventListener {
 
 	final static String POPUP_ID = "GameOver";
 	
-	ImageView bckgroundImage;
+	ImageView backgroundImage;
 	TextView gameOverText;
 	TextView levelText;
 	TextView xpText;
@@ -25,27 +29,22 @@ public class GameOverPopupPresenter extends PopupPresenter {
 	boolean startDrawing;
 	
 	public GameOverPopupPresenter(GameStats gameStats) {
-		super();
 		this.startDrawing = false;
 		this.gameStats = gameStats;
-		this.controller = popupController;
-		this.popupId = POPUP_ID;
-		this.touchEventProvider = popupController.getTouchEventProvider();
-		this.gui = popupController.getGuiDependencies();
+	}
+	
+	@Override
+	public void init(UIDepend gui) {
+		this.gui = gui;
+	}
+	
+	@Override
+	public void start(Rect area, TouchEventProvider touchEventProvider) {
+		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea);
 		Rect backgroundArea = new Rect(area, .04f, .04f, .15f, .35f);
 		this.backgroundImage = new ImageView(gui, "GAME_OVER_BACKGROUND", backgroundArea);
 		
-		init();
-		popupController.popupCreated(this, popupId);  // tell the popup controller about me.
-	}
-
-	public static void clear() {
-		popupController.popupDismissed(POPUP_ID, true);
-	}
-	
-	@Override
-	public void init() {
 		// Needs to swallow all touches to the screen to be modal
 		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
 		
@@ -90,7 +89,8 @@ public class GameOverPopupPresenter extends PopupPresenter {
 	@Override
 	public boolean touchEvent(TouchEvent event) {
 		touchEventProvider.removeTouchEventListener(this);
-		controller.popupDismissed(popupId, true);
+		dismiss();
 		return true;
 	}
+
 }

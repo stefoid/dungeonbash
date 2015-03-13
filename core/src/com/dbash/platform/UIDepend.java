@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.dbash.models.OverlayQueues;
 
 // This is here to wrap up dependencies on the gdx libraries
 // The Presenters should have no such dependencies.  But they will be required to pass this
@@ -19,13 +20,13 @@ public class UIDepend {
 	public SizeCalculator sizeCalculator;
 	public Audio audio;
 	public AssetManager assetManager;
+	public OverlayQueues overlayQueues;
 	
 	public UIDepend() {
 		
 	}
 	
-	public UIDepend(UIDepend u)
-	{
+	public UIDepend(UIDepend u) {
 		spriteManager = u.spriteManager;
 		cameraViewPort  = u.cameraViewPort;
 		defaultFonts = u.defaultFonts;
@@ -34,5 +35,6 @@ public class UIDepend {
 		sizeCalculator = u.sizeCalculator;
 		audio = u.audio;
 		assetManager = u.assetManager;
+		overlayQueues = u.overlayQueues;
 	}
 }

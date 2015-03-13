@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IPopupController;
+import com.dbash.models.OverlayQueues;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEvent.TouchType;
@@ -22,7 +23,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 
 	private TabbedDataAreaPresenter	dataAreaPresenter;
 	private DungeonAreaPresenter	dungeonAreaPresenter;
-	private IPopupController		popupController;
+	private OverlayQueues			overlayQueues;
 	private Rect 					dataArea;
 	private Rect 					dungeonArea;
 	private Rect					screenArea;
@@ -44,7 +45,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		dataAreaPresenter.draw(spriteBatch);
 
 		// popups always appear over the top of everything else. (using dataArea presenters cameraViewPort
-		popupController.draw(spriteBatch, 0, 0);
+		overlayQueues.draw(spriteBatch, 0, 0);
 		
 		gui.audio.processVolume();
 	}
@@ -113,10 +114,9 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		// We create three viewports so that we can the dungeon map and data area can be moved around just by adjusting the Viewport x and y offsets.
 		// Means we can swap them for lefties...
 		// The third viewport is the entire screen for popups.
-		CameraViewPort popupViewPort = new CameraViewPort(dungeonAreaViewPort);
-		gui.cameraViewPort = popupViewPort;
-		popupController = new RootPopupPresenter(gui, this, screenArea);  // the area passed to the presenter is the area it draws in the 'world'
-		model.popupController = popupController;
+		CameraViewPort overlayViewPort = new CameraViewPort(screenArea);
+		gui.cameraViewPort = overlayViewPort;
+		overlayQueues = new OverlayQueues(gui, screenArea, this);  // the area passed to the presenter is the area it draws in the 'world'
 	}
 	
 	
@@ -313,25 +313,21 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
-		
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		
 		return false;
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
-		
 		return false;
 	}
 

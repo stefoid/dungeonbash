@@ -1,5 +1,6 @@
 package com.dbash.presenters.root;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IPopupController;
 import com.dbash.models.TouchEvent;
@@ -14,10 +15,6 @@ import com.dbash.presenters.widgets.CheckBoxView;
 import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.util.Rect;
 
-
-
-// Takes a list of AbilityInfo derived from the owners abilities and 
-// displays it as a ScrollingList of ListElements.
 public class PopupPresenter implements TouchEventListener {
 	
 	protected UIDepend gui;
@@ -74,34 +71,30 @@ public class PopupPresenter implements TouchEventListener {
 				}
 			});
 			
-			//Rect  = new Rect(area, 0.05f, 0.05f, 0.03f, 0.35f);
-			//textBox = new TextBoxView(gui, text, textBoxRect, Rect.HAlignment.CENTER, Rect.VAlignment.CENTER, Color.BLACK);
+			Rect textBoxRect = new Rect(area, 0.05f, 0.05f, 0.03f, 0.35f);
+			textBox = new TextBoxView(gui, null, text, textBoxRect, Rect.HAlignment.CENTER, Color.BLACK);
 			
 			popupController.popupCreated(this, popupId);  // tell the popup controller about me.
 		}
 	}
 	
 	
-	public void draw(SpriteBatch spriteBatch, float x, float y)
-	{
+	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		backgroundImage.draw(spriteBatch, x, y);
-	//	textBox.draw(spriteBatch, x, y);
+		textBox.draw(spriteBatch, x, y);
 		okButton.draw(spriteBatch, x, y);
 		checkBox.draw(spriteBatch, x, y);
 	}
 
-	static public void setPopupController(IPopupController controller)
-	{
+	static public void setPopupController(IPopupController controller) {
 		popupController = controller;
 	}
 	
-	static public void showAllPopups()
-	{
+	static public void showAllPopups() {
 		popupController.setAllPopups(true);
 	}
 	
-	static public void hideAllPopups()
-	{
+	static public void hideAllPopups() {
 		popupController.setAllPopups(false);
 	}
 

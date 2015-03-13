@@ -43,6 +43,8 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final int INITIAL_EXP = 500;
 	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
+	
+	private GameOverPopupPresenter gameOverPopupPresenter;
 
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character. We
@@ -70,7 +72,9 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	public void startNewGame() {
-		GameOverPopupPresenter.clear();
+		if (gameOverPopupPresenter != null) {
+			gameOverPopupPresenter.dismiss();
+		}
 		gameStats = new GameStats();
 		setGameInProgress(true);
 		currentLeader = null;
@@ -131,7 +135,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		// TODO POO getCurrentLeader(); // will update leader status and alert observers
 
 		if (gameInProgress() == false) {
-			new GameOverPopupPresenter(gameStats);
+			gameOverPopupPresenter = new GameOverPopupPresenter(gameStats);
+			sdf
 		}
 	}
 

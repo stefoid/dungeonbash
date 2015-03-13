@@ -14,6 +14,7 @@ import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.PopupPresenter;
 import com.dbash.presenters.widgets.ButtonView;
 import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.util.Rect;
