@@ -7,7 +7,6 @@ import java.util.Iterator;
 import com.dbash.models.IEventAction;
 
 //EVENT BUS.
-//Put this in the model bag.
 //You subscribe to an event with the subscriber (an Object) a string (event name) 
 // and a block to run when that event occurs.
 //The event bus is a map of arrays.  Every time there is an event that matches the key, it iterates through 

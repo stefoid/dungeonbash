@@ -35,5 +35,23 @@ public class GameStatePresenter {
 				}
 			}
 		});
+		
+//		eventBus.onEvent(TurnProcessor.NEW_GAME_EVENT, this, new IEventAction() {
+//			@Override
+//			public void action(Object param) {
+//				if (gameOverPresenter != null) {
+//					gui.overlayQueues.remove(gameOverPresenter);
+//				}
+//			}
+//		});
+//		
+//		eventBus.onEvent(TurnProcessor.NEW_GAME_EVENT, this, new IEventAction() {
+//			@Override
+//			public void action(Object param) {
+//				if (gameOverPresenter != null) {
+//					gui.overlayQueues.remove(gameOverPresenter);
+//				}
+//			}
+//		});
 	}
 }

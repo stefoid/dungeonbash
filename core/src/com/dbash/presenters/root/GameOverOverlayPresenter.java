@@ -24,6 +24,7 @@ public class GameOverOverlayPresenter extends OverlayPresenter implements TouchE
 	TextView monText;
 	GameStats gameStats;
 	boolean startDrawing;
+	Rect dungeonArea;
 	
 	public GameOverOverlayPresenter(GameStats gameStats) {
 		this.startDrawing = false;
@@ -36,8 +37,9 @@ public class GameOverOverlayPresenter extends OverlayPresenter implements TouchE
 	}
 	
 	@Override
-	public void start(Rect area, TouchEventProvider touchEventProvider) {
+	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
 		this.touchEventProvider = touchEventProvider;
+		this.area = new Rect(gui.sizeCalculator.dungeonArea);
 		// Needs to swallow all touches to the screen to be modal
 		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
 		

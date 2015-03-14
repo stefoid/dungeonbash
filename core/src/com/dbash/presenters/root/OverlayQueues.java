@@ -23,7 +23,10 @@ public class OverlayQueues {
 	private Rect area;
 	private TouchEventProvider touchEventProvider;
 	
-	public OverlayQueues(UIDepend gui, Rect area, TouchEventProvider touchEventProvider) {
+	public OverlayQueues() {
+	}
+	
+	public void init(UIDepend gui, Rect area, TouchEventProvider touchEventProvider) {
 		parallelList = new ArrayList<OverlayPresenter>();
 		sequentialList = new ArrayList<OverlayPresenter>();
 		this.gui = gui;

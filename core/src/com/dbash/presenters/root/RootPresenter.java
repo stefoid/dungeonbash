@@ -33,7 +33,6 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	public RootPresenter(UIDepend gui, PresenterDepend model) {
 		this.gui = gui;
 		this.model = model;
-
 		init();
 	}
 
@@ -56,17 +55,14 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	//
 	// It is important to note that the area passed to a CameraViewPort defines the area on the screen that subsequent drawing to that camera
 	// will  appear in [defined in ints].  While the area passed to presenters is the world (or model) coords where the presenter should position itself. [floats]
-	private void init() {	
-
+	private void init() {	    
 		screenArea = SizeCalculator.getScreenSize();
+		overlayQueues = new OverlayQueues();
+		gui.overlayQueues = overlayQueues;
 		
 //		// We create three viewports so that we can the dungeon map and data area can be moved around just by adjusting the Viewport x and y offsets.
 //		// Means we can swap them for lefties...
 //		// The third viewport is the entire screen for popups.
-//		CameraViewPort wholeScreenViewPort = new CameraViewPort(screenArea);
-//		gui.cameraViewPort = wholeScreenViewPort;
-//		popupController = new RootPopupPresenter(gui, this, screenArea);  // the area passed to the presenter is the area it draws in the 'world'
-//		model.popupController = popupController;
 		
 		// the dungeon area only takes up the left part of the screen
 		final float DAM = 0.5f;  // data area modifier (percentage of dungeon map width)
@@ -92,14 +88,16 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		Rect dataAreaViewPort = new Rect(dataArea);
 		dataAreaViewPort.x += xOffset + dungeonArea.width;
 		dataAreaViewPort.y += yOffset;
-		CameraViewPort dataViewPort = new CameraViewPort(dataAreaViewPort);
-		gui.cameraViewPort = dataViewPort;
 		
 		// Great, the final drawing area is decided, we can set the height for list purpose (size calculator)
 		gui.sizeCalculator.setAreas(dataArea, dungeonArea);
 		
+		// first viewport
+		CameraViewPort dataViewPort = new CameraViewPort(dataAreaViewPort);
+		gui.cameraViewPort = dataViewPort;
 		dataAreaPresenter = new TabbedDataAreaPresenter(gui, model, this, dataArea);  // the area passed to the presenter is the area it draws in the 'world'
 		
+		// second viewport
 		// By creating the dungeon area after the tabbed data area, it will process touch events first which will be more efficient
 		// than having to check the touch areas of the entire tabbed data area before trying the dungeon area, for clicks inside the dungeon area.
 		// Dungeon Area Viewport can move according to offset and nothing else has to change.
@@ -110,14 +108,13 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		gui.cameraViewPort = dungeonViewPort;
 		dungeonAreaPresenter = new DungeonAreaPresenter(gui, model, this, dungeonArea);	 // the area passed to the presenter is the area it draws in the 'world'
 	
-		// We create three viewports so that we can the dungeon map and data area can be moved around just by adjusting the Viewport x and y offsets.
-		// Means we can swap them for lefties...
-		// The third viewport is the entire screen for popups.
-		CameraViewPort overlayViewPort = new CameraViewPort(screenArea);
-		gui.cameraViewPort = overlayViewPort;
-		
-		overlayQueues = new OverlayQueues(gui, screenArea, this);  // the area passed to the presenter is the area it draws in the 'world'
-		gui.overlayQueues = overlayQueues;
+		// third viewport 
+		Rect overlayArea = new Rect(0,0, dungeonArea.width+dataArea.width, dungeonArea.height);
+		overlayArea.x += xOffset;
+		overlayArea.y += yOffset;
+		CameraViewPort wholeScreenViewPort = new CameraViewPort(overlayArea);
+		gui.cameraViewPort = wholeScreenViewPort;
+		gui.overlayQueues.init(gui, overlayArea, this);
 		gameStatePresenter = new GameStatePresenter(gui);
 	}
 	

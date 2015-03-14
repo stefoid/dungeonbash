@@ -94,7 +94,6 @@ public class Dbash implements ApplicationListener {
 		PresenterDepend model = new PresenterDepend();
 		model.presenterDungeon = dungeon;
 		model.presenterTurnState = turnProcessor;
-		model.eventBus = new EventBus();
 		
 		this.rootPresenter = new RootPresenter(gui, model);
 		Gdx.input.setInputProcessor(rootPresenter);

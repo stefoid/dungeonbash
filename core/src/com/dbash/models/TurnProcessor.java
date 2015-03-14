@@ -377,7 +377,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			// game over man, game over.
 			dungeon.gameOver();
 			setGameInProgress(false);
-			new GameOverOverlayPresenter(gameStats);
+			EventBus.getDefault().event(GAME_OVER_EVENT, gameStats);
 		} else
 		// What if that was the last character on this level?
 		// If so, go to the next level
