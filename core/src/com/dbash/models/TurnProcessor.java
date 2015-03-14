@@ -74,7 +74,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	public void startNewGame() {
-		EventBus.getDefault().event(NEW_GAME_EVENT,  null);
+		EventBus.getDefault().event(NEW_GAME_EVENT,  this);
 		gameStats = new GameStats();
 		setGameInProgress(true);
 		currentLeader = null;

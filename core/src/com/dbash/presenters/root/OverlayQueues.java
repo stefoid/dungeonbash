@@ -30,7 +30,7 @@ public class OverlayQueues {
 		parallelList = new ArrayList<OverlayPresenter>();
 		sequentialList = new ArrayList<OverlayPresenter>();
 		this.gui = gui;
-		this.area = area;
+		this.area = new Rect(area);
 		this.touchEventProvider = touchEventProvider;
 	}
 	

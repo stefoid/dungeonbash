@@ -33,6 +33,9 @@ public class GameStatePresenter {
 				if (gameOverPresenter != null) {
 					gui.overlayQueues.remove(gameOverPresenter);
 				}
+				NewGameOverlayPresenter newGamePresenter = new NewGameOverlayPresenter((TurnProcessor) param);
+				gui.overlayQueues.addSequential(newGamePresenter);
+				
 			}
 		});
 		

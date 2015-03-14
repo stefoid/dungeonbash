@@ -110,11 +110,11 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	
 		// third viewport 
 		Rect overlayArea = new Rect(0,0, dungeonArea.width+dataArea.width, dungeonArea.height);
+		gui.overlayQueues.init(gui, overlayArea, this);
 		overlayArea.x += xOffset;
 		overlayArea.y += yOffset;
 		CameraViewPort wholeScreenViewPort = new CameraViewPort(overlayArea);
 		gui.cameraViewPort = wholeScreenViewPort;
-		gui.overlayQueues.init(gui, overlayArea, this);
 		gameStatePresenter = new GameStatePresenter(gui);
 	}
 	
