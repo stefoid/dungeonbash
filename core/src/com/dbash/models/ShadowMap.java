@@ -46,11 +46,13 @@ public class ShadowMap {
 	// characters shadowmap constructor
 	public ShadowMap(Character owner) {
 		this.owner = owner;
+		locations = new HashSet<Location>();
 	}
 	
 	// burst effect shadowmap constructor.
 	public ShadowMap() {
 		this.owner = null;
+		locations = new HashSet<Location>();
 	}
 	
 	public ShadowMap(ShadowMap shadowMap) {

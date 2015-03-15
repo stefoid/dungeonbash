@@ -6,9 +6,14 @@ import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.TurnProcessor;
+import com.dbash.platform.Audio;
+import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.widgets.ButtonView;
+import com.dbash.presenters.widgets.CheckBoxView;
+import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
@@ -17,12 +22,17 @@ import com.dbash.util.Rect.VAlignment;
 public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	ImageView backgroundImage;
-	TextView gameOverText;
-	TextView levelText;
-	TextView xpText;
-	TextView monText;
+	ImagePatchView mainBorder;
+	TextView chooseText;
+	ImagePatchView[] charBorders;
+	ImageView[] charImages;
+	CheckBoxView tutorialButton;
+	ButtonView startGameButton;
+	ButtonView newCharsButton;
+	ButtonView cancelButton;
+	
 	TurnProcessor turnProcessor;
-	Rect dungeonArea;
+
 	
 	public NewGameOverlayPresenter(TurnProcessor turnProcessor) {
 		this.turnProcessor = turnProcessor;
@@ -41,12 +51,65 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		// Needs to swallow all touches to the screen to be modal
 		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
 		
-		Rect backgroundArea = new Rect(area, .04f, .04f, .15f, .35f);
-		this.backgroundImage = new ImageView(gui, "GAME_OVER_BACKGROUND", backgroundArea);
+		Rect backgroundArea = new Rect(area, .04f, .04f, .1f, .1f);
+		this.backgroundImage = new ImageView(gui, "PORTRAIT_IMAGE", backgroundArea);
+		this.mainBorder = new ImagePatchView(gui, "9patchborder", backgroundArea);
 		
-		Rect gameOverRect = new Rect(area, .5f);
-		gameOverRect.y += area.height/4;
-		gameOverText = new TextView(gui, null, "Start Game", gameOverRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
+		Rect chooseRect = new Rect(area, .5f);
+		chooseRect.y += area.height/3;
+		chooseText = new TextView(gui, null, "Choose your team", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
+		
+		charBorders = new ImagePatchView[TurnProcessor.NUM_CHARS];
+		Rect charBorderArea = new Rect(area);
+		charBorderArea.width /= 5;
+		charBorderArea.height /= 3;
+		charBorderArea.x += (charBorderArea.width*.4);
+		charBorderArea.y += (charBorderArea.height);
+		for (int i=0; i<charBorders.length;i++) {
+			charBorders[i] = new ImagePatchView(gui, "9patchborder", charBorderArea);
+			charBorderArea.x += charBorderArea.width * 1.2;
+		}
+		
+		float buttonSpacerX = area.width/20;
+		float buttonSpacerY = area.height/20;
+		Rect buttonArea = new Rect(backgroundArea.x+buttonSpacerX, backgroundArea.y+buttonSpacerY, area.height/7, area.height/7);
+		
+		cancelButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
+				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		cancelButton.onClick( new IClickListener() {
+			public void processClick() {
+				//presenterTurnState.soloSelected();
+			}
+		});
+		
+		buttonArea.x = (float) (backgroundArea.width - buttonArea.width*2.5);
+		
+		tutorialButton = new CheckBoxView(gui, touchEventProvider, buttonArea, true);
+		tutorialButton.onClick( new IClickListener() {
+			public void processClick() {
+				//presenterTurnState.soloSelected();
+			}
+		});
+		
+		buttonArea.x += (float) (buttonArea.width*1.5);
+		
+		startGameButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
+				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		startGameButton.onClick( new IClickListener() {
+			public void processClick() {
+				//presenterTurnState.soloSelected();
+			}
+		});
+		
+		buttonArea.y = charBorderArea.y + charBorderArea.height/2;
+		
+		newCharsButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
+				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		newCharsButton.onClick( new IClickListener() {
+			public void processClick() {
+				//presenterTurnState.soloSelected();
+			}
+		});
 		
 //		Rect levelRect = new Rect(area);
 //		levelRect.height /= 20;
@@ -65,7 +128,15 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 			backgroundImage.draw(spriteBatch, x, y);
-			gameOverText.draw(spriteBatch, x, y);
+			mainBorder.draw(spriteBatch, x, y);
+			chooseText.draw(spriteBatch, x, y);
+			for (ImagePatchView border : charBorders) {
+				border.draw(spriteBatch, x, y);
+			}
+			cancelButton.draw(spriteBatch, x, y);
+			tutorialButton.draw(spriteBatch, x, y);
+			startGameButton.draw(spriteBatch, x, y);
+			newCharsButton.draw(spriteBatch, x, y);
 	}
 	
 	@Override

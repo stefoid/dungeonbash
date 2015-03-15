@@ -21,6 +21,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	public static final String GAME_OVER_EVENT = "gameover";
 	public static final String NEW_GAME_EVENT = "newgame";
+	public static final int NUM_CHARS = 3;
 	
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
