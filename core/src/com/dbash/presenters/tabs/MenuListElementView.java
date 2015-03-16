@@ -137,7 +137,7 @@ public class MenuListElementView implements IListElement {
 		
 		startButton.onClick( new IClickListener() {
 			public void processClick() {
-				model.presenterTurnState.startGameSelected();
+				model.presenterTurnState.mainMenuStartGameSelected();
 			}
 		});
 	}

@@ -1,5 +1,8 @@
 package com.dbash.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 // the interface for Presenters to talk to the model about things that affect the gamestate
@@ -16,7 +19,10 @@ public interface IPresenterTurnState {
 	}
 	
 	// Overall gamestate
-	public void startGameSelected();
+	public void mainMenuStartGameSelected();  // main menu button
+	public List<Character> createRandomCharacters();
+	public List<Character> getTutorialCharacters();
+	public void startGame(List<Character> characters, boolean tutorialMode);
 	public boolean gameInProgress();
 	public void onChangeToGameInProgress(UIInfoListener listener); 
 	public void infoSelected();

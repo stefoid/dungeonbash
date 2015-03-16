@@ -2,6 +2,7 @@ package com.dbash.presenters.root;
 
 import com.dbash.models.GameStats;
 import com.dbash.models.IEventAction;
+import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.TurnProcessor;
 import com.dbash.platform.UIDepend;
 import com.dbash.util.EventBus;
@@ -33,7 +34,7 @@ public class GameStatePresenter {
 				if (gameOverPresenter != null) {
 					gui.overlayQueues.remove(gameOverPresenter);
 				}
-				NewGameOverlayPresenter newGamePresenter = new NewGameOverlayPresenter((TurnProcessor) param);
+				NewGameOverlayPresenter newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param);
 				gui.overlayQueues.addSequential(newGamePresenter);
 				
 			}

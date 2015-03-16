@@ -51,7 +51,7 @@ public class EyeDetailListPresenter extends ListPresenter {
 		// Add creature details element
 		if (creature != null) {
 			Rect creatureArea = new Rect(elementArea);
-			CreatureListElementView creatureElement = new CreatureListElementView(gui, creature.getCreatureStats(), creatureArea);
+			CreatureListElementView creatureElement = new CreatureListElementView(gui, creature.getCreatureStats(), creatureArea, true);
 			creatureElement.addToList(elements);
 		}
 		

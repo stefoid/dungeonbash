@@ -46,16 +46,21 @@ public class CreatureListElementView implements IListElement {
 	protected int extraElements;
 	protected Rect elementArea;
 	
+	protected boolean isList;
 	/**
 	 * Read the width and expand vertically to the number of elements you require by adding empty ones.
 	 */
-	public CreatureListElementView(UIDepend gui, CreatureStats stats, Rect nominalArea) {
+	public CreatureListElementView(UIDepend gui, CreatureStats stats, Rect nominalArea, boolean isList) {
 		this.gui = gui;
 		// record the element area, but expand outselves veritcally by N element areas as required.
 		extraElements = (int) (gui.sizeCalculator.ELEMENTS_PER_SCREEN/2);
 		elementArea = new Rect(nominalArea);
 		area = new Rect(nominalArea);
-		area.height *= (extraElements+1);
+		
+		this.isList = isList;
+		if (isList) {
+			area.height *= (extraElements+1);
+		}
 		
 		this.stats = stats;
 		String imageName = stats.name.replace(" ","_");
@@ -105,12 +110,11 @@ public class CreatureListElementView implements IListElement {
 		textArea.y -= textArea.height * 1.2f;
 		textArea.width = area.width * .67f;
 		experience = new TextView(gui,gui.numericalFonts, new String(""+stats.experience), textArea, HAlignment.LEFT, VAlignment.CENTER, new Color(0, .8f, 0, 1));
-		
 	}
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-		if (drawFlag == false) {
+		if (isList == false || drawFlag == false) {
 			drawFlag = true;
 			// Draw background
 			elementBackground.draw(spriteBatch, x, y);

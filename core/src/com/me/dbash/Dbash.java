@@ -124,10 +124,10 @@ public class Dbash implements ApplicationListener {
 				newGame = true;
 			} 
 		} 
-
+		
 		if (newGame) {
 			audio.defaultVolume();
-			turnProcessor.startNewGame();
+			EventBus.getDefault().event(TurnProcessor.NEW_GAME_EVENT,  turnProcessor);
 		} else {
 			turnProcessor.resume();
 		}
@@ -185,7 +185,7 @@ public class Dbash implements ApplicationListener {
 			turnProcessor.gameLogicLoop();
 
 			// draw everything
-			rootPresenter.draw(spriteBatch);
+			rootPresenter.draw(spriteBatch, turnProcessor.gameInProgress());
 			break;
 			
 		case SPLASH:

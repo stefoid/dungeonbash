@@ -3,6 +3,7 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -74,18 +75,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		gameStats = new GameStats();
 	}
 
-	public void startNewGame() {
-		EventBus.getDefault().event(NEW_GAME_EVENT,  this);
-		gameStats = new GameStats();
-		setGameInProgress(true);
-		currentLeader = null;
-		leaderStatus = LeaderStatus.NONE;
-		level = 1;
-		dungeon.restart();
-		startNewLevel(level);
-		setSoloMode(false);
-	}
-
 	// We set up the lists for this level.
 	private void startNewLevel(int level) {
 		gameStats.newLevel(level);
@@ -95,16 +84,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		setCurrentCharacter(nobody);
 		firstCharToDrop = true;
 
-		if (level == 1) {
-			allCharacters = new Vector<Character>();
-			allCharacters.addAll(createRandomCharacters());
-			addInitialExperience();
-			charactersFallingIn = new Vector<Character>();
-			charactersFallingIn.addAll(allCharacters);
-		} else {
-			charactersFallingIn = charactersFallingOut;
-		}
-
+		charactersFallingIn = charactersFallingOut;
 		charactersFallingOut = new Vector<Character>();
 		allCreatures = new AllCreatures();
 		allCreatures.addAll(charactersFallingIn);
@@ -150,20 +130,22 @@ public class TurnProcessor implements IPresenterTurnState {
 	// one of the player inputs that will cause the current characters turn to
 	// proceed, and then end.
 	public void gameLogicLoop() {
-		if (creatureMoved) {
-			creatureMoved = false;
-			processLeaderMode();
-			dungeonEvents.processCharacterStealth();
-		}
-		
-		if (pauseTurnProcessing != lastPause) {
-			// if (LOG)
-			// Logger.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
-			lastPause = pauseTurnProcessing;
-		}
+		if (gameInProgress()) {
+			if (creatureMoved) {
+				creatureMoved = false;
+				processLeaderMode();
+				dungeonEvents.processCharacterStealth();
+			}
+			
+			if (pauseTurnProcessing != lastPause) {
+				// if (LOG)
+				// Logger.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
+				lastPause = pauseTurnProcessing;
+			}
 
-		if (pauseTurnProcessing == false) {
-			processNextCreature();
+			if (pauseTurnProcessing == false) {
+				processNextCreature();
+			}
 		}
 	}
 	
@@ -410,7 +392,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		return true;
 	}
 
-	private List<Character> createRandomCharacters() {
+	public List<Character> createRandomCharacters() {
 		List<Character> theChars = new LinkedList<Character>();
 
 		// The dungeon will fill in the position when the creature falls into
@@ -717,8 +699,8 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	@Override
-	public void startGameSelected() {
-		startNewGame();
+	public void mainMenuStartGameSelected() {
+		EventBus.getDefault().event(NEW_GAME_EVENT,  this);
 	}
 
 	@Override
@@ -887,6 +869,42 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void infoSelected() {
 		// app.quit();
+	}
+
+	@Override
+	public List<Character> getTutorialCharacters() {
+		List<Character> theChars = new LinkedList<Character>();
+
+		// The dungeon will fill in the position when the creature falls into the level. This is just a placeholder.
+		DungeonPosition p = new DungeonPosition(0, 0); // will init to level 1.
+
+		theChars.add(new Character(Creature.getIdForName(L.c1), p, 1, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName(L.c2), p, 2, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName(L.c3), p, 3, dungeonEvents, dungeonQuery, this));
+		Creature c = theChars.get(0);
+		c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
+		c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);
+		c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
+		c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
+
+		return theChars;
+	}
+
+	@Override
+	public void startGame(List<Character> characters, boolean tutorialMode) {
+		allCharacters = new Vector<Character>();
+		allCharacters.addAll(characters);
+		addInitialExperience();
+		charactersFallingOut = new Vector<Character>();
+		charactersFallingOut.addAll(allCharacters);
+		gameStats = new GameStats();
+		setGameInProgress(true);
+		currentLeader = null;
+		leaderStatus = LeaderStatus.NONE;
+		level = 1;
+		dungeon.restart();
+		startNewLevel(level);
+		setSoloMode(false);
 	}
 
 }
