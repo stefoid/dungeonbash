@@ -185,7 +185,11 @@ public class Dbash implements ApplicationListener {
 			turnProcessor.gameLogicLoop();
 
 			// draw everything
-			rootPresenter.draw(spriteBatch, turnProcessor.gameInProgress());
+			boolean drawDungeon = true;
+			if (turnProcessor.getGameState() == TurnProcessor.GameState.NO_SAVED_GAME) {
+				drawDungeon = false;
+			}
+			rootPresenter.draw(spriteBatch, drawDungeon);
 			break;
 			
 		case SPLASH:

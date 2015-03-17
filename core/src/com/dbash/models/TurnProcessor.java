@@ -20,9 +20,19 @@ import com.me.dbash.Dbash;
 public class TurnProcessor implements IPresenterTurnState {
 	public static final boolean LOG = false && L.DEBUG;
 	
-	public static final String GAME_OVER_EVENT = "gameover";
+	public static final String NO_SAVED_GAME_EVENT = "nosavedgame";
 	public static final String NEW_GAME_EVENT = "newgame";
+	public static final String START_GAME_EVENT = "startgame";
+	public static final String GAME_OVER_EVENT = "gameover";
+	
 	public static final int NUM_CHARS = 3;
+	
+	public static enum GameState {
+		NO_SAVED_GAME,
+		NEW_GAME,
+		START_GAME,
+		GAME_OVER
+	};
 	
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
@@ -36,12 +46,11 @@ public class TurnProcessor implements IPresenterTurnState {
 	private UIInfoListenerBag currentCharacterListeners;
 	private UIInfoListenerBag leaderStatusListeners;
 	private UIInfoListenerBag soloStatusListeners;
-	private UIInfoListenerBag gameInProgressListeners;
 	private LeaderStatus leaderStatus;
 	private boolean pauseTurnProcessing;
 	private boolean acceptInput;
 	private Character nobody;
-	private boolean gameInProgress;
+	private GameState gameState;
 	private boolean usingEye;
 	private boolean soloStatus;
 	private boolean firstCharToDrop;
@@ -69,7 +78,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public TurnProcessor(IDungeonEvents dungeonEvents,
 			IDungeonQuery dungeonQuery, IDungeonControl dungeon, Dbash dbash) {
 		initOneTime(dungeonEvents, dungeonQuery, dungeon);
-		setGameInProgress(false);
+		setGameState(GameState.NO_SAVED_GAME);
 		currentCharacter = nobody;
 		leaderStatus = LeaderStatus.NONE;
 		gameStats = new GameStats();
@@ -113,11 +122,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 
 		processLeaderMode();
-		// TODO POO getCurrentLeader(); // will update leader status and alert observers
+		sendGameStateEvent();
+//		if (getGameState() == GameState.GAME_OVER) {
+//			EventBus.getDefault().event(GAME_OVER_EVENT,  gameStats);
+//		}
 
-		if (gameInProgress() == false) {
-			EventBus.getDefault().event(GAME_OVER_EVENT,  gameStats);
-		}
 	}
 
 	boolean lastPause = false;
@@ -130,7 +139,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// one of the player inputs that will cause the current characters turn to
 	// proceed, and then end.
 	public void gameLogicLoop() {
-		if (gameInProgress()) {
+		if (getGameState() != GameState.NO_SAVED_GAME) {
 			if (creatureMoved) {
 				creatureMoved = false;
 				processLeaderMode();
@@ -359,7 +368,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (allCharacters.size() == 0) {
 			// game over man, game over.
 			dungeon.gameOver();
-			setGameInProgress(false);
+			setGameState(GameState.GAME_OVER);
 			EventBus.getDefault().event(GAME_OVER_EVENT, gameStats);
 		} else
 		// What if that was the last character on this level?
@@ -683,24 +692,38 @@ public class TurnProcessor implements IPresenterTurnState {
 		return soloStatus;
 	}
 
-	@Override
-	public void onChangeToGameInProgress(UIInfoListener listener) {
-		gameInProgressListeners.add(listener);
+	public GameState getGameState() {
+		return gameState;
+	}
+	
+	private void sendGameStateEvent() {
+		String event = NO_SAVED_GAME_EVENT;
+		switch (gameState) {
+			case NO_SAVED_GAME:
+				event = NO_SAVED_GAME_EVENT;
+				break;
+			case NEW_GAME:
+				event = NEW_GAME_EVENT;
+				break;
+			case START_GAME:
+				event = START_GAME_EVENT;
+				break;
+			case GAME_OVER:
+				event = GAME_OVER_EVENT;
+				default:
+					break;
+		}
+		
+		EventBus.getDefault().event(event, this);
 	}
 
-	@Override
-	public boolean gameInProgress() {
-		return gameInProgress;
-	}
-
-	public void setGameInProgress(boolean gameInProgress) {
-		this.gameInProgress = gameInProgress;
-		gameInProgressListeners.alertListeners();
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
 	}
 
 	@Override
 	public void mainMenuStartGameSelected() {
-		EventBus.getDefault().event(NEW_GAME_EVENT,  this);
+		EventBus.getDefault().event(NEW_GAME_EVENT, this);
 	}
 
 	@Override
@@ -716,9 +739,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		currentCharacterListeners = new UIInfoListenerBag();
 		leaderStatusListeners = new UIInfoListenerBag();
 		soloStatusListeners = new UIInfoListenerBag();
-		gameInProgressListeners = new UIInfoListenerBag();
 		nobody = new NoCharacter();
-		gameInProgress = true;
+		gameState = GameState.NO_SAVED_GAME;
 		usingEye = false;
 		acceptInput = false;
 		soloStatus = false;
@@ -742,7 +764,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		this.allCreatures = allCreatures;
 
 		gameStats = new GameStats(in);
-		setGameInProgress((Boolean) in.readObject());
+		setGameState((GameState) in.readObject());
 
 		// start reading saved game
 		level = in.readInt();
@@ -803,7 +825,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	public void persist(ObjectOutputStream out) throws IOException {
 		gameStats.persist(out);
-		out.writeObject(gameInProgress);
+		out.writeObject(gameState);
 
 		// 1) turn processor saves level number
 		out.writeInt(level);
@@ -898,7 +920,9 @@ public class TurnProcessor implements IPresenterTurnState {
 		charactersFallingOut = new Vector<Character>();
 		charactersFallingOut.addAll(allCharacters);
 		gameStats = new GameStats();
-		setGameInProgress(true);
+		setGameState(GameState.START_GAME);
+		EventBus.getDefault().event(START_GAME_EVENT, this);
+
 		currentLeader = null;
 		leaderStatus = LeaderStatus.NONE;
 		level = 1;

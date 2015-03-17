@@ -66,20 +66,7 @@ public class TabSetPresenter implements TouchEventListener{
 		configTab(new MenuTab(model, gui, touchEventProvider, tabArea, bodyArea));
 		
 		swipedTab = null;
-		final IPresenterTurnState turnProcessor = model.presenterTurnState;
-		turnProcessor.onChangeToGameInProgress(new UIInfoListener() {
-			public void UIInfoChanged() {
-				if (turnProcessor.gameInProgress() == false) {
-					setTab(MenuTab.class);
-				}
-			}
-		});
-		
-		if (turnProcessor.gameInProgress() == false) {
-			setTab(MenuTab.class);
-		} else {
-			setTab(AbilityTab.class);
-		}
+		setTab(MenuTab.class);
 	}
 	
 

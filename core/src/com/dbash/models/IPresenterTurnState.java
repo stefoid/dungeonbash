@@ -23,8 +23,6 @@ public interface IPresenterTurnState {
 	public List<Character> createRandomCharacters();
 	public List<Character> getTutorialCharacters();
 	public void startGame(List<Character> characters, boolean tutorialMode);
-	public boolean gameInProgress();
-	public void onChangeToGameInProgress(UIInfoListener listener); 
 	public void infoSelected();
 	
 	// Current character related

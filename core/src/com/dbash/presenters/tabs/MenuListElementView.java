@@ -127,13 +127,8 @@ public class MenuListElementView implements IListElement {
 	{
 		Rect startRect = new Rect(bodyArea, .15f, .6f, .75f, .05f);
 		
-		if (model.presenterTurnState.gameInProgress()) {
-			startButton = new ButtonView(gui, touchEventProvider, startRect, "RESTART_SELECTED_IMAGE", 
-					"RESTART_BUTTON_IMAGE", "RESTART_BUTTON_IMAGE", Audio.CLICK);
-		} else {
-			startButton = new ButtonView(gui, touchEventProvider, startRect, "START_SELECTED_IMAGE", 
-					"START_BUTTON_IMAGE", "START_BUTTON_IMAGE", Audio.CLICK);
-		}
+		startButton = new ButtonView(gui, touchEventProvider, startRect, "START_SELECTED_IMAGE", 
+				"START_BUTTON_IMAGE", "START_BUTTON_IMAGE", Audio.CLICK);
 		
 		startButton.onClick( new IClickListener() {
 			public void processClick() {

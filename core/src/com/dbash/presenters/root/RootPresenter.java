@@ -36,9 +36,9 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		init();
 	}
 
-	public void draw(SpriteBatch spriteBatch, boolean gameInProgress) {
+	public void draw(SpriteBatch spriteBatch, boolean drawDungeon) {
 		
-		if (gameInProgress) {
+		if (drawDungeon) {
 			dungeonAreaPresenter.draw(spriteBatch);
 		}
 		
