@@ -87,9 +87,13 @@ public class GameOverOverlayPresenter extends OverlayPresenter implements TouchE
 	
 	@Override
 	public boolean touchEvent(TouchEvent event) {
-		touchEventProvider.removeTouchEventListener(this);
 		dismiss();
 		return true;
+	}
+
+	@Override
+	public void destroy() {
+		touchEventProvider.removeTouchEventListener(this);
 	}
 
 }

@@ -28,6 +28,36 @@ import com.dbash.util.Rect.VAlignment;
 
 public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEventListener {
 	
+	private class CharacterView implements TouchEventListener {
+		public Character character;
+		public Rect area;
+		public ImagePatchView border;
+		public CreatureListElementView charImage;
+		public TouchEventProvider touchEventProvider;
+		
+		public CharacterView(Rect area, TouchEventProvider touchEventProvider) {
+			this.touchEventProvider = touchEventProvider;
+			this.area = area;
+			border = new ImagePatchView(gui, "9patchborder", area);
+		}
+		
+		public void setCharacter(Character character) {
+			this.character = character;
+			CreatureStats stats = character.getCharacterStats();
+			charImage = new CreatureListElementView(gui, stats, area, false);
+		}
+		
+		public void destroy() {
+			touchEventProvider.removeTouchEventListener(this);
+		}
+
+		@Override
+		public boolean touchEvent(TouchEvent event) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	}
+	
 	ImageView backgroundImage;
 	ImagePatchView mainBorder;
 	TextView chooseText;
@@ -88,7 +118,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
 		cancelButton.onClick( new IClickListener() {
 			public void processClick() {
-				destroy();
+				dismiss();
 			}
 		});
 		
@@ -103,7 +133,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		startGameButton.onClick( new IClickListener() {
 			public void processClick() {
 				turnProcessor.startGame(characters,  tutorialButton.getState());
-				destroy();
+				dismiss();
 			}
 		});
 		
@@ -137,7 +167,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	
 	@Override
 	public boolean touchEvent(TouchEvent event) {
-		destroy();
+		dismiss();
 		return true;
 	}
 	
@@ -152,9 +182,8 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		}
 	}
 	
-	private void destroy() {
+	public void destroy() {
 		touchEventProvider.removeTouchEventListener(this);
-		dismiss();
 	}
 
 }

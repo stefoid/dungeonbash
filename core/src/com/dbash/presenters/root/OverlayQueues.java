@@ -65,6 +65,9 @@ public class OverlayQueues {
 	}
 	
 	public void remove(OverlayPresenter overlayPresenter) {
+		if (overlayPresenter!= null) {
+			overlayPresenter.dismiss();
+		}
 		parallelList.remove(overlayPresenter);
 		sequentialList.remove(overlayPresenter);
 		if (sequentialList.size() > 0) {

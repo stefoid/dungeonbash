@@ -72,7 +72,7 @@ public class TabSetPresenter implements TouchEventListener{
 
 	private void configTab(TabPresenter tab) {
 		tabs.add(tab);
-		final TabPresenter thisTab = tab;  // must be final for benefit of the 'closure'
+		final TabPresenter thisTab = tab;  
 		// When this tab is clicked, set itself to current.
 		tab.onClick(new IClickListener() {
 			public void processClick() {

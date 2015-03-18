@@ -1,14 +1,19 @@
 package com.dbash.presenters.tabs;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.IEventAction;
+import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.models.TurnProcessor;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.NewGameOverlayPresenter;
 import com.dbash.presenters.widgets.TabSetPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -74,5 +79,27 @@ public class TabbedDataAreaPresenter implements TouchEventListener {
 		// create data header area.  Takes up top 20% of data area
 		Rect headerArea = new Rect(area, 0, 0, 0, SizeCalculator.TAB_AREA_SCALE);
 		dataHeaderArea = new DataHeaderPresenter(model, gui, touchEventProvider, headerArea);
+		
+		EventBus eventBus = EventBus.getDefault();
+		eventBus.onEvent(TurnProcessor.NO_SAVED_GAME_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				tabs.setTab(EffectTab.class);
+			}
+		});
+		
+		eventBus.onEvent(TurnProcessor.NEW_GAME_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				tabs.setTab(EffectTab.class);
+			}
+		});
+		
+		eventBus.onEvent(TurnProcessor.START_GAME_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				tabs.setTab(AbilityTab.class);
+			}
+		});
 	}
 }

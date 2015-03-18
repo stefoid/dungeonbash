@@ -698,6 +698,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	private void sendGameStateEvent() {
 		String event = NO_SAVED_GAME_EVENT;
+		Object param = this;
 		switch (gameState) {
 			case NO_SAVED_GAME:
 				event = NO_SAVED_GAME_EVENT;
@@ -710,11 +711,13 @@ public class TurnProcessor implements IPresenterTurnState {
 				break;
 			case GAME_OVER:
 				event = GAME_OVER_EVENT;
+				param = gameStats;
 				default:
 					break;
 		}
 		
-		EventBus.getDefault().event(event, this);
+		
+		EventBus.getDefault().event(event, param);
 	}
 
 	public void setGameState(GameState gameState) {

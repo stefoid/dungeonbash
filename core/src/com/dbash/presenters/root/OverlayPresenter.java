@@ -24,6 +24,9 @@ public abstract class OverlayPresenter {
 	public abstract void draw(SpriteBatch spriteBatch, float x, float y);
 	
 	public void dismiss() {
+		destroy();
 		gui.overlayQueues.remove(this);
 	}
+	
+	public abstract void destroy();
 }
