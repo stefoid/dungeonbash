@@ -343,6 +343,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// read the new character, update their
 	// pat of the UI, and listen to that character for changes to its details
 	// that are relevant for them.
+	@Override
 	public void setCurrentCharacter(Character character) {
 		currentCharacter = character;
 		currentCharacter.setCharacterisUsingEye(usingEye);

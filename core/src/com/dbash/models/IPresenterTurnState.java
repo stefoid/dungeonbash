@@ -29,6 +29,7 @@ public interface IPresenterTurnState {
 	public void onChangeToCurrentCharacter(UIInfoListener listener);
 	public Character getCurrentCharacter();
 	public Character getCharacterForTouchEvents();
+	public void setCurrentCharacter(Character character);
 	
 	// data header area buttons - all of these affect turn-processing
 	public void passTurnSelected();

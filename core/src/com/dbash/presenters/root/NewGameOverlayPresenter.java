@@ -1,6 +1,5 @@
 package com.dbash.presenters.root;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -28,41 +27,48 @@ import com.dbash.util.Rect.VAlignment;
 
 public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEventListener {
 	
-	private class CharacterView implements TouchEventListener {
-		public Character character;
+	private class CharacterView {
 		public Rect area;
+		public ButtonView button;
 		public ImagePatchView border;
 		public CreatureListElementView charImage;
-		public TouchEventProvider touchEventProvider;
 		
-		public CharacterView(Rect area, TouchEventProvider touchEventProvider) {
-			this.touchEventProvider = touchEventProvider;
+		public CharacterView(UIDepend gui, Rect area, Character character, TouchEventProvider touchEventProvider) {
 			this.area = area;
+			button = new ButtonView(gui, touchEventProvider, area, "NO_IMAGE","NO_IMAGE","NO_IMAGE", Audio.CLICK);
 			border = new ImagePatchView(gui, "9patchborder", area);
-		}
-		
-		public void setCharacter(Character character) {
-			this.character = character;
 			CreatureStats stats = character.getCharacterStats();
 			charImage = new CreatureListElementView(gui, stats, area, false);
 		}
 		
-		public void destroy() {
-			touchEventProvider.removeTouchEventListener(this);
+		public void onClick(IClickListener listener) {
+			button.onClick(listener);
 		}
-
-		@Override
-		public boolean touchEvent(TouchEvent event) {
-			// TODO Auto-generated method stub
-			return false;
+		
+		public void draw(SpriteBatch spriteBatch, float x, float y) {
+			charImage.draw(spriteBatch, x, y);
+			if (button.getState()) {
+				border.draw(spriteBatch, x, y);
+			}
+		}
+		
+		public void set(){
+			button.setState(true);
+		}
+		
+		public void clear() {
+			button.setState(false);
+		}
+		
+		public void destroy() {
+			button.removeYourself();
 		}
 	}
 	
 	ImageView backgroundImage;
 	ImagePatchView mainBorder;
 	TextView chooseText;
-	ImagePatchView[] charBorders;
-	CreatureListElementView[] charImages;
+	CharacterView[] charViews;
 	CheckBoxView tutorialButton;
 	ButtonView startGameButton;
 	ButtonView newCharsButton;
@@ -95,20 +101,8 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		Rect chooseRect = new Rect(area, .5f);
 		chooseRect.y += area.height/3;
 		chooseText = new TextView(gui, null, "Choose your team", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
-		
-		charBorders = new ImagePatchView[TurnProcessor.NUM_CHARS];
-		Rect charBorderArea = new Rect(area);
-		charBorderArea.width /= 3.5;
-		charBorderArea.height /= 3;
-		
-		float charSpacer = (area.width - charBorderArea.width*3)/4;
-		charBorderArea.x += charSpacer;
-		charBorderArea.y += (charBorderArea.height);
-		
-		for (int i=0; i<charBorders.length;i++) {
-			charBorders[i] = new ImagePatchView(gui, "9patchborder", charBorderArea);
-			charBorderArea.x += (charBorderArea.width + charSpacer);
-		}
+	
+		createNewChars();
 		
 		float buttonSpacerX = area.width/20;
 		float buttonSpacerY = area.height/20;
@@ -143,11 +137,11 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
 		newCharsButton.onClick( new IClickListener() {
 			public void processClick() {
-				createCharImages();
+				createNewChars();
 			}
 		});
 
-		createCharImages();
+		createNewChars();
 	}
 	
 	@Override
@@ -156,8 +150,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 			mainBorder.draw(spriteBatch, x, y);
 			chooseText.draw(spriteBatch, x, y);
 			for (int i=0; i<TurnProcessor.NUM_CHARS; i++) {
-				charImages[i].draw(spriteBatch, x, y);
-				//charBorders[i].draw(spriteBatch, x, y);
+				charViews[i].draw(spriteBatch, x, y);
 			}
 			cancelButton.draw(spriteBatch, x, y);
 			tutorialButton.draw(spriteBatch, x, y);
@@ -167,22 +160,60 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	
 	@Override
 	public boolean touchEvent(TouchEvent event) {
-		dismiss();
-		return true;
+		return false;
 	}
 	
-	private void createCharImages() {
+	private void createNewChars() {
 		characters = turnProcessor.createRandomCharacters();
-		charImages = new CreatureListElementView[TurnProcessor.NUM_CHARS];
-		int i = 0;
-		for (Character character : characters) {
-			CreatureStats stats = character.getCharacterStats();
-			charImages[i] = new CreatureListElementView(gui, stats, charBorders[i].getArea(), false);
-			i++;
+		
+		if (charViews == null) {
+			charViews = new CharacterView[TurnProcessor.NUM_CHARS];
+		}
+		
+		killCharButtons();
+		
+		Rect charArea = new Rect(area);
+		charArea.width /= 3.5;
+		charArea.height /= 3;
+		
+		float charSpacer = (area.width - charArea.width*3)/4;
+		charArea.x += charSpacer;
+		charArea.y += (charArea.height);
+		
+		for (int i=0; i<charViews.length;i++) {
+			final Character character = characters.get(i);
+			charViews[i] = new CharacterView(gui, charArea, character, touchEventProvider);
+			final CharacterView theCharView = charViews[i];
+			charViews[i].onClick(new IClickListener() {
+				@Override
+				public void processClick() {
+					for (CharacterView c : charViews) {
+						if (c == theCharView) {
+							c.set();
+							turnProcessor.setCurrentCharacter(character);
+						} else {
+							c.clear();
+						}
+					}
+				}
+			});
+			charArea.x += (charArea.width + charSpacer);
+		}
+		
+		charViews[0].set();
+		turnProcessor.setCurrentCharacter(characters.get(0));
+	}
+	
+	private void killCharButtons() {
+		for (CharacterView c : charViews) {
+			if (c != null) {
+				c.destroy();
+			}
 		}
 	}
 	
 	public void destroy() {
+		killCharButtons();
 		touchEventProvider.removeTouchEventListener(this);
 	}
 
