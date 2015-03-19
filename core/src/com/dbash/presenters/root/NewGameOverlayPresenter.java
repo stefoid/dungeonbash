@@ -92,8 +92,8 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .04f, .04f, .1f, .1f);
 		
-		// Needs to swallow all touches to the screen to be modal
-		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
+		// Needs to swallow all touches to the dungeon area 
+		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
 		this.backgroundImage = new ImageView(gui, "PORTRAIT_IMAGE", area);
 		this.mainBorder = new ImagePatchView(gui, "9patchborder", area);
@@ -160,7 +160,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	
 	@Override
 	public boolean touchEvent(TouchEvent event) {
-		return false;
+		return true;  // swallow touches to the dungeon area.
 	}
 	
 	private void createNewChars() {

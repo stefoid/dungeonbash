@@ -140,8 +140,7 @@ public class DataHeaderPresenter {
 	}
 	
 
-	private void setup()
-	{
+	private void setup() {
 		// Subscribe to changes to the current character.
 		newCharacter(mod.presenterTurnState.getCurrentCharacter());
 		mod.presenterTurnState.onChangeToCurrentCharacter(new UIInfoListener() {
@@ -171,8 +170,7 @@ public class DataHeaderPresenter {
 		processSoloStatus();
 	}
 	
-	private void newCharacter(Character character)
-	{
+	private void newCharacter(Character character) {
 		final Character currentCharacter = character;
 		
 		character.onChangeToCharacterStats((new UIInfoListener() {
@@ -204,8 +202,7 @@ public class DataHeaderPresenter {
 		processStealthStatus(currentCharacter.getStealthStatus());
 	}
 	
-	public void updateStats(CreatureStats stats)
-	{
+	public void updateStats(CreatureStats stats) {
 		healthText.setText(stats.health+"/"+stats.maxHealth);
 		magicText.setText(stats.magic+"/"+stats.maxMagic);
 	}
