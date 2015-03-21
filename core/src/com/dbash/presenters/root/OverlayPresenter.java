@@ -16,6 +16,7 @@ public abstract class OverlayPresenter {
 	protected UIDepend gui;
 	protected Rect area;
 	protected TouchEventProvider touchEventProvider;
+	protected IDismissListener dismissListener;
 	
 	public abstract void init(UIDepend gui);
 	
@@ -23,9 +24,12 @@ public abstract class OverlayPresenter {
 	
 	public abstract void draw(SpriteBatch spriteBatch, float x, float y);
 	
+	public void onDismiss(IDismissListener dismissListener) {
+		this.dismissListener = dismissListener;
+	}
+	
 	public void dismiss() {
-		destroy();
-		gui.overlayQueues.remove(this);
+		dismissListener.dismiss();
 	}
 	
 	public abstract void destroy();

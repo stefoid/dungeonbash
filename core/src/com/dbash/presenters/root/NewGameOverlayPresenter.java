@@ -112,7 +112,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
 		cancelButton.onClick( new IClickListener() {
 			public void processClick() {
-				dismiss();
+				turnProcessor.cancelNewGameSelected();
 			}
 		});
 		
@@ -127,7 +127,6 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		startGameButton.onClick( new IClickListener() {
 			public void processClick() {
 				turnProcessor.startGame(characters,  tutorialButton.getState());
-				dismiss();
 			}
 		});
 		

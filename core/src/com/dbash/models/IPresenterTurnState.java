@@ -20,6 +20,7 @@ public interface IPresenterTurnState {
 	
 	// Overall gamestate
 	public void mainMenuStartGameSelected();  // main menu button
+	public void cancelNewGameSelected();
 	public List<Character> createRandomCharacters();
 	public List<Character> getTutorialCharacters();
 	public void startGame(List<Character> characters, boolean tutorialMode);
@@ -30,12 +31,16 @@ public interface IPresenterTurnState {
 	public Character getCurrentCharacter();
 	public Character getCharacterForTouchEvents();
 	public void setCurrentCharacter(Character character);
+	public boolean itemPickupSelected(Character character, Ability ability);
+	public boolean itemDropSelected();
+	public boolean abilitySelected(Character character, Ability ability);
 	
 	// data header area buttons - all of these affect turn-processing
 	public void passTurnSelected();
 	public void leaderModeToggleSelected();
 	public void stairDescendSelected();
 	public void soloSelected();
+	public void stealthSelected();
 	
 	// Leader mode
 	public void onChangeToLeaderStatus(UIInfoListener listener);

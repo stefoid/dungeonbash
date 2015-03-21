@@ -50,7 +50,7 @@ public class ItemListPresenter extends ListPresenter{
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
 					if (ability != null) {
-						boolean pickupAllowed = character.itemPickupSelected(ability);
+						boolean pickupAllowed = model.presenterTurnState.itemPickupSelected(character, ability);
 						if (pickupAllowed == false) {
 							gui.audio.playSound(Audio.NEGATIVE);
 						} else {
@@ -74,12 +74,14 @@ public class ItemListPresenter extends ListPresenter{
 			final Ability ability = abilityInfo.ability;
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
-					if (ability != null) {
+					if (ability != null && model.presenterTurnState.itemDropSelected()) {
 						saveListPosition();  // do this first because processing the ability will create a new list
 						character.itemDropSelected(ability);
 						element.abilityInfo.isCarried = false;
 						element.setBackgroundImage();
 						scrollItem(element);
+					} else {
+						gui.audio.playSound(Audio.NEGATIVE);
 					}
 				}
 			});

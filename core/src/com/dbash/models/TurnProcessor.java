@@ -122,10 +122,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 
 		processLeaderMode();
-		sendGameStateEvent();
-//		if (getGameState() == GameState.GAME_OVER) {
-//			EventBus.getDefault().event(GAME_OVER_EVENT,  gameStats);
-//		}
+		
+		if (getGameState() == GameState.NO_SAVED_GAME) {
+			doNewGame();
+		} else {
+			sendGameStateEvent();
+		}
 
 	}
 
@@ -504,50 +506,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 	}
 
-	@Override
-	public void passTurnSelected() {
-		if (LOG) L.log("Pass turn pressed");
-		
-		currentCharacter.defending();
-	}
-	
-	@Override
-	public void stairDescendSelected() {
-		if (acceptInput == false || currentCharacter == nobody) { // in case pounding n th descent key cheap hack
-			return;
-		}
-
-		// clear that characters solo, but dont clear solo mode if its been on.
-		if (currentCharacter.getSolo()) {
-			currentCharacter.setSolo(false);
-		}
-
-		// adjust the lists
-		allCreatures.remove(currentCharacter);
-		charactersFallingOut.add(currentCharacter);
-
-		// was that character the leader?
-		if (currentLeader == currentCharacter) {
-			clearLeaderMode();
-		}
-
-		acceptInput = false;
-		dungeonEvents.goDownStairs(SequenceNumber.getNext(), currentCharacter,
-				new IAnimListener() {
-					// was that the last character to descend? If so, go to the
-					// next level
-					public void animEvent() {
-						acceptInput = true;
-						if (allCharacters.size() == charactersFallingOut.size()) {
-							level++;
-							startNewLevel(level);
-						}
-					}
-				});
-
-		characterEndsTurn(currentCharacter);
-	}
-
 	public void addExperience(int exp) {
 		for (Character character : allCharacters) {
 			character.addExperience(exp, false);
@@ -560,18 +518,6 @@ public class TurnProcessor implements IPresenterTurnState {
 			character.addExperience(INITIAL_EXP, true);
 		}
 		gameStats.xpGiven(INITIAL_EXP);
-	}
-	
-	/**
-	 * Clear all the characters solo status, then set the solo status for
-	 * TPaccordingly. When a character is about to have a turn, if
-	 * 'needToSetSoloCharacter' returns true, it will be set at that time. The
-	 * only exception is if the there is a current leader, inwhich case that
-	 * character is the solo immeidately.
-	 */
-	@Override
-	public void soloSelected() {
-		setSoloMode(!soloStatus);
 	}
 
 	private void setSoloMode(boolean solo) {
@@ -619,6 +565,21 @@ public class TurnProcessor implements IPresenterTurnState {
 		return false;
 	}
 
+	/**
+	 * Clear all the characters solo status, then set the solo status for
+	 * TPaccordingly. When a character is about to have a turn, if
+	 * 'needToSetSoloCharacter' returns true, it will be set at that time. The
+	 * only exception is if the there is a current leader, inwhich case that
+	 * character is the solo immeidately.
+	 */
+	@Override
+	public void soloSelected() {
+		if (gameState != GameState.START_GAME) {
+			return;
+		}
+		setSoloMode(!soloStatus);
+	}
+	
 	@Override
 	public void leaderModeToggleSelected() {
 		if (currentLeader == null) {
@@ -637,6 +598,93 @@ public class TurnProcessor implements IPresenterTurnState {
 		leaderStatusListeners.alertListeners();
 	}
 
+	@Override
+	public void stealthSelected() {
+		if (gameState != GameState.START_GAME) {
+			return;
+		}
+		Character character = getCurrentCharacter();
+		if (character != null) {
+			character.stealthToggleSelected();
+		}
+	}
+	
+	@Override
+	public void passTurnSelected() {
+		if (LOG) L.log("Pass turn pressed");
+		if (gameState != GameState.START_GAME) {
+			return;
+		}
+		currentCharacter.defending();
+	}
+	
+	@Override
+	public void stairDescendSelected() {
+		if (gameState != GameState.START_GAME) {
+			return;
+		}
+		if (acceptInput == false || currentCharacter == nobody) { // in case pounding n th descent key cheap hack
+			return;
+		}
+
+		// clear that characters solo, but dont clear solo mode if its been on.
+		if (currentCharacter.getSolo()) {
+			currentCharacter.setSolo(false);
+		}
+
+		// adjust the lists
+		allCreatures.remove(currentCharacter);
+		charactersFallingOut.add(currentCharacter);
+
+		// was that character the leader?
+		if (currentLeader == currentCharacter) {
+			clearLeaderMode();
+		}
+
+		acceptInput = false;
+		dungeonEvents.goDownStairs(SequenceNumber.getNext(), currentCharacter,
+				new IAnimListener() {
+					// was that the last character to descend? If so, go to the
+					// next level
+					public void animEvent() {
+						acceptInput = true;
+						if (allCharacters.size() == charactersFallingOut.size()) {
+							level++;
+							startNewLevel(level);
+						}
+					}
+				});
+
+		characterEndsTurn(currentCharacter);
+	}
+	
+	@Override
+	public boolean itemPickupSelected(Character character, Ability ability) {
+		if (gameState != GameState.START_GAME) {
+			return false;
+		}
+		
+		return character.itemPickupSelected(ability);
+	}
+	
+	@Override
+	public boolean itemDropSelected() {
+		if (gameState != GameState.START_GAME) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	@Override
+	public boolean abilitySelected(Character character, Ability ability) {
+		if (gameState != GameState.START_GAME) {
+			return false;
+		}
+		
+		return character.abilitySelected(ability);
+	}
+	
 	// When a character is having a turn, they will ask this, initiating a
 	// leadership validity check.
 	public Character getCurrentLeader() {
@@ -723,11 +771,6 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;
-	}
-
-	@Override
-	public void mainMenuStartGameSelected() {
-		EventBus.getDefault().event(NEW_GAME_EVENT, this);
 	}
 
 	@Override
@@ -933,6 +976,34 @@ public class TurnProcessor implements IPresenterTurnState {
 		dungeon.restart();
 		startNewLevel(level);
 		setSoloMode(false);
+	}
+
+	Character previousCurrentCharacter = null;
+	GameState previousGameState = GameState.NO_SAVED_GAME;
+	
+	@Override
+	public void mainMenuStartGameSelected() {
+		if (gameState != GameState.NEW_GAME) {
+			doNewGame();
+		}
+	}
+	
+	private void doNewGame() {
+		previousGameState = gameState;
+		previousCurrentCharacter = getCurrentCharacter();
+		setGameState(GameState.NEW_GAME);
+		sendGameStateEvent();
+	}
+	
+	@Override
+	public void cancelNewGameSelected() {
+		if (previousGameState == GameState.NO_SAVED_GAME) {
+			return;
+		}
+		
+		setGameState(previousGameState);
+		setCurrentCharacter(previousCurrentCharacter);
+		sendGameStateEvent();
 	}
 
 }

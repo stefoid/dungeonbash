@@ -46,8 +46,7 @@ public abstract class ListPresenter {
 		setup();
 	}
 
-	protected void setup()
-	{
+	protected void setup() {
 		// Subscribe to changes to the current character.
 		newCharacter(model.presenterTurnState.getCurrentCharacter());
 		model.presenterTurnState.onChangeToCurrentCharacter(new UIInfoListener() {
@@ -65,8 +64,7 @@ public abstract class ListPresenter {
 	// tell our ScrollingList to use that.
 	protected abstract void listInfoUpdate();
 	
-	protected void newCharacter(Character character)
-	{	
+	protected void newCharacter(Character character) {	
 		// save the listPosition of the previous character for next time it is called up.
 		if (oldCharacter != null) {
 			characters.put(oldCharacter, new Float(scrollingList.getListPosition()));
@@ -82,8 +80,7 @@ public abstract class ListPresenter {
 		listInfoUpdate();
 	}
 	
-	public void draw(SpriteBatch spriteBatch, float x, float y)
-	{
+	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		if (scrollingList != null) {
 			scrollingList.draw(spriteBatch, x, y);
 		}
@@ -104,8 +101,7 @@ public abstract class ListPresenter {
 			scrollingList.deactivate();
 	}
 	
-	protected void saveListPosition()
-	{
+	protected void saveListPosition() {
 		characters.put(model.presenterTurnState.getCurrentCharacter(), new Float(scrollingList.getListPosition()));
 	}
 }

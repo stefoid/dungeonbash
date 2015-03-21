@@ -34,14 +34,32 @@ public class OverlayQueues {
 		this.touchEventProvider = touchEventProvider;
 	}
 	
-	public void addParallel(OverlayPresenter overlayPresenter) {
+	public void addParallel(final OverlayPresenter overlayPresenter) {
 		parallelList.add(overlayPresenter);
+		overlayPresenter.onDismiss(new IDismissListener() {
+			@Override
+			public void dismiss() {
+				overlayPresenter.destroy();
+				parallelList.remove(overlayPresenter);
+			}
+		});
 		overlayPresenter.init(gui);
 		overlayPresenter.start(area, touchEventProvider);
 	}
 	
-	public void addSequential(OverlayPresenter overlayPresenter) {
+	public void addSequential(final OverlayPresenter overlayPresenter) {
 		sequentialList.add(overlayPresenter);
+		overlayPresenter.onDismiss(new IDismissListener() {
+			@Override
+			public void dismiss() {
+				overlayPresenter.destroy();
+				sequentialList.remove(overlayPresenter);
+				if (sequentialList.size() > 0) {
+					OverlayPresenter nextOne = sequentialList.get(0);
+					nextOne.start(area, touchEventProvider);
+				}
+			}
+		});
 		overlayPresenter.init(gui);
 		if (sequentialList.size() == 1) {
 			overlayPresenter.start(area, touchEventProvider);
@@ -66,13 +84,7 @@ public class OverlayQueues {
 	
 	public void remove(OverlayPresenter overlayPresenter) {
 		if (overlayPresenter!= null) {
-			overlayPresenter.dismiss();
-		}
-		parallelList.remove(overlayPresenter);
-		sequentialList.remove(overlayPresenter);
-		if (sequentialList.size() > 0) {
-			OverlayPresenter nextOne = sequentialList.get(0);
-			nextOne.start(area, touchEventProvider);
+			overlayPresenter.dismiss();	
 		}
 	}
 }

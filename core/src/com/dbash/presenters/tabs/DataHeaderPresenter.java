@@ -101,10 +101,7 @@ public class DataHeaderPresenter {
 				"SNEAK_ENABLED_IMAGE", "SNEAK_DISABLED_IMAGE", Audio.CLICK);
 		sneakToggleButton.onClick( new IClickListener() {
 			public void processClick() {
-				Character character = mod.presenterTurnState.getCurrentCharacter();
-				if (character != null) {
-					character.stealthToggleSelected();
-				}
+				presenterTurnState.stealthSelected();
 			}
 		});
 		

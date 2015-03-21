@@ -69,7 +69,7 @@ public class AbilitySelectionListPresenter extends ListPresenter{
 				public void processSelection() {
 					if (ability != null) {
 						saveListPosition();  // do this first because processing the ability will create a new list
-						boolean canSelect = owner.abilitySelected(ability);
+						boolean canSelect = model.presenterTurnState.abilitySelected(owner, ability);
 						if (canSelect) {
 							if (soundEffect != null) {
 								gui.audio.playSound(soundEffect);
