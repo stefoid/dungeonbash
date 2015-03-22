@@ -69,17 +69,18 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	ImagePatchView mainBorder;
 	TextView chooseText;
 	CharacterView[] charViews;
-	CheckBoxView tutorialButton;
+	ButtonView tutorialButton;
 	ButtonView startGameButton;
 	ButtonView newCharsButton;
 	ButtonView cancelButton;
 	
 	IPresenterTurnState turnProcessor;
-	
+	boolean initialTutorialState;
 	List<Character> characters;
 	
-	public NewGameOverlayPresenter(IPresenterTurnState turnProcessor) {
+	public NewGameOverlayPresenter(IPresenterTurnState turnProcessor, boolean tutorialState) {
 		this.turnProcessor = turnProcessor;
+		initialTutorialState = tutorialState;
 	}
 	
 	@Override
@@ -108,8 +109,8 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		float buttonSpacerY = area.height/20;
 		Rect buttonArea = new Rect(area.x+buttonSpacerX, area.y+buttonSpacerY, area.height/7, area.height/7);
 		
-		cancelButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
-				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		cancelButton = new ButtonView(gui, touchEventProvider, buttonArea, "CANCEL_DOWN_IMAGE", 
+				"CANCEL_IMAGE", "CANCEL_IMAGE", Audio.CLICK);
 		cancelButton.onClick( new IClickListener() {
 			public void processClick() {
 				turnProcessor.cancelNewGameSelected();
@@ -118,22 +119,30 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		
 		buttonArea.x = (float) (area.width - buttonArea.width*2.5);
 		
-		tutorialButton = new CheckBoxView(gui, touchEventProvider, buttonArea, true);
+		tutorialButton = new ButtonView(gui, touchEventProvider, buttonArea, "TUTORIAL_DOWN_IMAGE", 
+				"TUTORIAL_IMAGE", "TUTORIAL_IMAGE", Audio.CLICK);
+		tutorialButton.onClick( new IClickListener() {
+			public void processClick() {
+				tutorialButton.setState(!tutorialButton.getState());
+			}
+		});
+		
+		tutorialButton.setState(initialTutorialState);
 		
 		buttonArea.x += (float) (buttonArea.width*1.5);
 		
-		startGameButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
-				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		startGameButton = new ButtonView(gui, touchEventProvider, buttonArea, "START_GAME_DOWN_IMAGE", 
+				"START_GAME_IMAGE", "START_GAME_IMAGE", Audio.CLICK);
 		startGameButton.onClick( new IClickListener() {
 			public void processClick() {
 				turnProcessor.startGame(characters,  tutorialButton.getState());
 			}
 		});
 		
-		buttonArea.y = area.y + area.height - buttonArea.height - buttonSpacerY;
+		buttonArea.y = area.y + area.height - buttonArea.height - buttonSpacerY*2;
 		
-		newCharsButton = new ButtonView(gui, touchEventProvider, buttonArea, "SOLO_ON_IMAGE", 
-				"SOLO_OFF_IMAGE", "SOLO_OFF_IMAGE", Audio.CLICK);
+		newCharsButton = new ButtonView(gui, touchEventProvider, buttonArea, "NEW_CHARS_DOWN_IMAGE", 
+				"NEW_CHARS_IMAGE", "NEW_CHARS_IMAGE", Audio.CLICK);
 		newCharsButton.onClick( new IClickListener() {
 			public void processClick() {
 				createNewChars();
@@ -189,7 +198,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 					for (CharacterView c : charViews) {
 						if (c == theCharView) {
 							c.set();
-							turnProcessor.setCurrentCharacter(character);
+							turnProcessor.setCurrentCharacterForNewGame(character);
 						} else {
 							c.clear();
 						}
@@ -200,7 +209,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		}
 		
 		charViews[0].set();
-		turnProcessor.setCurrentCharacter(characters.get(0));
+		turnProcessor.setCurrentCharacterForNewGame(characters.get(0));
 	}
 	
 	private void killCharButtons() {

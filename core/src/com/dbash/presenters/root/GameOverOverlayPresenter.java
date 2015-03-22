@@ -41,7 +41,7 @@ public class GameOverOverlayPresenter extends OverlayPresenter implements TouchE
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea);
 		// Needs to swallow all touches to the screen to be modal
-		touchEventProvider.addTouchEventListener(this, null, gui.cameraViewPort.viewPort);  //null area means entire screen
+		touchEventProvider.addTouchEventListener(this, area, gui.cameraViewPort.viewPort);  //null area means entire screen
 		
 		this.area = new Rect(gui.sizeCalculator.dungeonArea);
 		Rect backgroundArea = new Rect(area, .04f, .04f, .15f, .35f);
@@ -71,7 +71,7 @@ public class GameOverOverlayPresenter extends OverlayPresenter implements TouchE
 			}
 		};
 		
-		Timer.instance().scheduleTask(task, 2);
+		Timer.instance().scheduleTask(task, gameStats.delay);
 	}
 	
 	@Override

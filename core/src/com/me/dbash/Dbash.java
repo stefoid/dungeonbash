@@ -127,7 +127,7 @@ public class Dbash implements ApplicationListener {
 		
 		if (newGame) {
 			audio.defaultVolume();
-			EventBus.getDefault().event(TurnProcessor.NEW_GAME_EVENT,  turnProcessor);
+			EventBus.getDefault().event(TurnProcessor.NO_SAVED_GAME_EVENT,  turnProcessor);
 		} else {
 			turnProcessor.resume();
 		}

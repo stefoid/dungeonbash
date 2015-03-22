@@ -31,6 +31,7 @@ public interface IPresenterTurnState {
 	public Character getCurrentCharacter();
 	public Character getCharacterForTouchEvents();
 	public void setCurrentCharacter(Character character);
+	public void setCurrentCharacterForNewGame(Character character);
 	public boolean itemPickupSelected(Character character, Ability ability);
 	public boolean itemDropSelected();
 	public boolean abilitySelected(Character character, Ability ability);

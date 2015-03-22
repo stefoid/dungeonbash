@@ -11,8 +11,6 @@ public class GameStatePresenter {
 
 	EventBus eventBus;
 	UIDepend gui;
-	GameOverOverlayPresenter gameOverPresenter;
-	NewGameOverlayPresenter newGamePresenter;
 	
 	public GameStatePresenter(UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
@@ -26,7 +24,7 @@ public class GameStatePresenter {
 			@Override
 			public void action(Object param) {
 				removePresenters();
-				newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param);
+				OverlayPresenter newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param, true);
 				gui.overlayQueues.addSequential(newGamePresenter);
 			}
 		});
@@ -35,7 +33,7 @@ public class GameStatePresenter {
 			@Override
 			public void action(Object param) {
 				removePresenters();
-				newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param);
+				OverlayPresenter newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param, false);
 				gui.overlayQueues.addSequential(newGamePresenter);
 				
 			}
@@ -52,18 +50,13 @@ public class GameStatePresenter {
 			@Override
 			public void action(Object param) {
 				removePresenters();
-				gameOverPresenter = new GameOverOverlayPresenter((GameStats) param);
+				OverlayPresenter gameOverPresenter = new GameOverOverlayPresenter((GameStats) param);
 				gui.overlayQueues.addSequential(gameOverPresenter);
 			}
 		});
 	}
 	
 	private void removePresenters() {
-		if (gameOverPresenter != null) {
-			gui.overlayQueues.remove(gameOverPresenter);
-		}
-		if (newGamePresenter != null) {
-			gui.overlayQueues.remove(newGamePresenter);
-		}
+		gui.overlayQueues.removeAll();
 	}
 }

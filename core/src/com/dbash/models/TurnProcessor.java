@@ -351,6 +351,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		currentCharacter.setCharacterisUsingEye(usingEye);
 		currentCharacterListeners.alertListeners();
 	}
+	
+	@Override
+	public void setCurrentCharacterForNewGame(Character character) {
+		currentCharacter = character;
+		currentCharacterListeners.alertListeners();
+	}
 
 	// returns true if the character should drop its stuff, false otherwise.
 	public boolean characterDied(Character character) {
@@ -372,6 +378,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			// game over man, game over.
 			dungeon.gameOver();
 			setGameState(GameState.GAME_OVER);
+			gameStats.delay = 2;
 			EventBus.getDefault().event(GAME_OVER_EVENT, gameStats);
 		} else
 		// What if that was the last character on this level?

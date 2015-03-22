@@ -9,9 +9,10 @@ public class GameStats {
 	public int monstersKilled;
 	public int xp;
 	public int level;
+	public int delay;
 	
 	public GameStats() {
-		
+		delay = 2;
 	}
 	
 	public void monsterKilled() {

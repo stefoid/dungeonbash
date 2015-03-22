@@ -1,6 +1,7 @@
 package com.dbash.presenters.root;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.TouchEventProvider;
@@ -85,6 +86,21 @@ public class OverlayQueues {
 	public void remove(OverlayPresenter overlayPresenter) {
 		if (overlayPresenter!= null) {
 			overlayPresenter.dismiss();	
+		}
+	}
+	
+	public void removeAll() {
+		Iterator<OverlayPresenter> iter = parallelList.iterator();
+		while(iter.hasNext()) {
+			OverlayPresenter o = iter.next();
+			o.destroy();
+			iter.remove();
+		}
+		iter = sequentialList.iterator();
+		while(iter.hasNext()) {
+			OverlayPresenter o = iter.next();
+			o.destroy();
+			iter.remove();
 		}
 	}
 }

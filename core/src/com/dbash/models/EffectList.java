@@ -72,10 +72,10 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			AbilityInfo stealth = new AbilityInfo(tst, st, Color.WHITE);
 			add(stealth);
 			
-			int de = owner.calculateDetect();
-			String[] tde = {"DETECT", " : ", getDetectDesc(de)};
-			AbilityInfo detect = new AbilityInfo(tde, de, Color.WHITE);
-			add(detect);
+//			int de = owner.calculateDetect();
+//			String[] tde = {"DETECT", " : ", getDetectDesc(de)};
+//			AbilityInfo detect = new AbilityInfo(tde, de, Color.WHITE);
+//			add(detect);
 			
 			int bur = owner.calcProtection(AbilityCommand.RESIST_BURST);
 			if (bur > 0) {
