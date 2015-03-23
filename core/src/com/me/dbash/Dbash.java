@@ -146,7 +146,7 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
-		if (L.NO_SAVE == false) {
+		if (L.NO_SAVE == false && turnProcessor.allCreatures != null) {
 			if (LOG) L.log("SAVING GAMEDATA");
 			FileHandle fl = Gdx.files.local("gamedata.dat");
 			ObjectOutputStream out = null;

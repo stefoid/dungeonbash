@@ -18,7 +18,7 @@ import com.me.dbash.Dbash;
 @SuppressWarnings("unused")
 
 public class TurnProcessor implements IPresenterTurnState {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static final String NO_SAVED_GAME_EVENT = "nosavedgame";
 	public static final String NEW_GAME_EVENT = "newgame";
@@ -879,6 +879,13 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	public void persist(ObjectOutputStream out) throws IOException {
 		gameStats.persist(out);
+		
+		if (gameState == GameState.NEW_GAME) {
+			if (LOG) L.log("was NEW_GAME");
+			gameState = previousGameState;  // dont restart with new game on. 
+		}
+		
+		if (LOG) L.log("gameState: %s",  gameState);
 		out.writeObject(gameState);
 
 		// 1) turn processor saves level number
@@ -988,6 +995,11 @@ public class TurnProcessor implements IPresenterTurnState {
 	Character previousCurrentCharacter = null;
 	GameState previousGameState = GameState.NO_SAVED_GAME;
 	
+	private void rememberState() {
+		previousGameState = gameState;
+		previousCurrentCharacter = getCurrentCharacter();
+	}
+	
 	@Override
 	public void mainMenuStartGameSelected() {
 		if (gameState != GameState.NEW_GAME) {
@@ -996,8 +1008,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 	
 	private void doNewGame() {
-		previousGameState = gameState;
-		previousCurrentCharacter = getCurrentCharacter();
+		rememberState();
 		setGameState(GameState.NEW_GAME);
 		sendGameStateEvent();
 	}
@@ -1012,5 +1023,4 @@ public class TurnProcessor implements IPresenterTurnState {
 		setCurrentCharacter(previousCurrentCharacter);
 		sendGameStateEvent();
 	}
-
 }

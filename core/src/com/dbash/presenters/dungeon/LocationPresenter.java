@@ -19,7 +19,7 @@ import com.dbash.util.Rect;
 // it gets updates of presentation-related data in the form of LocationInfo when the visual representation of the Location changes.
 public class LocationPresenter {
 	
-	public static boolean LOG = true && L.DEBUG;
+	public static boolean LOG = false && L.DEBUG;
 	
 	public LocationInfo locationInfo;
 	private ImageView tile;

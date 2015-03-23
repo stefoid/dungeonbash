@@ -6,9 +6,12 @@ import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.TurnProcessor;
 import com.dbash.platform.UIDepend;
 import com.dbash.util.EventBus;
+import com.dbash.util.L;
 
 public class GameStatePresenter {
 
+	public static final boolean LOG = true && L.DEBUG;
+	
 	EventBus eventBus;
 	UIDepend gui;
 	
@@ -23,6 +26,7 @@ public class GameStatePresenter {
 		eventBus.onEvent(TurnProcessor.NO_SAVED_GAME_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
+				if (LOG) L.log("NO_SAVED_GAME_EVENT");
 				removePresenters();
 				OverlayPresenter newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param, true);
 				gui.overlayQueues.addSequential(newGamePresenter);
@@ -32,6 +36,7 @@ public class GameStatePresenter {
 		eventBus.onEvent(TurnProcessor.NEW_GAME_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
+				if (LOG) L.log("NEW_GAME_EVENT");
 				removePresenters();
 				OverlayPresenter newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param, false);
 				gui.overlayQueues.addSequential(newGamePresenter);
@@ -42,6 +47,7 @@ public class GameStatePresenter {
 		eventBus.onEvent(TurnProcessor.START_GAME_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
+				if (LOG) L.log("START_GAME_EVENT");
 				removePresenters();
 			}
 		});
@@ -49,6 +55,7 @@ public class GameStatePresenter {
 		eventBus.onEvent(TurnProcessor.GAME_OVER_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
+				if (LOG) L.log("GAME_OVER_EVENT");
 				removePresenters();
 				OverlayPresenter gameOverPresenter = new GameOverOverlayPresenter((GameStats) param);
 				gui.overlayQueues.addSequential(gameOverPresenter);
