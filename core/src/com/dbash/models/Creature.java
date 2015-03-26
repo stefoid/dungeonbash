@@ -1665,6 +1665,7 @@ public abstract class Creature implements IPresenterCreature
 		Ability hidingAbility = new Ability(Ability.getIdForName("hiding"), null, 1, dungeonEvents, dungeonQuery);
 		addAbility(hidingAbility, null);
 		Vector<Ability.AbilityEffectType> tiptoe = new Vector<Ability.AbilityEffectType>();
+		dungeonEvents.processCharacterStealth();
 		tiptoe.add(Ability.AbilityEffectType.HIDING);
 		dungeonEvents.abilityAdded(SequenceNumber.getNext(), releventCharacter, tiptoe, mapPosition);
 		turnProcessor.characterEndsTurn(this);
@@ -1673,6 +1674,7 @@ public abstract class Creature implements IPresenterCreature
 	public void notHiding(Character releventCharacter) {
 		if (stealthStatus == StealthStatus.HIDING) {
 			stealthStatus = StealthStatus.HIDING_POSSIBLE;
+			dungeonEvents.processCharacterStealth();
 			dungeonEvents.creatureFound(SequenceNumber.getNext(), releventCharacter, this);
 		}
 	}
