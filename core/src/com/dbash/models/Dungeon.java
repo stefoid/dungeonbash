@@ -166,9 +166,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		map = new TutorialMap(this, this);
 		initLevel();
 		
-		Monster nashkur = new Monster(Creature.getIdForName("nashkur"), currentLevel, map.exitPoint, this, this, turnProcessor);
-		map.location(map.exitPoint).creature = nashkur;
-		mobs.add(nashkur);
+//		Monster nashkur = new Monster(Creature.getIdForName("nashkur"), currentLevel, map.exitPoint, this, this, turnProcessor);
+//		map.location(map.exitPoint).creature = nashkur;
+//		mobs.add(nashkur);
+		
 		map.location(map.exitPoint).setAsExit();
 
 		// must set the map now so that it can observe changes to Locations as monsters are added to the currentLevel.
