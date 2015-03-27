@@ -16,6 +16,7 @@ public interface IDungeonControl extends TouchEventListener {
 	 *            number the denser the level.
 	 */
 	public void createLevel(TurnProcessor turnProcessor, int level);
+	public void createTutorialLevel(TurnProcessor turnProcessor);
 	public void restart();
 	public void gameOver();
 	public void resume(TurnProcessor turnProcessor, int level, AllCreatures allCreatures, Vector<Character> charactersOnMap);

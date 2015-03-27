@@ -159,6 +159,27 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	}
 	
 	@Override
+	public void createTutorialLevel(TurnProcessor turnProcessor) {
+		this.turnProcessor = turnProcessor;
+		currentLevel = 1;
+		
+		map = new TutorialMap(this, this);
+		initLevel();
+		
+		Monster nashkur = new Monster(Creature.getIdForName("nashkur"), currentLevel, map.exitPoint, this, this, turnProcessor);
+		map.location(map.exitPoint).creature = nashkur;
+		mobs.add(nashkur);
+		map.location(map.exitPoint).setAsExit();
+
+		// must set the map now so that it can observe changes to Locations as monsters are added to the currentLevel.
+		mapEventListener.setMap(map);
+		ShadowMap shadowMap = new ShadowMap();
+		shadowMap.setMap(map, map.startPoint, Map.RANGE);
+		setMapFocus(map.startPoint, shadowMap);
+		processCreaturePositions();
+	}
+	
+	@Override
 	public void createLevel(TurnProcessor turnProcessor, int level) {
 		this.turnProcessor = turnProcessor;
 		if (L.DEBUG) {

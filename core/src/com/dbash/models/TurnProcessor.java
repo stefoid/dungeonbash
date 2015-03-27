@@ -85,11 +85,17 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	// We set up the lists for this level.
-	private void startNewLevel(int level) {
+	private void startNewLevel(int level, boolean tutorial) {
 		gameStats.newLevel(level);
 		pauseTurnProcessing = false;
 		acceptInput = false;
-		dungeon.createLevel(this, level);
+		
+		if (tutorial) {
+			dungeon.createTutorialLevel(this);
+		} else {
+			dungeon.createLevel(this, level);
+		}
+		
 		setCurrentCharacter(nobody);
 		firstCharToDrop = true;
 
@@ -388,7 +394,7 @@ public class TurnProcessor implements IPresenterTurnState {
 					new IAnimListener() {
 						public void animEvent() {
 							level++;
-							startNewLevel(level);
+							startNewLevel(level, false);
 						}
 					});
 			return false;
@@ -657,7 +663,7 @@ public class TurnProcessor implements IPresenterTurnState {
 						acceptInput = true;
 						if (allCharacters.size() == charactersFallingOut.size()) {
 							level++;
-							startNewLevel(level);
+							startNewLevel(level, false);
 						}
 					}
 				});
@@ -988,7 +994,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		leaderStatus = LeaderStatus.NONE;
 		level = 1;
 		dungeon.restart();
-		startNewLevel(level);
+		startNewLevel(level, tutorialMode);
 		setSoloMode(false);
 	}
 

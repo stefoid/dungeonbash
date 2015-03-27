@@ -22,6 +22,7 @@ public class Map implements IPresenterMap {
 	
 	public static int RANGE = 5;
 	public static int LOS = -1;
+	public static int TUTORIAL = -100;
 	
 	public Location[][] location;  // all the locations
 	public ArrayList<Location> drawableLocations = new ArrayList<Location>(); // for clearing lights.
@@ -35,18 +36,19 @@ public class Map implements IPresenterMap {
 	protected ArrayList<Light> tempLights;
 	protected ArrayList<Light> permLights;
 	
-	private IDungeonQuery dungeonQuery;
+	protected IDungeonQuery dungeonQuery;
 	
-	private Vector<UILocationInfoListener> locationInfoListeners;
-	private Location solidRock = new Location();
-	private boolean lightingChanged;
-	private final int border = 2; // how thick the enclosing rock wall is
+	protected Vector<UILocationInfoListener> locationInfoListeners;
+	protected Location solidRock = new Location();
+	protected boolean lightingChanged;
+	protected final int border = 2; // how thick the enclosing rock wall is
 	
 	@SuppressWarnings("serial")
 	public class MapException extends Exception {
 	}
 	
 	public Map(int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
+
 		boolean dungeonNotCompleted = true;
 		this.dungeonQuery = dungeonQuery;
 		while (dungeonNotCompleted) {
@@ -267,7 +269,7 @@ public class Map implements IPresenterMap {
 		location(exitPoint).setAsExit();
 	}
 	
-	private void setIslands() {
+	protected void setIslands() {
 		int numIslands = level/4 + Randy.getRand(0, 2);
 		for (int i=0;i<numIslands; i++) {
 			Location island = getWideSpaceLocation();
@@ -298,7 +300,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	private void drawSquigglyLine(DungeonPosition pos) {
+	protected void drawSquigglyLine(DungeonPosition pos) {
 		int x = pos.x;
 		int y = pos.y;
 		int dir = Randy.getRand(0, 4);
@@ -346,7 +348,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	private void drawSquigglyRoughTerrainLine(DungeonPosition pos, RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
+	protected void drawSquigglyRoughTerrainLine(DungeonPosition pos, RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int x = pos.x;
 		int y = pos.y;
 		int dir = Randy.getRand(0, 4);
@@ -394,7 +396,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	private boolean isOKForRoughTerrain(RoughTerrainType roughTerrainType, int x, int y) {
+	protected boolean isOKForRoughTerrain(RoughTerrainType roughTerrainType, int x, int y) {
 		if (isLegal(x, y) == false) {
 			return false;
 		}
@@ -424,7 +426,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	private boolean isLegal(int x, int y) {
+	protected boolean isLegal(int x, int y) {
 		if (x>(border-1) && x<(width-border) && y>(border-1) && y<(height-border)) {
 			return true;
 		} else {
@@ -580,20 +582,4 @@ public class Map implements IPresenterMap {
 			}
 		}
 	}
-	
-	private String[] tutorialMap = {
-			"*************************************************************************************************" ,
-			"*************************************************************************************************" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                ********                                         ********                ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                                        *********                ********                ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                ********                *********                                        ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*************************************************************************************************" ,
-			"*************************************************************************************************" 
-		};
 }
