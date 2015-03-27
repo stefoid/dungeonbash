@@ -3,26 +3,22 @@ package com.dbash.models;
 import java.util.Vector;
 
 import com.dbash.models.Location.RoughTerrainType;
-import com.dbash.models.Map.MapException;
-import com.dbash.util.L;
 import com.dbash.util.Randy;
 
 public class TutorialMap extends Map {
 
 	private String[] tutorialMap = {
-			"*************************************************************************************************" ,
-			"*************************************************************************************************" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                ********                                         ********           X    ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****  S             ********                *********                ********                ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                                        *********                ********                ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*****                ********                *********                                        ***" ,
-			"*****                ********                *********                ********                ***" ,
-			"*************************************************************************************************" ,
-			"*************************************************************************************************" 
+			"**********************************************************************************************" ,
+			"**********************************************************************************************" ,
+			"*****     r       ********                                         ********           X    ***" ,
+			"*****             ********                *********                ********                ***" ,
+			"*****  S          ********                *********                ********                ***" ,
+			"*****         m   ********                *********                ********                ***" ,
+			"*****     h                               *********                ********                ***" ,
+			"*****     b       ********                *********                ********                ***" ,
+			"*****             ********                *********                                        ***" ,
+			"**********************************************************************************************" ,
+			"**********************************************************************************************" 
 		};
 	
 	public TutorialMap(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
@@ -46,13 +42,14 @@ public class TutorialMap extends Map {
 		
 		// clear the spaces
 		for (int x=0; x<width; x++) {
-			for (int y=height-1; y>=0; y--) {
+			for (int y=0; y< height; y++) {
 				if (tutorialMap[y].charAt(x) != '*') {
-					location[x][y].clearLocation();
+					location[x][height-1-y].clearLocation();
 				}
 			}
 		}
 
+		setIslands();
 		setStartAndExitPoints();
 		
 		// Now make a preliminary pass to determine Tile types
@@ -98,7 +95,7 @@ public class TutorialMap extends Map {
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
 				if (tutorialMap[y].charAt(x) == c) {
-					return new DungeonPosition(x,y);
+					return new DungeonPosition(x,height-1 - y);
 				}
 			}
 		}
@@ -106,24 +103,42 @@ public class TutorialMap extends Map {
 		return null;
 	}
 	
+	protected void setIslands() {
+		for (int x=0; x<width; x++) {
+			for (int y=0; y< height; y++) {
+				if (tutorialMap[y].charAt(x) == 'i') {
+					location[x][height-1-y].setAsIsland();
+				}
+			}
+		}
+	}
+	
 	protected void addRoughTerrain(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
-		int numberRoughLines = Randy.getRand(width/5,  width/3);
-		for (int i=0; i < numberRoughLines; i++) {
-			try {
-				drawSquigglyRoughTerrainLine(getRandomPoint(true), RoughTerrainType.getRandomType(), dungeonEvents, dungeonQuery);
-			} catch (MapException e) {
-
+		RoughTerrainType tt;
+		for (int x=0; x<width; x++) {
+			for (int y=0; y< height; y++) {
+				
+				tt = null;
+				switch (tutorialMap[y].charAt(x)) {
+				case 'r':
+					tt = RoughTerrainType.ROCKS;
+					break;
+				case 'h':
+					tt = RoughTerrainType.HOLE;
+					break;
+				case 'm':
+					tt = RoughTerrainType.MUD;
+					break;
+				case 'b':
+					tt = RoughTerrainType.BONES;
+					break;
+				}
+				
+				if (tt != null) {
+					location(x, height - 1 - y).setRoughTerrain(tt, dungeonEvents, dungeonQuery);
+				}
 			}
 		}
 		
-		// now add a few more rock terrain for stealth in wide open spaces.
-		int numberRockTerrain = level - 1;
-		for (int i=0; i < numberRockTerrain; i++) {
-			Location l = getWideSpaceLocation();
-			if (l != null) {
-				if (LOG) L.log("PLACING EXTRA ROCKS: %s", i);
-				drawSquigglyRoughTerrainLine(l.position, RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
-			}
-		}
 	}
 }

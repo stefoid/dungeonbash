@@ -221,6 +221,10 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	}
 	
 	public void destroy() {
+		cancelButton.removeYourself();
+		tutorialButton.removeYourself();
+		startGameButton.removeYourself();
+		newCharsButton.removeYourself();
 		killCharButtons();
 		touchEventProvider.removeTouchEventListener(this);
 	}
