@@ -540,6 +540,10 @@ public class Map implements IPresenterMap {
 //		}
 	}
 	
+	public void clearAllLighting() {
+		
+	}
+	
 	protected void addRoughTerrain(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int numberRoughLines = Randy.getRand(width/5,  width/3);
 		for (int i=0; i < numberRoughLines; i++) {

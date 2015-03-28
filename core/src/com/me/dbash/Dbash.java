@@ -22,6 +22,7 @@ import com.dbash.platform.FatOutlineFont;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.SmoothBitmapFont;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.GameStatePresenter;
 import com.dbash.presenters.root.OverlayQueues;
 import com.dbash.presenters.root.RootPresenter;
 import com.dbash.util.EventBus;
@@ -127,7 +128,7 @@ public class Dbash implements ApplicationListener {
 		
 		if (newGame) {
 			audio.defaultVolume();
-			EventBus.getDefault().event(TurnProcessor.NO_SAVED_GAME_EVENT,  turnProcessor);
+			EventBus.getDefault().event(GameStatePresenter.NO_SAVED_GAME_EVENT,  turnProcessor);
 		} else {
 			turnProcessor.resume();
 		}

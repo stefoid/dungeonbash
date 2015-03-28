@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import com.dbash.models.Creature.StealthStatus;
 import com.dbash.presenters.root.GameOverOverlayPresenter;
+import com.dbash.presenters.root.GameStatePresenter;
 import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.SequenceNumber;
@@ -19,11 +20,6 @@ import com.me.dbash.Dbash;
 
 public class TurnProcessor implements IPresenterTurnState {
 	public static final boolean LOG = true && L.DEBUG;
-	
-	public static final String NO_SAVED_GAME_EVENT = "nosavedgame";
-	public static final String NEW_GAME_EVENT = "newgame";
-	public static final String START_GAME_EVENT = "startgame";
-	public static final String GAME_OVER_EVENT = "gameover";
 	
 	public static final int NUM_CHARS = 3;
 	
@@ -385,7 +381,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			dungeon.gameOver();
 			setGameState(GameState.GAME_OVER);
 			gameStats.delay = 2;
-			EventBus.getDefault().event(GAME_OVER_EVENT, gameStats);
+			EventBus.getDefault().event(GameStatePresenter.GAME_OVER_EVENT, gameStats);
 		} else
 		// What if that was the last character on this level?
 		// If so, go to the next level
@@ -759,20 +755,20 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 	
 	private void sendGameStateEvent() {
-		String event = NO_SAVED_GAME_EVENT;
+		String event = GameStatePresenter.NO_SAVED_GAME_EVENT;
 		Object param = this;
 		switch (gameState) {
 			case NO_SAVED_GAME:
-				event = NO_SAVED_GAME_EVENT;
+				event = GameStatePresenter.NO_SAVED_GAME_EVENT;
 				break;
 			case NEW_GAME:
-				event = NEW_GAME_EVENT;
+				event = GameStatePresenter.NEW_GAME_EVENT;
 				break;
 			case START_GAME:
-				event = START_GAME_EVENT;
+				event = GameStatePresenter.START_GAME_EVENT;
 				break;
 			case GAME_OVER:
-				event = GAME_OVER_EVENT;
+				event = GameStatePresenter.GAME_OVER_EVENT;
 				param = gameStats;
 				default:
 					break;
@@ -988,7 +984,10 @@ public class TurnProcessor implements IPresenterTurnState {
 		charactersFallingOut.addAll(allCharacters);
 		gameStats = new GameStats();
 		setGameState(GameState.START_GAME);
-		EventBus.getDefault().event(START_GAME_EVENT, this);
+		EventBus.getDefault().event(GameStatePresenter.START_GAME_EVENT, this);
+		if (tutorialMode) {
+			EventBus.getDefault().event(GameStatePresenter.START_TUTORIAL_EVENT, this);
+		}
 
 		currentLeader = null;
 		leaderStatus = LeaderStatus.NONE;

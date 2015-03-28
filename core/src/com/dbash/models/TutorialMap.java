@@ -3,22 +3,22 @@ package com.dbash.models;
 import java.util.Vector;
 
 import com.dbash.models.Location.RoughTerrainType;
-import com.dbash.util.Randy;
+
 
 public class TutorialMap extends Map {
 
 	private String[] tutorialMap = {
-			"**********************************************************************************************" ,
-			"**********************************************************************************************" ,
-			"*****     r       ********                                         ********           X    ***" ,
-			"*****             ********                *********                ********                ***" ,
-			"*****  S          ********                *********                ********                ***" ,
-			"*****         m   ********                *********                ********                ***" ,
-			"*****     h                               *********                ********                ***" ,
-			"*****     b       ********                *********                ********                ***" ,
-			"*****             ********                *********                                        ***" ,
-			"**********************************************************************************************" ,
-			"**********************************************************************************************" 
+			"*************************************************************************************" ,
+			"*************ttt*********************************************************************" ,
+			"*****     r       ********                                   ********        X    ***" ,
+			"*****             ********             *********             ********             ***" ,
+			"*****  S          ********             *********             ********             ***" ,
+			"*****         m   ********             *********             ********             ***" ,
+			"*****     h                            *********             ********             ***" ,
+			"*****     b       ********             *********             ********             ***" ,
+			"*****             ********             *********                                  ***" ,
+			"*************************************************************************************" ,
+			"*************************************************************************************" 
 		};
 	
 	public TutorialMap(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
@@ -43,7 +43,8 @@ public class TutorialMap extends Map {
 		// clear the spaces
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
-				if (tutorialMap[y].charAt(x) != '*') {
+				char c = tutorialMap[y].charAt(x);
+				if (c != '*' && c != 't') {
 					location[x][height-1-y].clearLocation();
 				}
 			}
@@ -77,6 +78,7 @@ public class TutorialMap extends Map {
 			}
 		}
 		
+		setTorches();
 		addExitLight();
 		
 		addRoughTerrain(dungeonEvents, dungeonQuery);
@@ -108,6 +110,16 @@ public class TutorialMap extends Map {
 			for (int y=0; y< height; y++) {
 				if (tutorialMap[y].charAt(x) == 'i') {
 					location[x][height-1-y].setAsIsland();
+				}
+			}
+		}
+	}
+	
+	protected void setTorches() {
+		for (int x=0; x<width; x++) {
+			for (int y=0; y< height; y++) {
+				if (tutorialMap[y].charAt(x) == 't') {
+					location[x][height-1-y].createTorchAt();
 				}
 			}
 		}

@@ -464,16 +464,20 @@ public class Location {
 		if (tileName.equals("statue")) {
 			addTorch(TorchType.CENTRAL);
 		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.notTooCloseToOtherTorches(this)) {
-			if (tileType == TileType.FRONT_FACE) {
-				addTorch(TorchType.FRONT);
-			} else if (tileName.startsWith("VertWest")) {
-				if (LOG) L.log("x: %s, y: %s, WEST TORCH CREATED", x-1, y);
-				map.location[x-1][y].addTorch(TorchType.WEST);
-			} else if (tileName.startsWith("VertEast")) {
-				map.location[x+1][y].addTorch(TorchType.EAST);
-			}
+			createTorchAt();
 		}
 		updateLocationInfo();
+	}
+	
+	public void createTorchAt() {
+		if (tileType == TileType.FRONT_FACE) {
+			addTorch(TorchType.FRONT);
+		} else if (tileName.startsWith("VertWest")) {
+			if (LOG) L.log("x: %s, y: %s, WEST TORCH CREATED", x-1, y);
+			map.location[x-1][y].addTorch(TorchType.WEST);
+		} else if (tileName.startsWith("VertEast")) {
+			map.location[x+1][y].addTorch(TorchType.EAST);
+		}
 	}
 	
 	public boolean hasTorch() {
