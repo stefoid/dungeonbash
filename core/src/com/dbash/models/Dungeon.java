@@ -16,6 +16,8 @@ import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.Creature.StealthStatus;
 import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.Location.RoughTerrainType;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 // Dungeon delegates creating a new map to the Map model, but when it has done so, it populates it with monsters.
@@ -470,7 +472,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 					dungeonEventListener.newCharacterFocus(newFocusCharacter);
 				}
 			}
-//		}
 	}
 
 	@Override
@@ -486,6 +487,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level, new IAnimListener() {
 				public void animEvent() {
 					fallingCharacter.fallComplete();
+					EventBus.getDefault().event(TutorialPresenter.DROPPING_IN_EVENT, null);
 					processCreaturePositions();
 				}
 			});
