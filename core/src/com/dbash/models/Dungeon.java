@@ -348,6 +348,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 					if (completeListener != null) {
 						completeListener.animEvent();
 					}
+					
+					EventBus.getDefault().event(TutorialPresenter.MOVE, null);
 				}
 			};
 			

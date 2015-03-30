@@ -9,6 +9,8 @@ public class L {
 	public static String c2 = "web shooter";
 	public static String c3 = "pit viper";
 	
+	public static boolean TUTORIAL_MODE = true;
+	
 	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;

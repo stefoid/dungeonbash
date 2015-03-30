@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
-import com.dbash.platform.FadeBox;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.IDismissListener;
 import com.dbash.presenters.root.OverlayPresenter;
 import com.dbash.util.Rect;
+import com.dbash.util.Rect.HAlignment;
+import com.dbash.util.Rect.VAlignment;
 
 
 public class DroppingInPresenter extends OverlayPresenter implements TouchEventListener {
-	
-	FadeBox fadeBox;
 	
 	public DroppingInPresenter() {
 	}
@@ -24,28 +24,39 @@ public class DroppingInPresenter extends OverlayPresenter implements TouchEventL
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
-		this.touchEventProvider = touchEventProvider;
-		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("Characters drop into a level one at a time.\n\nTouch anywhere to continue...", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb1);
 		
-		// Needs to swallow all touches to the dungeon area 
-		touchEventProvider.addTouchEventListener(this, theArea, gui.cameraViewPort.viewPort);  
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("The landing spot must be clear before the next one can arrive.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb2);
+	
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("The animated highlight shows which character is having a turn.\n\nSwipe in a direction to move that character.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
 		
-		this.fadeBox = new FadeBox(gui, "Characters drop into a level on at a time.  Touch anywhere to continue...", area);
+		final OverlayPresenter me = this;
+		FadeBoxPresenter fb4 = new FadeBoxPresenter("Moves some of your characters around by swiping a couple of times right now.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
+			public void dismiss() {
+				me.dismiss();
+			}
+		});
+		gui.overlayQueues.addSequential(fb4);
 	}
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-		fadeBox.draw(spriteBatch, x, y);
 	}
 	
 	@Override
 	public boolean touchEvent(TouchEvent event) {
-		dismiss();
-		return true;
+		return false;
 	}
 	
+	@Override
 	public void destroy() {
-		touchEventProvider.removeTouchEventListener(this);
 	}
 
 }

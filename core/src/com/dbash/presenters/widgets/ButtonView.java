@@ -128,6 +128,10 @@ public class ButtonView implements TouchEventListener {
 		this.pressed = pressed;
 	}
 	
+	public Rect getArea() {
+		return area;
+	}
+	
 	public boolean getState() {
 		return pressed;
 	}

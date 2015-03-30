@@ -5,17 +5,26 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.CreatureStats;
+import com.dbash.models.IAnimListener;
+import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
+import com.dbash.platform.AnimationView;
 import com.dbash.platform.Audio;
 import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.OverlayPresenter;
+import com.dbash.presenters.root.tutorial.DroppingInPresenter;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
+import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.ButtonView;
 import com.dbash.presenters.widgets.IClickListener;
+import com.dbash.util.EventBus;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
@@ -33,6 +42,7 @@ import com.dbash.util.Rect.VAlignment;
  */
 public class DataHeaderPresenter {
 	
+	UIDepend gui;
 	Rect area;
 	private IPresenterTurnState presenterTurnState;
 	private PresenterDepend mod;
@@ -49,9 +59,11 @@ public class DataHeaderPresenter {
 	private ImageView healthIcon;
 	private ImageView magicIcon;
 	private ImagePatchView border;
+	private AnimationView leaderButtonAnim;
 	
 	public DataHeaderPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
-		
+	
+		this.gui = gui;
 		this.area = new Rect(area);
 		this.presenterTurnState = model.presenterTurnState;
 		this.mod = model;
@@ -68,6 +80,7 @@ public class DataHeaderPresenter {
 		float buttonY = area.y + area.height*.95f - buttonHeight;   // 5% from the top
 		float buttonX = area.x;// + buttonWidth/2;
 		Rect buttonArea = new Rect (buttonX, buttonY, buttonWidth, buttonHeight);
+		this.leaderButtonAnim = null;
 		
 		// stats
 		float iconSize = area.height * .3f;
@@ -160,6 +173,24 @@ public class DataHeaderPresenter {
 		mod.presenterTurnState.onChangeToSoloStatus(new UIInfoListener() {
 			public void UIInfoChanged() {
 				processSoloStatus();
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_LEADER_BUTTON_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Rect fromRect = new Rect(leaderToggleButton.getArea(), .6f);
+				Rect toRect = new Rect(leaderToggleButton.getArea(), 1.4f);
+				leaderButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				leaderButtonAnim.startPlaying();
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				leaderButtonAnim.stopPlaying();
+				leaderButtonAnim = null;
 			}
 		});
 		
@@ -263,6 +294,10 @@ public class DataHeaderPresenter {
 		healthIcon.draw(spriteBatch);
 		magicIcon.draw(spriteBatch);
 		border.draw(spriteBatch);
+		
+		if (leaderButtonAnim != null) {
+			leaderButtonAnim.draw(spriteBatch);
+		}
 	}
 	
 }

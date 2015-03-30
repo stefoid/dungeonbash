@@ -11,6 +11,7 @@ import java.util.Vector;
 import com.dbash.models.Creature.StealthStatus;
 import com.dbash.presenters.root.GameOverOverlayPresenter;
 import com.dbash.presenters.root.GameStatePresenter;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.SequenceNumber;
@@ -129,6 +130,10 @@ public class TurnProcessor implements IPresenterTurnState {
 			doNewGame();
 		} else {
 			sendGameStateEvent();
+		}
+		
+		if (L.TUTORIAL_MODE) {
+			startGame(getTutorialCharacters(), true);
 		}
 
 	}
@@ -596,6 +601,7 @@ public class TurnProcessor implements IPresenterTurnState {
 				currentLeader = currentCharacter;
 				leaderStatus = LeaderStatus.HAVE_LEADER;
 				if (LOG) L.log("current leader is " + currentLeader.creature.name);
+				EventBus.getDefault().event(TutorialPresenter.LEADER_ON_EVENT, null);
 			}
 		} else {
 			currentLeader.leaderModeCleared();
@@ -963,14 +969,14 @@ public class TurnProcessor implements IPresenterTurnState {
 		// The dungeon will fill in the position when the creature falls into the level. This is just a placeholder.
 		DungeonPosition p = new DungeonPosition(0, 0); // will init to level 1.
 
-		theChars.add(new Character(Creature.getIdForName(L.c1), p, 1, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName(L.c2), p, 2, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName(L.c3), p, 3, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("dwarf"), p, 1, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("acid blob"), p, 2, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("wizard"), p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = theChars.get(0);
-		c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
-		c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);
-		c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
-		c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
+//		c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
+//		c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);
+//		c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
+//		c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
 
 		return theChars;
 	}

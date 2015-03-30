@@ -135,7 +135,10 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 				"START_GAME_IMAGE", "START_GAME_IMAGE", Audio.CLICK);
 		startGameButton.onClick( new IClickListener() {
 			public void processClick() {
-				turnProcessor.startGame(characters,  tutorialButton.getState());
+				if (tutorialButton.getState()) {
+					characters = turnProcessor.getTutorialCharacters();
+					turnProcessor.startGame(characters,  tutorialButton.getState());
+				}
 			}
 		});
 		
@@ -172,6 +175,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	}
 	
 	private void createNewChars() {
+		
 		characters = turnProcessor.createRandomCharacters();
 		
 		if (charViews == null) {
