@@ -6,7 +6,6 @@ import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.root.IDismissListener;
 import com.dbash.presenters.root.OverlayPresenter;
 import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
@@ -14,11 +13,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class LeaderModePresenter extends OverlayPresenter implements TouchEventListener {
+public class PassingPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public LeaderModePresenter() {
+	public PassingPresenter() {
 	}
 	
 	@Override
@@ -34,37 +33,22 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.LEADER_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(TutorialPresenter.PASS_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
-				fadeBox.dismiss(); 
-				addMoreFaderBoxes();
+				EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, null);
+				fadeBox.dismiss();
+				dismiss();
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("When no monsters are around, leader mode can be used to move all characters.\n\nPress the leader mode button now (top right).", 
+		this.fadeBox = new FadeBoxPresenter("Press the pass button to skip a characters turn, which also grants a good defensive bonus.\n\nTest the pass turn button now (top right).", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		gui.overlayQueues.addParallel(fadeBox);
-		
-		EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_ON_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_ON_EVENT, null);
 	}
 	
-	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("You can swipe to move your leader. Where your finger touches off sets a target the leader will walk to.", 
-				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb1);
-		
-		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Once a leader target has been set you can tap again to update the target.  Now guide your leader into the next room to the right...", 
-				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
-			public void dismiss() {
-				me.dismiss();
-			}
-		});
-		gui.overlayQueues.addSequential(fb2);
-	}
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 	}

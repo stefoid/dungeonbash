@@ -588,6 +588,10 @@ public class TurnProcessor implements IPresenterTurnState {
 	 */
 	@Override
 	public void soloSelected() {
+		if (!soloStatus) {
+			EventBus.getDefault().event(TutorialPresenter.STEALTH_ON_EVENT, null);
+		}
+		
 		if (gameState != GameState.START_GAME) {
 			return;
 		}
@@ -615,10 +619,16 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	@Override
 	public void stealthSelected() {
+		Character character = getCurrentCharacter();
+		
+		if (character != null && character.getStealthStatus() == Creature.StealthStatus.HIDING_POSSIBLE) {
+			EventBus.getDefault().event(TutorialPresenter.STEALTH_ON_EVENT, null);
+		}
+		
 		if (gameState != GameState.START_GAME) {
 			return;
 		}
-		Character character = getCurrentCharacter();
+		
 		if (character != null) {
 			character.stealthToggleSelected();
 		}
@@ -627,6 +637,9 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void passTurnSelected() {
 		if (LOG) L.log("Pass turn pressed");
+		EventBus.getDefault().event(TutorialPresenter.PASS_ON_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.MOVE, null);
+		
 		if (gameState != GameState.START_GAME) {
 			return;
 		}
@@ -635,6 +648,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public void stairDescendSelected() {
+		EventBus.getDefault().event(TutorialPresenter.LEADER_ON_EVENT, null);
 		if (gameState != GameState.START_GAME) {
 			return;
 		}

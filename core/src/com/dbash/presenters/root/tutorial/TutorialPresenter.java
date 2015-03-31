@@ -14,9 +14,16 @@ public class TutorialPresenter {
 	public static final String MOVE = "MOVE";
 	public static final String ANIM_LEADER_BUTTON_ON_EVENT = "ANIM_LEADER_BUTTON_EVENT";
 	public static final String ANIM_LEADER_BUTTON_OFF_EVENT = "ANIM_LEADER_BUTTON_OFF_EVENT";
+	public static final String ANIM_SOLO_BUTTON_ON_EVENT = "ANIM_SOLO_BUTTON_ON_EVENT";
+	public static final String ANIM_SOLO_BUTTON_OFF_EVENT = "ANIM_SOLO_BUTTON_OFF_EVENT";
+	public static final String ANIM_PASS_BUTTON_ON_EVENT = "ANIM_PASS_BUTTON_ON_EVENT";
+	public static final String ANIM_PASS_BUTTON_OFF_EVENT = "ANIM_PASS_BUTTON_OFF_EVENT";
+	public static final String ANIM_STEALTH_BUTTON_ON_EVENT = "ANIM_STEALTH_BUTTON_ON_EVENT";
+	public static final String ANIM_STEALTH_BUTTON_OFF_EVENT = "ANIM_STEALTH_BUTTON_OFF_EVENT";
 	public static final String LEADER_ON_EVENT = "LEADER_ON_EVENT";
-//	public static final String NO_SAVED_GAME_EVENT = "nosavedgame";
-//	public static final String TUTORIAL_OVER_EVENT = "tutorialover";
+	public static final String PASS_ON_EVENT = "PASS_ON_EVENT";
+	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
+	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
 	
 	EventBus eventBus;
 	UIDepend gui;
@@ -48,7 +55,15 @@ public class TutorialPresenter {
 				if (LOG) L.log("MOVE");
 				moves++;
 				switch (moves) {
-					case 5:
+					case 4:
+						OverlayPresenter passing = new PassingPresenter();
+						gui.overlayQueues.addParallel(passing);
+						break;
+					case 7:
+						OverlayPresenter solo = new SoloPresenter();
+						gui.overlayQueues.addParallel(solo);
+						break;
+					case 11:
 						OverlayPresenter leader = new LeaderModePresenter();
 						gui.overlayQueues.addParallel(leader);
 						break;

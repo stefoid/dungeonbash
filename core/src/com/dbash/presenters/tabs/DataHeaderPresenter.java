@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.CreatureStats;
-import com.dbash.models.IAnimListener;
 import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
@@ -17,14 +16,10 @@ import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.root.OverlayPresenter;
-import com.dbash.presenters.root.tutorial.DroppingInPresenter;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
-import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.ButtonView;
 import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.util.EventBus;
-import com.dbash.util.L;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
@@ -52,7 +47,7 @@ public class DataHeaderPresenter {
 	private ButtonView passTurnButton;
 	private ButtonView goDownButton;
 	private ButtonView soloButton;
-	private ButtonView sneakToggleButton;
+	private ButtonView stealthToggleButton;
 	private ImageView background;
 	private TextView healthText;
 	private TextView magicText;
@@ -60,6 +55,9 @@ public class DataHeaderPresenter {
 	private ImageView magicIcon;
 	private ImagePatchView border;
 	private AnimationView leaderButtonAnim;
+	private AnimationView soloButtonAnim;
+	private AnimationView passButtonAnim;
+	private AnimationView stealthButtonAnim;
 	
 	public DataHeaderPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 	
@@ -110,9 +108,9 @@ public class DataHeaderPresenter {
 		
 		buttonArea.x += space;
 		
-		sneakToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "SNEAK_SELECTED_IMAGE", 
+		stealthToggleButton = new ButtonView(gui, touchEventProvider, buttonArea, "SNEAK_SELECTED_IMAGE", 
 				"SNEAK_ENABLED_IMAGE", "SNEAK_DISABLED_IMAGE", Audio.CLICK);
-		sneakToggleButton.onClick( new IClickListener() {
+		stealthToggleButton.onClick( new IClickListener() {
 			public void processClick() {
 				presenterTurnState.stealthSelected();
 			}
@@ -181,6 +179,9 @@ public class DataHeaderPresenter {
 			public void action(Object param) {
 				Rect fromRect = new Rect(leaderToggleButton.getArea(), .6f);
 				Rect toRect = new Rect(leaderToggleButton.getArea(), 1.4f);
+				if (leaderButtonAnim != null) {
+					leaderButtonAnim.stopPlaying();
+				}
 				leaderButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
 				leaderButtonAnim.startPlaying();
 			}
@@ -189,8 +190,79 @@ public class DataHeaderPresenter {
 		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				leaderButtonAnim.stopPlaying();
-				leaderButtonAnim = null;
+				if (leaderButtonAnim != null) {
+					leaderButtonAnim.stopPlaying();
+					leaderButtonAnim = null;
+				}
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_SOLO_BUTTON_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Rect fromRect = new Rect(soloButton.getArea(), .6f);
+				Rect toRect = new Rect(soloButton.getArea(), 1.4f);
+				if (soloButtonAnim != null) {
+					soloButtonAnim.stopPlaying();
+				}
+				soloButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				soloButtonAnim.startPlaying();
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_SOLO_BUTTON_OFF_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (soloButtonAnim != null) {
+					soloButtonAnim.stopPlaying();
+					soloButtonAnim = null;
+				}
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_PASS_BUTTON_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Rect fromRect = new Rect(passTurnButton.getArea(), .6f);
+				Rect toRect = new Rect(passTurnButton.getArea(), 1.4f);
+				if (passButtonAnim != null) {
+					passButtonAnim.stopPlaying();
+				}
+				passButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				passButtonAnim.startPlaying();
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (passButtonAnim != null) {
+					passButtonAnim.stopPlaying();
+					passButtonAnim = null;
+				}
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_STEALTH_BUTTON_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Rect fromRect = new Rect(stealthToggleButton.getArea(), .6f);
+				Rect toRect = new Rect(stealthToggleButton.getArea(), 1.4f);
+				if (stealthButtonAnim != null) {
+					stealthButtonAnim.stopPlaying();
+				}
+				stealthButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				stealthButtonAnim.startPlaying();
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ANIM_STEALTH_BUTTON_OFF_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (stealthButtonAnim != null) {
+					stealthButtonAnim.stopPlaying();
+					stealthButtonAnim = null;
+				}
 			}
 		});
 		
@@ -264,17 +336,17 @@ public class DataHeaderPresenter {
 
 		switch(stealthStatus) {
 			case HIDING_POSSIBLE:
-				sneakToggleButton.setEnabled(true);
-				sneakToggleButton.setState(false);
+				stealthToggleButton.setEnabled(true);
+				stealthToggleButton.setState(false);
 				break;
 			case HIDING:
-				sneakToggleButton.setEnabled(true);
-				sneakToggleButton.setState(true);
+				stealthToggleButton.setEnabled(true);
+				stealthToggleButton.setState(true);
 				break;
 			case HIDING_IMPOSSIBLE:
 			default:
-				sneakToggleButton.setEnabled(false);
-				sneakToggleButton.setState(false);
+				stealthToggleButton.setEnabled(false);
+				stealthToggleButton.setState(false);
 				break;
 		}
 	}
@@ -288,7 +360,7 @@ public class DataHeaderPresenter {
 		} else {
 			soloButton.draw(spriteBatch);
 		}
-		sneakToggleButton.draw(spriteBatch);
+		stealthToggleButton.draw(spriteBatch);
 		healthText.draw(spriteBatch);
 		magicText.draw(spriteBatch);
 		healthIcon.draw(spriteBatch);
@@ -297,6 +369,15 @@ public class DataHeaderPresenter {
 		
 		if (leaderButtonAnim != null) {
 			leaderButtonAnim.draw(spriteBatch);
+		}
+		if (stealthButtonAnim != null) {
+			stealthButtonAnim.draw(spriteBatch);
+		}
+		if (passButtonAnim != null) {
+			passButtonAnim.draw(spriteBatch);
+		}
+		if (soloButtonAnim != null) {
+			soloButtonAnim.draw(spriteBatch);
 		}
 	}
 	

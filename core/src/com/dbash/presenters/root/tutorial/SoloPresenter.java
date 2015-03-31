@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class LeaderModePresenter extends OverlayPresenter implements TouchEventListener {
+public class SoloPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public LeaderModePresenter() {
+	public SoloPresenter() {
 	}
 	
 	@Override

@@ -35,7 +35,7 @@ public class EventBus {
 	}
 	
 	public void onEvent(String eventType, Object owner, IEventAction action) {
-		ArrayList<Event> list = eventListeners.get(eventType);
+		ArrayList<Event> list = getEventListeners(eventType);
 		if (list == null) {
 			list = new ArrayList<Event>();
 			eventListeners.put(eventType, list);
@@ -44,8 +44,17 @@ public class EventBus {
 		list.add(event);
 	}
 	
-	public void removeListener(String eventType, Object owner) {
+	private ArrayList<Event> getEventListeners(String eventType) {
 		ArrayList<Event> list = eventListeners.get(eventType);
+		if (list == null) {
+			list = new ArrayList<Event>();
+			eventListeners.put(eventType, list);
+		}
+		return list;
+	}
+	
+	public void removeListener(String eventType, Object owner) {
+		ArrayList<Event> list = getEventListeners(eventType);
 		Iterator<Event> iterator = list.iterator();
 		while (iterator.hasNext()) {
 			Event event = iterator.next();
@@ -56,7 +65,8 @@ public class EventBus {
 	}
 	
 	public void event(String eventType, Object param) {
-		ArrayList<Event> list = eventListeners.get(eventType);
+		ArrayList<Event> list = getEventListeners(eventType);
+		
 		// create a copy of the list for traversal, in case the action wants to concurrently remove Listeners.
 		ArrayList<Event> iterList = new ArrayList<Event>(list);
 		for (Event event : iterList) {
