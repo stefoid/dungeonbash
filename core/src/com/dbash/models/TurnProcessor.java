@@ -589,7 +589,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void soloSelected() {
 		if (!soloStatus) {
-			EventBus.getDefault().event(TutorialPresenter.STEALTH_ON_EVENT, null);
+			EventBus.getDefault().event(TutorialPresenter.SOLO_ON_EVENT, null);
 		}
 		
 		if (gameState != GameState.START_GAME) {

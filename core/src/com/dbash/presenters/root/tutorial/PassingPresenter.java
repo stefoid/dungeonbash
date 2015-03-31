@@ -59,7 +59,7 @@ public class PassingPresenter extends OverlayPresenter implements TouchEventList
 	}
 	
 	public void destroy() {
-		EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, this);
+		EventBus.getDefault().removeListener(TutorialPresenter.PASS_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 

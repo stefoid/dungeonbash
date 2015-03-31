@@ -34,37 +34,23 @@ public class SoloPresenter extends OverlayPresenter implements TouchEventListene
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.LEADER_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(TutorialPresenter.SOLO_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.ANIM_SOLO_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
-				addMoreFaderBoxes();
+				dismiss();
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("When no monsters are around, leader mode can be used to move all characters.\n\nPress the leader mode button now (top right).", 
+		this.fadeBox = new FadeBoxPresenter("Using Solo mode, you can move the current character only - others auto-pass their turn.\n\nTest solo mode button now (top right).", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		gui.overlayQueues.addParallel(fadeBox);
 		
-		EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_ON_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ANIM_SOLO_BUTTON_ON_EVENT, null);
 	}
-	
-	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("You can swipe to move your leader. Where your finger touches off sets a target the leader will walk to.", 
-				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb1);
-		
-		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Once a leader target has been set you can tap again to update the target.  Now guide your leader into the next room to the right...", 
-				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
-			public void dismiss() {
-				me.dismiss();
-			}
-		});
-		gui.overlayQueues.addSequential(fb2);
-	}
+
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 	}
@@ -75,7 +61,7 @@ public class SoloPresenter extends OverlayPresenter implements TouchEventListene
 	}
 	
 	public void destroy() {
-		EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, this);
+		EventBus.getDefault().removeListener(TutorialPresenter.SOLO_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 
