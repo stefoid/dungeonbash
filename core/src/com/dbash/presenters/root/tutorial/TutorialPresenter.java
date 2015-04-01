@@ -25,6 +25,10 @@ public class TutorialPresenter {
 	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
 	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
 	
+	public static final int MOVE_TURNS = 4;
+	public static final int SOLO_TURNS = 8;
+	public static final int LEADER_TURNS = 12;
+	
 	EventBus eventBus;
 	UIDepend gui;
 	int moves = 0;
@@ -55,15 +59,15 @@ public class TutorialPresenter {
 				if (LOG) L.log("MOVE");
 				moves++;
 				switch (moves) {
-					case 4:
+					case MOVE_TURNS:
 						OverlayPresenter passing = new PassingPresenter();
 						gui.overlayQueues.addParallel(passing);
 						break;
-					case 7:
+					case SOLO_TURNS:
 						OverlayPresenter solo = new SoloPresenter();
 						gui.overlayQueues.addParallel(solo);
 						break;
-					case 11:
+					case LEADER_TURNS:
 						OverlayPresenter leader = new LeaderModePresenter();
 						gui.overlayQueues.addParallel(leader);
 						break;
@@ -72,6 +76,7 @@ public class TutorialPresenter {
 				}
 			}
 		});
+
 //		
 //		eventBus.onEvent(TurnProcessor.START_GAME_EVENT, this, new IEventAction() {
 //			@Override

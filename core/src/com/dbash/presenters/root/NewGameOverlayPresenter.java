@@ -137,8 +137,8 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 			public void processClick() {
 				if (tutorialButton.getState()) {
 					characters = turnProcessor.getTutorialCharacters();
-					turnProcessor.startGame(characters,  tutorialButton.getState());
 				}
+				turnProcessor.startGame(characters,  tutorialButton.getState());
 			}
 		});
 		

@@ -543,22 +543,23 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 
 		// Works out whether leader mode is possible.
-		currentLeader = getCurrentLeader();
-
-		if (solo == true) {
-			if (currentLeader != null) {
-				currentLeader.setSolo(true);
-			} else {
-				if (acceptInput && currentCreature instanceof Character) {
-					currentCharacter.setSolo(true);
-					if (leaderStatus != LeaderStatus.LEADER_DISABLED) {
-						leaderModeToggleSelected();
-					}
-				}
-			}
-		} else {
-			clearLeaderMode();
-		}
+//		currentLeader = getCurrentLeader();
+//
+//		if (solo == true) {
+//			if (currentLeader != null) {
+//				currentLeader.setSolo(true);
+//			} else {
+//				if (acceptInput && currentCreature instanceof Character) {
+//					currentCharacter.setSolo(true);
+//					if (leaderStatus != LeaderStatus.LEADER_DISABLED) {
+//						leaderModeToggleSelected();
+//					}
+//				}
+//			}
+//		} else {
+//			clearLeaderMode();
+//		}
+		
 		soloStatusListeners.alertListeners();
 	}
 

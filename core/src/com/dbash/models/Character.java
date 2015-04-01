@@ -8,9 +8,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
-import com.dbash.models.Creature.StealthStatus;
 import com.dbash.models.IDungeonQuery.AtLocation;
-import com.dbash.models.IPresenterTurnState.LeaderStatus;
 import com.dbash.presenters.tabs.AbilitySelectionList;
 import com.dbash.util.L;
 import com.dbash.util.Randy;

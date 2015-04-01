@@ -37,7 +37,7 @@ public class DroppingInPresenter extends OverlayPresenter implements TouchEventL
 		gui.overlayQueues.addSequential(fb3);
 		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb4 = new FadeBoxPresenter("Move your characters by swiping a couple of times right now.", 
+		FadeBoxPresenter fb4 = new FadeBoxPresenter("Move four times with swiping right now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();
