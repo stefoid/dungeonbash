@@ -555,31 +555,27 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	private void setSoloMode(boolean solo) {
-
 		soloStatus = solo;
-
 		for (Character character : allCharacters) {
 			character.setSolo(false);
 		}
-
-		// Works out whether leader mode is possible.
-//		currentLeader = getCurrentLeader();
-//
-//		if (solo == true) {
-//			if (currentLeader != null) {
-//				currentLeader.setSolo(true);
-//			} else {
-//				if (acceptInput && currentCreature instanceof Character) {
-//					currentCharacter.setSolo(true);
+		
+		currentLeader = getCurrentLeader();
+		if (solo == true) {
+			if (currentLeader != null) {
+				currentLeader.setSolo(true);
+			} else {
+				if (acceptInput && currentCreature instanceof Character) {
+					currentCharacter.setSolo(true);
 //					if (leaderStatus != LeaderStatus.LEADER_DISABLED) {
 //						leaderModeToggleSelected();
 //					}
-//				}
-//			}
-//		} else {
-//			clearLeaderMode();
-//		}
-		
+				}
+			}
+		} else {
+			//clearLeaderMode();
+		}
+
 		soloStatusListeners.alertListeners();
 	}
 
@@ -666,7 +662,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			return;
 		}
 		
-		if (currentLeader == currentCharacter && numberOfCharactersOnMap() > 1) {
+		if (!soloStatus && currentLeader == currentCharacter && numberOfCharactersOnMap() > 1) {
 			leaderModeToggleSelected();
 			leaderWhoPassed = currentCharacter;
 		}
