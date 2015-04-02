@@ -38,6 +38,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private Creature currentCreature;
 	private int creatureTurn;
 	private Character currentLeader;
+	private Character leaderWhoPassed;
 	private Character currentCharacter; // the character whose turn is now
 										// active
 	private UIInfoListenerBag currentCharacterListeners;
@@ -265,17 +266,32 @@ public class TurnProcessor implements IPresenterTurnState {
 								(Character) currentCreature, level); // when a character falls in, it get a chance to act (wait for player control)
 					}
 				}
+				
 			} else {
 				dungeonEvents.currentCharacterHavingTurn(null);
 			}
-
+			
+			if (numberOfCharactersOnMap() < 2) {
+				leaderWhoPassed = null;
+			}
+			
 			currentCreature.processTurn();
+
+			if (leaderWhoPassed != null && leaderWhoPassed != currentCreature &&  
+					leaderStatus == LeaderStatus.NO_LEADER && currentCreature instanceof Character) {
+				leaderModeToggleSelected();
+				leaderWhoPassed = null;
+			}
 			return;
 		}
 
 		return;
 	}
 
+	public Character getLeaderWhoPassed() {
+		return leaderWhoPassed;
+	}
+	
 	public boolean anyActiveFollowers() {
 		for (Character c : allCharacters) {
 			if (c.isActiveFollower()) {
@@ -520,6 +536,10 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 	}
 
+	private int numberOfCharactersOnMap() {
+		return allCharacters.size() - charactersFallingIn.size() - charactersFallingOut.size();
+	}
+	
 	public void addExperience(int exp) {
 		for (Character character : allCharacters) {
 			character.addExperience(exp, false);
@@ -610,6 +630,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			}
 		} else {
 			currentLeader.leaderModeCleared();
+			leaderWhoPassed = null;
 			currentLeader = null;
 			leaderStatus = LeaderStatus.NO_LEADER;
 			if (LOG) L.log("no current leader");
@@ -644,6 +665,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (gameState != GameState.START_GAME) {
 			return;
 		}
+		
+		if (currentLeader == currentCharacter && numberOfCharactersOnMap() > 1) {
+			leaderModeToggleSelected();
+			leaderWhoPassed = currentCharacter;
+		}
+		
 		currentCharacter.defending();
 	}
 	
@@ -666,10 +693,14 @@ public class TurnProcessor implements IPresenterTurnState {
 		allCreatures.remove(currentCharacter);
 		charactersFallingOut.add(currentCharacter);
 
-		// was that character the leader?
 		if (currentLeader == currentCharacter) {
-			clearLeaderMode();
-		}
+			if (numberOfCharactersOnMap() > 1) {
+				leaderModeToggleSelected();
+				leaderWhoPassed = currentCharacter;
+			} else {
+				clearLeaderMode();
+			}
+		} 
 
 		acceptInput = false;
 		dungeonEvents.goDownStairs(SequenceNumber.getNext(), currentCharacter,

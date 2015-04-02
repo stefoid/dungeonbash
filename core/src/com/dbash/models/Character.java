@@ -186,6 +186,11 @@ public class Character extends Creature implements IPresenterCharacter {
 			turnProcessor.characterEndsTurn(this);
 			return;
 		}
+		
+		if (turnProcessor.getLeaderWhoPassed() == this) {
+			turnProcessor.characterEndsTurn(this);
+			return;
+		}
 
 		// If solo mode is on, but it aint me, then defend.
 		if (turnProcessor.getSoloStatus()) {

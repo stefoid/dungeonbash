@@ -322,7 +322,6 @@ public class DataHeaderPresenter {
 			case HAVE_LEADER:
 				leaderToggleButton.setEnabled(true);
 				leaderToggleButton.setState(true);
-				//new PopupPresenter("test popup", "EFFECT_IMAGE", "You can attack a monster standing next to a character.  But that would be unneccessarilly cruel by any account.  nevertheless I imagine some nasty types might attempt such a thing! these peope should not be trsuted.");
 				break;
 			case LEADER_DISABLED:
 			default:
