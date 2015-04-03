@@ -117,7 +117,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		overlayArea.y += yOffset;
 		CameraViewPort wholeScreenViewPort = new CameraViewPort(overlayArea);
 		gui.cameraViewPort = wholeScreenViewPort;
-		gameStatePresenter = new GameStatePresenter(gui);
+		gameStatePresenter = new GameStatePresenter(model, gui);
 	}
 	
 	

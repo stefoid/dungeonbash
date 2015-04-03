@@ -2,6 +2,7 @@ package com.dbash.presenters.root.tutorial;
 
 import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
+import com.dbash.models.PresenterDepend;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.OverlayPresenter;
 import com.dbash.util.EventBus;
@@ -32,10 +33,12 @@ public class TutorialPresenter {
 	EventBus eventBus;
 	UIDepend gui;
 	int moves = 0;
+	private IPresenterTurnState turnProcessor;
 	
-	public TutorialPresenter(UIDepend gui) {
+	public TutorialPresenter(PresenterDepend model, UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
 		this.gui = gui;
+		this.turnProcessor = model.presenterTurnState;
 		init();
 	}
 	
@@ -47,8 +50,7 @@ public class TutorialPresenter {
 			public void action(Object param) {
 				if (LOG) L.log("DROPPING_IN_EVENT");
 				removePresenters();
-				OverlayPresenter newGamePresenter = new DroppingInPresenter();
-				gui.overlayQueues.addParallel(newGamePresenter);
+				popPresenterPar(new DroppingInPresenter());
 				eventBus.removeListener(DROPPING_IN_EVENT, tutorialPresenter);
 			}
 		});
@@ -60,16 +62,13 @@ public class TutorialPresenter {
 				moves++;
 				switch (moves) {
 					case MOVE_TURNS:
-						OverlayPresenter passing = new PassingPresenter();
-						gui.overlayQueues.addParallel(passing);
+						popPresenterPar(new PassingPresenter());
 						break;
 					case SOLO_TURNS:
-						OverlayPresenter solo = new SoloPresenter();
-						gui.overlayQueues.addParallel(solo);
+						popPresenterPar(new SoloPresenter());
 						break;
 					case LEADER_TURNS:
-						OverlayPresenter leader = new LeaderModePresenter();
-						gui.overlayQueues.addParallel(leader);
+						popPresenterPar(new LeaderModePresenter());
 						break;
 					default:
 						break;
@@ -95,6 +94,16 @@ public class TutorialPresenter {
 //				gui.overlayQueues.addSequential(gameOverPresenter);
 //			}
 //		});
+	}
+	
+	private void popPresenterPar(OverlayPresenter overlayPresenter) {
+		gui.overlayQueues.addParallel(overlayPresenter);
+		turnProcessor.saveGame(moves);
+	}
+	
+	private void popPresenterSeq(OverlayPresenter overlayPresenter) {
+		gui.overlayQueues.addSequential(overlayPresenter);
+		turnProcessor.saveGame(moves);
 	}
 	
 	private void removePresenters() {

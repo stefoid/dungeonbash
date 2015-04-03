@@ -25,6 +25,7 @@ public interface IPresenterTurnState {
 	public List<Character> getTutorialCharacters();
 	public void startGame(List<Character> characters, boolean tutorialMode);
 	public void infoSelected();
+	public void saveGame(int moves);
 	
 	// Current character related
 	public void onChangeToCurrentCharacter(UIInfoListener listener);

@@ -34,6 +34,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private IDungeonEvents dungeonEvents;
 	private IDungeonQuery dungeonQuery;
 	private IDungeonControl dungeon;
+	private Dbash dbash;
 	private int level;
 	private Creature currentCreature;
 	private int creatureTurn;
@@ -75,6 +76,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	public TurnProcessor(IDungeonEvents dungeonEvents,
 			IDungeonQuery dungeonQuery, IDungeonControl dungeon, Dbash dbash) {
+		this.dbash = dbash;
 		initOneTime(dungeonEvents, dungeonQuery, dungeon);
 		setGameState(GameState.NO_SAVED_GAME);
 		currentCharacter = nobody;
@@ -1023,8 +1025,14 @@ public class TurnProcessor implements IPresenterTurnState {
 		return theChars;
 	}
 
+	public boolean tutorialMode;
+	public boolean getTutorialMode() {
+		return tutorialMode;
+	}
+	
 	@Override
 	public void startGame(List<Character> characters, boolean tutorialMode) {
+		this.tutorialMode = tutorialMode;
 		allCharacters = new Vector<Character>();
 		allCharacters.addAll(characters);
 		addInitialExperience();
@@ -1045,6 +1053,13 @@ public class TurnProcessor implements IPresenterTurnState {
 		setSoloMode(false);
 	}
 
+	int moves;
+	@Override
+	public void saveGame(int moves) {
+		this.moves = moves;
+		dbash.saveGame();
+	}
+	
 	Character previousCurrentCharacter = null;
 	GameState previousGameState = GameState.NO_SAVED_GAME;
 	

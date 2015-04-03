@@ -3,6 +3,7 @@ package com.dbash.presenters.root;
 import com.dbash.models.GameStats;
 import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
+import com.dbash.models.PresenterDepend;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.util.EventBus;
@@ -15,6 +16,7 @@ public class GameStatePresenter {
 	EventBus eventBus;
 	UIDepend gui;
 	TutorialPresenter tutorialPresenter;
+	PresenterDepend model;
 
 	public static final String GAME_OVER_EVENT = "gameover";
 	public static final String START_TUTORIAL_EVENT = "starttutorialgame";
@@ -23,9 +25,10 @@ public class GameStatePresenter {
 	public static final String NO_SAVED_GAME_EVENT = "nosavedgame";
 	public static final String TUTORIAL_OVER_EVENT = "tutorialover";
 	
-	public GameStatePresenter(UIDepend gui) {
+	public GameStatePresenter(PresenterDepend model, UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
 		this.gui = gui;
+		this.model = model;
 		init();
 	}
 	
@@ -63,7 +66,7 @@ public class GameStatePresenter {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("START_TUTORIAL_EVENT");
-				tutorialPresenter = new TutorialPresenter(gui);
+				tutorialPresenter = new TutorialPresenter(model, gui);
 			}
 		});
 		

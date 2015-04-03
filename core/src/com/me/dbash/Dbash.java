@@ -147,6 +147,15 @@ public class Dbash implements ApplicationListener {
 			return;
 		}
 		
+		// only explicitly save tutorial mode games.
+		if (turnProcessor.getTutorialMode()) {
+			return;
+		}
+		
+		saveGame();
+	}
+	
+	public void saveGame() {
 		if (L.NO_SAVE == false && turnProcessor.allCreatures != null) {
 			if (LOG) L.log("SAVING GAMEDATA");
 			FileHandle fl = Gdx.files.local("gamedata.dat");
