@@ -138,6 +138,12 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (L.TUTORIAL_MODE) {
 			startGame(getTutorialCharacters(), true);
 		}
+		
+		if (tutorialMode) {
+			EventBus.getDefault().event(GameStatePresenter.START_TUTORIAL_EVENT, null);
+			EventBus.getDefault().event(TutorialPresenter.SET_MOVE_COUNT, moves);
+			EventBus.getDefault().event(tutorialEvent, null);
+		}
 
 	}
 
@@ -871,6 +877,10 @@ public class TurnProcessor implements IPresenterTurnState {
 
 		gameStats = new GameStats(in);
 		setGameState((GameState) in.readObject());
+		
+		tutorialMode = (Boolean) in.readObject();
+		tutorialEvent = (String) in.readObject();
+		moves = in.readInt();
 
 		// start reading saved game
 		level = in.readInt();
@@ -939,6 +949,14 @@ public class TurnProcessor implements IPresenterTurnState {
 		
 		if (LOG) L.log("gameState: %s",  gameState);
 		out.writeObject(gameState);
+		
+		out.writeObject(tutorialMode);
+		if (tutorialMode) {
+			out.writeObject(tutorialEvent);
+		} else {
+			out.writeObject("");
+		}
+		out.writeInt(moves);
 
 		// 1) turn processor saves level number
 		out.writeInt(level);
@@ -1025,7 +1043,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		return theChars;
 	}
 
-	public boolean tutorialMode;
+	public Boolean tutorialMode;
 	public boolean getTutorialMode() {
 		return tutorialMode;
 	}
@@ -1054,9 +1072,14 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	int moves;
+	String tutorialEvent; 
 	@Override
-	public void saveGame(int moves) {
+	public void saveGame(String tutorialEvent, int moves) {
+		if (tutorialEvent == null) {
+			tutorialEvent = "";
+		}
 		this.moves = moves;
+		this.tutorialEvent = tutorialEvent;
 		dbash.saveGame();
 	}
 	

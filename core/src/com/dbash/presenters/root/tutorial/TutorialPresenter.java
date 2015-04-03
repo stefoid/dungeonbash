@@ -26,6 +26,8 @@ public class TutorialPresenter {
 	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
 	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
 	
+	public static final String SET_MOVE_COUNT = "SET_MOVE_COUNT";
+	
 	public static final int MOVE_TURNS = 4;
 	public static final int SOLO_TURNS = 8;
 	public static final int LEADER_TURNS = 12;
@@ -45,12 +47,20 @@ public class TutorialPresenter {
 	private void init() {
 		final TutorialPresenter tutorialPresenter = this;
 		
+		eventBus.onEvent(SET_MOVE_COUNT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("SET_MOVE_COUNT");
+				moves = (Integer) param;
+			}
+		});
+		
 		eventBus.onEvent(DROPPING_IN_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("DROPPING_IN_EVENT");
 				removePresenters();
-				popPresenterPar(new DroppingInPresenter());
+				popPresenterPar(DROPPING_IN_EVENT, new DroppingInPresenter());
 				eventBus.removeListener(DROPPING_IN_EVENT, tutorialPresenter);
 			}
 		});
@@ -59,20 +69,22 @@ public class TutorialPresenter {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("MOVE");
-				moves++;
+				
 				switch (moves) {
 					case MOVE_TURNS:
-						popPresenterPar(new PassingPresenter());
+						popPresenterPar(MOVE, new PassingPresenter());
 						break;
 					case SOLO_TURNS:
-						popPresenterPar(new SoloPresenter());
+						popPresenterPar(MOVE, new SoloPresenter());
 						break;
 					case LEADER_TURNS:
-						popPresenterPar(new LeaderModePresenter());
+						popPresenterPar(MOVE, new LeaderModePresenter());
 						break;
 					default:
 						break;
 				}
+				
+				moves++;
 			}
 		});
 
@@ -96,14 +108,14 @@ public class TutorialPresenter {
 //		});
 	}
 	
-	private void popPresenterPar(OverlayPresenter overlayPresenter) {
+	private void popPresenterPar(String tutorialEvent,OverlayPresenter overlayPresenter) {
 		gui.overlayQueues.addParallel(overlayPresenter);
-		turnProcessor.saveGame(moves);
+		turnProcessor.saveGame(tutorialEvent, moves);
 	}
 	
-	private void popPresenterSeq(OverlayPresenter overlayPresenter) {
+	private void popPresenterSeq(String tutorialEvent, OverlayPresenter overlayPresenter) {
 		gui.overlayQueues.addSequential(overlayPresenter);
-		turnProcessor.saveGame(moves);
+		turnProcessor.saveGame(tutorialEvent, moves);
 	}
 	
 	private void removePresenters() {
