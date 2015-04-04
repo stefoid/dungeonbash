@@ -23,6 +23,7 @@ public class GameStatePresenter {
 	public static final String START_GAME_EVENT = "startgame";
 	public static final String NEW_GAME_EVENT = "newgame";
 	public static final String NO_SAVED_GAME_EVENT = "nosavedgame";
+	public static final String BROKEN_GAME_EVENT = "nosavedgame";
 	public static final String TUTORIAL_OVER_EVENT = "tutorialover";
 	
 	public GameStatePresenter(PresenterDepend model, UIDepend gui) {
@@ -85,12 +86,19 @@ public class GameStatePresenter {
 			public void action(Object param) {
 				if (LOG) L.log("TUTORIAL_OVER_EVENT");
 				removePresenters();
-				tutorialPresenter = null;
 			}
 		});
 	}
 	
 	private void removePresenters() {
+		EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ANIM_SOLO_BUTTON_OFF_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ANIM_STEALTH_BUTTON_OFF_EVENT, null);
 		gui.overlayQueues.removeAll();
+		if (tutorialPresenter != null) {
+			tutorialPresenter.onDestroy();
+		}
+		tutorialPresenter = null;
 	}
 }

@@ -34,7 +34,7 @@ import com.dbash.util.Rect;
 public class Dbash implements ApplicationListener {
 	public static final boolean LOG = false && L.DEBUG;
 	
-	public static String SAVE_FILE_VERISON = "V14";
+	public static String SAVE_FILE_VERISON = "V13";
 	
 	enum GameState {
 		SPLASH,
@@ -75,8 +75,6 @@ public class Dbash implements ApplicationListener {
 		UIDepend gui = new UIDepend();
 		
 		gui.assetManager = new AssetManager();
-		dungeon = new Dungeon(true);
-		turnProcessor = new TurnProcessor(dungeon, dungeon, dungeon, this);
 		
 		int[] fontSizes = {82, 64, 48, 40, 32, 26, 21, 17};
 		gui.defaultFonts = new ArrayList<SmoothBitmapFont>();
@@ -92,12 +90,7 @@ public class Dbash implements ApplicationListener {
 		gui.audio = new Audio();
 		audio = gui.audio;
 		
-		PresenterDepend model = new PresenterDepend();
-		model.presenterDungeon = dungeon;
-		model.presenterTurnState = turnProcessor;
-		
-		this.rootPresenter = new RootPresenter(gui, model);
-		Gdx.input.setInputProcessor(rootPresenter);
+		makeObjects(gui);
 
 		// load previously saved game, if it exists.
 		FileHandle fl = Gdx.files.local("gamedata.dat");
@@ -123,6 +116,8 @@ public class Dbash implements ApplicationListener {
 				} 
 			} catch (Exception e) {
 				newGame = true;
+				EventBus.getDefault().reset();
+				makeObjects(gui);
 			} 
 		} 
 		
@@ -133,6 +128,16 @@ public class Dbash implements ApplicationListener {
 			turnProcessor.resume();
 		}
 		quitted = false;
+	}
+	
+	private void makeObjects(UIDepend gui) {
+		dungeon = new Dungeon(true);
+		turnProcessor = new TurnProcessor(dungeon, dungeon, dungeon, this);
+		PresenterDepend model = new PresenterDepend();
+		model.presenterDungeon = dungeon;
+		model.presenterTurnState = turnProcessor;
+		rootPresenter = new RootPresenter(gui, model);
+		Gdx.input.setInputProcessor(rootPresenter);
 	}
 	
 	@Override

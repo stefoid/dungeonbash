@@ -121,4 +121,8 @@ public class TutorialPresenter {
 	private void removePresenters() {
 		gui.overlayQueues.removeAll();
 	}
+	
+	public void onDestroy() {
+		EventBus.getDefault().removeAll(this);
+	}
 }

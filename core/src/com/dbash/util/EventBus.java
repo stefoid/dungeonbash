@@ -73,4 +73,19 @@ public class EventBus {
 			event.action.action(param);
 		}
 	}
+	
+	public void removeAll(Object thing) {
+		for (String eventType : eventListeners.keySet()) {
+			removeListener(eventType, thing);
+		}
+	}
+	
+	public void reset() {
+		for (String eventType : eventListeners.keySet()) {
+			ArrayList<Event> list = eventListeners.get(eventType);
+			if (list != null) {
+				list.clear();
+			}
+		}
+	}
 }

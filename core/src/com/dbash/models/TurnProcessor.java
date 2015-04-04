@@ -698,7 +698,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		charactersFallingOut.add(currentCharacter);
 
 		if (currentLeader == currentCharacter) {
-			if (numberOfCharactersOnMap() > 1) {
+			if (numberOfCharactersOnMap() > 0) {
 				leaderModeToggleSelected();
 				leaderWhoPassed = currentCharacter;
 			} else {
@@ -1043,7 +1043,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		return theChars;
 	}
 
-	public Boolean tutorialMode;
+	public Boolean tutorialMode = false;
 	public boolean getTutorialMode() {
 		return tutorialMode;
 	}
