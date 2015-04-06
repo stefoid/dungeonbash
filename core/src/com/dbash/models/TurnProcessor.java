@@ -280,14 +280,18 @@ public class TurnProcessor implements IPresenterTurnState {
 				dungeonEvents.currentCharacterHavingTurn(null);
 			}
 			
+			boolean toggleLeaderMode = leaderWhoPassed != null && leaderWhoPassed != currentCreature;
+			
 			if (numberOfCharactersOnMap() < 2) {
-				leaderWhoPassed = null;
+				if (leaderWhoPassed != null && !charactersFallingOut.contains(leaderWhoPassed)) {
+					leaderWhoPassed = null;
+					toggleLeaderMode = false;
+				} 
 			}
 			
 			currentCreature.processTurn();
 
-			if (leaderWhoPassed != null && leaderWhoPassed != currentCreature &&  
-					leaderStatus == LeaderStatus.NO_LEADER && currentCreature instanceof Character) {
+			if (toggleLeaderMode && leaderStatus == LeaderStatus.NO_LEADER && currentCreature instanceof Character) {
 				leaderModeToggleSelected();
 				leaderWhoPassed = null;
 			}
@@ -694,8 +698,6 @@ public class TurnProcessor implements IPresenterTurnState {
 			currentCharacter.setSolo(false);
 		}
 
-		// adjust the lists
-		//allCharacters.remove(currentCharacter);
 		charactersFallingOut.add(currentCharacter);
 
 		if (currentLeader == currentCharacter) {

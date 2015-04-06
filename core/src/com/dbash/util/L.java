@@ -4,7 +4,7 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean TESTCHARS = true;
+	public static boolean TESTCHARS = false;
 	public static String c1 = "halfling";
 	public static String c2 = "acid blob";
 	public static String c3 = "pit viper";
