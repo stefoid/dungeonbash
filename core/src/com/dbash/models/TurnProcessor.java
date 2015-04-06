@@ -580,13 +580,8 @@ public class TurnProcessor implements IPresenterTurnState {
 			} else {
 				if (acceptInput && currentCreature instanceof Character) {
 					currentCharacter.setSolo(true);
-//					if (leaderStatus != LeaderStatus.LEADER_DISABLED) {
-//						leaderModeToggleSelected();
-//					}
 				}
 			}
-		} else {
-			//clearLeaderMode();
 		}
 
 		soloStatusListeners.alertListeners();
@@ -756,25 +751,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	// When a character is having a turn, they will ask this, initiating a
 	// leadership validity check.
 	public Character getCurrentLeader() {
-//		if (currentLeader == null) {
-//			leaderStatus = LeaderStatus.NO_LEADER;
-//		} else {
-//			leaderStatus = LeaderStatus.HAVE_LEADER;
-//		}
-		
-//		Character sawMonster = dungeonQuery.leaderModeOK();
-//		if (sawMonster != null) {
-//
-//			leaderStatus = LeaderStatus.LEADER_DISABLED;
-//			if (currentLeader != null) {
-//				savedLeader = currentLeader;
-//				currentLeader.leaderStatusOff();
-//				currentLeader = null;
-//			}
-//		}
-//
-//		leaderStatusListeners.alertListeners();
-
 		return currentLeader;
 	}
 
@@ -833,7 +809,6 @@ public class TurnProcessor implements IPresenterTurnState {
 					break;
 		}
 		
-		
 		EventBus.getDefault().event(event, param);
 	}
 
@@ -865,7 +840,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 
 	public TurnProcessor() {
-
 	}
 
 	public void load(ObjectInputStream in, IDungeonEvents dungeonEvents,
@@ -1092,8 +1066,13 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public void mainMenuStartGameSelected() {
-		if (gameState != GameState.NEW_GAME) {
+		switch (gameState) {
+		case NEW_GAME:
+		case NO_SAVED_GAME:
+			break;
+		default:
 			doNewGame();
+			break;
 		}
 	}
 	

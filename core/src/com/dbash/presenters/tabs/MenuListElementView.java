@@ -91,24 +91,6 @@ public class MenuListElementView implements IListElement {
 			}
 		});
 		
-//			Rect tuteModeRect = new Rect(bodyArea, .1f, .55f, .05f, .75f);
-//			tutorialOnButton = new ButtonView(gui, touchEventProvider, tuteModeRect, "TUTE_ON_SELECTED_IMAGE", 
-//					"TUTE_ON_BUTTON_IMAGE", "TUTE_ON_BUTTON_IMAGE");
-//			tutorialOnButton.onClick( new IClickListener() {
-//				public void processClick() {
-//					PopupPresenter.showAllPopups();
-//				}
-//			});
-	//	
-//			tuteModeRect = new Rect(bodyArea, .55f, .1f, .05f, .75f);
-//			tutorialOffButton = new ButtonView(gui, touchEventProvider, tuteModeRect, "TUTE_OFF_SELECTED_IMAGE", 
-//					"TUTE_OFF_BUTTON_IMAGE", "TUTE_OFF_BUTTON_IMAGE");
-//			tutorialOffButton.onClick( new IClickListener() {
-//				public void processClick() {
-//					PopupPresenter.hideAllPopups();
-//				}
-//			});
-		
 		Rect quitRect = new Rect(bodyArea, .6f, .15f, .75f, .05f);
 		helpButton = new ButtonView(gui, touchEventProvider, quitRect, "INFO_SELECTED_IMAGE", 
 				"INFO_BUTTON_IMAGE", "INFO_BUTTON_IMAGE", Audio.CLICK);
@@ -116,15 +98,9 @@ public class MenuListElementView implements IListElement {
 		menuBackground = new ImageView(gui, "MENU_BGROUND_IMAGE", bodyArea);
 		
 		doStartButton();
-//		model.presenterTurnState.onChangeToGameInProgress(new UIInfoListener() {
-//			public void UIInfoChanged() {
-//				doStartButton();
-//			}
-//		});
 	}
 		
-	private void doStartButton() 
-	{
+	private void doStartButton()  {
 		Rect startRect = new Rect(bodyArea, .15f, .6f, .75f, .05f);
 		
 		startButton = new ButtonView(gui, touchEventProvider, startRect, "START_SELECTED_IMAGE", 
@@ -162,8 +138,6 @@ public class MenuListElementView implements IListElement {
 			menuBackground.draw(spriteBatch, x, y);
 			startButton.draw(spriteBatch, x, y);
 			helpButton.draw(spriteBatch, x, y);
-		//		tutorialOnButton.draw(spriteBatch, x, y);
-		//		tutorialOffButton.draw(spriteBatch, x, y);
 			fxSlider.draw(spriteBatch, x, y);
 			musicSlider.draw(spriteBatch, x, y);
 		}
