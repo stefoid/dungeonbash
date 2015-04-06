@@ -1018,10 +1018,16 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 
 	public boolean canCarry(Ability ability) {
-		if ((creature.hands == 0) && (ability.ability.needs > Ability.NEEDS_HEAD))  //  if you got no hands, and the thing needs hands, then tough
-			return false;
-		else
-			return true;
+		boolean result = true;
+		if (creature.head == 0) {
+			result = false;
+		}
+		
+		if ((creature.hands == 0) && (ability.ability.needs > Ability.NEEDS_HEAD))  {//  if you got no hands, and the thing needs hands, then tough
+			result = false;
+		}
+		
+		return result;
 	}
 	
 	// Characters neveer skip turns.

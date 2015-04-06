@@ -207,7 +207,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			return; // I guess its possible to destroy all creatures on a level
 					// with a burst.
 		}
-
+		
 		// processing a single creature per draw cycle takes a long time to
 		// process a lot of creatures because drawing takes some time.
 		// so this loop will skip all stable, non-interesting monster turns in
@@ -229,12 +229,13 @@ public class TurnProcessor implements IPresenterTurnState {
 
 		// Dont call isReadyForTurn, until we have established that a falling
 		// character can fall in.
-		boolean isFalling = charactersFallingIn.contains(currentCreature);
+		boolean isFallingIn = charactersFallingIn.contains(currentCreature);
+		boolean isFallingOut = charactersFallingOut.contains(currentCreature);
 		boolean canFallIn = false;
 
 		// If it is a falling Character, is it the first falling character and
 		// is the entrance free?
-		if (isFalling) {
+		if (isFallingIn) {
 			if (currentCreature == charactersFallingIn.elementAt(0)
 					&& dungeonQuery.isEntranceFree()) {
 				canFallIn = true;
@@ -245,7 +246,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 
 		// OK, so now whatever it is can test to have a turn.
-		if (currentCreature.isReadyForTurn()) {
+		if (!isFallingOut && currentCreature.isReadyForTurn()) {
 			Character theChar;
 
 			// at this point, we could be in solo mode, so some tests have to be
@@ -491,7 +492,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			theChars.add(new Character(Creature.getIdForName(L.c3), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
 			c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("amulet of bracing"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
 			c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
 		
@@ -694,7 +695,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 
 		// adjust the lists
-		allCreatures.remove(currentCharacter);
+		//allCharacters.remove(currentCharacter);
 		charactersFallingOut.add(currentCharacter);
 
 		if (currentLeader == currentCharacter) {
@@ -900,8 +901,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (currentCreatureId == NO_CURRENT_CREATURE) {
 			currentCreature = null;
 		} else {
-			currentCreature = allCreatures
-					.getCreatureByUniqueId(currentCreatureId);
+			currentCreature = allCreatures.getCreatureByUniqueId(currentCreatureId);
 			if (currentCreature instanceof Character) {
 				currentCharacter = (Character) currentCreature;
 			} else {
@@ -921,19 +921,16 @@ public class TurnProcessor implements IPresenterTurnState {
 		// read all Characters falling out
 		int fallOut = in.readInt();
 		for (int i = 0; i < fallOut; i++) {
-			// Creature.CreatureType t = (CreatureType) in.readObject(); // we
-			// know its a character, so read that enumeration first
-			Character c = new Character(in, dungeonEvents, dungeonQuery, this);
+			int uId = in.readInt();
+			Character c = (Character) allCreatures.getCreatureByUniqueId(uId);
 			charactersFallingOut.add(c);
-			allCharacters.add(c);
 		}
 
 		// leader Status and current Leader.
 		leaderStatus = (LeaderStatus) in.readObject();
 		int leaaderId = in.readInt();
 		if (leaderStatus == LeaderStatus.HAVE_LEADER) {
-			currentLeader = (Character) allCreatures
-					.getCreatureByUniqueId(leaaderId);
+			currentLeader = (Character) allCreatures.getCreatureByUniqueId(leaaderId);
 		} else {
 			currentLeader = null;
 		}
@@ -984,7 +981,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		// 2.2) turn processor saves 0-n falling-out characters
 		out.writeInt(charactersFallingOut.size());
 		for (Character character : charactersFallingOut) {
-			character.persist(out);
+			out.writeInt(character.uniqueId);
 		}
 
 		// set the current leader status and leader character
