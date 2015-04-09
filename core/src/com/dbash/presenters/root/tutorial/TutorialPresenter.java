@@ -28,6 +28,7 @@ public class TutorialPresenter {
 	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
 	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
 	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
+	public static final String CREATURE_DIED_EVENT = "CREATURE_DIED_EVENT";
 	
 	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
 	
@@ -37,12 +38,14 @@ public class TutorialPresenter {
 		PASSING_STATE,
 		SOLO_STATE,
 		LEADER_STATE,
-		FIGHTING_STATE
+		FIGHTING_STATE,
+		PICKUP_STATE
 	}
 	
 	EventBus eventBus;
 	UIDepend gui;
 	int moves = 0;
+	int passes = 0;
 	private IPresenterTurnState turnProcessor;
 	private State state = State.INITIAL_STATE;
 	
@@ -77,8 +80,10 @@ public class TutorialPresenter {
 	private void passingState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new PassingPresenter());
-		} else if (event.equals(MOVE_EVENT)) {
-			if (moves == 4) {
+			passes = 0;
+		} else if (event.equals(PASS_ON_EVENT)) {
+			passes++;
+			if (passes == 4) {
 				newState(State.SOLO_STATE, param);
 			}
 		}
@@ -108,8 +113,16 @@ public class TutorialPresenter {
 	private void fightingState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new FightingPresenter());
-		} else if (event.equals(MOVE_EVENT)) {
-			
+		} else if (event.equals(CREATURE_DIED_EVENT)) {
+			newState(State.PICKUP_STATE, param);
+		}
+	}
+	
+	private void pickupState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new PickupPresenter());
+		} else if (event.equals(CREATURE_DIED_EVENT)) {
+			newState(State.PICKUP_STATE, param);
 		}
 	}
 	
@@ -132,6 +145,9 @@ public class TutorialPresenter {
 				break;
 			case FIGHTING_STATE:
 				fightingState(event, param);
+				break;
+			case PICKUP_STATE:
+				pickupState(event, param);
 				break;
 			default:
 				break;
@@ -163,7 +179,15 @@ public class TutorialPresenter {
 				stateEvent(MOVE_EVENT, param);
 			}
 		});
-
+		
+		eventBus.onEvent(PASS_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("PASS_ON_EVENT");
+				stateEvent(PASS_ON_EVENT, param);
+			}
+		});
+		
 		eventBus.onEvent(CHARACTER_IN_LOS_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
@@ -171,13 +195,21 @@ public class TutorialPresenter {
 				stateEvent(CHARACTER_IN_LOS_EVENT, param);
 			}
 		});
+		
+		eventBus.onEvent(CREATURE_DIED_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("CREATURE_DIED_EVENT");
+				stateEvent(CREATURE_DIED_EVENT, param);
+			}
+		});
 	}
 	
 	private void newState(State state, Object param) {
 		moves = 0;
 		this.state = state;
-		turnProcessor.saveGame(state);
 		stateEvent(ON_ENTRY_EVENT, param);
+		turnProcessor.saveGame(state);
 	}
 	
 	private void popPresenterPar(OverlayPresenter overlayPresenter) {

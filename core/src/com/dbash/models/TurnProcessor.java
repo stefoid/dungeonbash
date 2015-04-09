@@ -663,7 +663,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void passTurnSelected() {
 		if (LOG) L.log("Pass turn pressed");
 		EventBus.getDefault().event(TutorialPresenter.PASS_ON_EVENT, null);
-		EventBus.getDefault().event(TutorialPresenter.MOVE_EVENT, null);
 		
 		if (gameState != GameState.START_GAME) {
 			return;

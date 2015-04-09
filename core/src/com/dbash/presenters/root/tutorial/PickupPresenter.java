@@ -12,9 +12,9 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class FightingPresenter extends OverlayPresenter implements TouchEventListener {
+public class PickupPresenter extends OverlayPresenter implements TouchEventListener {
 	
-	public FightingPresenter() {
+	public PickupPresenter() {
 	}
 	
 	@Override
@@ -24,20 +24,20 @@ public class FightingPresenter extends OverlayPresenter implements TouchEventLis
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("When a monster is seen, leader mode automatically turns off.", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("Pick that shit up", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb1);
 		
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("To make a melee attack, move next to a monster, and then move into it.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("The landing spot must be clear before the next one can arrive.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb2);
 	
-		FadeBoxPresenter fb3 = new FadeBoxPresenter("The character will make an attack with their currently equiped weapon.", 
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("The animated highlight shows which character is having a turn.\n\nYou can swipe in a direction to move.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb3);
 		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb4 = new FadeBoxPresenter("Kill the monster in the next room with a melee attack, right now.", 
+		FadeBoxPresenter fb4 = new FadeBoxPresenter("Move four times with swiping right now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

@@ -18,6 +18,8 @@ import com.dbash.platform.TextResourceIdentifier;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.CreaturePresenter;
 import com.dbash.presenters.dungeon.MapPresenter;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
@@ -1522,6 +1524,7 @@ public abstract class Creature implements IPresenterCreature
 				dropObject(ability);
 			}
 		}
+		EventBus.getDefault().event(TutorialPresenter.CREATURE_DIED_EVENT, null);
 	}
 	
 	// Sequence number has no relevance,
