@@ -9,7 +9,9 @@ import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.IDungeonQuery.AtLocation;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.tabs.AbilitySelectionList;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.SequenceNumber;
@@ -1258,6 +1260,9 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	public void  setInLOSOfMonster(boolean val) {
 		inLOSOfMonster = val;
+		if (val) {
+			EventBus.getDefault().event(TutorialPresenter.CHARACTER_IN_LOS_EVENT, null);
+		}
 	}
 	
 	public boolean getInLOSOfMonster() {

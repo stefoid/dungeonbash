@@ -173,7 +173,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 //		mobs.add(nashkur);
 		
 		map.location(map.exitPoint).setAsExit();
-
+		map.onCreate();
 		// must set the map now so that it can observe changes to Locations as monsters are added to the currentLevel.
 		mapEventListener.setMap(map);
 		ShadowMap shadowMap = new ShadowMap();
@@ -195,33 +195,24 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		map = new Map(currentLevel, this, this);
 		initLevel();
 		// If its the last currentLevel, put nashkur at the exit instead of an exit.
+		map.onCreate();
 		
 		switch (currentLevel) {
 			case Dungeon.FINAL_LEVEL:
-				Monster nashkur = new Monster(Creature.getIdForName("nashkur"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = nashkur;
-				mobs.add(nashkur);
+				addMonsterToMap("nashkur", map.exitPoint);
 				break;
 			case 1:
-				Monster mon1 = new Monster(Creature.getIdForName(L.FIRST_MONSTER), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = mon1;
+				Monster mon1 = (Monster) addMonsterToMap(L.FIRST_MONSTER, map.exitPoint);
 				//mon1.addAbility(new Ability(Ability.getIdForName("wand of percussion"), null, 20, this, this), null); // TODO
-				mobs.add(mon1);
 				break;
 			case 2:
-				Monster mon2 = new Monster(Creature.getIdForName("halfling"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = mon2;
-				mobs.add(mon2);
+				addMonsterToMap("halfling", map.exitPoint);
 				break;
 			case 3:
-				Monster mon3 = new Monster(Creature.getIdForName("dwarf"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = mon3;
-				mobs.add(mon3);
+				addMonsterToMap("dwarf", map.exitPoint);
 				break;
 			case 4:
-				Monster mon4 = new Monster(Creature.getIdForName("wizard"), currentLevel, map.exitPoint, this, this, turnProcessor);
-				map.location(map.exitPoint).creature = mon4;
-				mobs.add(mon4);
+				addMonsterToMap("wizard", map.exitPoint);
 				break;
 			case 5:
 				placeSwarm(map.exitPoint, Creature.getIdForName("crazed minion"));
@@ -349,7 +340,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 						completeListener.animEvent();
 					}
 					
-					EventBus.getDefault().event(TutorialPresenter.MOVE, null);
+					EventBus.getDefault().event(TutorialPresenter.MOVE_EVENT, toLocation.position);
 				}
 			};
 			
@@ -841,20 +832,6 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		
 		turnProcessor.creatureMoved();
 	}
-	
-//	@Override
-//	public void checkForCloseToMonster(Character character) {
-//		HashSet<Character> characters = new HashSet<Character>();
-//		characters.add(character);
-//		character.setAmClosestToMonster(false);
-//		character.setInLOSOfMonster(false);
-//		character.setCurrentlySeenByMonster(false);
-//		for (Monster monster : mobs) {
-//			if (monster.getIsNearCharacter()) {
-//				monster.findClosestCharacter(characters);
-//			}
-//		}
-//	}
 
 	// returns true if the position passed in is far from all characters
 	// and far from the stairs (if a creature skips a turn whilst camping on the
@@ -954,6 +931,14 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	@Override
 	public void currentCharacterHavingTurn(Character character) {
 		characterHavingTurn = character;
+	}
+
+	@Override
+	public Creature addMonsterToMap(String monsterName, DungeonPosition dungeonPosition) {
+		Monster monster = new Monster(Creature.getIdForName(monsterName), currentLevel, dungeonPosition, this, this, turnProcessor);
+		map.location(dungeonPosition).creature = monster;
+		mobs.add(monster);
+		return monster;
 	}
 
 }

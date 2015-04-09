@@ -586,4 +586,7 @@ public class Map implements IPresenterMap {
 			}
 		}
 	}
+	
+	public void onCreate() {
+	}
 }

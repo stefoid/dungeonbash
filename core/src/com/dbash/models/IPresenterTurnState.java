@@ -3,6 +3,8 @@ package com.dbash.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
+
 
 
 // the interface for Presenters to talk to the model about things that affect the gamestate
@@ -25,7 +27,7 @@ public interface IPresenterTurnState {
 	public List<Character> getTutorialCharacters();
 	public void startGame(List<Character> characters, boolean tutorialMode);
 	public void infoSelected();
-	public void saveGame(String tutorialEvent, int moves);
+	public void saveGame(TutorialPresenter.State state);
 	
 	// Current character related
 	public void onChangeToCurrentCharacter(UIInfoListener listener);

@@ -1,5 +1,6 @@
 package com.dbash.presenters.root.tutorial;
 
+import com.dbash.models.DungeonPosition;
 import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
@@ -11,8 +12,9 @@ import com.dbash.util.L;
 public class TutorialPresenter {
 	public static final boolean LOG = true && L.DEBUG;
 	
+	public static final String ON_ENTRY_EVENT = "ON_ENTRY_EVENT";
 	public static final String DROPPING_IN_EVENT = "DROPPING_IN_EVENT";
-	public static final String MOVE = "MOVE";
+	public static final String MOVE_EVENT = "MOVE";
 	public static final String ANIM_LEADER_BUTTON_ON_EVENT = "ANIM_LEADER_BUTTON_EVENT";
 	public static final String ANIM_LEADER_BUTTON_OFF_EVENT = "ANIM_LEADER_BUTTON_OFF_EVENT";
 	public static final String ANIM_SOLO_BUTTON_ON_EVENT = "ANIM_SOLO_BUTTON_ON_EVENT";
@@ -25,17 +27,24 @@ public class TutorialPresenter {
 	public static final String PASS_ON_EVENT = "PASS_ON_EVENT";
 	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
 	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
+	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
 	
-	public static final String SET_MOVE_COUNT = "SET_MOVE_COUNT";
+	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
 	
-	public static final int MOVE_TURNS = 4;
-	public static final int SOLO_TURNS = 8;
-	public static final int LEADER_TURNS = 12;
+	public enum State {
+		INITIAL_STATE,
+		DROPPING_IN_STATE,
+		PASSING_STATE,
+		SOLO_STATE,
+		LEADER_STATE,
+		FIGHTING_STATE
+	}
 	
 	EventBus eventBus;
 	UIDepend gui;
 	int moves = 0;
 	private IPresenterTurnState turnProcessor;
+	private State state = State.INITIAL_STATE;
 	
 	public TutorialPresenter(PresenterDepend model, UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
@@ -43,15 +52,98 @@ public class TutorialPresenter {
 		this.turnProcessor = model.presenterTurnState;
 		init();
 	}
+
+	private void initialState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			
+		} else if (event.equals(SET_INITIAL_STATE)) {
+			newState((State) param, null);
+		} else if (event.equals(DROPPING_IN_EVENT)) {
+			newState(State.DROPPING_IN_STATE, param);
+		}
+	}
+	
+	private void droppingInState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			removePresenters();
+			popPresenterPar(new DroppingInPresenter());
+		} else if (event.equals(MOVE_EVENT)) {
+			if (moves == 4) {
+				newState(State.PASSING_STATE, param);
+			}
+		}
+	}
+	
+	private void passingState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new PassingPresenter());
+		} else if (event.equals(MOVE_EVENT)) {
+			if (moves == 4) {
+				newState(State.SOLO_STATE, param);
+			}
+		}
+	}
+	
+	private void soloState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new SoloPresenter());
+		} else if (event.equals(MOVE_EVENT)) {
+			if (moves == 4) {
+				newState(State.LEADER_STATE, param);
+			}
+		}
+	}
+	
+	private void leaderState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			if (turnProcessor.getSoloStatus()) {
+				turnProcessor.soloSelected();
+			}
+			popPresenterPar(new LeaderModePresenter());
+		} else if (event.equals(CHARACTER_IN_LOS_EVENT)) {
+			newState(State.FIGHTING_STATE, param);
+		}
+	}
+	
+	private void fightingState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new FightingPresenter());
+		} else if (event.equals(MOVE_EVENT)) {
+			
+		}
+	}
+	
+	private void stateEvent(String event, Object param) {
+		switch (state) {
+			case INITIAL_STATE:
+				initialState(event, param);
+				break;
+			case DROPPING_IN_STATE:
+				droppingInState(event, param);
+				break;
+			case PASSING_STATE:
+				passingState(event, param);
+				break;
+			case SOLO_STATE:
+				soloState(event, param);
+				break;
+			case LEADER_STATE:
+				leaderState(event, param);
+				break;
+			case FIGHTING_STATE:
+				fightingState(event, param);
+				break;
+			default:
+				break;
+		}
+	}
 	
 	private void init() {
-		final TutorialPresenter tutorialPresenter = this;
-		
-		eventBus.onEvent(SET_MOVE_COUNT, this, new IEventAction() {
+		eventBus.onEvent(SET_INITIAL_STATE, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				if (LOG) L.log("SET_MOVE_COUNT");
-				moves = (Integer) param;
+				if (LOG) L.log("SET_INITIAL_STATE");
+				stateEvent(SET_INITIAL_STATE, param);
 			}
 		});
 		
@@ -59,63 +151,41 @@ public class TutorialPresenter {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("DROPPING_IN_EVENT");
-				removePresenters();
-				popPresenterPar(DROPPING_IN_EVENT, new DroppingInPresenter());
-				eventBus.removeListener(DROPPING_IN_EVENT, tutorialPresenter);
+				stateEvent(DROPPING_IN_EVENT, param);
 			}
 		});
 		
-		eventBus.onEvent(MOVE, this, new IEventAction() {
+		eventBus.onEvent(MOVE_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				if (LOG) L.log("MOVE");
-				
-				switch (moves) {
-					case MOVE_TURNS:
-						popPresenterPar(MOVE, new PassingPresenter());
-						break;
-					case SOLO_TURNS:
-						popPresenterPar(MOVE, new SoloPresenter());
-						break;
-					case LEADER_TURNS:
-						popPresenterPar(MOVE, new LeaderModePresenter());
-						break;
-					default:
-						break;
-				}
-				
+				if (LOG) L.log("MOVE_EVENT");
 				moves++;
+				stateEvent(MOVE_EVENT, param);
 			}
 		});
 
-//		
-//		eventBus.onEvent(TurnProcessor.START_GAME_EVENT, this, new IEventAction() {
-//			@Override
-//			public void action(Object param) {
-//				if (LOG) L.log("START_GAME_EVENT");
-//				removePresenters();
-//			}
-//		});
-//		
-//		eventBus.onEvent(TurnProcessor.GAME_OVER_EVENT, this, new IEventAction() {
-//			@Override
-//			public void action(Object param) {
-//				if (LOG) L.log("GAME_OVER_EVENT");
-//				removePresenters();
-//				OverlayPresenter gameOverPresenter = new GameOverOverlayPresenter((GameStats) param);
-//				gui.overlayQueues.addSequential(gameOverPresenter);
-//			}
-//		});
+		eventBus.onEvent(CHARACTER_IN_LOS_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("CHARACTER_IN_LOS_EVENT");
+				stateEvent(CHARACTER_IN_LOS_EVENT, param);
+			}
+		});
 	}
 	
-	private void popPresenterPar(String tutorialEvent,OverlayPresenter overlayPresenter) {
+	private void newState(State state, Object param) {
+		moves = 0;
+		this.state = state;
+		turnProcessor.saveGame(state);
+		stateEvent(ON_ENTRY_EVENT, param);
+	}
+	
+	private void popPresenterPar(OverlayPresenter overlayPresenter) {
 		gui.overlayQueues.addParallel(overlayPresenter);
-		turnProcessor.saveGame(tutorialEvent, moves);
 	}
 	
-	private void popPresenterSeq(String tutorialEvent, OverlayPresenter overlayPresenter) {
+	private void popPresenterSeq(OverlayPresenter overlayPresenter) {
 		gui.overlayQueues.addSequential(overlayPresenter);
-		turnProcessor.saveGame(tutorialEvent, moves);
 	}
 	
 	private void removePresenters() {

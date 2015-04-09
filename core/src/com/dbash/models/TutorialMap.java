@@ -14,17 +14,25 @@ public class TutorialMap extends Map {
 			"*****             ********             *********             ********             ***" ,
 			"*****  S          ********             *********             ********             ***" ,
 			"*****         m   ********             *********             ********             ***" ,
-			"*****     h                            *********             ********             ***" ,
-			"*****     b       ********             *********             ********             ***" ,
+			"*****     h                0           *********             ********             ***" ,
+			"*****     b       ********             *********         1   ********             ***" ,
 			"*****             ********             *********                                  ***" ,
 			"*************************************************************************************" ,
 			"*************************************************************************************" 
 		};
 	
+	private String[] monsters = {
+			"halfling",
+			"orc"
+	};
+	
+	IDungeonEvents dungeonEvents;
+	
 	public TutorialMap(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 
 		this.dungeonQuery = dungeonQuery;
-
+		this.dungeonEvents = dungeonEvents;
+		
 		retainFocusBag = new UIInfoListenerBag();
 		locationInfoListeners = new Vector<UILocationInfoListener>();
 		
@@ -152,5 +160,14 @@ public class TutorialMap extends Map {
 			}
 		}
 		
+	}
+	
+	public void onCreate() {
+		int numMonsters = monsters.length;
+		for (Integer i=0; i<numMonsters; i++) {
+			String monster = monsters[i];
+			DungeonPosition dungeonPosition = getPosiOfChar(i.toString().charAt(0));
+			dungeonEvents.addMonsterToMap(monster, dungeonPosition);
+		}
 	}
 }

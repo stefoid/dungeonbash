@@ -134,4 +134,6 @@ public interface IDungeonEvents {
 	public void explosionOver();
 	
 	public void processCharacterStealth();
+	
+	public Creature addMonsterToMap(String monsterName, DungeonPosition dungeonPosition);
 }
