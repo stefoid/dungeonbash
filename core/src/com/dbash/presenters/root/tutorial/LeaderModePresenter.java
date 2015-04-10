@@ -40,6 +40,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 				EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
 				addMoreFaderBoxes();
+				EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, this);
 			}
 		});
 		
@@ -75,7 +76,6 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 	}
 	
 	public void destroy() {
-		EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 

@@ -23,12 +23,20 @@ public class TutorialPresenter {
 	public static final String ANIM_PASS_BUTTON_OFF_EVENT = "ANIM_PASS_BUTTON_OFF_EVENT";
 	public static final String ANIM_STEALTH_BUTTON_ON_EVENT = "ANIM_STEALTH_BUTTON_ON_EVENT";
 	public static final String ANIM_STEALTH_BUTTON_OFF_EVENT = "ANIM_STEALTH_BUTTON_OFF_EVENT";
+	public static final String EYE_TAB_BUTTON_ON_EVENT = "EYE_TAB_BUTTON_ON_EVENT";
+	public static final String EYE_TAB_BUTTON_OFF_EVENT = "EYE_TAB_BUTTON_OFF_EVENT";
+	public static final String ITEM_TAB_BUTTON_ON_EVENT = "ITEM_TAB_BUTTON_ON_EVENT";
+	public static final String ITEM_TAB_BUTTON_OFF_EVENT = "ITEM_TAB_BUTTON_OFF_EVENT";
 	public static final String LEADER_ON_EVENT = "LEADER_ON_EVENT";
 	public static final String PASS_ON_EVENT = "PASS_ON_EVENT";
 	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
 	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
+	public static final String EYE_TAB_ON_EVENT = "EYE_TAB_ON_EVENT";
+	public static final String ITEM_TAB_ON_EVENT = "ITEM_TAB_ON_EVENT";
+	
 	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
 	public static final String CREATURE_DIED_EVENT = "CREATURE_DIED_EVENT";
+	public static final String TILE_CLICKED_EVENT = "TILE_CLICKED_EVENT";
 	
 	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
 	
@@ -39,7 +47,8 @@ public class TutorialPresenter {
 		SOLO_STATE,
 		LEADER_STATE,
 		FIGHTING_STATE,
-		PICKUP_STATE
+		PICKUP_STATE,
+		ITEM_STATE
 	}
 	
 	EventBus eventBus;
@@ -57,9 +66,7 @@ public class TutorialPresenter {
 	}
 
 	private void initialState(String event, Object param) {
-		if (event.equals(ON_ENTRY_EVENT)) {
-			
-		} else if (event.equals(SET_INITIAL_STATE)) {
+		if (event.equals(SET_INITIAL_STATE)) {
 			newState((State) param, null);
 		} else if (event.equals(DROPPING_IN_EVENT)) {
 			newState(State.DROPPING_IN_STATE, param);
@@ -118,12 +125,30 @@ public class TutorialPresenter {
 		}
 	}
 	
+	int tilesClicked;
 	private void pickupState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
+			tilesClicked = 0;
 			popPresenterPar(new PickupPresenter());
-		} else if (event.equals(CREATURE_DIED_EVENT)) {
-			newState(State.PICKUP_STATE, param);
+		} else if (event.equals(TILE_CLICKED_EVENT)) {
+			tilesClicked++;
+			if (tilesClicked == 4) {
+				newState(State.ITEM_STATE, param);
+			}
 		}
+	}
+	
+	private void itemState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			tilesClicked = 0;
+			popPresenterPar(new ItemPresenter());
+		} 
+//		else if (event.equals(TILE_CLICKED_EVENT)) {
+//			tilesClicked++;
+//			if (tilesClicked == 4) {
+//				newState(State.PICKUP_STATE, param);
+//			}
+//		}
 	}
 	
 	private void stateEvent(String event, Object param) {
@@ -148,6 +173,9 @@ public class TutorialPresenter {
 				break;
 			case PICKUP_STATE:
 				pickupState(event, param);
+				break;
+			case ITEM_STATE:
+				itemState(event, param);
 				break;
 			default:
 				break;
@@ -201,6 +229,14 @@ public class TutorialPresenter {
 			public void action(Object param) {
 				if (LOG) L.log("CREATURE_DIED_EVENT");
 				stateEvent(CREATURE_DIED_EVENT, param);
+			}
+		});
+		
+		eventBus.onEvent(TILE_CLICKED_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("TILE_CLICKED_EVENT");
+				stateEvent(TILE_CLICKED_EVENT, param);
 			}
 		});
 	}

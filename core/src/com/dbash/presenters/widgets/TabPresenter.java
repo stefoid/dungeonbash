@@ -52,7 +52,6 @@ public abstract class TabPresenter implements TouchEventListener {
 				clickListener.processClick();
 			}
 		}
-		
 		return true;
 	}
 	
@@ -67,8 +66,7 @@ public abstract class TabPresenter implements TouchEventListener {
 		}
 	}
 	
-	public void setShouldDrawBody(boolean drawBody)
-	{
+	public void setShouldDrawBody(boolean drawBody) {
 		shouldDrawBody = drawBody;
 	}
 	

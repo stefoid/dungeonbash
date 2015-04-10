@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class PickupPresenter extends OverlayPresenter implements TouchEventListener {
+public class ItemPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public PickupPresenter() {
+	public ItemPresenter() {
 	}
 	
 	@Override
@@ -34,22 +34,22 @@ public class PickupPresenter extends OverlayPresenter implements TouchEventListe
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.EYE_TAB_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(TutorialPresenter.ITEM_TAB_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.ITEM_TAB_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
 				addMoreFaderBoxes();
-				EventBus.getDefault().removeListener(TutorialPresenter.EYE_TAB_ON_EVENT, this);
+				EventBus.getDefault().removeListener(TutorialPresenter.ITEM_TAB_ON_EVENT, this);
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("You can use the eye tab to examine what is on a tile.  Click the eye tab now.", 
+		this.fadeBox = new FadeBoxPresenter("If you walk to a tile with stuff on, you can pick it up using the item tab.  Click the item tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		gui.overlayQueues.addParallel(fadeBox);
 		
-		EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_ON_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ITEM_TAB_BUTTON_ON_EVENT, null);
 	}
 	
 	private void addMoreFaderBoxes() {

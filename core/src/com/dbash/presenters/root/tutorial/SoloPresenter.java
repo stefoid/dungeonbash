@@ -39,6 +39,7 @@ public class SoloPresenter extends OverlayPresenter implements TouchEventListene
 			public void action(Object param) {
 				EventBus.getDefault().event(TutorialPresenter.ANIM_SOLO_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
+				EventBus.getDefault().removeListener(TutorialPresenter.SOLO_ON_EVENT, this);
 				dismiss();
 			}
 		});
@@ -61,7 +62,6 @@ public class SoloPresenter extends OverlayPresenter implements TouchEventListene
 	}
 	
 	public void destroy() {
-		EventBus.getDefault().removeListener(TutorialPresenter.SOLO_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 

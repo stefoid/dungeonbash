@@ -28,8 +28,10 @@ import com.dbash.platform.AnimationView;
 import com.dbash.platform.Audio;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.AnimQueue;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
 
@@ -118,6 +120,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 				DungeonPosition position = mapPresenter.convertXYToDungeonPosition(event.getX(), event.getY());
 				Character charPresenter = tp.getCharacterForTouchEvents();
 				charPresenter.targetTileSelected(position);
+				EventBus.getDefault().event(TutorialPresenter.TILE_CLICKED_EVENT, null);
 			}
 				break;
 			case UP:
