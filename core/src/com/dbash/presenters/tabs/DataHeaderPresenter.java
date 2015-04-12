@@ -16,6 +16,7 @@ import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.HighlightAnimView;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.ButtonView;
 import com.dbash.presenters.widgets.IClickListener;
@@ -182,7 +183,7 @@ public class DataHeaderPresenter {
 				if (leaderButtonAnim != null) {
 					leaderButtonAnim.stopPlaying();
 				}
-				leaderButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				leaderButtonAnim = new HighlightAnimView(gui, fromRect, toRect);
 				leaderButtonAnim.startPlaying();
 			}
 		});
@@ -205,7 +206,7 @@ public class DataHeaderPresenter {
 				if (soloButtonAnim != null) {
 					soloButtonAnim.stopPlaying();
 				}
-				soloButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				soloButtonAnim = new HighlightAnimView(gui, fromRect, toRect);
 				soloButtonAnim.startPlaying();
 			}
 		});
@@ -228,7 +229,7 @@ public class DataHeaderPresenter {
 				if (passButtonAnim != null) {
 					passButtonAnim.stopPlaying();
 				}
-				passButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				passButtonAnim = new HighlightAnimView(gui, fromRect, toRect);
 				passButtonAnim.startPlaying();
 			}
 		});
@@ -251,7 +252,7 @@ public class DataHeaderPresenter {
 				if (stealthButtonAnim != null) {
 					stealthButtonAnim.stopPlaying();
 				}
-				stealthButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				stealthButtonAnim = new HighlightAnimView(gui, fromRect, toRect);
 				stealthButtonAnim.startPlaying();
 			}
 		});

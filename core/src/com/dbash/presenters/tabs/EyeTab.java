@@ -7,6 +7,7 @@ import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.HighlightAnimView;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.TabPresenter;
 import com.dbash.util.EventBus;
@@ -36,7 +37,7 @@ public class EyeTab extends TabPresenter {
 				if (tabButtonAnim != null) {
 					tabButtonAnim.stopPlaying();
 				}
-				tabButtonAnim = new AnimationView(gui, "missed", fromRect, toRect, 0.6f, 0f, 1f, 0, null);
+				tabButtonAnim = new HighlightAnimView(gui, fromRect, toRect);
 				tabButtonAnim.startPlaying();
 			}
 		});

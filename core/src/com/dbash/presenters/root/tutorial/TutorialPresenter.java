@@ -37,7 +37,6 @@ public class TutorialPresenter {
 	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
 	public static final String CREATURE_DIED_EVENT = "CREATURE_DIED_EVENT";
 	public static final String TILE_CLICKED_EVENT = "TILE_CLICKED_EVENT";
-	
 	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
 	
 	public enum State {

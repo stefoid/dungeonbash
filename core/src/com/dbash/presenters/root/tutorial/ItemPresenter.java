@@ -53,8 +53,16 @@ public class ItemPresenter extends OverlayPresenter implements TouchEventListene
 	}
 	
 	private void addMoreFaderBoxes() {
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("When you walk to the tile with items on it, you will see those items appear in the item list.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb1);
+		
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("Items on the ground are red.  Items the character is carrying are green.  ITems that cannot be picked up are grey.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now click on any tile to see what is there.  Try clicking on tile with the dropped items and some characters.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now walk to the tile where the monster dropped some itemspick up those items by clicking on them.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();
