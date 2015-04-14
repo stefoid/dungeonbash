@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
         classpath 'com.android.tools.build:gradle:1.0.0'
-        classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-04'
+        classpath 'org.robovm:robovm-gradle-plugin:1.0.0'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
@@ -23,8 +23,8 @@ allprojects {
     version = '1.0'
     ext {
         appName = 'dbash'
-        gdxVersion = '1.5.4'
-        roboVMVersion = '1.0.0-beta-04'
+        gdxVersion = '1.5.5'
+        roboVMVersion = '1.0.0'
     }
 
     repositories {
