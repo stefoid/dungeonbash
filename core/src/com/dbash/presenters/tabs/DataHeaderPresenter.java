@@ -267,6 +267,16 @@ public class DataHeaderPresenter {
 			}
 		});
 		
+		EventBus.getDefault().onEvent(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.ANIM_SOLO_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.ANIM_STEALTH_BUTTON_OFF_EVENT, null);
+			}
+		});
+		
 		processLeaderStatus();
 		processSoloStatus();
 	}

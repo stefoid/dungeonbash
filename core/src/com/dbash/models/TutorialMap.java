@@ -22,8 +22,8 @@ public class TutorialMap extends Map {
 		};
 	
 	private String[] monsters = {
-			"halfling",
-			"orc"
+			"dummy",
+			"dummy"
 	};
 	
 	IDungeonEvents dungeonEvents;

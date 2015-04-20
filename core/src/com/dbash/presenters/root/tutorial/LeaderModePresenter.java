@@ -30,7 +30,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
-		
+		final Object me = this;
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
@@ -40,7 +40,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 				EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
 				addMoreFaderBoxes();
-				EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, this);
+				EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, me);
 			}
 		});
 		

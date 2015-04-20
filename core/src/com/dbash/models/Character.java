@@ -851,6 +851,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			turnProcessor.characterEndsTurn(this);
 		}
 		
+		EventBus.getDefault().event(TutorialPresenter.ABILITY_USED_EVENT, null);
 		return true;
 	}
 

@@ -77,6 +77,13 @@ import com.dbash.util.Rect.VAlignment;
 					}
 				}
 			});
+			
+			EventBus.getDefault().onEvent(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, this, new IEventAction() {
+				@Override
+				public void action(Object param) {
+					EventBus.getDefault().event(TutorialPresenter.ITEM_TAB_BUTTON_OFF_EVENT, null);
+				}
+			});
 		}
 
 		// When there is  new character, get that Characters stats

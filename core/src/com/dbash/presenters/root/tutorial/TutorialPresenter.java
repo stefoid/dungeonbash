@@ -1,6 +1,5 @@
 package com.dbash.presenters.root.tutorial;
 
-import com.dbash.models.DungeonPosition;
 import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
@@ -17,23 +16,33 @@ public class TutorialPresenter {
 	public static final String MOVE_EVENT = "MOVE";
 	public static final String ANIM_LEADER_BUTTON_ON_EVENT = "ANIM_LEADER_BUTTON_EVENT";
 	public static final String ANIM_LEADER_BUTTON_OFF_EVENT = "ANIM_LEADER_BUTTON_OFF_EVENT";
+	public static final String LEADER_ON_EVENT = "LEADER_ON_EVENT";
 	public static final String ANIM_SOLO_BUTTON_ON_EVENT = "ANIM_SOLO_BUTTON_ON_EVENT";
 	public static final String ANIM_SOLO_BUTTON_OFF_EVENT = "ANIM_SOLO_BUTTON_OFF_EVENT";
+	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
 	public static final String ANIM_PASS_BUTTON_ON_EVENT = "ANIM_PASS_BUTTON_ON_EVENT";
 	public static final String ANIM_PASS_BUTTON_OFF_EVENT = "ANIM_PASS_BUTTON_OFF_EVENT";
+	public static final String PASS_ON_EVENT = "PASS_ON_EVENT";
 	public static final String ANIM_STEALTH_BUTTON_ON_EVENT = "ANIM_STEALTH_BUTTON_ON_EVENT";
 	public static final String ANIM_STEALTH_BUTTON_OFF_EVENT = "ANIM_STEALTH_BUTTON_OFF_EVENT";
+	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
 	public static final String EYE_TAB_BUTTON_ON_EVENT = "EYE_TAB_BUTTON_ON_EVENT";
 	public static final String EYE_TAB_BUTTON_OFF_EVENT = "EYE_TAB_BUTTON_OFF_EVENT";
+	public static final String EYE_TAB_ON_EVENT = "EYE_TAB_ON_EVENT";
 	public static final String ITEM_TAB_BUTTON_ON_EVENT = "ITEM_TAB_BUTTON_ON_EVENT";
 	public static final String ITEM_TAB_BUTTON_OFF_EVENT = "ITEM_TAB_BUTTON_OFF_EVENT";
-	public static final String LEADER_ON_EVENT = "LEADER_ON_EVENT";
-	public static final String PASS_ON_EVENT = "PASS_ON_EVENT";
-	public static final String STEALTH_ON_EVENT = "STEALTH_ON_EVENT";
-	public static final String SOLO_ON_EVENT = "SOLO_ON_EVENT";
-	public static final String EYE_TAB_ON_EVENT = "EYE_TAB_ON_EVENT";
 	public static final String ITEM_TAB_ON_EVENT = "ITEM_TAB_ON_EVENT";
+	public static final String ABILITY_TAB_BUTTON_ON_EVENT = "ABILITY_TAB_BUTTON_ON_EVENT";
+	public static final String ABILITY_TAB_BUTTON_OFF_EVENT = "ABILITY_TAB_BUTTON_OFF_EVENT";
+	public static final String ABILITY_TAB_ON_EVENT = "ABILITY_TAB_ON_EVENT";
+	public static final String EFFECT_TAB_BUTTON_ON_EVENT = "EFFECT_TAB_BUTTON_ON_EVENT";
+	public static final String EFFECT_TAB_BUTTON_OFF_EVENT = "EFFECT_TAB_BUTTON_OFF_EVENT";
+	public static final String EFFECT_TAB_ON_EVENT = "EFFECT_TAB_ON_EVENT";
 	
+	public static final String ALL_BUTTON_ANIMS_OFF = "ALL_BUTTON_ANIMS_OFF";
+	
+	public static final String ABILITY_USED_EVENT = "ABILITY_USED_EVENT";
+	public static final String ITEM_PICKED_UP_EVENT = "ITEM_PICKED_UP";
 	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
 	public static final String CREATURE_DIED_EVENT = "CREATURE_DIED_EVENT";
 	public static final String TILE_CLICKED_EVENT = "TILE_CLICKED_EVENT";
@@ -47,7 +56,9 @@ public class TutorialPresenter {
 		LEADER_STATE,
 		FIGHTING_STATE,
 		PICKUP_STATE,
-		ITEM_STATE
+		ITEM_STATE,
+		ABILITY_STATE,
+		EFFECT_STATE
 	}
 	
 	EventBus eventBus;
@@ -137,17 +148,45 @@ public class TutorialPresenter {
 		}
 	}
 	
+	int itemsPickedUp = 0;
 	private void itemState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
-			tilesClicked = 0;
+			itemsPickedUp = 0;
 			popPresenterPar(new ItemPresenter());
 		} 
-//		else if (event.equals(TILE_CLICKED_EVENT)) {
-//			tilesClicked++;
-//			if (tilesClicked == 4) {
-//				newState(State.PICKUP_STATE, param);
+		else if (event.equals(ITEM_PICKED_UP_EVENT)) {
+			itemsPickedUp++;
+			if (itemsPickedUp == 4) {
+				newState(State.ABILITY_STATE, param);
+			}
+		}
+	}
+	
+	int abilitiesUsed = 0;
+	private void abilityState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			abilitiesUsed = 0;
+			popPresenterPar(new AbilityPresenter());
+		} 
+		else if (event.equals(ABILITY_USED_EVENT)) {
+			abilitiesUsed++;
+			if (abilitiesUsed == 4) {
+				newState(State.EFFECT_STATE, param);
+			}
+		}
+	}
+	
+	private void effectState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			abilitiesUsed = 0;
+			popPresenterPar(new EffectPresenter());
+		} 
+		else if (event.equals(ITEM_PICKED_UP_EVENT)) {
+//			itemsPickedUp++;
+//			if (itemsPickedUp == 4) {
+//				newState(State.ABILITY_STATE, param);
 //			}
-//		}
+		}
 	}
 	
 	private void stateEvent(String event, Object param) {
@@ -175,6 +214,12 @@ public class TutorialPresenter {
 				break;
 			case ITEM_STATE:
 				itemState(event, param);
+				break;
+			case ABILITY_STATE:
+				abilityState(event, param);
+				break;
+			case EFFECT_STATE:
+				effectState(event, param);
 				break;
 			default:
 				break;
@@ -236,6 +281,22 @@ public class TutorialPresenter {
 			public void action(Object param) {
 				if (LOG) L.log("TILE_CLICKED_EVENT");
 				stateEvent(TILE_CLICKED_EVENT, param);
+			}
+		});
+		
+		eventBus.onEvent(ITEM_PICKED_UP_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("ITEM_PICKED_UP_EVENT");
+				stateEvent(ITEM_PICKED_UP_EVENT, param);
+			}
+		});
+		
+		eventBus.onEvent(ABILITY_USED_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("ABILITY_USED_EVENT");
+				stateEvent(ABILITY_USED_EVENT, param);
 			}
 		});
 	}

@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class PickupPresenter extends OverlayPresenter implements TouchEventListener {
+public class EffectPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public PickupPresenter() {
+	public EffectPresenter() {
 	}
 	
 	@Override
@@ -30,31 +30,39 @@ public class PickupPresenter extends OverlayPresenter implements TouchEventListe
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
-		final Object me= this;
+		final Object me = this;
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.EYE_TAB_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(TutorialPresenter.EFFECT_TAB_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
 				addMoreFaderBoxes();
-				EventBus.getDefault().removeListener(TutorialPresenter.EYE_TAB_ON_EVENT, me);
+				EventBus.getDefault().removeListener(TutorialPresenter.EFFECT_TAB_ON_EVENT, me);
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("You can use the eye tab to examine what is on a tile.  Click the eye tab now.", 
+		this.fadeBox = new FadeBoxPresenter("You can see your characters stats and other abilities effecting it using the Effects tab.  Click on the Effects tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		gui.overlayQueues.addParallel(fadeBox);
 		
-		EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_ON_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_ON_EVENT, null);
 	}
 	
 	private void addMoreFaderBoxes() {
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("bing", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb1);
+		
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("bada", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now click on any tile to see what is there.  Try clicking on tile with the dropped items and some characters.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("boom", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

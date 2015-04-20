@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class PickupPresenter extends OverlayPresenter implements TouchEventListener {
+public class AbilityPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public PickupPresenter() {
+	public AbilityPresenter() {
 	}
 	
 	@Override
@@ -30,31 +30,39 @@ public class PickupPresenter extends OverlayPresenter implements TouchEventListe
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
-		final Object me= this;
+		final Object me = this;
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.EYE_TAB_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(TutorialPresenter.ABILITY_TAB_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().event(TutorialPresenter.ABILITY_TAB_BUTTON_OFF_EVENT, null);
 				fadeBox.dismiss(); 
 				addMoreFaderBoxes();
-				EventBus.getDefault().removeListener(TutorialPresenter.EYE_TAB_ON_EVENT, me);
+				EventBus.getDefault().removeListener(TutorialPresenter.ABILITY_TAB_ON_EVENT, me);
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("You can use the eye tab to examine what is on a tile.  Click the eye tab now.", 
+		this.fadeBox = new FadeBoxPresenter("Characters can use items they pickup using the ability tab.  Click on the Ability tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		gui.overlayQueues.addParallel(fadeBox);
 		
-		EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_ON_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ABILITY_TAB_BUTTON_ON_EVENT, null);
 	}
 	
 	private void addMoreFaderBoxes() {
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("Characters with hands can use melee weapons and ranged weapons.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb1);
+		
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("Characters with a humanoid body can use armor.  If they have a head they can use amulets.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now click on any tile to see what is there.  Try clicking on tile with the dropped items and some characters.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("Click on items to select which melee weapon, ranged weapon, defensive item and amulet is used.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

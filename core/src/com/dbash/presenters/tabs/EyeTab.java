@@ -51,6 +51,13 @@ public class EyeTab extends TabPresenter {
 				}
 			}
 		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				EventBus.getDefault().event(TutorialPresenter.EYE_TAB_BUTTON_OFF_EVENT, null);
+			}
+		});
 	}
 
 	@Override

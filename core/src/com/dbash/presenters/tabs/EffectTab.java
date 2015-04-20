@@ -4,14 +4,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
 import com.dbash.models.CreatureStats;
+import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
+import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.HighlightAnimView;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.TabPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -22,8 +27,9 @@ public class EffectTab extends TabPresenter {
 	private TextImageView abilityTabText;
 	private IPresenterTurnState turnState;
 	private UIDepend gui;
+	private AnimationView tabButtonAnim;
 	 
-	public EffectTab(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
+	public EffectTab(PresenterDepend model, final UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 		super(model, gui, touchEventProvider, tabArea, bodyArea);
 		abilityTabImage = new ImageView(gui, "EFFECT_TAB_IMAGE", tabArea);
 		backImageCurrent = new ImageView(gui, "EFFECT_TAB_ON_IMAGE", tabArea);
@@ -33,6 +39,7 @@ public class EffectTab extends TabPresenter {
 		listPresenter = new  EffectListPresenter(model, gui, touchEventProvider, bodyArea);
 		turnState = model.presenterTurnState;
 		this.gui = gui;
+		final Rect animArea = this.tabArea;
 		
 		newCharacter(turnState.getCurrentCharacter());
 		
@@ -41,6 +48,36 @@ public class EffectTab extends TabPresenter {
 			public void UIInfoChanged() {
 				Character character = turnState.getCurrentCharacter();
 				newCharacter(character);
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.EFFECT_TAB_BUTTON_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Rect fromRect = new Rect(animArea, .6f);
+				Rect toRect = new Rect(animArea, 1.4f);
+				if (tabButtonAnim != null) {
+					tabButtonAnim.stopPlaying();
+				}
+				tabButtonAnim = new HighlightAnimView(gui, fromRect, toRect);
+				tabButtonAnim.startPlaying();
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.EFFECT_TAB_BUTTON_OFF_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (tabButtonAnim != null) {
+					tabButtonAnim.stopPlaying();
+					tabButtonAnim = null;
+				}
+			}
+		});
+		
+		EventBus.getDefault().onEvent(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_OFF_EVENT, null);
 			}
 		});
 	}
@@ -86,6 +123,7 @@ public class EffectTab extends TabPresenter {
 	public void setCurrent() {
 		super.setCurrent();
 		listPresenter.activate();
+		EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_ON_EVENT, null);
 	}
 	
 	@Override
@@ -105,6 +143,10 @@ public class EffectTab extends TabPresenter {
 		
 		if (shouldDrawBody) {
 			listPresenter.draw(spriteBatch, x, y);
+		}
+		
+		if (tabButtonAnim != null) {
+			tabButtonAnim.draw(spriteBatch);
 		}
 	}
 }

@@ -398,8 +398,8 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 	
 	@Override
 	public void objectDrop(int sequenceNumber, Creature releventCharacter, Ability abilityObjectDropped, DungeonPosition position) {
-		
 		if (LOG) L.log("dropping "+abilityObjectDropped.ability.name);
+		EventBus.getDefault().event(TutorialPresenter.ITEM_PICKED_UP_EVENT, null); 
 		map.location(position).dropItem(abilityObjectDropped);
 		dungeonEventListener.objectDrop(sequenceNumber, releventCharacter, abilityObjectDropped, position);
 		if (position == eyePos) {
@@ -411,6 +411,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 
 	@Override
 	public void objectPickup(int sequenceNumber, Character releventCharacter, Ability abilityObjectPickedUp, DungeonPosition position) {
+		EventBus.getDefault().event(TutorialPresenter.ITEM_PICKED_UP_EVENT, null); 
 		map.location(position).pickupItem(abilityObjectPickedUp);
 		dungeonEventListener.objectPickup(sequenceNumber, releventCharacter, abilityObjectPickedUp, position);
 		if (position == eyePos) {

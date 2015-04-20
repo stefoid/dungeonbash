@@ -10,9 +10,11 @@ import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.Audio;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ISelectionListener;
 import com.dbash.presenters.widgets.ListPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -49,7 +51,7 @@ public class ItemListPresenter extends ListPresenter{
 			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
-					if (ability != null) {
+					if (ability != null) { 
 						boolean pickupAllowed = model.presenterTurnState.itemPickupSelected(character, ability);
 						if (pickupAllowed == false) {
 							gui.audio.playSound(Audio.NEGATIVE);

@@ -91,10 +91,7 @@ public class GameStatePresenter {
 	}
 	
 	private void removePresenters() {
-		EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
-		EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, null);
-		EventBus.getDefault().event(TutorialPresenter.ANIM_SOLO_BUTTON_OFF_EVENT, null);
-		EventBus.getDefault().event(TutorialPresenter.ANIM_STEALTH_BUTTON_OFF_EVENT, null);
+		EventBus.getDefault().event(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, null);
 		gui.overlayQueues.removeAll();
 		if (tutorialPresenter != null) {
 			tutorialPresenter.onDestroy();
