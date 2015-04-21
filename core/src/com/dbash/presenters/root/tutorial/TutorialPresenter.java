@@ -58,7 +58,8 @@ public class TutorialPresenter {
 		PICKUP_STATE,
 		ITEM_STATE,
 		ABILITY_STATE,
-		EFFECT_STATE
+		EFFECT_STATE,
+		RANGED_STATE
 	}
 	
 	EventBus eventBus;
@@ -178,14 +179,17 @@ public class TutorialPresenter {
 	
 	private void effectState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
-			abilitiesUsed = 0;
 			popPresenterPar(new EffectPresenter());
-		} 
-		else if (event.equals(ITEM_PICKED_UP_EVENT)) {
-//			itemsPickedUp++;
-//			if (itemsPickedUp == 4) {
-//				newState(State.ABILITY_STATE, param);
-//			}
+		} else if (event.equals(CHARACTER_IN_LOS_EVENT)) {
+			newState(State.RANGED_STATE, param);
+		}
+	}
+	
+	private void rangedState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new RangedPresenter());
+		} else if (event.equals(CHARACTER_IN_LOS_EVENT)) {
+		//	newState(State.RANGED_STATE, param);
 		}
 	}
 	
@@ -220,6 +224,9 @@ public class TutorialPresenter {
 				break;
 			case EFFECT_STATE:
 				effectState(event, param);
+				break;
+			case RANGED_STATE:
+				rangedState(event, param);
 				break;
 			default:
 				break;

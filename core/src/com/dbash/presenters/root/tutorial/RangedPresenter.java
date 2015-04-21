@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class EffectPresenter extends OverlayPresenter implements TouchEventListener {
+public class RangedPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public EffectPresenter() {
+	public RangedPresenter() {
 	}
 	
 	@Override
@@ -34,31 +34,37 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.EFFECT_TAB_ON_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_OFF_EVENT, null);
-				fadeBox.dismiss(); 
-				addMoreFaderBoxes();
-				EventBus.getDefault().removeListener(TutorialPresenter.EFFECT_TAB_ON_EVENT, me);
-			}
-		});
+//		EventBus.getDefault().onEvent(TutorialPresenter.ABILITY_TAB_ON_EVENT, this, new IEventAction() {
+//			@Override
+//			public void action(Object param) {
+//				EventBus.getDefault().event(TutorialPresenter.ABILITY_TAB_BUTTON_OFF_EVENT, null);
+//				fadeBox.dismiss(); 
+//				addMoreFaderBoxes();
+//				EventBus.getDefault().removeListener(TutorialPresenter.ABILITY_TAB_ON_EVENT, me);
+//			}
+//		});
 		
-		this.fadeBox = new FadeBoxPresenter("You can see your characters stats and other abilities using the Effects tab.  Click on the Effects tab now.", 
-				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		fadeBox.setNoTouch();
-		gui.overlayQueues.addParallel(fadeBox);
+//		this.fadeBox = new FadeBoxPresenter("Characters can use items they pickup using the ability tab.  Click on the Ability tab now.", 
+//				HAlignment.CENTER, VAlignment.BOTTOM, null);
+//		fadeBox.setNoTouch();
+//		gui.overlayQueues.addParallel(fadeBox);
 		
-		EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_ON_EVENT, null);
+		addMoreFaderBoxes();
+		
+		//EventBus.getDefault().event(TutorialPresenter.ABILITY_TAB_BUTTON_ON_EVENT, null);
 	}
 	
 	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("Abilities are shown at the top of the list.  Stats are shown beneath those.", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("ranged1.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb1);
 		
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("ranged2.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Have a look at your characters stats, then walk to the next room.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("ranged3.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();
