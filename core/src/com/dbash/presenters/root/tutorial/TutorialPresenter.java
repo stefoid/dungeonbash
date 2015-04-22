@@ -59,7 +59,8 @@ public class TutorialPresenter {
 		ITEM_STATE,
 		ABILITY_STATE,
 		EFFECT_STATE,
-		RANGED_STATE
+		RANGED_STATE,
+		STEALTH_STATE
 	}
 	
 	EventBus eventBus;
@@ -188,8 +189,16 @@ public class TutorialPresenter {
 	private void rangedState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new RangedPresenter());
-		} else if (event.equals(CHARACTER_IN_LOS_EVENT)) {
-		//	newState(State.RANGED_STATE, param);
+		} else if (event.equals(CREATURE_DIED_EVENT)) {
+			newState(State.STEALTH_STATE, param);
+		}
+	}
+	
+	private void stealthState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new StealthPresenter());
+		} else if (event.equals(CREATURE_DIED_EVENT)) {
+			//newState(State.STEALTH_STATE, param);
 		}
 	}
 	
@@ -227,6 +236,9 @@ public class TutorialPresenter {
 				break;
 			case RANGED_STATE:
 				rangedState(event, param);
+				break;
+			case STEALTH_STATE:
+				stealthState(event, param);
 				break;
 			default:
 				break;

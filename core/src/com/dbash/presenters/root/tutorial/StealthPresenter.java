@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class RangedPresenter extends OverlayPresenter implements TouchEventListener {
+public class StealthPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public RangedPresenter() {
+	public StealthPresenter() {
 	}
 	
 	@Override
@@ -34,20 +34,31 @@ public class RangedPresenter extends OverlayPresenter implements TouchEventListe
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
 		
-		addMoreFaderBoxes();
+		EventBus.getDefault().onEvent(TutorialPresenter.STEALTH_ON_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				EventBus.getDefault().event(TutorialPresenter.ANIM_STEALTH_BUTTON_OFF_EVENT, null);
+				fadeBox.dismiss(); 
+				addMoreFaderBoxes();
+				EventBus.getDefault().removeListener(TutorialPresenter.STEALTH_ON_EVENT, me);
+			}
+		});
+		
+		this.fadeBox = new FadeBoxPresenter("Nicely done!  Lastly, the stealth button is enabled when the character can hide.  Press it now.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		fadeBox.setNoTouch();
+		gui.overlayQueues.addParallel(fadeBox);
+		
+		EventBus.getDefault().event(TutorialPresenter.ANIM_STEALTH_BUTTON_ON_EVENT, null);
 	}
 	
 	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("To use ranged weapons such as bows, slings and wands, use the ability tab.", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("A hiding character becomes transparent.  Hiding characters can scout or ambush enemies.  If a character is discovered, it stops being transparent.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb1);
 		
-		FadeBoxPresenter fb3 = new FadeBoxPresenter("Highlight the ranged item you want to use, then click on the monster to shoot at it.", 
-				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb3);
-		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Be careful not to shoot your own team members!  Kill the monster with a ranged weapon now.",
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("The monster in the next room has poor detection skill.  Hide each character, and ambush it.  Ambush melee attacks do extra damage!", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();
@@ -55,7 +66,6 @@ public class RangedPresenter extends OverlayPresenter implements TouchEventListe
 		});
 		gui.overlayQueues.addSequential(fb2);
 	}
-	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 	}
