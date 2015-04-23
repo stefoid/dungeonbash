@@ -46,6 +46,7 @@ public class TutorialPresenter {
 	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
 	public static final String CREATURE_DIED_EVENT = "CREATURE_DIED_EVENT";
 	public static final String TILE_CLICKED_EVENT = "TILE_CLICKED_EVENT";
+	public static final String ROUGH_TERRAIN_EVENT = "ROUGH_TERRAIN_EVENT";
 	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
 	
 	public enum State {
@@ -59,6 +60,7 @@ public class TutorialPresenter {
 		ITEM_STATE,
 		ABILITY_STATE,
 		EFFECT_STATE,
+		TERRAIN_STATE,
 		RANGED_STATE,
 		STEALTH_STATE
 	}
@@ -181,6 +183,14 @@ public class TutorialPresenter {
 	private void effectState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new EffectPresenter());
+		} else if (event.equals(ROUGH_TERRAIN_EVENT)) {
+			newState(State.TERRAIN_STATE, param);
+		}
+	}
+	
+	private void terainState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new TerrainPresenter());
 		} else if (event.equals(CHARACTER_IN_LOS_EVENT)) {
 			newState(State.RANGED_STATE, param);
 		}
@@ -233,6 +243,9 @@ public class TutorialPresenter {
 				break;
 			case EFFECT_STATE:
 				effectState(event, param);
+				break;
+			case TERRAIN_STATE:
+				terainState(event, param);
 				break;
 			case RANGED_STATE:
 				rangedState(event, param);
@@ -316,6 +329,14 @@ public class TutorialPresenter {
 			public void action(Object param) {
 				if (LOG) L.log("ABILITY_USED_EVENT");
 				stateEvent(ABILITY_USED_EVENT, param);
+			}
+		});
+		
+		eventBus.onEvent(ROUGH_TERRAIN_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("ROUGH_TERRAIN_EVENT");
+				stateEvent(ROUGH_TERRAIN_EVENT, param);
 			}
 		});
 	}

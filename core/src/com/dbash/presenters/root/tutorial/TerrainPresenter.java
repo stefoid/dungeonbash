@@ -35,12 +35,16 @@ public class TerrainPresenter extends OverlayPresenter implements TouchEventList
 	}
 	
 	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("terrain1", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("Terrain such as mud, bones and rocks slow down any creature entering it.\nHowever it may also have good effects.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb1);
 		
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("Bones and Rocks offer a defence bonus against missile fire and some protection from burst damage, particularly for small creatures.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Terrain2", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("You can see the effects of entering terrain on the effects tab.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

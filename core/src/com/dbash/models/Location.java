@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 import com.dbash.models.IDungeonQuery.AtLocation;
+import com.dbash.presenters.root.tutorial.TutorialPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 
@@ -228,6 +230,7 @@ public class Location {
 			for (Ability ability : itemList) {
 				if (ability.isRoughTerrain() && roughTerrainType != RoughTerrainType.HOLE) {
 					ability.applyToCreature(creature);
+					EventBus.getDefault().event(TutorialPresenter.ROUGH_TERRAIN_EVENT, null);
 			}
 		}
 	}
