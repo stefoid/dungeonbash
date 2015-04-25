@@ -38,6 +38,7 @@ public class TutorialPresenter {
 	public static final String EFFECT_TAB_BUTTON_ON_EVENT = "EFFECT_TAB_BUTTON_ON_EVENT";
 	public static final String EFFECT_TAB_BUTTON_OFF_EVENT = "EFFECT_TAB_BUTTON_OFF_EVENT";
 	public static final String EFFECT_TAB_ON_EVENT = "EFFECT_TAB_ON_EVENT";
+	public static final String ABILITY_PRESENTER_SHOWN = "ABILITY_PRESENTER_SHOWN";
 	
 	public static final String ALL_BUTTON_ANIMS_OFF = "ALL_BUTTON_ANIMS_OFF";
 	
@@ -62,7 +63,9 @@ public class TutorialPresenter {
 		EFFECT_STATE,
 		TERRAIN_STATE,
 		RANGED_STATE,
-		STEALTH_STATE
+		STEALTH_STATE,
+		COVER_STATE,
+		STAIRS_STATE
 	}
 	
 	EventBus eventBus;
@@ -76,7 +79,7 @@ public class TutorialPresenter {
 		this.eventBus = EventBus.getDefault();
 		this.gui = gui;
 		this.turnProcessor = model.presenterTurnState;
-		init();
+		addEventListeners();
 	}
 
 	private void initialState(String event, Object param) {
@@ -180,10 +183,14 @@ public class TutorialPresenter {
 		}
 	}
 	
+	boolean textDisplayed = false;
 	private void effectState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
+			textDisplayed = false;
 			popPresenterPar(new EffectPresenter());
-		} else if (event.equals(ROUGH_TERRAIN_EVENT)) {
+		} else if (event.equals(ABILITY_PRESENTER_SHOWN)) {
+			textDisplayed = true;
+		}else if (event.equals(ROUGH_TERRAIN_EVENT) && textDisplayed) {
 			newState(State.TERRAIN_STATE, param);
 		}
 	}
@@ -207,6 +214,22 @@ public class TutorialPresenter {
 	private void stealthState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new StealthPresenter());
+		} else if (event.equals(CREATURE_DIED_EVENT)) {
+			newState(State.COVER_STATE, param);
+		}
+	}
+	
+	private void coverState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new CoverPresenter());
+		} else if (event.equals(CREATURE_DIED_EVENT)) {
+			newState(State.STAIRS_STATE, param);
+		}
+	}
+	
+	private void stairsState(String event, Object param) {
+		if (event.equals(ON_ENTRY_EVENT)) {
+			popPresenterPar(new StairsPresenter());
 		} else if (event.equals(CREATURE_DIED_EVENT)) {
 			//newState(State.STEALTH_STATE, param);
 		}
@@ -253,90 +276,37 @@ public class TutorialPresenter {
 			case STEALTH_STATE:
 				stealthState(event, param);
 				break;
+			case COVER_STATE:
+				coverState(event, param);
+				break;
+			case STAIRS_STATE:
+				stairsState(event, param);
+				break;
 			default:
 				break;
 		}
 	}
 	
-	private void init() {
-		eventBus.onEvent(SET_INITIAL_STATE, this, new IEventAction() {
+	private void addEventListeners() {
+		listenFor(SET_INITIAL_STATE);
+		listenFor(DROPPING_IN_EVENT);
+		listenFor(MOVE_EVENT);
+		listenFor(PASS_ON_EVENT);
+		listenFor(CHARACTER_IN_LOS_EVENT);
+		listenFor(CREATURE_DIED_EVENT);
+		listenFor(TILE_CLICKED_EVENT);
+		listenFor(ITEM_PICKED_UP_EVENT);
+		listenFor(ABILITY_USED_EVENT);
+		listenFor(ROUGH_TERRAIN_EVENT);
+		listenFor(ABILITY_PRESENTER_SHOWN);
+	}
+	
+	private void listenFor(final String event) {
+		eventBus.onEvent(event, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				if (LOG) L.log("SET_INITIAL_STATE");
-				stateEvent(SET_INITIAL_STATE, param);
-			}
-		});
-		
-		eventBus.onEvent(DROPPING_IN_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("DROPPING_IN_EVENT");
-				stateEvent(DROPPING_IN_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(MOVE_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("MOVE_EVENT");
-				moves++;
-				stateEvent(MOVE_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(PASS_ON_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("PASS_ON_EVENT");
-				stateEvent(PASS_ON_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(CHARACTER_IN_LOS_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("CHARACTER_IN_LOS_EVENT");
-				stateEvent(CHARACTER_IN_LOS_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(CREATURE_DIED_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("CREATURE_DIED_EVENT");
-				stateEvent(CREATURE_DIED_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(TILE_CLICKED_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("TILE_CLICKED_EVENT");
-				stateEvent(TILE_CLICKED_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(ITEM_PICKED_UP_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("ITEM_PICKED_UP_EVENT");
-				stateEvent(ITEM_PICKED_UP_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(ABILITY_USED_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("ABILITY_USED_EVENT");
-				stateEvent(ABILITY_USED_EVENT, param);
-			}
-		});
-		
-		eventBus.onEvent(ROUGH_TERRAIN_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				if (LOG) L.log("ROUGH_TERRAIN_EVENT");
-				stateEvent(ROUGH_TERRAIN_EVENT, param);
+				if (LOG) L.log(event.toString());
+				stateEvent(event, param);
 			}
 		});
 	}

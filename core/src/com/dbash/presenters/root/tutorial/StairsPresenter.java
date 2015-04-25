@@ -14,11 +14,11 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class EffectPresenter extends OverlayPresenter implements TouchEventListener {
+public class StairsPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
-	public EffectPresenter() {
+	public StairsPresenter() {
 	}
 	
 	@Override
@@ -33,41 +33,27 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 		final Object me = this;
 		// Needs to swallow all touches to the dungeon area 
 		touchEventProvider.addTouchEventListener(this, gui.sizeCalculator.dungeonArea, gui.cameraViewPort.viewPort);  
-		
-		EventBus.getDefault().onEvent(TutorialPresenter.EFFECT_TAB_ON_EVENT, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_OFF_EVENT, null);
-				fadeBox.dismiss(); 
-				addMoreFaderBoxes();
-				EventBus.getDefault().removeListener(TutorialPresenter.EFFECT_TAB_ON_EVENT, me);
-			}
-		});
-		
-		this.fadeBox = new FadeBoxPresenter("You can see your characters stats and other abilities using the Effects tab.  Click on the Effects tab now.", 
-				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		fadeBox.setNoTouch();
-		gui.overlayQueues.addParallel(fadeBox);
-		
-		EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_ON_EVENT, null);
+		addMoreFaderBoxes();
 	}
 	
 	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("Abilities are shown at the top of the list.  Stats are shown beneath those.", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("stairs1", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		gui.overlayQueues.addSequential(fb1);
 		
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("stairs2", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		gui.overlayQueues.addSequential(fb3);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Have a look at your characters stats, then walk to the next room.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("stairs3", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
-				EventBus.getDefault().event(TutorialPresenter.ABILITY_PRESENTER_SHOWN, null);
 				me.dismiss();
 			}
 		});
 		gui.overlayQueues.addSequential(fb2);
 	}
-	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 	}

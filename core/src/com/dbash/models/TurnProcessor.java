@@ -1000,9 +1000,9 @@ public class TurnProcessor implements IPresenterTurnState {
 		// The dungeon will fill in the position when the creature falls into the level. This is just a placeholder.
 		DungeonPosition p = new DungeonPosition(0, 0); // will init to level 1.
 
-		theChars.add(new Character(Creature.getIdForName("dwarf"), p, 1, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName("acid blob"), p, 2, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName("wizard"), p, 3, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("halfling"), p, 1, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("web shooter"), p, 2, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("pit viper"), p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = theChars.get(0);
 //		c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
 //		c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);

@@ -65,7 +65,10 @@ public class FadeBoxPresenter extends OverlayPresenter implements TouchEventList
 	}
 	
 	public void destroy() {
-		touchEventProvider.removeTouchEventListener(this);
+		if (touchEventProvider != null) {
+			touchEventProvider.removeTouchEventListener(this);
+		}
+		
 		if (onDismiss != null) {
 			onDismiss.dismiss();
 		}
