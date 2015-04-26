@@ -43,7 +43,7 @@ import com.dbash.util.SequenceNumber;
  */
 
 public class Character extends Creature implements IPresenterCharacter {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	private class BestDir {
 		public BestDir () {

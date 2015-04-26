@@ -40,7 +40,7 @@ public class TutorialPresenter {
 	public static final String EFFECT_TAB_ON_EVENT = "EFFECT_TAB_ON_EVENT";
 	public static final String ABILITY_PRESENTER_SHOWN = "ABILITY_PRESENTER_SHOWN";
 	
-	public static final String ALL_BUTTON_ANIMS_OFF = "ALL_BUTTON_ANIMS_OFF";
+	public static final String TUTORIAL_RESTART = "TUTORIAL_RESTART";
 	
 	public static final String ABILITY_USED_EVENT = "ABILITY_USED_EVENT";
 	public static final String ITEM_PICKED_UP_EVENT = "ITEM_PICKED_UP";
@@ -93,8 +93,10 @@ public class TutorialPresenter {
 	private void droppingInState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			removePresenters();
+			moves = 0;
 			popPresenterPar(new DroppingInPresenter());
 		} else if (event.equals(MOVE_EVENT)) {
+			moves++;
 			if (moves == 4) {
 				newState(State.PASSING_STATE, param);
 			}
@@ -312,7 +314,6 @@ public class TutorialPresenter {
 	}
 	
 	private void newState(State state, Object param) {
-		moves = 0;
 		this.state = state;
 		stateEvent(ON_ENTRY_EVENT, param);
 		turnProcessor.saveGame(state);

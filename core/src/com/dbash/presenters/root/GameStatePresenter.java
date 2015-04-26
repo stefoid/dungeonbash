@@ -11,7 +11,7 @@ import com.dbash.util.L;
 
 public class GameStatePresenter {
 
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	EventBus eventBus;
 	UIDepend gui;
@@ -91,7 +91,7 @@ public class GameStatePresenter {
 	}
 	
 	private void removePresenters() {
-		EventBus.getDefault().event(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, null);
+		EventBus.getDefault().event(TutorialPresenter.TUTORIAL_RESTART, null);
 		gui.overlayQueues.removeAll();
 		if (tutorialPresenter != null) {
 			tutorialPresenter.onDestroy();

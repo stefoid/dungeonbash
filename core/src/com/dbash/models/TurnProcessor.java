@@ -20,7 +20,7 @@ import com.me.dbash.Dbash;
 @SuppressWarnings("unused")
 
 public class TurnProcessor implements IPresenterTurnState {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public static final int NUM_CHARS = 3;
 	

@@ -14,7 +14,7 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class LeaderModePresenter extends OverlayPresenter implements TouchEventListener {
+public class LeaderModePresenter extends TutorialPopupPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
@@ -23,11 +23,14 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 	
 	@Override
 	public void init(UIDepend gui) {
+		super.init(gui);
 		this.gui = gui;
 	}
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
+		super.start(theArea, touchEventProvider);
+		
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
 		final Object me = this;
@@ -47,7 +50,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 		this.fadeBox = new FadeBoxPresenter("When no monsters are around, leader mode can be used to move all characters.\n\nPress the leader mode button now (top right).", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
-		gui.overlayQueues.addParallel(fadeBox);
+		addFadeBoxPar(fadeBox);
 		
 		EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_ON_EVENT, null);
 	}
@@ -55,7 +58,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 	private void addMoreFaderBoxes() {
 		FadeBoxPresenter fb1 = new FadeBoxPresenter("You can swipe to move your leader. Where your finger touches off sets a target the leader will walk to.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb1);
+		addFadeBoxSeq(fb1);
 		
 		final OverlayPresenter me = this;
 		FadeBoxPresenter fb2 = new FadeBoxPresenter("Once a leader target has been set you can tap again to update the target.  Now guide your leader into the next room to the right...", 
@@ -64,7 +67,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 				me.dismiss();
 			}
 		});
-		gui.overlayQueues.addSequential(fb2);
+		addFadeBoxSeq(fb2);
 	}
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
@@ -76,6 +79,7 @@ public class LeaderModePresenter extends OverlayPresenter implements TouchEventL
 	}
 	
 	public void destroy() {
+		EventBus.getDefault().removeListener(TutorialPresenter.LEADER_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 

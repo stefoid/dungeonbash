@@ -15,7 +15,7 @@ import com.dbash.util.Randy;
 // (Each character has a shadowMap that informs Locations that it can see them)
 public class Location {
 	
-	public static boolean LOG = true && L.DEBUG;
+	public static boolean LOG = false && L.DEBUG;
 	 
 	public static final String SOLID_ROCK = "SolidRock";
 	public static final float minNotVisibleTint = 0.22f;

@@ -14,7 +14,7 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class EffectPresenter extends OverlayPresenter implements TouchEventListener {
+public class EffectPresenter extends TutorialPopupPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
@@ -23,11 +23,14 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 	
 	@Override
 	public void init(UIDepend gui) {
+		super.init(gui);
 		this.gui = gui;
 	}
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
+		super.start(theArea, touchEventProvider);
+		
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
 		final Object me = this;
@@ -47,7 +50,7 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 		this.fadeBox = new FadeBoxPresenter("You can see your characters stats and other abilities using the Effects tab.  Click on the Effects tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
-		gui.overlayQueues.addParallel(fadeBox);
+		addFadeBoxPar(fadeBox);
 		
 		EventBus.getDefault().event(TutorialPresenter.EFFECT_TAB_BUTTON_ON_EVENT, null);
 	}
@@ -55,7 +58,7 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 	private void addMoreFaderBoxes() {
 		FadeBoxPresenter fb1 = new FadeBoxPresenter("Abilities are shown at the top of the list.  Stats are shown beneath those.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb1);
+		addFadeBoxSeq(fb1);
 		
 		final OverlayPresenter me = this;
 		FadeBoxPresenter fb2 = new FadeBoxPresenter("Have a look at your characters stats, then walk to the next room.", 
@@ -65,7 +68,7 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 				me.dismiss();
 			}
 		});
-		gui.overlayQueues.addSequential(fb2);
+		addFadeBoxSeq(fb2);
 	}
 	
 	@Override
@@ -78,6 +81,7 @@ public class EffectPresenter extends OverlayPresenter implements TouchEventListe
 	}
 	
 	public void destroy() {
+		EventBus.getDefault().removeListener(TutorialPresenter.EFFECT_TAB_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 

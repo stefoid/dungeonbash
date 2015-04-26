@@ -6,14 +6,13 @@ import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.root.OverlayPresenter;
 import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class PassingPresenter extends OverlayPresenter implements TouchEventListener {
+public class PassingPresenter extends TutorialPopupPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
@@ -22,11 +21,14 @@ public class PassingPresenter extends OverlayPresenter implements TouchEventList
 	
 	@Override
 	public void init(UIDepend gui) {
+		super.init(gui);
 		this.gui = gui;
 	}
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
+		super.start(theArea, touchEventProvider);
+		
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
 		
@@ -37,6 +39,7 @@ public class PassingPresenter extends OverlayPresenter implements TouchEventList
 			@Override
 			public void action(Object param) {
 				EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, null);
+				EventBus.getDefault().removeListener(TutorialPresenter.PASS_ON_EVENT, this);
 				fadeBox.dismiss();
 				dismiss();
 			}
@@ -45,7 +48,7 @@ public class PassingPresenter extends OverlayPresenter implements TouchEventList
 		this.fadeBox = new FadeBoxPresenter("Press the pass button to skip a characters turn, which also grants a good defensive bonus.\n\nTest the pass turn button now (top right).", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
-		gui.overlayQueues.addParallel(fadeBox);
+		addFadeBoxPar(fadeBox);
 		EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_ON_EVENT, null);
 	}
 	

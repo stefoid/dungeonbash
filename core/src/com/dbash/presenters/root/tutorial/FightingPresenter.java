@@ -12,29 +12,32 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class FightingPresenter extends OverlayPresenter implements TouchEventListener {
+public class FightingPresenter extends TutorialPopupPresenter implements TouchEventListener {
 	
 	public FightingPresenter() {
 	}
 	
 	@Override
 	public void init(UIDepend gui) {
+		super.init(gui);
 		this.gui = gui;
 	}
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
+		super.start(theArea, touchEventProvider);
+		
 		FadeBoxPresenter fb1 = new FadeBoxPresenter("When a monster is seen, leader mode automatically turns off.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb1);
+		addFadeBoxSeq(fb1);
 		
 		FadeBoxPresenter fb2 = new FadeBoxPresenter("To make a melee attack, move next to a monster, and then move into it.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb2);
+		addFadeBoxSeq(fb2);
 	
 		FadeBoxPresenter fb3 = new FadeBoxPresenter("The character will make an attack with their currently equiped weapon.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb3);
+		addFadeBoxSeq(fb3);
 		
 		final OverlayPresenter me = this;
 		FadeBoxPresenter fb4 = new FadeBoxPresenter("Kill the monster in the next room with a melee attack, right now.", 
@@ -43,7 +46,7 @@ public class FightingPresenter extends OverlayPresenter implements TouchEventLis
 				me.dismiss();
 			}
 		});
-		gui.overlayQueues.addSequential(fb4);
+		addFadeBoxSeq(fb4);
 	}
 	
 	@Override

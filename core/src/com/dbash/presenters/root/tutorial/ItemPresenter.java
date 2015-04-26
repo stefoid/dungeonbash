@@ -14,7 +14,7 @@ import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class ItemPresenter extends OverlayPresenter implements TouchEventListener {
+public class ItemPresenter extends TutorialPopupPresenter implements TouchEventListener {
 	
 	FadeBoxPresenter fadeBox;
 	
@@ -23,11 +23,14 @@ public class ItemPresenter extends OverlayPresenter implements TouchEventListene
 	
 	@Override
 	public void init(UIDepend gui) {
+		super.init(gui);
 		this.gui = gui;
 	}
 	
 	@Override
 	public void start(Rect theArea, TouchEventProvider touchEventProvider) {
+		super.start(theArea, touchEventProvider);
+		
 		this.touchEventProvider = touchEventProvider;
 		this.area = new Rect(gui.sizeCalculator.dungeonArea, .15f, .2f, .6f, .01f);
 		final Object me = this;
@@ -47,7 +50,7 @@ public class ItemPresenter extends OverlayPresenter implements TouchEventListene
 		this.fadeBox = new FadeBoxPresenter("If you walk to a tile with stuff on, you can pick it up using the item tab.  Click the item tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
-		gui.overlayQueues.addParallel(fadeBox);
+		addFadeBoxPar(fadeBox);
 		
 		EventBus.getDefault().event(TutorialPresenter.ITEM_TAB_BUTTON_ON_EVENT, null);
 	}
@@ -55,11 +58,11 @@ public class ItemPresenter extends OverlayPresenter implements TouchEventListene
 	private void addMoreFaderBoxes() {
 		FadeBoxPresenter fb1 = new FadeBoxPresenter("When you walk to the tile with items on it, you will see those items appear in the item list.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb1);
+		addFadeBoxSeq(fb1);
 		
 		FadeBoxPresenter fb3 = new FadeBoxPresenter("Items on the ground are red.  Items the character is carrying are green.  ITems that cannot be picked up are grey.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
-		gui.overlayQueues.addSequential(fb3);
+		addFadeBoxSeq(fb3);
 		
 		final OverlayPresenter me = this;
 		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now walk to the tile where the monster dropped some itemspick up those items by clicking on them.", 
@@ -68,7 +71,7 @@ public class ItemPresenter extends OverlayPresenter implements TouchEventListene
 				me.dismiss();
 			}
 		});
-		gui.overlayQueues.addSequential(fb2);
+		addFadeBoxSeq(fb2);
 	}
 	
 	@Override
@@ -81,6 +84,7 @@ public class ItemPresenter extends OverlayPresenter implements TouchEventListene
 	}
 	
 	public void destroy() {
+		EventBus.getDefault().removeListener(TutorialPresenter.ITEM_TAB_ON_EVENT, this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 

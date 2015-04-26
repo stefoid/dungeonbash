@@ -267,7 +267,7 @@ public class DataHeaderPresenter {
 			}
 		});
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.ALL_BUTTON_ANIMS_OFF, this, new IEventAction() {
+		EventBus.getDefault().onEvent(TutorialPresenter.TUTORIAL_RESTART, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				EventBus.getDefault().event(TutorialPresenter.ANIM_LEADER_BUTTON_OFF_EVENT, null);
