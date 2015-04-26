@@ -534,7 +534,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			dungeonEventListener.creatureDies(sequenceNumber, releventCharacter, deadCreature, deadPosition, deathType, new IAnimListener () {
 				public void animEvent() {
 					map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
-					processCreaturePositions();EventBus.getDefault().event(TutorialPresenter.CREATURE_DIED_EVENT, null);
+					processCreaturePositions();
 				}
 			});
 		} else {

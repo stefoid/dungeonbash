@@ -39,7 +39,6 @@ public class PassingPresenter extends TutorialPopupPresenter implements TouchEve
 			@Override
 			public void action(Object param) {
 				EventBus.getDefault().event(TutorialPresenter.ANIM_PASS_BUTTON_OFF_EVENT, null);
-				EventBus.getDefault().removeListener(TutorialPresenter.PASS_ON_EVENT, this);
 				fadeBox.dismiss();
 				dismiss();
 			}

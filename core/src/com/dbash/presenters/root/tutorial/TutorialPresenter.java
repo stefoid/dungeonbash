@@ -38,6 +38,9 @@ public class TutorialPresenter {
 	public static final String EFFECT_TAB_BUTTON_ON_EVENT = "EFFECT_TAB_BUTTON_ON_EVENT";
 	public static final String EFFECT_TAB_BUTTON_OFF_EVENT = "EFFECT_TAB_BUTTON_OFF_EVENT";
 	public static final String EFFECT_TAB_ON_EVENT = "EFFECT_TAB_ON_EVENT";
+	public static final String HOME_TAB_BUTTON_ON_EVENT = "HOME_TAB_BUTTON_ON_EVENT";
+	public static final String HOME_TAB_BUTTON_OFF_EVENT = "HOME_TAB_BUTTON_OFF_EVENT";
+	public static final String HOME_TAB_ON_EVENT = "HOME_TAB_ON_EVENT";
 	public static final String ABILITY_PRESENTER_SHOWN = "ABILITY_PRESENTER_SHOWN";
 	
 	public static final String TUTORIAL_RESTART = "TUTORIAL_RESTART";
@@ -45,7 +48,7 @@ public class TutorialPresenter {
 	public static final String ABILITY_USED_EVENT = "ABILITY_USED_EVENT";
 	public static final String ITEM_PICKED_UP_EVENT = "ITEM_PICKED_UP";
 	public static final String CHARACTER_IN_LOS_EVENT = "CHARACTER_IN_LOS";
-	public static final String CREATURE_DIED_EVENT = "CREATURE_DIED_EVENT";
+	public static final String MONSTER_DIED_EVENT = "MONSTER_DIED_EVENT";
 	public static final String TILE_CLICKED_EVENT = "TILE_CLICKED_EVENT";
 	public static final String ROUGH_TERRAIN_EVENT = "ROUGH_TERRAIN_EVENT";
 	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
@@ -139,7 +142,7 @@ public class TutorialPresenter {
 	private void fightingState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new FightingPresenter());
-		} else if (event.equals(CREATURE_DIED_EVENT)) {
+		} else if (event.equals(MONSTER_DIED_EVENT)) {
 			newState(State.PICKUP_STATE, param);
 		}
 	}
@@ -208,7 +211,7 @@ public class TutorialPresenter {
 	private void rangedState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new RangedPresenter());
-		} else if (event.equals(CREATURE_DIED_EVENT)) {
+		} else if (event.equals(MONSTER_DIED_EVENT)) {
 			newState(State.STEALTH_STATE, param);
 		}
 	}
@@ -216,7 +219,7 @@ public class TutorialPresenter {
 	private void stealthState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new StealthPresenter());
-		} else if (event.equals(CREATURE_DIED_EVENT)) {
+		} else if (event.equals(MONSTER_DIED_EVENT)) {
 			newState(State.COVER_STATE, param);
 		}
 	}
@@ -224,7 +227,7 @@ public class TutorialPresenter {
 	private void coverState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new CoverPresenter());
-		} else if (event.equals(CREATURE_DIED_EVENT)) {
+		} else if (event.equals(MONSTER_DIED_EVENT)) {
 			newState(State.STAIRS_STATE, param);
 		}
 	}
@@ -232,9 +235,7 @@ public class TutorialPresenter {
 	private void stairsState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
 			popPresenterPar(new StairsPresenter());
-		} else if (event.equals(CREATURE_DIED_EVENT)) {
-			//newState(State.STEALTH_STATE, param);
-		}
+		} 
 	}
 	
 	private void stateEvent(String event, Object param) {
@@ -295,7 +296,7 @@ public class TutorialPresenter {
 		listenFor(MOVE_EVENT);
 		listenFor(PASS_ON_EVENT);
 		listenFor(CHARACTER_IN_LOS_EVENT);
-		listenFor(CREATURE_DIED_EVENT);
+		listenFor(MONSTER_DIED_EVENT);
 		listenFor(TILE_CLICKED_EVENT);
 		listenFor(ITEM_PICKED_UP_EVENT);
 		listenFor(ABILITY_USED_EVENT);

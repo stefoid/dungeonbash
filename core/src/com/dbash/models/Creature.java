@@ -1524,7 +1524,10 @@ public abstract class Creature implements IPresenterCreature
 				dropObject(ability);
 			}
 		}
-		EventBus.getDefault().event(TutorialPresenter.CREATURE_DIED_EVENT, null);
+		
+		if (getClass() == Monster.class) {
+			EventBus.getDefault().event(TutorialPresenter.MONSTER_DIED_EVENT, null);
+		}
 	}
 	
 	// Sequence number has no relevance,
