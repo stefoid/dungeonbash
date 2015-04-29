@@ -47,6 +47,13 @@ public class ImageView {
 		sprite.setColor(Color.WHITE);
 	}
 	
+	public void draw(SpriteBatch spriteBatch, float x, float y, float alpha) {
+		sprite.setColor(1f, 1f, 1f, alpha);
+		sprite.setBounds(area.x+x , area.y+y, area.width, area.height);
+		draw(spriteBatch);
+		sprite.setColor(Color.WHITE);
+	}
+	
 	public void draw(SpriteBatch spriteBatch, float alpha) {
 		sprite.setColor(1f, 1f, 1f, alpha);
 		draw(spriteBatch);

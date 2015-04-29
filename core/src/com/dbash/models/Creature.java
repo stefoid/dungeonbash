@@ -893,6 +893,19 @@ public abstract class Creature implements IPresenterCreature
 		return true;
 	}
 
+	public void removeAbility(String name) {
+		Ability remove = null;
+		for (Ability ability : abilities) {
+			if (ability.ability.name.equals(name)) {
+				remove = ability;
+				break;
+			}
+		}
+		if (remove != null) {
+			abilities.remove(remove);
+		}
+	}
+	
 	public void broadcastAbilityCommand(AbilityCommand command) {
 		for (int i = 0; i < abilities.size(); i++) {
 			abilities.get(i).executeCommandValue(command, this);

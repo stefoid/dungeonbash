@@ -56,12 +56,14 @@ public class TextBoxView {
 		this.area = new Rect(area);
 	}
 	
-	public void draw(SpriteBatch spriteBatch, float x, float y) {
+	public void draw(SpriteBatch spriteBatch, float x, float y, float alpha) {
 		if (text.length() == 0) {
 			return;
 		}
 		
 		font.setScale(1f);
+		float oldAlpha = color.a;
+		color.a = alpha;
 		font.setColor(color);
 		
 		BitmapFont.HAlignment h = BitmapFont.HAlignment.LEFT;
@@ -80,5 +82,10 @@ public class TextBoxView {
 		
 		// text x,y defined from bottom left of text box area
 		font.drawWrapped(spriteBatch, text, area.x + x, area.y + y + totalHeight, area.width, h);
+		color.a = oldAlpha;
+	}
+	
+	public void draw(SpriteBatch spriteBatch, float x, float y) {
+		draw (spriteBatch, x, y, 1f);
 	}
 }

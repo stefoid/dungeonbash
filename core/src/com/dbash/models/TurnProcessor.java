@@ -1004,11 +1004,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		theChars.add(new Character(Creature.getIdForName("web shooter"), p, 2, dungeonEvents, dungeonQuery, this));
 		theChars.add(new Character(Creature.getIdForName("pit viper"), p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = theChars.get(0);
+		c.removeAbility("sling");
 //		c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
-//		c.addAbility(new Ability(Ability.getIdForName("amulet of wizardy"), null, 20, dungeonEvents, dungeonQuery), null);
-//		c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
-//		c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
-
 		return theChars;
 	}
 

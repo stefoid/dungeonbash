@@ -8,6 +8,7 @@ import com.dbash.util.Rect.HAlignment;
 public class FadeBox extends TextBoxView
 {
 	ImageView backgroundImage;
+	float yOffset;
 	
 	public FadeBox(UIDepend gui, String text, Rect area) {
 		super(gui, gui.defaultFonts, text, 
@@ -15,13 +16,18 @@ public class FadeBox extends TextBoxView
 				HAlignment.LEFT , Color.WHITE);
 		
 		Rect backgroundArea = new Rect(area);
-		area.height = totalHeight;
+		yOffset = (area.height - totalHeight)/2;
 		this.backgroundImage = new ImageView(gui, "GAME_OVER_BACKGROUND", backgroundArea);
 	}
 
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		backgroundImage.draw(spriteBatch, x, y);
-		super.draw(spriteBatch, x, y);
+		super.draw(spriteBatch, x, y+yOffset);
+	}
+	
+	public void draw(SpriteBatch spriteBatch, float x, float y, float alpha) {
+		backgroundImage.draw(spriteBatch, x, y, 1f);
+		super.draw(spriteBatch, x, y+yOffset, alpha);
 	}
 }
