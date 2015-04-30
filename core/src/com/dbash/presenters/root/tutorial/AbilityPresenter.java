@@ -65,7 +65,7 @@ public class AbilityPresenter extends TutorialPopupPresenter implements TouchEve
 		addFadeBoxSeq(fb3);
 		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Click on items to select which melee weapon, ranged weapon, defensive item and amulet is used.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("Click on items to select which melee weapon, ranged weapon, defensive item and amulet is used.   Test that now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

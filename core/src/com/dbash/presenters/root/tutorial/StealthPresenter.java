@@ -47,7 +47,7 @@ public class StealthPresenter extends TutorialPopupPresenter implements TouchEve
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("Nicely done!  Lastly, the stealth button is enabled when the character can hide.  Press it now.", 
+		this.fadeBox = new FadeBoxPresenter("Nicely done!  Lastly, the stealth button is enabled when the character is able to hide.  Press it now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);

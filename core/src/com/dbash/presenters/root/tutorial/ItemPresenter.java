@@ -47,7 +47,7 @@ public class ItemPresenter extends TutorialPopupPresenter implements TouchEventL
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("If you walk to a tile with stuff on, you can pick it up using the item tab.  Click the item tab now.", 
+		this.fadeBox = new FadeBoxPresenter("Ok.  If you walk to a tile with stuff on, you can pick it up using the item tab.  Click the item tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);
@@ -65,7 +65,7 @@ public class ItemPresenter extends TutorialPopupPresenter implements TouchEventL
 		addFadeBoxSeq(fb3);
 		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now walk to the tile where the monster dropped some itemspick up those items by clicking on them.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("Move the halfling to the tile where the monster dropped some items.  Pick up or put down those items by clicking on them.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

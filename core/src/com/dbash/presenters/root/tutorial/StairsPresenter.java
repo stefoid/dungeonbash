@@ -49,7 +49,7 @@ public class StairsPresenter extends TutorialPopupPresenter implements TouchEven
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("Great work!  That's it for the tutorial.\n  For further tips, press the help button on the main menu.", 
+		this.fadeBox = new FadeBoxPresenter("Great work!  That's it for the tutorial.\n\nFor further tips, press the help button on the main menu.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);
@@ -59,12 +59,16 @@ public class StairsPresenter extends TutorialPopupPresenter implements TouchEven
 	
 	private void addMoreFaderBoxes() {
 		
-		FadeBoxPresenter fb3 = new FadeBoxPresenter("Now find the stairs somewhere on this level and exit your team.  To exit, just put your character on the stairs and the solo button will turn to a stairs button.", 
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("Now find the stairs on this level and exit your team.  Just put your character on the stairs and the solo button will turn to a stairs button.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		addFadeBoxSeq(fb3);
 		
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("Remember they will enter the next level in the same order that they leave.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		addFadeBoxSeq(fb1);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Your team will automatically try to hide, although they may be instantly discovered.  Remember they will enter the next level in the same order that they leave.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("When they drop, they will automatically try to hide, but they may be discovered right away.\n\nGood luck! ", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

@@ -120,8 +120,10 @@ public class TutorialPresenter {
 	
 	private void soloState(String event, Object param) {
 		if (event.equals(ON_ENTRY_EVENT)) {
+			moves = 0;
 			popPresenterPar(new SoloPresenter());
 		} else if (event.equals(MOVE_EVENT)) {
+			moves++;
 			if (moves == 4) {
 				newState(State.LEADER_STATE, param);
 			}

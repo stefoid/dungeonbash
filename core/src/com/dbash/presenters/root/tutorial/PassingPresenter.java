@@ -44,7 +44,7 @@ public class PassingPresenter extends TutorialPopupPresenter implements TouchEve
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("Press the pass button to skip a characters turn, which also grants a good defensive bonus.\n\nTest the pass turn button now (top right).", 
+		this.fadeBox = new FadeBoxPresenter("Use the pass button to skip a turn, which grants a good defensive bonus.\n\nTest the pass turn button 4 times now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);

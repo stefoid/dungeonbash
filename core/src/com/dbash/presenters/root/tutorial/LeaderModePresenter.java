@@ -47,7 +47,7 @@ public class LeaderModePresenter extends TutorialPopupPresenter implements Touch
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("When no monsters are around, leader mode can be used to move all characters.\n\nPress the leader mode button now (top right).", 
+		this.fadeBox = new FadeBoxPresenter("When no monsters are around, leader mode can be used to move all characters.\n\nPress the leader mode button now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);
@@ -56,7 +56,7 @@ public class LeaderModePresenter extends TutorialPopupPresenter implements Touch
 	}
 	
 	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("You can swipe to move your leader. Where your finger touches off sets a target the leader will walk to.", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("When you swipe to move your leader, where your finger lifts off sets a target the leader will walk to.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		addFadeBoxSeq(fb1);
 		

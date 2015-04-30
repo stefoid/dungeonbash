@@ -46,7 +46,7 @@ public class SoloPresenter extends TutorialPopupPresenter implements TouchEventL
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("Using Solo mode, you can move the current character only - others auto-pass their turn.\n\nTest solo mode button now (top right).", 
+		this.fadeBox = new FadeBoxPresenter("Using Solo mode, you can move the current character only.  Others auto-pass their turn.\n\nTest solo movement now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);

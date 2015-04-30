@@ -40,7 +40,7 @@ public class FightingPresenter extends TutorialPopupPresenter implements TouchEv
 		addFadeBoxSeq(fb3);
 		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb4 = new FadeBoxPresenter("Kill the monster in the next room with a melee attack, right now.", 
+		FadeBoxPresenter fb4 = new FadeBoxPresenter("Kill the monster in the next room with a melee attack, right now.  (Maybe use Solo mode).", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

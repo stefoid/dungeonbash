@@ -47,7 +47,7 @@ public class PickupPresenter extends TutorialPopupPresenter implements TouchEven
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("You can use the eye tab to examine what is on a tile.  Click the eye tab now.", 
+		this.fadeBox = new FadeBoxPresenter("Great! You can use the eye tab to examine what is on a tile.  Click the eye tab now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);
