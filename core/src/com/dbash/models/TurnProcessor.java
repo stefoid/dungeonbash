@@ -817,7 +817,9 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void usingEye(boolean usingEye) {
 		this.usingEye = usingEye;
-		currentCharacter.setCharacterisUsingEye(usingEye);
+		if (gameState != GameState.NO_SAVED_GAME) {
+			currentCharacter.setCharacterisUsingEye(usingEye);
+		}
 	}
 
 	private void initOneTime(IDungeonEvents dungeonEvents,
@@ -924,7 +926,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (tutorialMode) {
 			out.writeObject(tutorialState);
 		} else {
-			out.writeObject("");
+			out.writeObject(TutorialPresenter.State.NO_TUTORIAL);
 		}
 
 		// 1) turn processor saves level number

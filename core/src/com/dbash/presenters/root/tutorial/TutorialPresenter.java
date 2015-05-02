@@ -54,6 +54,7 @@ public class TutorialPresenter {
 	public static final String SET_INITIAL_STATE = "SET_INITIAL_STATE";
 	
 	public enum State {
+		NO_TUTORIAL,
 		INITIAL_STATE,
 		DROPPING_IN_STATE,
 		PASSING_STATE,
