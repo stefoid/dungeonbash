@@ -2,7 +2,7 @@ package com.dbash.util;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
 	public static boolean TESTCHARS = false;
 	public static String c1 = "halfling";

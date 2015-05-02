@@ -55,7 +55,7 @@ public class Map implements IPresenterMap {
 			try {
 				retainFocusBag = new UIInfoListenerBag();
 				locationInfoListeners = new Vector<UILocationInfoListener>();
-				width = 8 + level + border*2 - 2;
+				width = 13 + level + border*2 - 2;
 				height = width;
 				this.level = level;
 				location = new Location[width][height];
@@ -258,7 +258,7 @@ public class Map implements IPresenterMap {
 		do
 		{
 			startPoint = getRandomPoint(true);
-			exitPoint = getRandomPoint(true);
+			exitPoint = getWideSpaceLocation().getPosition();
 			tries++;
 		} while (((Math.abs(startPoint.x - exitPoint.x) + Math.abs(startPoint.y - exitPoint.y)) < (height / 2)) && (tries < 200));
 		
@@ -280,8 +280,8 @@ public class Map implements IPresenterMap {
 	}
 	
 	public void drawRoom(DungeonPosition dungeonLocation) {
-		int roomW = Randy.getRand(5, height / 5);
-		int roomH = Randy.getRand(5, height / 5);
+		int roomW = Randy.getRand(5, height / 3);
+		int roomH = Randy.getRand(5, height / 3);
 		DungeonPosition min = new DungeonPosition(dungeonLocation.x - roomW / 2, dungeonLocation.y - roomH / 2);
 		if (min.x < border) min.x = border;
 		if (min.y < border) min.y = border;
