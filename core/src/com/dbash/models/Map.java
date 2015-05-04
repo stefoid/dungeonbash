@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import com.dbash.models.Location.RoughTerrainType;
+import com.dbash.models.Location.TileType;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 
@@ -75,7 +76,7 @@ public class Map implements IPresenterMap {
 				}
 				
 				// now draw some rooms based on where the squigley lines have cleared space.
-				roomPoints = new DungeonPosition[height / 8]; 
+				roomPoints = new DungeonPosition[height / 2]; 
 
 				for (int i = 0; i < roomPoints.length; i++) {
 					// calculate where to draw the rooms before starting to draw them
@@ -280,8 +281,8 @@ public class Map implements IPresenterMap {
 	}
 	
 	public void drawRoom(DungeonPosition dungeonLocation) {
-		int roomW = Randy.getRand(5, height / 3);
-		int roomH = Randy.getRand(5, height / 3);
+		int roomW = Randy.getRand(2, height / 8);
+		int roomH = Randy.getRand(2, height / 8);
 		DungeonPosition min = new DungeonPosition(dungeonLocation.x - roomW / 2, dungeonLocation.y - roomH / 2);
 		if (min.x < border) min.x = border;
 		if (min.y < border) min.y = border;
@@ -303,7 +304,7 @@ public class Map implements IPresenterMap {
 	protected void drawSquigglyLine(DungeonPosition pos) {
 		int x = pos.x;
 		int y = pos.y;
-		int dir = Randy.getRand(0, 4);
+		int dir = Randy.getRand(0, 6);
 		int nx;
 		int ny;
 
@@ -580,11 +581,22 @@ public class Map implements IPresenterMap {
 	
 	public void dump() {
 		// debug print
-		for (int y=width-1; y>=0; y--) {
-			for (int x=0; x< height; x++) {
-				if (LOG) L.log("location: %s - locationInfo: %s", location(x,y), location(x,y).locationInfo);
-			}
+		if (LOG) {
+			for (int y=width-1; y>=0; y--) {
+				for (int x=0; x< height; x++) {
+					if (location(x,y).tileType == TileType.ISLAND) {
+						System.out.print("<>");
+					} else if (location(x,y).isOpaque()) {
+						System.out.print("##");
+					} else {
+						System.out.print("  ");
+					}
+					//if (LOG) L.log("location: %s - locationInfo: %s", location(x,y), location(x,y).locationInfo);
+				}
+				System.out.println();
+			}		
 		}
+
 	}
 	
 	public void onCreate() {

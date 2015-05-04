@@ -218,7 +218,7 @@
 +"tarantuloid,d,6,1,0,0,0,14,1,6,12,4,2,12,8,1,171,38,*"// tarantuloid: poison bite , charge , 
 +"dark faery,r,6,1,1,0,1,5,8,4,8,10,4,12,8,1,185,132,154,40,*"// dark faery: energy drain , resist stun , hand of smiting , flight , 
 +"vat creature,a,2,1,1,1,0,12,2,2,8,6,2,2,3,1,0,116,*"// vat creature: bash , regeneration , 
-+"dummy,a,7,1,1,1,0,3,0,1,1,1,1,1,1,0,44,126,81,51,*"// dummy: sword , sling , leather armor , amulet of resist poison , 
++"dummy,a,7,1,1,1,0,3,0,1,1,1,1000,1,1,0,44,126,81,51,*"// dummy: sword , sling , leather armor , amulet of resist poison , 
 +"slime demon,n,11,1,1,0,0,12,4,3,12,9,3,4,5,1,170,92,42,*"// slime demon: acid attack , resist chem 90 , resist poison , 
 +"shambler,b,10,1,1,0,0,50,2,2,20,4,9,1,5,0,34,37,73,43,132,*"// shambler: smash , resist knockback , resistance , resist holding , resist stun , 
 +"wyvern,j,11,1,1,0,0,10,2,4,10,4,4,4,4,1,117,40,*"// wyvern: bite , flight , 

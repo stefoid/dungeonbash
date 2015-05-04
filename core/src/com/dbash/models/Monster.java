@@ -78,26 +78,27 @@ public class Monster extends Creature
 
 	// this must be called after at least one creature (character or monster)
 	// has been created.
-	public static int getMonsterId(int level, boolean swarm)
-	{
+	public static int getMonsterId(int level, boolean swarm) {
 		boolean resultOK = false;
 		int random = 0;
 
-		while (!resultOK)
-		{
+		while (!resultOK) {
 			random = Randy.getRand(1, creatureData.size() - 1);
 
 			Data cd = (Data) creatureData.elementAt(random);
 
-			if ((swarm && cd.swarm == 1) || !swarm)
-			{
-				int creatureLevel = calcLevel(random);
+			if (cd.value < 1000) {
+				if ((swarm && cd.swarm == 1) || !swarm) {
+					int creatureLevel = calcLevel(random);
 
-				if ((Randy.getRand(1, 20) == 1) && (creatureLevel <= level))
-					resultOK = true; // throw in any old monster occasionally
+					if ((Randy.getRand(1, 20) == 1) && (creatureLevel <= level)) {
+						resultOK = true; // throw in any old monster occasionally
+					}
 
-				if ((creatureLevel <= level) && (level - creatureLevel < 9)) // we
-					resultOK = true;
+					if ((creatureLevel <= level) && (level - creatureLevel < 9)) {
+						resultOK = true;
+					}
+				}
 			}
 		}
 
