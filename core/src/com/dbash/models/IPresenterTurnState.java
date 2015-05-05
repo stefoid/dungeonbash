@@ -34,7 +34,7 @@ public interface IPresenterTurnState {
 	public Character getCurrentCharacter();
 	public Character getCharacterForTouchEvents();
 	public void setCurrentCharacter(Character character);
-	public void setCurrentCharacterForNewGame(Character character);
+	public void setCurrentCharacterOutsideOfTurnProcessing(Character character);
 	public boolean itemPickupSelected(Character character, Ability ability);
 	public boolean itemDropSelected();
 	public boolean abilitySelected(Character character, Ability ability);
@@ -55,4 +55,9 @@ public interface IPresenterTurnState {
 	
 	// eye mode
 	public void usingEye(boolean usingEye);
+	
+	// XP
+	public int getSpentXp();
+	public int getTotalXp();
+	public void setSpentXp(int spentXp);
 }

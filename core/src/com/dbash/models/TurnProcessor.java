@@ -388,7 +388,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 	
 	@Override
-	public void setCurrentCharacterForNewGame(Character character) {
+	public void setCurrentCharacterOutsideOfTurnProcessing(Character character) {
 		currentCharacter = character;
 		currentCharacterListeners.alertListeners();
 	}

@@ -18,14 +18,13 @@ import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.tabs.CreatureListElementView;
 import com.dbash.presenters.widgets.ButtonView;
-import com.dbash.presenters.widgets.CheckBoxView;
 import com.dbash.presenters.widgets.IClickListener;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
 
 
-public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEventListener {
+public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEventListener {
 	
 	private class CharacterView {
 		public Rect area;
@@ -67,20 +66,17 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	
 	ImageView backgroundImage;
 	ImagePatchView mainBorder;
-	TextView chooseText;
+	TextView xpText;
 	CharacterView[] charViews;
-	ButtonView tutorialButton;
-	ButtonView startGameButton;
-	ButtonView newCharsButton;
-	ButtonView cancelButton;
+	ButtonView okButton;
+	//ButtonView cancelButton;
 	
 	IPresenterTurnState turnProcessor;
-	boolean initialTutorialState;
 	List<Character> characters;
 	
-	public NewGameOverlayPresenter(IPresenterTurnState turnProcessor, boolean tutorialState) {
+	public PowerupOverlayPresenter(IPresenterTurnState turnProcessor, List<Character> characters) {
 		this.turnProcessor = turnProcessor;
-		initialTutorialState = tutorialState;
+		this.characters = characters;
 	}
 	
 	@Override
@@ -101,7 +97,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		
 		Rect chooseRect = new Rect(area, .5f);
 		chooseRect.y += area.height/3;
-		chooseText = new TextView(gui, null, "Choose your team", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
+		xpText = new TextView(gui, null, "Choose your team", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
 	
 		createNewChars();
 		
@@ -109,46 +105,22 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		float buttonSpacerY = area.height/20;
 		Rect buttonArea = new Rect(area.x+buttonSpacerX, area.y+buttonSpacerY, area.height/7, area.height/7);
 		
-		cancelButton = new ButtonView(gui, touchEventProvider, buttonArea, "CANCEL_DOWN_IMAGE", 
-				"CANCEL_IMAGE", "CANCEL_IMAGE", Audio.CLICK);
-		cancelButton.onClick( new IClickListener() {
-			public void processClick() {
-				turnProcessor.cancelNewGameSelected();
-			}
-		});
+//		cancelButton = new ButtonView(gui, touchEventProvider, buttonArea, "CANCEL_DOWN_IMAGE", 
+//				"CANCEL_IMAGE", "CANCEL_IMAGE", Audio.CLICK);
+//		cancelButton.onClick( new IClickListener() {
+//			public void processClick() {
+//				turnProcessor.cancelNewGameSelected();
+//			}
+//		});
 		
-		buttonArea.x = (float) (area.width - buttonArea.width*2.5);
-		
-		tutorialButton = new ButtonView(gui, touchEventProvider, buttonArea, "TUTORIAL_DOWN_IMAGE", 
-				"TUTORIAL_IMAGE", "TUTORIAL_IMAGE", Audio.CLICK);
-		tutorialButton.onClick( new IClickListener() {
-			public void processClick() {
-				tutorialButton.setState(!tutorialButton.getState());
-			}
-		});
-		
-		tutorialButton.setState(initialTutorialState);
-		
+		buttonArea.x = (float) (area.width - buttonArea.width*2.5);	
 		buttonArea.x += (float) (buttonArea.width*1.5);
 		
-		startGameButton = new ButtonView(gui, touchEventProvider, buttonArea, "START_GAME_DOWN_IMAGE", 
+		okButton = new ButtonView(gui, touchEventProvider, buttonArea, "START_GAME_DOWN_IMAGE", 
 				"START_GAME_IMAGE", "START_GAME_IMAGE", Audio.CLICK);
-		startGameButton.onClick( new IClickListener() {
+		okButton.onClick( new IClickListener() {
 			public void processClick() {
-				if (tutorialButton.getState()) {
-					characters = turnProcessor.getTutorialCharacters();
-				}
-				turnProcessor.startGame(characters,  tutorialButton.getState());
-			}
-		});
-		
-		buttonArea.y = area.y + area.height - buttonArea.height - buttonSpacerY*2;
-		
-		newCharsButton = new ButtonView(gui, touchEventProvider, buttonArea, "NEW_CHARS_DOWN_IMAGE", 
-				"NEW_CHARS_IMAGE", "NEW_CHARS_IMAGE", Audio.CLICK);
-		newCharsButton.onClick( new IClickListener() {
-			public void processClick() {
-				createNewChars();
+				// TODO
 			}
 		});
 
@@ -159,14 +131,12 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 			backgroundImage.draw(spriteBatch, x, y);
 			mainBorder.draw(spriteBatch, x, y);
-			chooseText.draw(spriteBatch, x, y);
+			xpText.draw(spriteBatch, x, y);
 			for (int i=0; i<TurnProcessor.NUM_CHARS; i++) {
 				charViews[i].draw(spriteBatch, x, y);
 			}
-			cancelButton.draw(spriteBatch, x, y);
-			tutorialButton.draw(spriteBatch, x, y);
-			startGameButton.draw(spriteBatch, x, y);
-			newCharsButton.draw(spriteBatch, x, y);
+			//cancelButton.draw(spriteBatch, x, y);
+			okButton.draw(spriteBatch, x, y);
 	}
 	
 	@Override
@@ -175,8 +145,6 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	}
 	
 	private void createNewChars() {
-		
-		characters = turnProcessor.createRandomCharacters();
 		
 		if (charViews == null) {
 			charViews = new CharacterView[TurnProcessor.NUM_CHARS];
@@ -202,7 +170,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 					for (CharacterView c : charViews) {
 						if (c == theCharView) {
 							c.set();
-							turnProcessor.setCurrentCharacterOutsideOfTurnProcessing(character);
+							turnProcessor.setCurrentCharacterOutsideOfTurnProcessing(characters.get(0));
 						} else {
 							c.clear();
 						}
@@ -225,10 +193,8 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	}
 	
 	public void destroy() {
-		cancelButton.removeYourself();
-		tutorialButton.removeYourself();
-		startGameButton.removeYourself();
-		newCharsButton.removeYourself();
+		//cancelButton.removeYourself();
+		okButton.removeYourself();
 		killCharButtons();
 		touchEventProvider.removeTouchEventListener(this);
 	}
