@@ -8,11 +8,13 @@ import java.io.ObjectOutputStream;
 public class GameStats {
 	public int monstersKilled;
 	public int xp;
+	public int spentXp;
 	public int level;
 	public int delay;
 	
 	public GameStats() {
 		delay = 2;
+		spentXp = 0;
 	}
 	
 	public void monsterKilled() {
@@ -34,6 +36,7 @@ public class GameStats {
 	{
 		monstersKilled = in.readInt();
 		xp = in.readInt();
+		spentXp = in.readInt();
 		level = in.readInt();
 		logstats();
 	}
@@ -41,6 +44,7 @@ public class GameStats {
 	public void persist(ObjectOutputStream out) throws IOException {
 		out.writeInt(monstersKilled);
 		out.writeInt(xp);
+		out.writeInt(spentXp);
 		out.writeInt(level);
 	}
 	

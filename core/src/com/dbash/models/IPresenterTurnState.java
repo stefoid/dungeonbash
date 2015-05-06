@@ -28,6 +28,8 @@ public interface IPresenterTurnState {
 	public void startGame(List<Character> characters, boolean tutorialMode);
 	public void infoSelected();
 	public void saveGame(TutorialPresenter.State state);
+	public List<Character> getAllCharacters();
+	public void powerUpComplete();
 	
 	// Current character related
 	public void onChangeToCurrentCharacter(UIInfoListener listener);

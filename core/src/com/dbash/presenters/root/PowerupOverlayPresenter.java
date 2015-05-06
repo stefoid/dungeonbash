@@ -19,6 +19,7 @@ import com.dbash.platform.UIDepend;
 import com.dbash.presenters.tabs.CreatureListElementView;
 import com.dbash.presenters.widgets.ButtonView;
 import com.dbash.presenters.widgets.IClickListener;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
@@ -74,9 +75,9 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 	IPresenterTurnState turnProcessor;
 	List<Character> characters;
 	
-	public PowerupOverlayPresenter(IPresenterTurnState turnProcessor, List<Character> characters) {
+	public PowerupOverlayPresenter(IPresenterTurnState turnProcessor) {
 		this.turnProcessor = turnProcessor;
-		this.characters = characters;
+		this.characters = turnProcessor.getAllCharacters();
 	}
 	
 	@Override
@@ -120,7 +121,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 				"START_GAME_IMAGE", "START_GAME_IMAGE", Audio.CLICK);
 		okButton.onClick( new IClickListener() {
 			public void processClick() {
-				// TODO
+				EventBus.getDefault().event(GameStatePresenter.POWERUP_OVER, null);
 			}
 		});
 

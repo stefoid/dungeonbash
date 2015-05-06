@@ -551,20 +551,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	private int numberOfCharactersOnMap() {
 		return allCharacters.size() - charactersFallingIn.size() - charactersFallingOut.size();
 	}
-	
-	public void addExperience(int exp) {
-		for (Character character : allCharacters) {
-			character.addExperience(exp, false);
-		}
-		gameStats.xpGiven(exp);
-	}
-	
-	public void addInitialExperience() {
-		for (Character character : allCharacters) {
-			character.addExperience(INITIAL_EXP, true);
-		}
-		gameStats.xpGiven(INITIAL_EXP);
-	}
 
 	private void setSoloMode(boolean solo) {
 		soloStatus = solo;
@@ -703,6 +689,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		} 
 
 		acceptInput = false;
+		final IPresenterTurnState tp = this;
 		dungeonEvents.goDownStairs(SequenceNumber.getNext(), currentCharacter,
 				new IAnimListener() {
 					// was that the last character to descend? If so, go to the
@@ -710,13 +697,18 @@ public class TurnProcessor implements IPresenterTurnState {
 					public void animEvent() {
 						acceptInput = true;
 						if (allCharacters.size() == charactersFallingOut.size()) {
-							level++;
-							startNewLevel(level, false);
+							EventBus.getDefault().event(GameStatePresenter.POWERUP_START, tp);
 						}
 					}
 				});
 
 		characterEndsTurn(currentCharacter);
+	}
+	
+	@Override 
+	public void powerUpComplete() {
+		level++;
+		startNewLevel(level, false);
 	}
 	
 	@Override
@@ -1039,6 +1031,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		setSoloMode(false);
 	}
 
+	@Override
+	public List<Character> getAllCharacters() {
+		return allCharacters;
+	}
+	
 	TutorialPresenter.State tutorialState;
 	@Override
 	public void saveGame(TutorialPresenter.State state) {
@@ -1082,5 +1079,34 @@ public class TurnProcessor implements IPresenterTurnState {
 		setGameState(previousGameState);
 		setCurrentCharacter(previousCurrentCharacter);
 		sendGameStateEvent();
+	}
+
+	public void addExperience(int exp) {
+		for (Character character : allCharacters) {
+			character.addExperience(exp, false);
+		}
+		gameStats.xpGiven(exp);
+	}
+	
+	public void addInitialExperience() {
+		for (Character character : allCharacters) {
+			character.addExperience(INITIAL_EXP, true);
+		}
+		gameStats.xpGiven(INITIAL_EXP);
+	}
+	
+	@Override
+	public int getSpentXp() {
+		return gameStats.spentXp;
+	}
+
+	@Override
+	public int getTotalXp() {
+		return gameStats.xp;
+	}
+
+	@Override
+	public void setSpentXp(int spentXp) {
+		gameStats.spentXp = spentXp;
 	}
 }
