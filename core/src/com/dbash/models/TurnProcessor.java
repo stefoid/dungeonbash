@@ -57,6 +57,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final int INITIAL_EXP = 500;
 	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
+	private boolean powerUp = false;
 
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character. We
@@ -169,7 +170,7 @@ public class TurnProcessor implements IPresenterTurnState {
 				lastPause = pauseTurnProcessing;
 			}
 
-			if (pauseTurnProcessing == false) {
+			if (!powerUp && pauseTurnProcessing == false) {
 				processNextCreature();
 			}
 		}
@@ -697,6 +698,7 @@ public class TurnProcessor implements IPresenterTurnState {
 					public void animEvent() {
 						acceptInput = true;
 						if (allCharacters.size() == charactersFallingOut.size()) {
+							powerUp = true;
 							EventBus.getDefault().event(GameStatePresenter.POWERUP_START, tp);
 						}
 					}
@@ -707,6 +709,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override 
 	public void powerUpComplete() {
+		powerUp = false;
 		level++;
 		startNewLevel(level, false);
 	}
