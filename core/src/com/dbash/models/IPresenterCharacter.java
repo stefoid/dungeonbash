@@ -48,6 +48,14 @@ public interface IPresenterCharacter {
 	public void performPickup(Ability ability);
 	public void itemDropSelected(Ability ability);
 	
+	// powerup related
+	public void onChangeToPowerup(UIInfoListener listener);
+	public PowerupList getAvailablePowerupList();
+	public PowerupList getPurchasedPowerupList();
+	
+	public boolean buyPowerup(Ability ability);
+	public void sellPowerup(Ability ability);
+	
 	// Stairs status
 	public boolean isCharacterOnStairs();
 }

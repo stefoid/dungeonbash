@@ -164,6 +164,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		abilityListListeners = new UIInfoListenerBag();
 		characterStatListeners = new UIInfoListenerBag();
 		itemListListeners = new UIInfoListenerBag();
+		powerupListListeners = new UIInfoListenerBag();
 		stealthStatusListeners = new UIInfoListenerBag();
 	}
 
@@ -726,6 +727,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	private UIInfoListenerBag effectListListeners;
 	private UIInfoListenerBag characterStatListeners;
 	private UIInfoListenerBag itemListListeners;
+	private UIInfoListenerBag powerupListListeners;
 	private UIInfoListenerBag stealthStatusListeners;
 	
 	// METHODS
@@ -967,35 +969,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	@Override
 	public EffectList getEffectList() {
 		return new EffectList(this);
-	}
-
-	@Override
-	public void onChangeToInventory(UIInfoListener listener) {
-		itemListListeners.add(listener);
-	}
-
-	@Override
-	public ItemList getItemList() {
-		return new ItemList(this, false);
-	}
-
-	@Override
-	public void performPickup(Ability ability) {
-		if (itemPickupSelected(ability)) {
-			dungeonEvents.objectPickup(SequenceNumber.getNext(), this, ability, mapPosition);
-			abilities.add(0, ability);
-			ability.setOwned(this, true);
-			itemListListeners.alertListeners();
-		} 
-	}
-	
-	@Override	
-	public boolean itemPickupSelected(Ability ability) {
-		if (getNumberOfPhysicalItemsCarried() < getCapacity()) {
-			return canCarry(ability);
-		} else {
-			return false;
-		}
 	}
 	
 	public int getNumberOfPhysicalItemsCarried() {
@@ -1272,6 +1245,64 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	public void setAmClosestToMonster(boolean val) {
 		amClosestToMonster = val;
+	}
+
+	@Override
+	public void onChangeToInventory(UIInfoListener listener) {
+		itemListListeners.add(listener);
+	}
+
+	@Override
+	public ItemList getItemList() {
+		return new ItemList(this, false);
+	}
+
+	@Override
+	public void performPickup(Ability ability) {
+		if (itemPickupSelected(ability)) {
+			dungeonEvents.objectPickup(SequenceNumber.getNext(), this, ability, mapPosition);
+			abilities.add(0, ability);
+			ability.setOwned(this, true);
+			itemListListeners.alertListeners();
+		} 
+	}
+	
+	@Override	
+	public boolean itemPickupSelected(Ability ability) {
+		if (getNumberOfPhysicalItemsCarried() < getCapacity()) {
+			return canCarry(ability);
+		} else {
+			return false;
+		}
+	}
+	
+	
+	@Override
+	public void onChangeToPowerup(UIInfoListener listener) {
+		powerupListListeners.add(listener);
+	}
+
+	@Override
+	public PowerupList getAvailablePowerupList() {
+		PowerupList pup = new PowerupList(this);
+		pup.add(new AbilityInfo("available"));
+		return pup;
+	}
+
+	@Override
+	public PowerupList getPurchasedPowerupList() {
+		PowerupList pup = new PowerupList(this);
+		pup.add(new AbilityInfo("purchased"));
+		return pup;
+	}
+
+	@Override
+	public boolean buyPowerup(Ability ability) {
+		return false;
+	}
+
+	@Override
+	public void sellPowerup(Ability ability) {
 	}
 
 }
