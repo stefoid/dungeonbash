@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
@@ -13,11 +14,17 @@ import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.GameStatePresenter;
+import com.dbash.presenters.root.OverlayPresenter;
+import com.dbash.presenters.root.PowerupOverlayPresenter;
 import com.dbash.presenters.tabs.AbilityTab;
 import com.dbash.presenters.tabs.EffectTab;
 import com.dbash.presenters.tabs.EyeTab;
 import com.dbash.presenters.tabs.ItemTab;
 import com.dbash.presenters.tabs.MenuTab;
+import com.dbash.presenters.tabs.PowerupTab;
+import com.dbash.util.EventBus;
+import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 
@@ -29,6 +36,17 @@ public class TabSetPresenter implements TouchEventListener{
 		RIGHT
 	}
 	
+	private enum TabType {
+		EYE_TAB,
+		ITEM_TAB,
+		ABILITY_TAB,
+		EFFECT_TAB,
+		MENU_TAB,
+		POWERUP_TAB
+	}
+
+	protected static final boolean LOG = false;
+	
 	List<TabPresenter>	tabs = new LinkedList<TabPresenter>();
 	private TabPresenter currentTab;
 	private TabPresenter swipedTab;
@@ -39,11 +57,18 @@ public class TabSetPresenter implements TouchEventListener{
 	private Rect bodyArea;
 	private float minSwipeAmount;
 	private float swipeDist;
+	private PresenterDepend model;
+	private UIDepend gui;
+	private TouchEventProvider touchEventProvider;
+	private Rect tabArea;
 	
 	public void create(PresenterDepend model,  UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
+		this.model = model;
+		this.gui = gui;
+		this.touchEventProvider = touchEventProvider;
 
 		// The tab keys take 15% of the bottom of the entire area
-		Rect tabArea = new Rect(area, 0, 0, SizeCalculator.LIST_AREA_SCALE, 0);
+		tabArea = new Rect(area, 0, 0, SizeCalculator.LIST_AREA_SCALE, 0);
 		tabArea.width = area.width / 5;
 		
 		this.minSwipeAmount = area.width / 20f;//gui.sizeCalculator.MIN_DRAG_PIXELS*2f;  // 4mm
@@ -55,30 +80,61 @@ public class TabSetPresenter implements TouchEventListener{
 		touchEventProvider.addTouchEventListener(this, bodyArea, gui.cameraViewPort.viewPort);
 		
 		// shift each tab across by the tab width
-		configTab(new EyeTab(model, gui, touchEventProvider, tabArea, bodyArea));
-		tabArea.x += tabArea.width;
-		configTab(new ItemTab(model, gui, touchEventProvider, tabArea, bodyArea));
-		tabArea.x += tabArea.width;
-		configTab(new AbilityTab(model, gui, touchEventProvider, tabArea, bodyArea));
-		tabArea.x += tabArea.width;
-		configTab(new EffectTab(model, gui, touchEventProvider, tabArea, bodyArea));
-		tabArea.x += tabArea.width;
-		configTab(new MenuTab(model, gui, touchEventProvider, tabArea, bodyArea));
+		addTab(TabType.EYE_TAB, 0);
+		addTab(TabType.ITEM_TAB, 1);
+		addTab(TabType.ABILITY_TAB, 2);
+		addTab(TabType.EFFECT_TAB, 3);
+		addTab(TabType.MENU_TAB, 4);
 		
 		swipedTab = null;
 		setTab(MenuTab.class);
+		
+		setEventListeners();
 	}
 	
 
-	private void configTab(TabPresenter tab) {
-		tabs.add(tab);
-		final TabPresenter thisTab = tab;  
-		// When this tab is clicked, set itself to current.
-		tab.onClick(new IClickListener() {
-			public void processClick() {
-				setCurrentTab(thisTab);
-			}
-		});
+	private void removeTab(int index) {
+		tabs.remove(index);
+	}
+	
+	private void addTab(TabType tabType, int index) {
+		TabPresenter tab = null;
+		Rect theTabArea = new Rect(tabArea);
+		theTabArea.x += (tabArea.width * index);
+		
+		switch (tabType) {
+			case EYE_TAB:
+				tab = new EyeTab(model, gui, touchEventProvider, theTabArea, bodyArea);
+				break;
+			case ITEM_TAB:
+				tab = new ItemTab(model, gui, touchEventProvider, theTabArea, bodyArea);
+				break;
+			case ABILITY_TAB:
+				tab = new AbilityTab(model, gui, touchEventProvider, theTabArea, bodyArea);
+				break;
+			case EFFECT_TAB:
+				tab = new EffectTab(model, gui, touchEventProvider, theTabArea, bodyArea);
+				break;
+			case MENU_TAB:
+				tab = new MenuTab(model, gui, touchEventProvider, theTabArea, bodyArea);
+				break;
+			case POWERUP_TAB:
+				tab = new PowerupTab(model, gui, touchEventProvider, theTabArea, bodyArea);
+				break;
+			default:
+				break;
+		}
+		
+		if (tab != null) {
+			tabs.add(tab);
+			final TabPresenter thisTab = tab;  
+			// When this tab is clicked, set itself to current.
+			tab.onClick(new IClickListener() {
+				public void processClick() {
+					setCurrentTab(thisTab);
+				}
+			});
+		}
 	}
 
 	private void setCurrentTab(TabPresenter tab) {
@@ -174,4 +230,24 @@ public class TabSetPresenter implements TouchEventListener{
 		return true;	
 	}
 
+	private void setEventListeners() {
+		EventBus eventBus = EventBus.getDefault();
+		
+		eventBus.onEvent(GameStatePresenter.POWERUP_START, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("POWERUP_START");
+				removeTab(1);
+				addTab(TabType.POWERUP_TAB, 1);
+			}
+		});
+		
+		eventBus.onEvent(GameStatePresenter.POWERUP_OVER, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if (LOG) L.log("POWERUP_OVER");
+				addTab(TabType.ITEM_TAB, 1);
+			}
+		});
+	}
 }

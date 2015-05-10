@@ -18,7 +18,7 @@ import com.dbash.util.Rect;
 
 public class PowerupTab extends TabPresenter {
 
-	private ItemListPresenter listPresenter;
+	private PowerupListPresenter listPresenter;
 	private ImageView itemTabImage;
 	private IPresenterTurnState turnState;
 	private UIDepend gui;
@@ -30,7 +30,7 @@ public class PowerupTab extends TabPresenter {
 		backImageCurrent = new ImageView(gui, "POWERUP_TAB_ON_IMAGE", tabArea);
 		backImageNotCurrent = new ImageView(gui, "POWERUP_TAB_OFF_IMAGE", tabArea);
 		
-		listPresenter = new  ItemListPresenter(model, gui, touchEventProvider, bodyArea);
+		listPresenter = new  PowerupListPresenter(model, gui, touchEventProvider, bodyArea);
 		turnState = model.presenterTurnState;
 		this.gui = gui;
 		final Rect animArea = this.tabArea;

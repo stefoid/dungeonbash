@@ -45,8 +45,8 @@ public class PowerupListPresenter extends ListPresenter{
 		for (AbilityInfo abilityInfo : availablePowerupList) {
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
-			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
-			abilityInfo.canBeCarried = character.canCarry(ability);
+//			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
+//			abilityInfo.canBeCarried = character.canCarry(ability);
 			final PowerupListElementView element = new PowerupListElementView(gui, character, abilityInfo, elementArea, index++);
 			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {
