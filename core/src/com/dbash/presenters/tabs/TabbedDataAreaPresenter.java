@@ -84,21 +84,21 @@ public class TabbedDataAreaPresenter implements TouchEventListener {
 		eventBus.onEvent(GameStatePresenter.NO_SAVED_GAME_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				tabs.setTab(EffectTab.class);
+				tabs.setCurrentTab(EffectTab.class);
 			}
 		});
 		
 		eventBus.onEvent(GameStatePresenter.NEW_GAME_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				tabs.setTab(EffectTab.class);
+				tabs.setCurrentTab(EffectTab.class);
 			}
 		});
 		
 		eventBus.onEvent(GameStatePresenter.START_GAME_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				tabs.setTab(AbilityTab.class);
+				tabs.setCurrentTab(AbilityTab.class);
 			}
 		});
 	}

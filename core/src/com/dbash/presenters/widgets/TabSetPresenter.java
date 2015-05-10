@@ -5,18 +5,14 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.IEventAction;
-import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEvent.TouchType;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
-import com.dbash.models.UIInfoListener;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.GameStatePresenter;
-import com.dbash.presenters.root.OverlayPresenter;
-import com.dbash.presenters.root.PowerupOverlayPresenter;
 import com.dbash.presenters.tabs.AbilityTab;
 import com.dbash.presenters.tabs.EffectTab;
 import com.dbash.presenters.tabs.EyeTab;
@@ -30,6 +26,8 @@ import com.dbash.util.Rect;
 
 public class TabSetPresenter implements TouchEventListener{
 
+	protected static final boolean LOG = false;
+	
 	private enum SwipeState {
 		NONE,
 		LEFT,
@@ -45,7 +43,7 @@ public class TabSetPresenter implements TouchEventListener{
 		POWERUP_TAB
 	}
 
-	protected static final boolean LOG = false;
+	public static final int powerupIndex = 1;
 	
 	List<TabPresenter>	tabs = new LinkedList<TabPresenter>();
 	private TabPresenter currentTab;
@@ -87,14 +85,24 @@ public class TabSetPresenter implements TouchEventListener{
 		addTab(TabType.MENU_TAB, 4);
 		
 		swipedTab = null;
-		setTab(MenuTab.class);
+		setCurrentTab(MenuTab.class);
 		
 		setEventListeners();
 	}
 	
 
-	private void removeTab(int index) {
-		tabs.remove(index);
+	private void removeTab(Class<? extends TabPresenter> tabType) {
+		tabs.remove(findTab(tabType));
+	}
+	
+	private TabPresenter findTab(Class<? extends TabPresenter> tabType) {
+		TabPresenter rTab = null;
+		for (TabPresenter tab : tabs) {
+			if (tab.getClass() == tabType) {
+				rTab = tab;
+			}
+		}
+		return rTab;
 	}
 	
 	private void addTab(TabType tabType, int index) {
@@ -168,7 +176,7 @@ public class TabSetPresenter implements TouchEventListener{
 		}
 	}
 	
-	public void setTab(Class<? extends TabPresenter> tabType) {
+	public void setCurrentTab(Class<? extends TabPresenter> tabType) {
 		for (TabPresenter tab : tabs) {
 			if (tabType.isInstance(tab)) {
 				setCurrentTab(tab);
@@ -237,8 +245,15 @@ public class TabSetPresenter implements TouchEventListener{
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_START");
-				removeTab(1);
-				addTab(TabType.POWERUP_TAB, 1);
+				boolean setTabCurrent = false;
+				if (currentTab.getClass() == ItemTab.class) {
+					setTabCurrent = true;
+				}
+				removeTab(ItemTab.class);
+				addTab(TabType.POWERUP_TAB, powerupIndex);
+				if (setTabCurrent) {
+					setCurrentTab(findTab(PowerupTab.class)); // arbitrarily set tab back to ability tab for now.
+				}
 			}
 		});
 		
@@ -246,7 +261,15 @@ public class TabSetPresenter implements TouchEventListener{
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_OVER");
-				addTab(TabType.ITEM_TAB, 1);
+				boolean setTabCurrent = false;
+				if (currentTab.getClass() == PowerupTab.class) {
+					setTabCurrent = true;
+				}
+				removeTab(PowerupTab.class);
+				addTab(TabType.ITEM_TAB, powerupIndex);
+				if (setTabCurrent) {
+					setCurrentTab(ItemTab.class); // arbitrarily set tab back to ability tab for now.
+				}
 			}
 		});
 	}

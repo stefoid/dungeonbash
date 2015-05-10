@@ -11,6 +11,7 @@ import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.root.HighlightAnimView;
+import com.dbash.presenters.root.PowerupOverlayPresenter;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.TabPresenter;
 import com.dbash.util.EventBus;
@@ -45,7 +46,7 @@ public class PowerupTab extends TabPresenter {
 			}
 		});
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.ITEM_TAB_BUTTON_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(PowerupOverlayPresenter.POWERUP_TAB_BUTTON_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				Rect fromRect = new Rect(animArea, .6f);
@@ -58,20 +59,13 @@ public class PowerupTab extends TabPresenter {
 			}
 		});
 		
-		EventBus.getDefault().onEvent(TutorialPresenter.ITEM_TAB_BUTTON_OFF_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(PowerupOverlayPresenter.POWERUP_TAB_BUTTON_OFF_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				if (tabButtonAnim != null) {
 					tabButtonAnim.stopPlaying();
 					tabButtonAnim = null;
 				}
-			}
-		});
-		
-		EventBus.getDefault().onEvent(TutorialPresenter.TUTORIAL_RESTART, this, new IEventAction() {
-			@Override
-			public void action(Object param) {
-				EventBus.getDefault().event(TutorialPresenter.ITEM_TAB_BUTTON_OFF_EVENT, null);
 			}
 		});
 	}
@@ -96,7 +90,6 @@ public class PowerupTab extends TabPresenter {
 	public void setCurrent() {
 		super.setCurrent();
 		listPresenter.activate();
-		EventBus.getDefault().event(TutorialPresenter.ITEM_TAB_ON_EVENT, null);
 	}
 	
 	@Override
