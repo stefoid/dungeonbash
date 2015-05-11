@@ -92,7 +92,10 @@ public class TabSetPresenter implements TouchEventListener{
 	
 
 	private void removeTab(Class<? extends TabPresenter> tabType) {
-		tabs.remove(findTab(tabType));
+		TabPresenter tab = findTab(tabType);
+		tabs.remove(tab);
+		tab.unsetCurrent();
+		tab.onDestroy();
 	}
 	
 	private TabPresenter findTab(Class<? extends TabPresenter> tabType) {

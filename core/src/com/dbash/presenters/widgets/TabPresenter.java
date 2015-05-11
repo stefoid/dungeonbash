@@ -23,6 +23,8 @@ public abstract class TabPresenter implements TouchEventListener {
 	protected ImagePatchView setBorder;
 	protected ImagePatchView unSetBorder;
 	
+	protected TouchEventProvider touchEventProvider;
+	
 	boolean current;
 	protected boolean shouldDrawBody;
 	
@@ -30,6 +32,7 @@ public abstract class TabPresenter implements TouchEventListener {
 	public TabPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 		this.tabArea = new Rect(tabArea);
 		this.bodyArea = new Rect(bodyArea);
+		this.touchEventProvider = touchEventProvider;
 		
 		setBorder = new ImagePatchView(gui, "9patchsettabborder", tabArea);
 		unSetBorder = new ImagePatchView(gui, "9patchmidtabborder", tabArea);
@@ -78,5 +81,9 @@ public abstract class TabPresenter implements TouchEventListener {
 	public void unsetCurrent() {
 		current = false;
 		shouldDrawBody = false;
+	}
+	
+	public void onDestroy() {
+		touchEventProvider.removeTouchEventListener(this);
 	}
 }

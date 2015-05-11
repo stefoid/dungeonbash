@@ -51,6 +51,12 @@ public class Ability
 	public static String SETABLE_TAG = "setable";
 	public static String NO_HIGHLIGHT_TAG = "nohighlight";
 	public static String AMBUSH_TAG = "ambush";
+	public static String STAT_TAG = "stat";
+	public static String HEALTH_STAT_TAG = "healthstat";
+	public static String MAGIC_STAT__TAG = "magicstat";
+	public static String ATTACK_STAT_TAG = "attackstat";
+	public static String DEFEND_STAT_TAG = "defendstat";
+	public static String STEALTH_STAT_TAG = "stealthstat";
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -1166,11 +1172,14 @@ public class Ability
 		this.abilityType = abilityType;
 	}
 	
-	public int getAbilityDurationLeft()
-	{
+	public int getAbilityDurationLeft() {
 		return tickCounter;
 	}
 
+	public int getId() {
+		return myId;
+	}
+	
 	@Override
 	public String toString() {
 		return ability.name;

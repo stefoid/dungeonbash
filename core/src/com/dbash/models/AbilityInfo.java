@@ -14,6 +14,12 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	
 	public Ability ability;
 	
+	public enum PowerupState {
+		BUYABLE,
+		BOUGHT,
+		TOO_EXPENSIVE
+	}
+	
 	// Displayable ability attributes.
 	public String 		name;
 	public String 		tag;
@@ -32,15 +38,15 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean 		isStat = false;
 	public String 		statText;
 	public int			statValue = 0;
-	public Color color;
-	public boolean isCover;
-	public boolean restrictFromHighlight;
-	public boolean isCooldown = false;
-	public boolean isCool = true;
-	public int cooldownTurnsLeft = 0;
-	public int cooldownPeriod = 0;
-	public boolean isSetable;
-	public boolean isSet;
+	public Color 		color;
+	public boolean 		isCover;
+	public boolean 		restrictFromHighlight;
+	public boolean 		isCooldown = false;
+	public boolean 		isCool = true;
+	public int 			cooldownTurnsLeft = 0;
+	public int 			cooldownPeriod = 0;
+	public boolean 		isSetable;
+	public boolean 		isSet;
 	
 	public Vector<AbilityEffectType> abilityEffects;
 	public int expireTime;
@@ -50,6 +56,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public int damageType;
 	public int meleeDamage;
 	public int missileDamage;
+	
+	public int xpCost = 0;
+	public PowerupState powerupState;
 	
 	
 	// Sets the attributes accordingly.  Items may be unowned, if lying around the dungeon, so set owner to null in that case.
@@ -124,6 +133,19 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		}
 		
 		if (LOG) L.log("name: %s, aimed: %s, burst: %s",  name, aimed, burstEffect);
+	}
+	
+	/**
+	 * Constructor used for powerup abilities
+	 */
+	public AbilityInfo(Ability ability, boolean bought, Character character) {
+		this(ability, null);
+		xpCost = 1000;
+		if (bought) {
+			powerupState = PowerupState.BOUGHT;
+		} else {
+			powerupState = PowerupState.BUYABLE;
+		}
 	}
 
 	public AbilityInfo(String text) {
