@@ -1322,8 +1322,26 @@ public class Character extends Creature implements IPresenterCharacter {
 	 * 8) if it is a stat ability, any stat ability of that type is removed form the 'buyable' list first.
 	 * 
 	 */
+	public enum StatType {
+        HEALTH(1000), 
+        MAGIC(2000), 
+        ATTACK(3000), 
+        DEFEND(4000),
+        STEALTH(5000);
+        
+        private int value;
+
+        private StatType(int value) {
+                this.value = value;
+        }
+        
+        public int getValue() {
+        	return value;
+        }
+	};   
+	
 	public class PowerupState {
-		
+
 		public ArrayList<Ability> buyableAbilities;
 		public ArrayList<Ability> boughtAbilities;
 		
@@ -1335,22 +1353,37 @@ public class Character extends Creature implements IPresenterCharacter {
 		private ArrayList<Ability> calcBuyableAbilities() {
 			ArrayList<Ability> buyables = new ArrayList<Ability>();
 			
+			return buyables;
 		}
 		
+		// go through the characters abilities and if you find a match with the buyables, move them to bought;
 		private ArrayList<Ability> calcBoughtAbilities() {
+			ArrayList<Ability> bought = new ArrayList<Ability>();
 			for (Ability ability : abilities) {
-				if (checkForType)
+				Ability match = findSameType(ability, buyableAbilities);
+				if (match != null) {
+					buyableAbilities.remove(match);
+					bought.add(match);
+				}
 			}
-			ArrayList<Ability> buyables = new ArrayList<Ability>();
-			
+			return boughtAbilities;
 		}
 		
 		private Ability findSameType(Ability ability, List<Ability> list) {
 			Ability result = null;
-			
 			for (Ability ab : list) {
-				if (ability.getAbilityType()
+				if (ability.getId() == ab.getId()) {
+					result = ab;
+					break;
+				}
 			}
+			return result;
+		}
+		
+		private Ability makeNewStatAbility(StatType statType, int value) {
+			int id = statType.getValue() + value;
+			//Ability ability = new Ability()
+			return null;
 		}
 	}
 }

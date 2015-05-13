@@ -4,7 +4,7 @@ public	 class Data
 	// abaility data
 	public String		name;
 	public String		tag;
-	public int			colour;
+	public String		powerups;
 	public int			needs;
 	public int			invokingStrategy;	// what happens when this ability is selected?
 	public int			duration; // if -1 duration is permanent, otherwise duration counts down each tick(), then destroys itself		

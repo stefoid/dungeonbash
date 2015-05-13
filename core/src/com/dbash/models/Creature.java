@@ -1385,7 +1385,9 @@ public abstract class Creature implements IPresenterCreature
 		index = endIndex + 1;
 
 		// read gif colour
-		cd.colour = readNextNum(string);
+		endIndex = string.indexOf(",", index);
+		cd.powerups = string.substring(index, endIndex);
+		index = endIndex + 1;
 
 		// read head
 		cd.head = readNextNum(string);

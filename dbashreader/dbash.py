@@ -57,7 +57,7 @@ class Ability:
     
     def fileWrite(self, file):
         self.comment = "// "+self.name + ": "
-        st = "+\"" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+"," + str(self.cooldown)+"," 
+        st = "+\"" + self.name + "," + self.tags + ","+str(self.powerups)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+"," + str(self.cooldown)+"," 
         for i in range (0,6):
             if (self.commands[i].name > 0):
                 st = st + str(self.commands[i].name) + "," + str(self.commands[i].execute)+ "," +str(self.commands[i].param1) + "," +str(self.commands[i].param2) + "," +str(self.commands[i].param3) + "," +str(self.commands[i].param4) + ","
@@ -67,7 +67,7 @@ class Ability:
         file.write(st)
 
     def fileWrite2(self, file):
-        st = "" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+","+ str(self.cooldown)+","
+        st = "" + self.name + "," + self.tags + ","+str(self.powerups)+"," + str(self.needs) +"," + str(self.invokingStrategy)+"," +str(self.duration) +"," +str(self.physicalItem) +"," + str(self.magicCost)+"," + str(self.aimed)+"," + str(self.value)+"," + str(self.offensive)+","+ str(self.cooldown)+","
         for i in range (0,6):
             if (self.commands[i].name > 0):
                 st = st + str(self.commands[i].name) + "," + str(self.commands[i].execute)+ "," +str(self.commands[i].param1) + "," +str(self.commands[i].param2) + "," +str(self.commands[i].param3) + "," +str(self.commands[i].param4) + ","
@@ -76,7 +76,7 @@ class Ability:
         file.write(st)
 
     def convert(self):  # will convert between numerical and string values and back again
-        self.colour = convertColour(self.colour)
+        self.powerups = convertColour(self.powerups)
         self.needs = convertNeeds(self.needs)
         self.invokingStrategy = convertInvoke(self.invokingStrategy)
         self.duration = convertDur(self.duration)
@@ -98,7 +98,7 @@ class Ability:
 
     def update(self):
         self.name = self.nameStr.get()
-        self.gifname = self.gifnameStr.get()
+        self.tags = self.tagsStr.get()
         self.physicalItem = self.physicalItemStr.get()
         self.magicCost = self.magicCostStr.get()
         self.aimed = self.aimedStr.get()
@@ -129,11 +129,11 @@ class Ability:
         te = Entry(win, textvariable=self.nameStr)
         te.grid(row=1, column=1)
 
-        l21 = Label(win, text="gifname            ")
+        l21 = Label(win, text="tags            ")
         l21.grid(row=0, column=2)        
-        self.gifnameStr = StringVar()
-        self.gifnameStr.set(self.gifname)
-        tg = Entry(win, textvariable=self.gifnameStr) 
+        self.tagsStr = StringVar()
+        self.tagsStr.set(self.tags)
+        tg = Entry(win, textvariable=self.tagsStr) 
         tg.grid(row=1, column=2)
     
         l333 = Label(win, text="picture       ")
@@ -142,19 +142,19 @@ class Ability:
         can.grid(row=1, column=3)
         try:
             global im
-            im = Tkinter.PhotoImage(file=resString + self.gifname + ".gif")
+            im = Tkinter.PhotoImage(file=resString + self.tags + ".gif")
             imag = can.create_image(10,10,image=im)
         except:
             bit = can.create_bitmap(10,10,bitmap="error")
 
-        l3 = Label(win, text="    colour        ")
+        l3 = Label(win, text="    powerups        ")
         l3.grid(row=0, column=4)
-        com = Menubutton( win, text=self.colour, relief=RAISED)
+        com = Menubutton( win, text=self.powerups, relief=RAISED)
         com.grid(row=1, column=4)        
         com.menu = Menu(com, tearoff=0)
         com["menu"] = com.menu
         for i in ["TRANSPARENT","BLACK","BLUE","LIME","AQUA","RED","FUCHSIA","YELLOW","WHITE","GRAY","NAVY","GREEN","TEAL","MAROON","PURPLE","OLIVE","SILVER"]:
-            com.menu.add_command(label=i, command=lambda i=i: setAbility("colour",i,0))
+            com.menu.add_command(label=i, command=lambda i=i: setAbility("powerups",i,0))
         
         l4 = Label(win, text="        needs     ")
         l4.grid(row=0, column=5)
@@ -351,8 +351,8 @@ class Ability:
 class Creature:
     def __init__(self):    
         self.name = "new"
-        self.gifname  = "a"
-        self.colour = "WHITE"
+        self.tags  = "a"
+        self.powerups = ""
         self.head = 1
         self.hands = 0
         self.humanoid = 0
@@ -366,11 +366,11 @@ class Creature:
         self.stealth = 1
         self.detect = 1
         self.starter = 0
-        self.abilities = ["NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY"]    
-
+        self.abilities = ["NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY","NO_ABILITY"]
+    
     def fileWrite(self, file):
         self.comment = "// "+self.name + ": "
-        st = "+\"" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+","+ str(self.value)+"," + str(self.stealth)+"," + str(self.detect)+","+ str(self.starter)+","
+        st = "+\"" + self.name + "," + self.tags + ","+str(self.powerups)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+","+ str(self.value)+"," + str(self.stealth)+"," + str(self.detect)+","+ str(self.starter)+","
         for i in range (0,6):
             if (self.abilities[i] != -1):
                 st = st + str(self.abilities[i]) + "," 
@@ -380,7 +380,7 @@ class Creature:
         file.write(st)
 
     def fileWrite2(self, file):
-        st = "" + self.name + "," + self.gifname + ","+str(self.colour)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+"," + str(self.value)+","+ str(self.stealth)+"," + str(self.detect)+","+ str(self.starter)+","
+        st = "" + self.name + "," + self.tags + ","+str(self.powerups)+"," + str(self.head) +"," + str(self.hands)+"," +str(self.humanoid) +"," +str(self.swarm) +"," + str(self.maxHealth)+"," + str(self.maxMagic)+"," +str(self.speed) +"," + str(self.attack)+"," + str(self.defence)+"," + str(self.value)+","+ str(self.stealth)+"," + str(self.detect)+","+ str(self.starter)+","
         for i in range (0,6):
             if (self.abilities[i] != -1):
                 st = st + str(self.abilities[i]) + "," 
@@ -391,7 +391,8 @@ class Creature:
 
     def update(self):
         self.name = self.nameStr.get()
-        self.gifname = self.gifnameStr.get()
+        self.tags = self.tagsStr.get()
+        self.powerups = self.powerupsStr.get()
         self.head = self.headStr.get()
         self.hands = self.handsStr.get()
         self.humanoid = self.humanoidStr.get()
@@ -407,7 +408,6 @@ class Creature:
         self.starter = self.starterStr.get()       
     
     def convert(self):  # will convert between numerical and string values and back again
-        self.colour = convertColour(self.colour)
         i = 0
         for ab in self.abilities:
             self.abilities[i] = convertAbilityId(ab)
@@ -426,11 +426,11 @@ class Creature:
         te = Entry(win, textvariable=self.nameStr)
         te.grid(row=1, column=1)
 
-        l21 = Label(win, text="gifname", padx=-15)
+        l21 = Label(win, text="tags", padx=-15)
         l21.grid(row=0, column=2)        
-        self.gifnameStr = StringVar()
-        self.gifnameStr.set(self.gifname)
-        tg = Entry(win, textvariable=self.gifnameStr)
+        self.tagsStr = StringVar()
+        self.tagsStr.set(self.tags)
+        tg = Entry(win, textvariable=self.tagsStr)
         tg.grid(row=1, column=2)
 
         l333 = Label(win, text="picture       ")
@@ -439,20 +439,18 @@ class Creature:
         can.grid(row=1, column=3)
         try:
             global im
-            im = Tkinter.PhotoImage(file=resString + self.gifname + ".gif")
+            im = Tkinter.PhotoImage(file=resString + self.tags + ".gif")
             imag = can.create_image(10,10,image=im)
         except:
             bit = can.create_bitmap(10,10,bitmap="error")
-
-        l3 = Label(win, text=" colour ")
-        l3.grid(row=0, column=4)
-        com = Menubutton( win, text=self.colour, relief=RAISED)
-        com.grid(row=1, column=4)        
-        com.menu = Menu(com, tearoff=0)
-        com["menu"] = com.menu
-        for i in ["TRANSPARENT","BLACK","BLUE","LIME","AQUA","RED","FUCHSIA","YELLOW","WHITE","GRAY","NAVY","GREEN","TEAL","MAROON","PURPLE","OLIVE","SILVER"]:
-            com.menu.add_command(label=i, command=lambda i=i: setCreature("colour",i,0))
         
+        l21 = Label(win, text="powerups ", padx=-15)
+        l21.grid(row=0, column=4)        
+        self.powerupsStr = StringVar()
+        self.powerupsStr.set(self.powerups)
+        tg = Entry(win, textvariable=self.powerupsStr)
+        tg.grid(row=1, column=4)
+
         l4 = Label(win, text="has head")
         l4.grid(row=0, column=5)        
         self.headStr = StringVar()
@@ -569,8 +567,8 @@ def setAbility(param, value, index):
     global currentAbility
     clearScreen()
     ab = ability[currentAbility]
-    if param == "colour":
-        ab.colour = value
+    if param == "powerups":
+        ab.powerups = value
     elif param == "needs":
         ab.needs = value
     elif param == "strategy":
@@ -598,8 +596,8 @@ def setCreature(param, value, index):
     global currentCreature
     clearScreen()
     ab = creature[currentCreature]
-    if param == "colour":
-        ab.colour = value
+    if param == "powerups":
+        ab.powerups = value
     elif param == "abil":
         ab.abilities[index] = value
         
@@ -664,76 +662,76 @@ def convertDur(dur):
             result = dur
     return result
 
-def convertColour(colour):
-    if type(colour) == str:
-        if colour == "TRANSPARENT":
+def convertColour(powerups):
+    if type(powerups) == str:
+        if powerups == "TRANSPARENT":
             result = -1    
-        elif colour == "BLACK":
+        elif powerups == "BLACK":
             result = 0
-        elif colour == "BLUE":
+        elif powerups == "BLUE":
 		    result = 1
-        elif colour == "LIME":
+        elif powerups == "LIME":
 		    result = 2
-        elif colour == "AQUA":
+        elif powerups == "AQUA":
             result = 3
-        elif colour == "RED":
+        elif powerups == "RED":
             result = 4
-        elif colour == "FUCHSIA":
+        elif powerups == "FUCHSIA":
             result = 5
-        elif colour == "YELLOW":
+        elif powerups == "YELLOW":
             result = 6
-        elif colour == "WHITE":
+        elif powerups == "WHITE":
             result = 7
-        elif colour == "GRAY":
+        elif powerups == "GRAY":
             result = 8
-        elif colour == "NAVY":
+        elif powerups == "NAVY":
             result = 9
-        elif colour == "GREEN":
+        elif powerups == "GREEN":
             result = 10
-        elif colour == "TEAL":
+        elif powerups == "TEAL":
             result = 11
-        elif colour == "MAROON":
+        elif powerups == "MAROON":
             result = 12
-        elif colour == "PURPLE":
+        elif powerups == "PURPLE":
 		    result = 13
-        elif colour == "OLIVE":
+        elif powerups == "OLIVE":
 		    result = 14
-        elif colour == "SILVER":
+        elif powerups == "SILVER":
 		    result = 15
     else:
-        if colour == -1:
+        if powerups == -1:
             result = "TRANSPARENT"        
-        elif colour == 0:
+        elif powerups == 0:
             result = "BLACK"
-        elif colour == 1:
+        elif powerups == 1:
 		    result = "BLUE"
-        elif colour == 2:
+        elif powerups == 2:
 		    result = "LIME"
-        elif colour == 3:
+        elif powerups == 3:
             result = "AQUA"
-        elif colour == 4:
+        elif powerups == 4:
             result = "RED"
-        elif colour == 5:
+        elif powerups == 5:
             result = "FUCHSIA"
-        elif colour == 6:
+        elif powerups == 6:
             result = "YELLOW"
-        elif colour == 7:
+        elif powerups == 7:
             result = "WHITE"
-        elif colour == 8:
+        elif powerups == 8:
             result = "GRAY"
-        elif colour == 9:
+        elif powerups == 9:
             result = "NAVY"
-        elif colour == 10:
+        elif powerups == 10:
             result = "GREEN"
-        elif colour == 11:
+        elif powerups == 11:
             result = "TEAL"
-        elif colour == 12:
+        elif powerups == 12:
             result = "MAROON"
-        elif colour == 13:
+        elif powerups == 13:
 		    result = "PURPLE"
-        elif colour == 14:
+        elif powerups == 14:
 		    result = "OLIVE"
-        elif colour == 15:
+        elif powerups == 15:
 		    result = "SILVER" 
     return result
 
@@ -996,8 +994,8 @@ def parseAbility(line):
     anAbility = Ability()
     
     anAbility.name = parameters[0]
-    anAbility.gifname  = parameters[1]
-    anAbility.colour = int(parameters[2])
+    anAbility.tags  = parameters[1]
+    anAbility.powerups = int(parameters[2])
     anAbility.needs = int(parameters[3])
     anAbility.invokingStrategy = int(parameters[4])
     anAbility.duration = int(parameters[5])
@@ -1052,8 +1050,8 @@ def parseCreature(line):
     aCreature = Creature()
     
     aCreature.name = parameters[0]
-    aCreature.gifname  = parameters[1]
-    aCreature.colour = int(parameters[2])
+    aCreature.tags  = parameters[1]
+    aCreature.powerups = parameters[2]
     aCreature.head = int(parameters[3])
     aCreature.hands = int(parameters[4])
     aCreature.humanoid = int(parameters[5])

@@ -715,8 +715,10 @@ public class Ability
 		ad.tag = string.substring(index, endIndex);
 		index = endIndex+1;
 
-		// read colour 3
-		ad.colour = readNextNum(string);
+		// read powerups 3  (does not apply to abilities)
+		endIndex = string.indexOf(",",index);
+		ad.powerups = string.substring(index, endIndex);
+		index = endIndex+1;
 
 		// read needs 4
 		ad.needs = readNextNum(string);
