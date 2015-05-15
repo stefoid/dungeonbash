@@ -109,6 +109,7 @@ public abstract class Creature implements IPresenterCreature
 	protected CanMoveStrategy canMove = new CanMoveStrategy();
 	protected Light light = null;
 	protected StealthStatus stealthStatus;
+	protected ArrayList<Ability> possiblePowerups;
 	
 	// instance data
 	protected HighlightStatus highlightStatus;
@@ -308,6 +309,7 @@ public abstract class Creature implements IPresenterCreature
 			Ability ability = new Ability(in, this, dungeonEvents, dungeonQuery);
 			abilities.add(ability);
 		}
+		
 		setAbilityFlags();
 	}
 
@@ -336,8 +338,21 @@ public abstract class Creature implements IPresenterCreature
 		
 		// create an ability vector for the abilities to go in
 		abilities = new LinkedList<Ability>();
+		
+		setPossiblePowerups();
 	}
 
+	protected void setPossiblePowerups() {
+		possiblePowerups = new ArrayList<Ability>();
+		for (String powerupName : creature.powerups.split("\\.")) {
+			int abilityId = Ability.getIdForName(powerupName);
+			if (abilityId >= 0) {
+				Ability ability = new Ability(abilityId, null, 1, dungeonEvents, dungeonQuery);
+				possiblePowerups.add(ability);
+			}
+		}
+	}
+	
 	public boolean isReadyForTurn() {
 		int speedCheck = calculateSpeed() + missedTurns; 
 

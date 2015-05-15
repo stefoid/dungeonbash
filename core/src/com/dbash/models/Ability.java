@@ -120,7 +120,7 @@ public class Ability
 			}
 		}
 		
-		return 0;
+		return -1;
 	}
 	
 	public Ability(Ability theAbility) {
@@ -824,13 +824,17 @@ public class Ability
 	}
 	
 	public boolean hasTag(String theTag) {
-      for (String tag: ability.tag.split("\\.")) {
+      for (String tag: getTags()) {
 			if (tag.equals(theTag)) {
 				return true;
 			}
        }
 		
 		return false;
+	}
+	
+	public String[] getTags() {
+		return ability.tag.split("\\.");
 	}
 	
 	// processes the actual effect of the ability by sending it the invoke command.
