@@ -1442,11 +1442,9 @@ public abstract class Creature implements IPresenterCreature
 		index = 0;
 		int i = 0;
 
-		do
-		{
+		do {
 			endIndex = abilities.indexOf(",", index);
-			if (endIndex > -1)
-			{
+			if (endIndex > -1) {
 				cd.abilityIds[i] = Integer.parseInt(abilities.substring(index, endIndex));
 				i++;
 				index = endIndex + 1;
@@ -1457,13 +1455,11 @@ public abstract class Creature implements IPresenterCreature
 	}
 
 	public static void initializeData() {
-		if (dataInitialized == false)
-		{
+		if (dataInitialized == false) {
 			int index = 0;
 			String creatures = new TextResourceIdentifier("c.txt").getFileContents();
 
-			while (index < creatures.length())
-			{
+			while (index < creatures.length()) {
 				index = addNextCreature(creatures, index);
 			}
 

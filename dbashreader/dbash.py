@@ -1217,7 +1217,7 @@ def writeStatAbilities(outFile):
         writeStatAbility(outFile, "stealth", 22, 10, 1000, i)    # "MODIFY_STEALTH": result = 22
 
 def writeStatAbility(outFile, statName, stat_type, increment, xp_mult, index):
-    sa = statName + " plus " + str(index*increment) + ",stat." + statName + "-" + str(index) + ",-1,0,0,-1,0,0,0," + str(index*xp_mult) + ",0,0," + str(stat_type) + ",7,10,0,0,0,*"
+    sa = statName + " plus " + str(index*increment) + ",stat." + statName + "-" + str(index) + ",,0,0,-1,0,0,0," + str(index*xp_mult) + ",0,0," + str(stat_type) + ",7,10,0,0,0,*"
     outFile.write(sa)
 
 def drawMainButtons():

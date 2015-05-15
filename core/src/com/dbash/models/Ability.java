@@ -194,8 +194,7 @@ public class Ability
 	}
 
 
-	public Ability(ObjectInputStream in, Creature owned, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException
-	{	
+	public Ability(ObjectInputStream in, Creature owned, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) throws IOException, ClassNotFoundException {	
 		this.dungeonEvents = dungeonEvents;
 		this.dungeonQuery = dungeonQuery;
 		
@@ -225,8 +224,7 @@ public class Ability
 		setAbilityEffectType();
 	}
 
-	public boolean tick()
-	{
+	public boolean tick() {
 		if (ability.duration > 0)  // means a temporary ability
 		{
 			tickCounter--;
@@ -242,29 +240,25 @@ public class Ability
 		return false;
 	}
 	
-	public void changeTicksLeft(int delta)
-	{
+	public void changeTicksLeft(int delta) {
 		tickCounter += delta;
 	}
 
-	public boolean isSelectable()
-	{
+	public boolean isSelectable() {
 		if (ability.invokingStrategy == NOT_SELECTABLE)
 			return false;
 		else
 			return true;
 	}
 	
-	public boolean isInstant()
-	{	
+	public boolean isInstant() {	
 		if ((ability.invokingStrategy == INSTANT_ONESHOT) || (ability.invokingStrategy == INSTANT_ABILITY))
 			return true;
 		else
 			return false;
 	}
 
-	public boolean isBurstEffect()
-	{
+	public boolean isBurstEffect() {
 		for (int i=0; i<6; i++) {
 			if (ability.command[i] == AbilityCommand.EXECUTE)  // does the command sent from the Creature match a command that this ability responds to?
 			{
@@ -276,8 +270,7 @@ public class Ability
 		return false;
 	}
 	
-	public boolean isPhysical()
-	{
+	public boolean isPhysical() {
 		if (ability.physicalItem == 0)
 			return false;
 		else
@@ -308,8 +301,7 @@ public class Ability
 		}
 	}
 	
-	public void setOwned(Creature owner, boolean isOwned)
-	{
+	public void setOwned(Creature owner, boolean isOwned) {
 		if (owner != null)
 		{
 			if (isOwned == false)
@@ -321,8 +313,7 @@ public class Ability
 	}
 
 	// return -1 means 'none'
-	public int findAbilityAddedWhenEquipped()
-	{
+	public int findAbilityAddedWhenEquipped() {
 		int abilityAdded = -1;
 
 		for (int i=0; i<numberOfCommands; i++) {
@@ -345,8 +336,7 @@ public class Ability
 		target.addAbility(copy, null);
 	}
 	
-	public int executeCommandValue(AbilityCommand	command, Creature owner)
-	{
+	public int executeCommandValue(AbilityCommand	command, Creature owner) {
 		if (LOG) L.log("command: %s", command.name);
 		
 		int newValue = command.value;
@@ -415,8 +405,7 @@ public class Ability
 	
 	// This ability is being used.  Determine what type of visual thing should be shown.
 	// This shows the initial activation of the ability, such as swinging a sword or whatever.
-	private void fireAbilityUseEvent(Creature user, DungeonPosition pos, int command, int damageType)
-	{	
+	private void fireAbilityUseEvent(Creature user, DungeonPosition pos, int command, int damageType) {	
 		Character releventCharacter = user.getReleventCharacter();
 		
 		if ((ability.invokingStrategy == INSTANT_ABILITY) || (ability.invokingStrategy == INSTANT_ONESHOT)) {
@@ -553,8 +542,7 @@ public class Ability
 		return false;
 	}	
 
-    public void targetSelected(DungeonPosition position)
-    {	
+    public void targetSelected(DungeonPosition position) {	
 		Creature targCreature = dungeonQuery.getCreatureAtLocation(position);
 		
     	// now process the ability on the selected target.  A targetable ability only has an EXECUTE strategy
@@ -598,10 +586,8 @@ public class Ability
     }
     
 	// experience value calculator
-    public static int calcValue(int abilityId)
-    {
+    public static int calcValue(int abilityId) {
 		Data ad = (Data) abilityData.elementAt(abilityId);
-
 		return ad.value;
     }
 
@@ -628,7 +614,6 @@ public class Ability
     		return false;
     	}
     }
-    
     
 	public boolean isAimed() {
 		return ability.aimed;
@@ -792,19 +777,16 @@ public class Ability
 	}	
 
 
-	private void initializeData()
-	{
+	private void initializeData() {
 		int 	index = 0;
 		String	abilities = new TextResourceIdentifier("a.txt").getFileContents();
 
-		while (index < abilities.length())
-		{
+		while (index < abilities.length()) {
 			index = addNextAbility(abilities, index);
 		}
 	}
 
-	public boolean meetsNeeds(boolean head, boolean hands, boolean humanoid)
-	{
+	public boolean meetsNeeds(boolean head, boolean hands, boolean humanoid) {
 		boolean result = true;
 	
 		if (ability.needs == NEEDS_HEAD)
@@ -819,16 +801,14 @@ public class Ability
 		return result;
 	}
 
-	public boolean isUsed()
-	{
+	public boolean isUsed() {
 		if (needsSetting() == true)
 			return set;
 		else
 			return true;
 	}	
 
-	protected boolean needsSetting()
-	{
+	protected boolean needsSetting() {
 		if ((ability.invokingStrategy == SELECTABLE) || 
 		(ability.invokingStrategy == INSTANT_ABILITY) || 
 		(ability.invokingStrategy == INSTANT_ONESHOT))
@@ -855,8 +835,7 @@ public class Ability
 	// instants and one-shots will go off.
 	// equipables will toggle their selection status
 	// returns true if ability action was to set/unset.
-	public boolean abilitySelected(Creature owner)
-	{
+	public boolean abilitySelected(Creature owner) {
 		AbilityCommand command = new AbilityCommand(AbilityCommand.INVOKE, 0, owner.creature.head, owner.creature.hands, owner.creature.humanoid);	
 		int result = executeCommandValue(command, owner);
 		if (LOG) L.log("result of invoke: %s", result);
@@ -867,8 +846,7 @@ public class Ability
 		}
 	}
 	
-	protected int processInvoke(AbilityCommand command, Creature owner)
-	{
+	protected int processInvoke(AbilityCommand command, Creature owner) {
 		int result = -1;
 		if (LOG) L.log("command: %s, owner: %s", command, owner);
 		AbilityCommand	newCommand = new AbilityCommand(0,0,1,1,1);
