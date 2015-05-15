@@ -695,6 +695,8 @@ public class Ability
 		ad.name = string.substring(index, endIndex);
 		index = endIndex+1;
 
+		if (LOG) L.log("name:%s",ad.name);
+		
 		// read gifName 2
 		endIndex = string.indexOf(",",index);
 		ad.tag = string.substring(index, endIndex);
