@@ -845,8 +845,17 @@ public class Ability
 				return si.id;
 			}
 		}
-		
 		return -1;
+	}
+	
+	public StatAbilityInfo getStatInfo() {
+		for (StatAbilityInfo si : possibleStatPowerups) {
+			if (si.id == myId) {
+				return si;
+			}
+		}
+		
+		return null;
 	}
 
 	public boolean meetsNeeds(boolean head, boolean hands, boolean humanoid) {

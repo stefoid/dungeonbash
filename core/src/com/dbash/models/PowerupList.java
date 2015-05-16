@@ -18,7 +18,7 @@ public class PowerupList extends ArrayList<AbilityInfo>{
 	
 	public Character owner;
 	
-	public PowerupList(Character owner) {
+	public PowerupList(Character owner, List<Ability> buyables) {
 		
 		super();
 		
@@ -29,21 +29,10 @@ public class PowerupList extends ArrayList<AbilityInfo>{
 		// Sort list according to type
 		//info.sortValue = info.abilityType.val;
 		
-//		for (Ability ability : owner.abilities) {
-//			
-//			// Cant be used directly by the owning character, so doesnt belong in the ability selection list.
-//			if (ability.isPhysical()) {
-//				if (ability.isRoughTerrain() && includeRoughTerrain == false) {
-//					return;
-//				}
-//				AbilityInfo info = new AbilityInfo(ability, owner);
-//				
-//				// Sort list according to type
-//				//info.sortValue = info.abilityType.val;
-//				
-//				add(info);
-//			}
-//		}
+		for (Ability ability : buyables) {
+			AbilityInfo info = new AbilityInfo(ability, owner);
+			add(info);
+		}
 		
 		// Now sort the list according to usageCount and that is the order presented to the player.
 		//Collections.sort(this);

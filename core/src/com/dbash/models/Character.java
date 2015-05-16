@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Ability.StatAbilityInfo;
+import com.dbash.models.Ability.StatType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.tabs.AbilitySelectionList;
@@ -1285,15 +1287,14 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	@Override
 	public PowerupList getAvailablePowerupList() {
-		PowerupList pup = new PowerupList(this);
-		pup.add(new AbilityInfo("available"));
+		PowerupState pus = new PowerupState();
+		PowerupList pup = new PowerupList(this, pus.buyableAbilities);
 		return pup;
 	}
 
 	@Override
 	public PowerupList getPurchasedPowerupList() {
-		PowerupList pup = new PowerupList(this);
-		pup.add(new AbilityInfo("purchased"));
+		PowerupList pup = new PowerupList(this, new ArrayList<Ability>());
 		return pup;
 	}
 
@@ -1305,11 +1306,11 @@ public class Character extends Creature implements IPresenterCharacter {
 	@Override
 	public void sellPowerup(Ability ability) {
 	}
-
+	
 	/**
 	 * to determine the list of abilities that can be purchased we need to :
 	 * 1) creature must have a list of purchasable abilities
-	 * w) given the list of purchasable abilities, subtract those that are allready in the creatures ability list
+	 * 2) given the list of purchasable abilities, subtract those that are allready in the creatures ability list
 	 * 2) stat abilities are implied.  All creatures have access to these.  They are tagged with stat, and the stat type.
 	 * 3) work out the next stat increase ability give the one for each stat that the creature allready has, if any
 	 * 	THIS is the initial 'BUYABLE' list for powerup state.
@@ -1336,11 +1337,53 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		private ArrayList<Ability> calcBuyableAbilities() {
 			ArrayList<Ability> buyables = new ArrayList<Ability>();
-			
 			buyables.addAll(possiblePowerups);
+			
+			// subtract ones we already have (if it is in the creatures current ability list)
+			for (Ability ability : abilities) {
+				Ability dupe = findSameType(ability, possiblePowerups);
+				if (dupe != null) {
+					possiblePowerups.remove(dupe);
+				}
+			}
+			
+			// For each stat ability we have, add the next one in the list to possibles
+			addNextStatAbility(StatType.HEALTH, buyables);
+			addNextStatAbility(StatType.MAGIC, buyables);
+			addNextStatAbility(StatType.ATTACK, buyables);
+			addNextStatAbility(StatType.DEFEND, buyables);
+			addNextStatAbility(StatType.SPEED, buyables);
+			addNextStatAbility(StatType.STEALTH, buyables);
 			
 			
 			return buyables;
+		}
+		
+		private void addNextStatAbility(StatType statType, List<Ability> list) {
+			Ability ability = getNextStatAbility(statType);
+			if (ability != null) {
+				list.add(ability);
+			}
+		}
+		
+		private Ability getNextStatAbility(StatType statType) {
+			int nextLevel = 1;
+			Ability nextStatAbility = null;
+			
+			for (Ability ability : abilities) {
+				StatAbilityInfo si = ability.getStatInfo();
+				if (si != null && si.statType == statType) {
+					nextLevel = si.level+1;
+				} 
+			}
+			
+			int nextStatId = Ability.getStatPowerupId(statType, nextLevel);
+			
+			if (nextStatId >= 0) {
+				nextStatAbility = new Ability(nextStatId, null, 0, dungeonEvents, dungeonQuery);
+			}
+			
+			return nextStatAbility;
 		}
 		
 		// go through the characters abilities and if you find a match with the buyables, move them to bought;
@@ -1366,12 +1409,6 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 			return result;
 		}
-		
-//		private Ability makeNewStatAbility(StatType statType, int value) {
-//			int id = statType.getValue() + value;
-//			//Ability ability = new Ability()
-//			return null;
-//		}
 	}
 }
 
