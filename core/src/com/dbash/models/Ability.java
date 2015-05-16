@@ -52,11 +52,35 @@ public class Ability
 	public static String NO_HIGHLIGHT_TAG = "nohighlight";
 	public static String AMBUSH_TAG = "ambush";
 	public static String STAT_TAG = "stat";
-	public static String HEALTH_STAT_TAG = "healthstat";
-	public static String MAGIC_STAT__TAG = "magicstat";
-	public static String ATTACK_STAT_TAG = "attackstat";
-	public static String DEFEND_STAT_TAG = "defendstat";
-	public static String STEALTH_STAT_TAG = "stealthstat";
+	
+	public static enum StatType {
+        HEALTH("health"), 
+        MAGIC("magic"), 
+        ATTACK("attSkill"), 
+        DEFEND("defSkill"),
+        STEALTH("stealth"),
+        SPEED("speed");
+        
+        private String value;
+
+        private StatType(String value) {
+                this.value = value;
+        }
+        
+        private static final HashMap<String, StatType> _map = new HashMap<String, StatType>();
+        static {
+            for (StatType statType : StatType.values())
+                _map.put(statType.value, statType);
+        }
+
+        public static StatType from(String value) {
+            return _map.get(value);
+        }
+        
+        public String getValue() {
+        	return value;
+        }
+	}; 
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -112,6 +136,8 @@ public class Ability
 	public int usageCount = 0;  // Every time an ability is used, this number is incremented for ordering the selection list.
 	
 	public int turnsUntilCooldown;
+	
+	static protected ArrayList<StatAbilityInfo> possibleStatPowerups;
 	
 	public static int getIdForName(String name) {
 		for (int i=0; i<abilityData.size();i++) {
@@ -778,27 +804,62 @@ public class Ability
 		return finalIndex+1;
 	}	
 
-
+	public static ArrayList<StatAbilityInfo> getStatPowerups() {
+		return possibleStatPowerups;
+	}
+	
+	public static class StatAbilityInfo {
+		public int id;
+		public StatType statType;
+		public int level;
+	}
+	
 	private void initializeData() {
 		int 	index = 0;
 		String	abilities = new TextResourceIdentifier("a.txt").getFileContents();
-
+		possibleStatPowerups = new ArrayList<StatAbilityInfo>();
+		
 		while (index < abilities.length()) {
 			index = addNextAbility(abilities, index);
 		}
+
+		for (int i=0; i<abilityData.size();i++) {
+			String tag = abilityData.get(i).tag;
+			String[] tags = tag.split("\\.");
+			for (String t : tags) {
+				if (t.equals(STAT_TAG)) {
+					String[] typeTags = tags[1].split("-");
+					StatAbilityInfo si = new StatAbilityInfo();
+					si.id = i;
+					si.statType = StatType.from(typeTags[0]);
+					si.level = Integer.parseInt(typeTags[1]);
+					possibleStatPowerups.add(si);
+				}
+			}
+		}
+	}
+	
+	public static int getStatPowerupId(StatType statType, int level) {
+		for (StatAbilityInfo si : possibleStatPowerups) {
+			if (si.statType == statType && si.level == level) {
+				return si.id;
+			}
+		}
+		
+		return -1;
 	}
 
 	public boolean meetsNeeds(boolean head, boolean hands, boolean humanoid) {
 		boolean result = true;
 	
 		if (ability.needs == NEEDS_HEAD)
-				result = head;
+			result = head;
 
 		if (ability.needs == NEEDS_HANDS)
-				result = hands;
+			result = hands;
 
 		if (ability.needs == NEEDS_HUMANOID)
-				result = humanoid;
+			result = humanoid;
 
 		return result;
 	}

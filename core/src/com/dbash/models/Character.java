@@ -1322,23 +1322,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	 * 8) if it is a stat ability, any stat ability of that type is removed form the 'buyable' list first.
 	 * 
 	 */
-	public enum StatType {
-        HEALTH(1000), 
-        MAGIC(2000), 
-        ATTACK(3000), 
-        DEFEND(4000),
-        STEALTH(5000);
-        
-        private int value;
-
-        private StatType(int value) {
-                this.value = value;
-        }
-        
-        public int getValue() {
-        	return value;
-        }
-	};   
+  
 	
 	public class PowerupState {
 
@@ -1352,6 +1336,9 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		private ArrayList<Ability> calcBuyableAbilities() {
 			ArrayList<Ability> buyables = new ArrayList<Ability>();
+			
+			buyables.addAll(possiblePowerups);
+			
 			
 			return buyables;
 		}
@@ -1380,11 +1367,11 @@ public class Character extends Creature implements IPresenterCharacter {
 			return result;
 		}
 		
-		private Ability makeNewStatAbility(StatType statType, int value) {
-			int id = statType.getValue() + value;
-			//Ability ability = new Ability()
-			return null;
-		}
+//		private Ability makeNewStatAbility(StatType statType, int value) {
+//			int id = statType.getValue() + value;
+//			//Ability ability = new Ability()
+//			return null;
+//		}
 	}
 }
 
