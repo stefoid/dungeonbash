@@ -22,10 +22,10 @@ public class PowerupListElementView extends AbilityTypeListElement {
 		super(gui, abilityInfo, area);
 		
 		this.index = index;
-
+		Rect r = getIconArea(0);
 		// set effects and position
 		if (abilityInfo.abilityEffects != null) {
-			setEffects(leftSide * area.width + iconSpacer * iconArea.width);
+			setEffects(leftSide * area.width);
 		}
 
 		outlineImage = new ImageView(gui, "ELEMENT_BORDER", area);
@@ -51,13 +51,14 @@ public class PowerupListElementView extends AbilityTypeListElement {
 		outlineImage.draw(spriteBatch, x, y);
 		backgroundImage.draw(spriteBatch, x, y);
 		super.draw(spriteBatch, x, y);
-		abilityType.draw(spriteBatch, x, y);
 		
 		// item effects
-		if (abilityEffects != null) {
+		if (abilityEffects != null && abilityEffects.size() > 0) {
 			for (ImageView effect : abilityEffects) {
 				effect.draw(spriteBatch, x, y);
 			}
+		} else {
+			abilityType.draw(spriteBatch, x, y);
 		}
 	}
 	

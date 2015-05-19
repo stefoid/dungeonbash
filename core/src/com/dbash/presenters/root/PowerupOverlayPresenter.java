@@ -73,7 +73,6 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 	TextView xpText;
 	CharacterView[] charViews;
 	ButtonView okButton;
-	//ButtonView cancelButton;
 	
 	IPresenterTurnState turnProcessor;
 	List<Character> characters;
@@ -101,23 +100,16 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		this.backgroundImage = new ImageView(gui, "PORTRAIT_IMAGE", area);
 		this.mainBorder = new ImagePatchView(gui, "9patchborder", area);
 		
-		Rect chooseRect = new Rect(area, .5f);
-		chooseRect.y += area.height/3;
-		xpText = new TextView(gui, null, "Choose your team", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
-	
+		Rect chooseRect = new Rect(area, .8f);
+		chooseRect.height /= 3;
+		chooseRect.y += area.height/1.5;
+		xpText = new TextView(gui, null, "", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
+		updateXpText();
 		createNewChars();
 		
 		float buttonSpacerX = area.width/20;
 		float buttonSpacerY = area.height/20;
 		Rect buttonArea = new Rect(area.x+buttonSpacerX, area.y+buttonSpacerY, area.height/7, area.height/7);
-		
-//		cancelButton = new ButtonView(gui, touchEventProvider, buttonArea, "CANCEL_DOWN_IMAGE", 
-//				"CANCEL_IMAGE", "CANCEL_IMAGE", Audio.CLICK);
-//		cancelButton.onClick( new IClickListener() {
-//			public void processClick() {
-//				turnProcessor.cancelNewGameSelected();
-//			}
-//		});
 		
 		buttonArea.x = (float) (area.width - buttonArea.width*2.5);	
 		buttonArea.x += (float) (buttonArea.width*1.5);
@@ -134,6 +126,10 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		createNewChars();
 		
 		EventBus.getDefault().event(POWERUP_TAB_BUTTON_ON_EVENT, null);
+	}
+	
+	public void updateXpText() {
+		xpText.setText("Powerup!      XP available : " + (turnProcessor.getTotalXp() - turnProcessor.getSpentXp()));
 	}
 	
 	@Override

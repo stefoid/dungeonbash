@@ -150,8 +150,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 		return thisArea;
 	}
 	
-	private void setImageType(Rect iconArea)
-	{
+	private void setImageType(Rect iconArea) {
 		String image = abilityInfo.getAbilityTypeImageName();
 		
 		iconArea.x = leftSide * area.width;
@@ -159,8 +158,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 		abilityType = new ImageView(gui, image, iconArea);
 	}
 	
-	protected void setEffects(float posX)
-	{
+	protected void setEffects(float posX) {
 		abilityEffects = new Vector<ImageView>();
 		String image;
 		
@@ -178,8 +176,7 @@ public abstract class AbilityTypeListElement implements IListElement {
 	}
 	
 	@Override
-	public void draw(SpriteBatch spriteBatch, float x, float y)
-	{
+	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		// Draw text
 		abilityName.draw(spriteBatch, x, y);
 		
