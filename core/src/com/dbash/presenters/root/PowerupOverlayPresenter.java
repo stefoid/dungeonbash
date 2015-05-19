@@ -77,10 +77,12 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 	
 	IPresenterTurnState turnProcessor;
 	List<Character> characters;
+	public Character savedCurrentCharacter;
 	
 	public PowerupOverlayPresenter(IPresenterTurnState turnProcessor) {
 		this.turnProcessor = turnProcessor;
 		this.characters = turnProcessor.getAllCharacters();
+		savedCurrentCharacter = turnProcessor.getCharacterForTouchEvents();
 	}
 	
 	@Override
@@ -124,6 +126,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 				"START_GAME_IMAGE", "START_GAME_IMAGE", Audio.CLICK);
 		okButton.onClick( new IClickListener() {
 			public void processClick() {
+				turnProcessor.setCurrentCharacterOutsideOfTurnProcessing(savedCurrentCharacter);
 				EventBus.getDefault().event(GameStatePresenter.POWERUP_OVER, null);
 			}
 		});
@@ -176,7 +179,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 					for (CharacterView c : charViews) {
 						if (c == theCharView) {
 							c.set();
-							turnProcessor.setCurrentCharacterOutsideOfTurnProcessing(characters.get(0));
+							turnProcessor.setCurrentCharacterOutsideOfTurnProcessing(character);
 						} else {
 							c.clear();
 						}
