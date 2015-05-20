@@ -25,7 +25,7 @@ public class TextView {
 	static final float scale = 1f;
 	static float nominalTextHeight = 0;
 	public Sprite sprite;
-	protected Rect area;
+	public Rect area;
 	CharSequence text;
 	BitmapFont font;
 	ArrayList<SmoothBitmapFont> fontList;

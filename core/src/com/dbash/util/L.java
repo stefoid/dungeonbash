@@ -18,7 +18,7 @@ public class L {
 	public static int LEVEL = 1;
 	
 	public static int TORCH_DENSITY = 8;  // higher is less dense. default is 8
-	public static boolean SHOWTEXTBOXES = true;
+	public static boolean SHOWTEXTBOXES = false;
 	
 	public static int TEST_STEALTH_BONUS = 0;
 	public static int TEST_SKILL_BONUS = 0;

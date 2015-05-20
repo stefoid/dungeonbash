@@ -3,12 +3,16 @@ package com.dbash.presenters.tabs;
 import java.util.ArrayList;
 
 import com.dbash.models.Character;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.platform.ImageView;
+import com.dbash.platform.TextView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.util.Rect;
+import com.dbash.util.Rect.HAlignment;
+import com.dbash.util.Rect.VAlignment;
 
 
 public class PowerupListElementView extends AbilityTypeListElement {
@@ -17,6 +21,8 @@ public class PowerupListElementView extends AbilityTypeListElement {
 	protected ImageView backgroundImage;
 	protected ImageView outlineImage;
 	public int index = 0;
+	
+	protected TextView	xpCostText;
 	
 	public PowerupListElementView(UIDepend gui, Character currentCharacter, AbilityInfo abilityInfo, Rect area, int index) {
 		super(gui, abilityInfo, area);
@@ -28,6 +34,13 @@ public class PowerupListElementView extends AbilityTypeListElement {
 			setEffects(leftSide * area.width);
 		}
 
+		float y = abilityName.area.y;
+		float h = abilityName.area.height;
+		Rect numRect = new Rect(area, .5f, .05f, 0f, 0f);
+		numRect.y = y;
+		numRect.height = h;
+		
+		xpCostText = new TextView(gui, null,""+abilityInfo.xpCost+" XP", numRect, HAlignment.RIGHT, VAlignment.CENTER, Color.WHITE);
 		outlineImage = new ImageView(gui, "ELEMENT_BORDER", area);
 		setBackgroundImage();
 	}
@@ -51,6 +64,7 @@ public class PowerupListElementView extends AbilityTypeListElement {
 		outlineImage.draw(spriteBatch, x, y);
 		backgroundImage.draw(spriteBatch, x, y);
 		super.draw(spriteBatch, x, y);
+		xpCostText.draw(spriteBatch, x, y);
 		
 		// item effects
 		if (abilityEffects != null && abilityEffects.size() > 0) {

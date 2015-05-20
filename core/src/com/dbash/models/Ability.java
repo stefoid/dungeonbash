@@ -880,6 +880,10 @@ public class Ability
 			return true;
 	}	
 
+	public int getXpCost() {
+		return ability.value;
+	}
+	
 	protected boolean needsSetting() {
 		if ((ability.invokingStrategy == SELECTABLE) || 
 		(ability.invokingStrategy == INSTANT_ABILITY) || 

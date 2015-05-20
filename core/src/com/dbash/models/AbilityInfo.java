@@ -100,6 +100,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 		isCool = ability.isCool();
 		cooldownTurnsLeft = ability.getTurnsUntilCooldown();
 		cooldownPeriod = ability.getCooldownPeriod();
+		xpCost = ability.getXpCost();
 		
 		if (owner != null) {
 			canBeCarried = true;
