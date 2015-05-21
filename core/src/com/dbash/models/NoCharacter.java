@@ -57,6 +57,15 @@ public class NoCharacter extends Character {
 	public void movementGesture(int direction, DungeonPosition postition) {
 	}
 
+	public PowerupList getAvailablePowerupList() {
+		return new PowerupList();
+	}
+
+	@Override
+	public PowerupList getPurchasedPowerupList() {
+		return new PowerupList();
+	}
+	
 	@Override
 	public void onChangeToAbilitySelectionList(UIInfoListener listener) {
 	};

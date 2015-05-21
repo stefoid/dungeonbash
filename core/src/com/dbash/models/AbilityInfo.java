@@ -33,7 +33,7 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public boolean		enoughMagic = false;	
 	public int			sortValue = 0;
 	public boolean 		currentySelected = false;
-	public int 			creates = -1;  // Does this ability crete another?
+	public int 			creates = -1;  // Does this ability create another?
 	public boolean 		oneShot;
 	public boolean 		isStat = false;
 	public String 		statText;
@@ -57,6 +57,9 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public int meleeDamage;
 	public int missileDamage;
 	
+	public boolean isAffordable;
+	public boolean isAvailable;
+	
 	public int xpCost = 0;
 	public PowerupState powerupState;
 	
@@ -65,7 +68,8 @@ public class AbilityInfo implements Comparable<AbilityInfo> {
 	public AbilityInfo(Ability ability, Creature owner)
 	{
 		Data details = ability.ability;
-		
+		isAffordable = true;
+		isAvailable = true;
 		this.ability = ability;  // A pointer to the actual ability this presentation data belongs to.
 		
 		name = new String(details.name);

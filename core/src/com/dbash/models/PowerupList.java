@@ -18,7 +18,7 @@ public class PowerupList extends ArrayList<AbilityInfo>{
 	
 	public Character owner;
 	
-	public PowerupList(Character owner, List<Ability> buyables) {
+	public PowerupList(Character owner, List<Ability> powerups, boolean available, int availableXp) {
 		
 		super();
 		
@@ -29,8 +29,12 @@ public class PowerupList extends ArrayList<AbilityInfo>{
 		// Sort list according to type
 		//info.sortValue = info.abilityType.val;
 		
-		for (Ability ability : buyables) {
+		for (Ability ability : powerups) {
 			AbilityInfo info = new AbilityInfo(ability, owner);
+			info.isAvailable = available;
+			if (available && info.xpCost > availableXp) {
+				info.isAffordable = false;
+			}
 			add(info);
 		}
 		

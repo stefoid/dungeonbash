@@ -69,6 +69,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	final Character me = this;
 	static int charCounter = 1;
 	
+	
 	private class Complaint {
 		public int complaints = 0;
 		
@@ -102,6 +103,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 	boolean amSolo;
 	
+	private PowerupState powerupState;
 	
 	protected ShouldMoveStrategy shouldMove = new ShouldMoveStrategy();
 	//Sprite manSprite = FileManager.createSpriteFromSingleImage("res/fresh/b.png", 1.0f);
@@ -1287,24 +1289,43 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	@Override
 	public PowerupList getAvailablePowerupList() {
-		PowerupState pus = new PowerupState();
-		PowerupList pup = new PowerupList(this, pus.buyableAbilities);
+		int availableXp = 0;
+		if (turnProcessor != null) {
+			availableXp = turnProcessor.getTotalXp() - turnProcessor.getSpentXp();
+		}
+		PowerupList pup = new PowerupList(this, powerupState.buyableAbilities, true, availableXp);
 		return pup;
 	}
 
 	@Override
 	public PowerupList getPurchasedPowerupList() {
-		PowerupList pup = new PowerupList(this, new ArrayList<Ability>());
+		PowerupList pup = new PowerupList(this, powerupState.boughtAbilities, false, 0);
 		return pup;
 	}
 
 	@Override
 	public boolean buyPowerup(Ability ability) {
-		return false;
+		addAbility(ability, null);			// TODO is this al I have to do
+		powerupState.buyAbility(ability);
+		int spentXp = turnProcessor.getSpentXp();
+		turnProcessor.setSpentXp(spentXp - ability.getXpCost());
+		powerupListListeners.alertListeners();
+		
+		return true;
 	}
 
 	@Override
 	public void sellPowerup(Ability ability) {
+		abilities.remove(ability);			// TODO is this al I have to do
+		ability.setOwned(this, false);
+		powerupState.sellAbility(ability);
+		int spentXp = turnProcessor.getSpentXp();
+		turnProcessor.setSpentXp(spentXp + ability.getXpCost());
+		powerupListListeners.alertListeners();
+	}
+	
+	public void startPowerup() {
+		powerupState = new PowerupState();
 	}
 	
 	/**
@@ -1323,8 +1344,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	 * 8) if it is a stat ability, any stat ability of that type is removed form the 'buyable' list first.
 	 * 
 	 */
-  
-	
 	public class PowerupState {
 
 		public ArrayList<Ability> buyableAbilities;
@@ -1386,18 +1405,28 @@ public class Character extends Creature implements IPresenterCharacter {
 			return nextStatAbility;
 		}
 		
-		// go through the characters abilities and if you find a match with the buyables, move them to bought;
-		private ArrayList<Ability> calcBoughtAbilities() {
-			ArrayList<Ability> bought = new ArrayList<Ability>();
-			for (Ability ability : abilities) {
-				Ability match = findSameType(ability, buyableAbilities);
-				if (match != null) {
-					buyableAbilities.remove(match);
-					bought.add(match);
-				}
-			}
-			return boughtAbilities;
+		public void buyAbility(Ability ability) {
+			boughtAbilities.add(ability);
+			calcBuyableAbilities();
 		}
+		
+		public void sellAbility(Ability ability) {
+			boughtAbilities.remove(ability);
+			calcBuyableAbilities();
+		}
+		
+//		// go through the characters abilities and if you find a match with the buyables, move them to bought;
+//		private ArrayList<Ability> calcBoughtAbilities() {
+//			ArrayList<Ability> bought = new ArrayList<Ability>();
+//			for (Ability ability : abilities) {
+//				Ability match = findSameType(ability, buyableAbilities);
+//				if (match != null) {
+//					buyableAbilities.remove(match);
+//					bought.add(match);
+//				}
+//			}
+//			return boughtAbilities;
+//		}
 		
 		private Ability findSameType(Ability ability, List<Ability> list) {
 			Ability result = null;

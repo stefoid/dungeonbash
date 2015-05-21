@@ -52,7 +52,6 @@ public interface IPresenterCharacter {
 	public void onChangeToPowerup(UIInfoListener listener);
 	public PowerupList getAvailablePowerupList();
 	public PowerupList getPurchasedPowerupList();
-	
 	public boolean buyPowerup(Ability ability);
 	public void sellPowerup(Ability ability);
 	

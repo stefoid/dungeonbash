@@ -48,9 +48,13 @@ public class PowerupListElementView extends AbilityTypeListElement {
 	public void setBackgroundImage() {
 		String dbImage = "ABILITY_DISABLED_IMAGE";
 
-		if (abilityInfo.isCarried) {
-			dbImage = "POWERUP_AVAILABLE_IMAGE";
-		} else if (abilityInfo.canBeCarried) {
+		if (abilityInfo.isAvailable) {
+			if (abilityInfo.isAffordable == false) {
+				dbImage = "ABILITY_DISABLED_IMAGE";
+			} else {
+				dbImage = "POWERUP_AVAILABLE_IMAGE";
+			}
+		} else {
 			dbImage = "POWERUP_BOUGHT_IMAGE";
 		} 
 		

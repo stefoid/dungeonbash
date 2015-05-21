@@ -10,11 +10,9 @@ import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.Audio;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ISelectionListener;
 import com.dbash.presenters.widgets.ListPresenter;
-import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -45,20 +43,19 @@ public class PowerupListPresenter extends ListPresenter{
 		for (AbilityInfo abilityInfo : availablePowerupList) {
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
-//			abilityInfo.isUsableByOwner = character.canUseAbility(ability);
-//			abilityInfo.canBeCarried = character.canCarry(ability);
+			final boolean canAfford = abilityInfo.isAffordable;
+			
 			final PowerupListElementView element = new PowerupListElementView(gui, character, abilityInfo, elementArea, index++);
 			element.addToList(elements);
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
 					if (ability != null) { 
-						boolean pickupAllowed = model.presenterTurnState.itemPickupSelected(character, ability);
-						if (pickupAllowed == false) {
+						if (canAfford == false) {
 							gui.audio.playSound(Audio.NEGATIVE);
 						} else {
 							saveListPosition();  // do this first because processing the ability will create a new list
-							character.performPickup(ability);
-							element.abilityInfo.isCarried = true;
+							character.buyPowerup(ability);
+							element.abilityInfo.isAvailable = false;
 							element.setBackgroundImage();
 							scrollItem(element);
 						}
@@ -76,10 +73,10 @@ public class PowerupListPresenter extends ListPresenter{
 			final Ability ability = abilityInfo.ability;
 			element.onSelection(new ISelectionListener() {
 				public void processSelection() {
-					if (ability != null && model.presenterTurnState.itemDropSelected()) {
+					if (ability != null) {
 						saveListPosition();  // do this first because processing the ability will create a new list
-						character.itemDropSelected(ability);
-						element.abilityInfo.isCarried = false;
+						character.sellPowerup(ability);
+						element.abilityInfo.isAvailable = true;
 						element.setBackgroundImage();
 						scrollItem(element);
 					} else {

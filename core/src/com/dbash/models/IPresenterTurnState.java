@@ -58,7 +58,7 @@ public interface IPresenterTurnState {
 	// eye mode
 	public void usingEye(boolean usingEye);
 	
-	// XP
+	// XP / powerupstate
 	public int getSpentXp();
 	public int getTotalXp();
 	public void setSpentXp(int spentXp);

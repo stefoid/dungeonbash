@@ -699,6 +699,7 @@ public class TurnProcessor implements IPresenterTurnState {
 						acceptInput = true;
 						if (allCharacters.size() == charactersFallingOut.size()) {
 							powerUp = true;
+							startPowerup();
 							EventBus.getDefault().event(GameStatePresenter.POWERUP_START, tp);
 						}
 					}
@@ -1111,5 +1112,11 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void setSpentXp(int spentXp) {
 		gameStats.spentXp = spentXp;
+	}
+
+	public void startPowerup() {
+		for (Character character : allCharacters) {
+			character.startPowerup();
+		}
 	}
 }
