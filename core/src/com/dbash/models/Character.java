@@ -1284,6 +1284,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	
 	@Override
 	public void onChangeToPowerup(UIInfoListener listener) {
+		powerupListListeners.clear();
 		powerupListListeners.add(listener);
 	}
 
@@ -1305,12 +1306,11 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	@Override
 	public boolean buyPowerup(Ability ability) {
-		addAbility(ability, null);			// TODO is this al I have to do
+		addAbility(ability, null);			// TODO is this all I have to do
 		powerupState.buyAbility(ability);
 		int spentXp = turnProcessor.getSpentXp();
 		turnProcessor.setSpentXp(spentXp - ability.getXpCost());
 		powerupListListeners.alertListeners();
-		
 		return true;
 	}
 
@@ -1407,12 +1407,12 @@ public class Character extends Creature implements IPresenterCharacter {
 		
 		public void buyAbility(Ability ability) {
 			boughtAbilities.add(ability);
-			calcBuyableAbilities();
+			buyableAbilities = calcBuyableAbilities();
 		}
 		
 		public void sellAbility(Ability ability) {
 			boughtAbilities.remove(ability);
-			calcBuyableAbilities();
+			buyableAbilities = calcBuyableAbilities();
 		}
 		
 //		// go through the characters abilities and if you find a match with the buyables, move them to bought;

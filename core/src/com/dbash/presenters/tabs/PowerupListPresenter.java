@@ -39,7 +39,7 @@ public class PowerupListPresenter extends ListPresenter{
 		availablePowerupList = character.getAvailablePowerupList();
 		purchasedPowerupList = character.getPurchasedPowerupList();
 		int index = 0;
-		// add the things on the dungeon floor at this spot.
+		
 		for (AbilityInfo abilityInfo : availablePowerupList) {
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
@@ -64,7 +64,7 @@ public class PowerupListPresenter extends ListPresenter{
 			});
 		}
 		
-		// add the character inventory to the list.
+		
 		for (AbilityInfo abilityInfo : purchasedPowerupList) {
 			final PowerupListElementView element = new PowerupListElementView(gui, character, abilityInfo, elementArea, index++);
 			element.addToList(elements);
@@ -112,16 +112,16 @@ public class PowerupListPresenter extends ListPresenter{
 	public void scrollItem(PowerupListElementView element) {
 		// Build new list.
 		Character character = model.presenterTurnState.getCurrentCharacter();
-		PowerupList newAvailablePowerupList = character.getAvailablePowerupList();
-		PowerupList currentPurchasedPowerupList = character.getPurchasedPowerupList();
-		for (AbilityInfo abilityInfo : currentPurchasedPowerupList) {
-			newAvailablePowerupList.add(abilityInfo);
+		PowerupList newCombinedList = character.getAvailablePowerupList();
+		PowerupList newPurchasedPowerupList = character.getPurchasedPowerupList();
+		for (AbilityInfo abilityInfo : newPurchasedPowerupList) {
+			newCombinedList.add(abilityInfo);
 		}
 		
 		// Now find position of ability within that.
 		int count = 0;
-		for (AbilityInfo abilityInfo : newAvailablePowerupList) {
-			if (abilityInfo.ability == element.abilityInfo.ability) {
+		for (AbilityInfo abilityInfo : newCombinedList) {
+			if (abilityInfo.ability.getId() == element.abilityInfo.ability.getId()) {
 				break;
 			} else {
 				count++;
