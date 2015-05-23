@@ -40,6 +40,27 @@ public class PowerupListPresenter extends ListPresenter{
 		purchasedPowerupList = character.getPurchasedPowerupList();
 		int index = 0;
 		
+		for (AbilityInfo abilityInfo : purchasedPowerupList) {
+			final PowerupListElementView element = new PowerupListElementView(gui, character, abilityInfo, elementArea, index++);
+			element.addToList(elements);
+
+			// add the closure to the element about what to do if it is selected.
+			final Ability ability = abilityInfo.ability;
+			element.onSelection(new ISelectionListener() {
+				public void processSelection() {
+					if (ability != null) {
+						saveListPosition();  // do this first because processing the ability will create a new list
+						character.sellPowerup(ability);
+						element.abilityInfo.isAvailable = true;
+						element.setBackgroundImage();
+						scrollItem(element);
+					} else {
+						gui.audio.playSound(Audio.NEGATIVE);
+					}
+				}
+			});
+		}
+		
 		for (AbilityInfo abilityInfo : availablePowerupList) {
 			// add the closure to the element about what to do if it is selected.
 			final Ability ability = abilityInfo.ability;
@@ -59,28 +80,6 @@ public class PowerupListPresenter extends ListPresenter{
 							element.setBackgroundImage();
 							scrollItem(element);
 						}
-					}
-				}
-			});
-		}
-		
-		
-		for (AbilityInfo abilityInfo : purchasedPowerupList) {
-			final PowerupListElementView element = new PowerupListElementView(gui, character, abilityInfo, elementArea, index++);
-			element.addToList(elements);
-
-			// add the closure to the element about what to do if it is selected.
-			final Ability ability = abilityInfo.ability;
-			element.onSelection(new ISelectionListener() {
-				public void processSelection() {
-					if (ability != null) {
-						saveListPosition();  // do this first because processing the ability will create a new list
-						character.sellPowerup(ability);
-						element.abilityInfo.isAvailable = true;
-						element.setBackgroundImage();
-						scrollItem(element);
-					} else {
-						gui.audio.playSound(Audio.NEGATIVE);
 					}
 				}
 			});
@@ -112,9 +111,9 @@ public class PowerupListPresenter extends ListPresenter{
 	public void scrollItem(PowerupListElementView element) {
 		// Build new list.
 		Character character = model.presenterTurnState.getCurrentCharacter();
-		PowerupList newCombinedList = character.getAvailablePowerupList();
-		PowerupList newPurchasedPowerupList = character.getPurchasedPowerupList();
-		for (AbilityInfo abilityInfo : newPurchasedPowerupList) {
+		PowerupList newCombinedList = character.getPurchasedPowerupList();
+		PowerupList newAvailablePowerupList = character.getAvailablePowerupList(); 
+		for (AbilityInfo abilityInfo : newAvailablePowerupList) {
 			newCombinedList.add(abilityInfo);
 		}
 		

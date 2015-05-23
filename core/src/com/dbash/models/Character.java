@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -1306,21 +1307,18 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	@Override
 	public boolean buyPowerup(Ability ability) {
-		addAbility(ability, null);			// TODO is this all I have to do
-		powerupState.buyAbility(ability);
 		int spentXp = turnProcessor.getSpentXp();
-		turnProcessor.setSpentXp(spentXp - ability.getXpCost());
+		turnProcessor.setSpentXp(spentXp + ability.getXpCost());
+		powerupState.buyAbility(ability);
 		powerupListListeners.alertListeners();
 		return true;
 	}
 
 	@Override
 	public void sellPowerup(Ability ability) {
-		abilities.remove(ability);			// TODO is this al I have to do
-		ability.setOwned(this, false);
-		powerupState.sellAbility(ability);
 		int spentXp = turnProcessor.getSpentXp();
-		turnProcessor.setSpentXp(spentXp + ability.getXpCost());
+		turnProcessor.setSpentXp(spentXp - ability.getXpCost());
+		powerupState.sellAbility(ability, this);
 		powerupListListeners.alertListeners();
 	}
 	
@@ -1362,9 +1360,11 @@ public class Character extends Creature implements IPresenterCharacter {
 			for (Ability ability : abilities) {
 				Ability dupe = findSameType(ability, possiblePowerups);
 				if (dupe != null) {
-					possiblePowerups.remove(dupe);
+					buyables.remove(dupe);
 				}
 			}
+			
+			
 			
 			// For each stat ability we have, add the next one in the list to possibles
 			addNextStatAbility(StatType.HEALTH, buyables);
@@ -1373,7 +1373,6 @@ public class Character extends Creature implements IPresenterCharacter {
 			addNextStatAbility(StatType.DEFEND, buyables);
 			addNextStatAbility(StatType.SPEED, buyables);
 			addNextStatAbility(StatType.STEALTH, buyables);
-			
 			
 			return buyables;
 		}
@@ -1405,28 +1404,46 @@ public class Character extends Creature implements IPresenterCharacter {
 			return nextStatAbility;
 		}
 		
+		private void removeFromList(StatType statType, List<Ability> list) {
+			Iterator<Ability> iter = list.iterator();
+			while (iter.hasNext()) {
+				Ability ability = iter.next();
+				Ability.StatAbilityInfo statInfo = ability.getStatInfo();
+				if (statInfo != null && statInfo.statType == statType) {
+					iter.remove();
+				}
+			}
+		}
+		
+		// remove any *similar stat* ability from the character and bought abilities and replace it with this one.
 		public void buyAbility(Ability ability) {
+			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
+			if (statInfo != null) {
+				removeFromList(statInfo.statType, abilities);
+				removeFromList(statInfo.statType, boughtAbilities);
+			}
+			addAbility(ability, null);			
 			boughtAbilities.add(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}
 		
-		public void sellAbility(Ability ability) {
+		// remove *this exact* ability from character and bought abilities and *optionally* replace with the earlier one
+		public void sellAbility(Ability ability, Creature creature) {
+			abilities.remove(ability);			
+			boughtAbilities.remove(ability);
+			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
+			if (statInfo != null) {
+				if (statInfo.level > 1) {
+					int prevId = Ability.getStatPowerupId(statInfo.statType, statInfo.level - 1);
+					Ability prevAbility = new Ability(prevId, null, 0, dungeonEvents, dungeonQuery);
+					abilities.add(prevAbility);
+					boughtAbilities.add(prevAbility); // TODO this is not the case - we need to keep track of start levels for each stat.
+				}
+			}
+			ability.setOwned(creature, false);
 			boughtAbilities.remove(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}
-		
-//		// go through the characters abilities and if you find a match with the buyables, move them to bought;
-//		private ArrayList<Ability> calcBoughtAbilities() {
-//			ArrayList<Ability> bought = new ArrayList<Ability>();
-//			for (Ability ability : abilities) {
-//				Ability match = findSameType(ability, buyableAbilities);
-//				if (match != null) {
-//					buyableAbilities.remove(match);
-//					bought.add(match);
-//				}
-//			}
-//			return boughtAbilities;
-//		}
 		
 		private Ability findSameType(Ability ability, List<Ability> list) {
 			Ability result = null;
@@ -1438,8 +1455,23 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 			return result;
 		}
+		
+		
 	}
 }
+
+//// go through the characters abilities and if you find a match with the buyables, move them to bought;
+//private ArrayList<Ability> calcBoughtAbilities() {
+//	ArrayList<Ability> bought = new ArrayList<Ability>();
+//	for (Ability ability : abilities) {
+//		Ability match = findSameType(ability, buyableAbilities);
+//		if (match != null) {
+//			buyableAbilities.remove(match);
+//			bought.add(match);
+//		}
+//	}
+//	return boughtAbilities;
+//}
 
 ///**
 // * return 0 if there are no characters in LOS
