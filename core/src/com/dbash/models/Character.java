@@ -1455,8 +1455,11 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 			return result;
 		}
-		
-		
+	}
+	
+	@Override
+	public int getExpFactor() {
+		return 1;  // Characters dont auto-get better with XP.  They buy it.
 	}
 }
 

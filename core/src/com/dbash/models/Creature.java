@@ -1148,12 +1148,12 @@ public abstract class Creature implements IPresenterCreature
 	
 	// METHODS
 	protected int calculateAttackSkill() {
-		int newAttack = attackSkill + (attackSkill * expRoot) / 100;
+		int newAttack = attackSkill + (attackSkill * getExpFactor()) / 100;
 		return modifyValue(AbilityCommand.MODIFY_ATTACK_SKILL, newAttack);
 	}
 	
 	public int calculateDefenceSkill() {
-		int newDefence = defenceSkill + (defenceSkill * expRoot) / 100;
+		int newDefence = defenceSkill + (defenceSkill * getExpFactor()) / 100;
 		int dd = modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence);
 		if (LOG) L.log("new defence: %s", dd); 
 		return dd;
@@ -1179,11 +1179,11 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	public int calculateBaseHealth() {
-		return  maximumHealth + (maximumHealth * expRoot) / 100;
+		return  maximumHealth + (maximumHealth * getExpFactor()) / 100;
 	}
 
 	public int calculateMaxMagic() {
-		int newMaxMag = maximumMagic + (maximumMagic * expRoot) / 100;
+		int newMaxMag = maximumMagic + (maximumMagic * getExpFactor()) / 100;
 		return modifyValue(AbilityCommand.MODIFY_MAX_MAGIC, newMaxMag);
 	}
 
@@ -1197,6 +1197,10 @@ public abstract class Creature implements IPresenterCreature
 	
 	public int calculateDetect() {
 		return modifyValue(AbilityCommand.MODIFY_DETECT, detect);
+	}
+	
+	public int getExpFactor() {
+		return expRoot;
 	}
 	
 	public boolean isSolid() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
 import com.dbash.models.CreatureStats;
+import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.TouchEvent;
 import com.dbash.models.TouchEventListener;
@@ -82,6 +83,13 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		this.turnProcessor = turnProcessor;
 		this.characters = turnProcessor.getAllCharacters();
 		savedCurrentCharacter = turnProcessor.getCharacterForTouchEvents();
+		
+		EventBus.getDefault().onEvent(TurnProcessor.AVAILABLE_XP_EVENT, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				updateXpText((Integer) param);
+			}
+		});
 	}
 	
 	@Override
@@ -104,7 +112,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		chooseRect.height /= 3;
 		chooseRect.y += area.height/1.5;
 		xpText = new TextView(gui, null, "", chooseRect, HAlignment.CENTER, VAlignment.CENTER, Color.WHITE);
-		updateXpText();
+		updateXpText((turnProcessor.getTotalXp() - turnProcessor.getSpentXp()));
 		createNewChars();
 		
 		float buttonSpacerX = area.width/20;
@@ -128,8 +136,8 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		EventBus.getDefault().event(POWERUP_TAB_BUTTON_ON_EVENT, null);
 	}
 	
-	public void updateXpText() {
-		xpText.setText("Powerup!      XP available : " + (turnProcessor.getTotalXp() - turnProcessor.getSpentXp()));
+	public void updateXpText(Integer available) {
+		xpText.setText("Powerup!      XP available : " + available);
 	}
 	
 	@Override
@@ -200,6 +208,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 	public void destroy() {
 		//cancelButton.removeYourself();
 		EventBus.getDefault().event(POWERUP_TAB_BUTTON_OFF_EVENT, null);
+		EventBus.getDefault().removeAll(this);
 		okButton.removeYourself();
 		killCharButtons();
 		touchEventProvider.removeTouchEventListener(this);

@@ -23,6 +23,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final boolean LOG = false && L.DEBUG;
 	
 	public static final int NUM_CHARS = 3;
+	public static String AVAILABLE_XP_EVENT = "SPENT_XP_EVENT"; 
 	
 	public static enum GameState {
 		NO_SAVED_GAME,
@@ -1003,7 +1004,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		theChars.add(new Character(Creature.getIdForName("pit viper"), p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = theChars.get(0);
 		c.removeAbility("sling");
-//		c.addAbility(new Ability(Ability.getIdForName("wand of slow"), null, 20, dungeonEvents, dungeonQuery), null);
+		c.addAbility(new Ability(Ability.getIdForName("extra_magic"), null, 20, dungeonEvents, dungeonQuery), null);
 		return theChars;
 	}
 
@@ -1112,6 +1113,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void setSpentXp(int spentXp) {
 		gameStats.spentXp = spentXp;
+		EventBus.getDefault().event(AVAILABLE_XP_EVENT, getTotalXp() - spentXp);
 	}
 
 	public void startPowerup() {
