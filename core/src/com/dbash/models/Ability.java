@@ -56,8 +56,8 @@ public class Ability
 	public static enum StatType {
         HEALTH("health"), 
         MAGIC("magic"), 
-        ATTACK("attSkill"), 
-        DEFEND("defSkill"),
+        ATTACK("attack"), 
+        DEFEND("defence"),
         STEALTH("stealth"),
         SPEED("speed");
         
