@@ -1309,7 +1309,7 @@ public class Character extends Creature implements IPresenterCharacter {
 	public boolean buyPowerup(Ability ability) {
 		int spentXp = turnProcessor.getSpentXp();
 		turnProcessor.setSpentXp(spentXp + ability.getXpCost());
-		powerupState.buyAbility(ability);
+		powerupState.buyAbility(ability, this);
 		powerupListListeners.alertListeners();
 		return true;
 	}
@@ -1416,20 +1416,21 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		
 		// remove any *similar stat* ability from the character and bought abilities and replace it with this one.
-		public void buyAbility(Ability ability) {
+		public void buyAbility(Ability ability, Creature creature) {
 			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
 			if (statInfo != null) {
 				removeFromList(statInfo.statType, abilities);
 				removeFromList(statInfo.statType, boughtAbilities);
 			}
-			addAbility(ability, null);			
+			addAbility(ability, null);
+			creature.updateStats(ability, creature.mapPosition);
 			boughtAbilities.add(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}
 		
 		// remove *this exact* ability from character and bought abilities and *optionally* replace with the earlier one
 		public void sellAbility(Ability ability, Creature creature) {
-			abilities.remove(ability);			
+			destroyAbility(ability);			
 			boughtAbilities.remove(ability);
 			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
 			if (statInfo != null) {
@@ -1441,6 +1442,7 @@ public class Character extends Creature implements IPresenterCharacter {
 				}
 			}
 			ability.setOwned(creature, false);
+			creature.updateStats(ability, creature.mapPosition);
 			boughtAbilities.remove(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}

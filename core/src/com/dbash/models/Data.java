@@ -42,6 +42,11 @@ public	 class Data
 	public int 			detect;
 	public int 			starter;
 	public int[]		abilityIds;
+	
+	@Override
+	public String toString() {
+		return "name: " + name + ", command: " + command[0] + ", strat:" + executeStrategy[0] + ", param: " + executeParam1[0];
+	}
 
 }
 

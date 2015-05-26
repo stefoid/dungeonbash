@@ -145,7 +145,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 			backgroundImage.draw(spriteBatch, x, y);
 			mainBorder.draw(spriteBatch, x, y);
 			xpText.draw(spriteBatch, x, y);
-			for (int i=0; i<TurnProcessor.NUM_CHARS; i++) {
+			for (int i=0; i<characters.size(); i++) {
 				charViews[i].draw(spriteBatch, x, y);
 			}
 			//cancelButton.draw(spriteBatch, x, y);
@@ -160,7 +160,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 	private void createNewChars() {
 		
 		if (charViews == null) {
-			charViews = new CharacterView[TurnProcessor.NUM_CHARS];
+			charViews = new CharacterView[characters.size()];
 		}
 		
 		killCharButtons();
@@ -173,7 +173,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		charArea.x += charSpacer;
 		charArea.y += (charArea.height);
 		
-		for (int i=0; i<charViews.length;i++) {
+		for (int i=0; i<characters.size();i++) {
 			final Character character = characters.get(i);
 			charViews[i] = new CharacterView(gui, charArea, character, touchEventProvider);
 			final CharacterView theCharView = charViews[i];

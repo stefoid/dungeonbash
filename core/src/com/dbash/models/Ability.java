@@ -363,7 +363,7 @@ public class Ability
 	}
 	
 	public int executeCommandValue(AbilityCommand	command, Creature owner) {
-		if (LOG) L.log("command: %s", command.name);
+		//if (LOG) L.log("command: %s", command.name);
 		
 		int newValue = command.value;
 
@@ -415,13 +415,19 @@ public class Ability
 			
 				if (ability.executeStrategy[i] == VALUE_MODIFIER) { // change the value by the specified amount
 					newValue += ability.executeParam1[i];
+					if (LOG) L.log(ability.toString());
+					if (LOG) L.log("newValue: %s", newValue);
 				}
 				else if (ability.executeStrategy[i] == VALUE_SETTER) { // set the value to the specified amount, if the value is smaller than the ability
 					if (newValue < ability.executeParam1[i])
 						newValue = ability.executeParam1[i];
+					if (LOG) L.log(ability.toString());
+					if (LOG) L.log("newValue: %s", newValue);
 				} else if (ability.executeStrategy[i] == VALUE_MULTIPLIER) { // set the value to the specified amount, if the value is smaller than the ability
 					newValue *= ability.executeParam1[i];
 					newValue /= 100;
+					if (LOG) L.log(ability.toString());
+					if (LOG) L.log("newValue: %s", newValue);
 				}
 			}
 		}

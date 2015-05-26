@@ -5,9 +5,9 @@ public class L {
 	public static boolean DEBUG = true;
 	
 	public static boolean TESTCHARS = true;
-	public static String c1 = "halfling";
-	public static String c2 = "acid blob";
-	public static String c3 = "pit viper";
+	public static String c1 = "orc";
+	public static String c2 = "minotaur";
+	public static String c3 = "orc";
 	
 	public static boolean TUTORIAL_MODE = false;
 	
