@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1346,10 +1347,18 @@ public class Character extends Creature implements IPresenterCharacter {
 
 		public ArrayList<Ability> buyableAbilities;
 		public ArrayList<Ability> boughtAbilities;
+		public HashMap<Ability.StatType , Integer> baseLevels;
 		
 		public PowerupState() {
 			buyableAbilities = calcBuyableAbilities();
 			boughtAbilities = new ArrayList<Ability>();
+			baseLevels = new HashMap<Ability.StatType , Integer>();
+			for (Ability ability : abilities) {
+				StatAbilityInfo si = ability.getStatInfo();
+				if (si != null) {
+					baseLevels.put(si.statType,  si.level);
+				} 
+			}
 		}
 		
 		private ArrayList<Ability> calcBuyableAbilities() {
@@ -1363,8 +1372,6 @@ public class Character extends Creature implements IPresenterCharacter {
 					buyables.remove(dupe);
 				}
 			}
-			
-			
 			
 			// For each stat ability we have, add the next one in the list to possibles
 			addNextStatAbility(StatType.HEALTH, buyables);
@@ -1423,27 +1430,33 @@ public class Character extends Creature implements IPresenterCharacter {
 				removeFromList(statInfo.statType, boughtAbilities);
 			}
 			addAbility(ability, null);
-			creature.updateStats(ability, creature.mapPosition);
+			updateStats(ability, creature.mapPosition);
 			boughtAbilities.add(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}
 		
 		// remove *this exact* ability from character and bought abilities and *optionally* replace with the earlier one
 		public void sellAbility(Ability ability, Creature creature) {
-			destroyAbility(ability);			
+			abilities.remove(ability);			
 			boughtAbilities.remove(ability);
+			updateStats(ability, creature.mapPosition);
+			
 			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
 			if (statInfo != null) {
+				Integer baseLevel = baseLevels.get(statInfo.statType);
+				if (baseLevel == null) {
+					baseLevel = 0;
+				}
 				if (statInfo.level > 1) {
 					int prevId = Ability.getStatPowerupId(statInfo.statType, statInfo.level - 1);
 					Ability prevAbility = new Ability(prevId, null, 0, dungeonEvents, dungeonQuery);
 					abilities.add(prevAbility);
-					boughtAbilities.add(prevAbility); // TODO this is not the case - we need to keep track of start levels for each stat.
+					if (statInfo.level > (baseLevel+1)) {
+						boughtAbilities.add(prevAbility); 
+					}
 				}
 			}
-			ability.setOwned(creature, false);
-			creature.updateStats(ability, creature.mapPosition);
-			boughtAbilities.remove(ability);
+
 			buyableAbilities = calcBuyableAbilities();
 		}
 		
