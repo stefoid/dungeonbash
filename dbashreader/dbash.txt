@@ -231,7 +231,7 @@
 +"soldier ant,p, ,1,0,0,1,14,1,4,12,6,3,8,8,1,117,176,*"// soldier ant: bite , acid spit , 
 +"halfling,k, ,1,1,1,0,7,4,3,7,8,2,14,6,1,0,126,*"// halfling: bash , sling , 
 +"giant scorpion,o, ,1,0,0,0,16,1,4,10,8,4,4,8,1,174,*"// giant scorpion: poison sting , 
-+"orc,n,flame burst.dash.super magic,1,1,1,1,13,3,4,14,8,3,6,6,1,0,178,177,*"// orc: bash , bow , axe , 
++"orc,n,foul gas.acid attack.dash.super magic,1,1,1,1,13,3,4,14,8,3,6,6,1,0,178,177,*"// orc: bash , bow , axe , 
 +"imp,h, ,1,1,0,1,6,8,6,10,9,6,12,8,1,9,117,89,40,*"// imp: dash , bite , wand of magic missile , flight , 
 +"lesser demon,h, ,1,1,1,0,15,20,4,12,12,8,8,8,0,0,-2,-2,-3,*"// lesser demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , 
 +"demon,n, ,1,1,1,0,18,30,4,15,15,11,10,10,0,0,-2,-2,-3,-3,*"// demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , RANDOM MAGIC , 
