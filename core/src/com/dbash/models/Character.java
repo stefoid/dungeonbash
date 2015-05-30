@@ -1386,7 +1386,7 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 			}
 			addAbility(ability, null);
 			updateStats(ability, creature.mapPosition);
-			EventBus.getDefault().event(EFFECT_LIST_CHANGED, this);
+			EventBus.getDefault().event(EFFECT_LIST_CHANGED, creature);
 			boughtAbilities.add(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}
@@ -1396,7 +1396,7 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 			abilities.remove(ability);			
 			boughtAbilities.remove(ability);
 			updateStats(ability, creature.mapPosition);
-			EventBus.getDefault().event(EFFECT_LIST_CHANGED, this);
+			EventBus.getDefault().event(EFFECT_LIST_CHANGED, creature);
 			
 			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
 			if (statInfo != null) {

@@ -29,7 +29,8 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static enum GameState {
 		NO_SAVED_GAME,
 		NEW_GAME,
-		START_GAME,
+		GAME_IN_PROGRESS,
+		POWERUP,
 		GAME_OVER
 	};
 	
@@ -58,7 +59,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	public static final int INITIAL_EXP = 500;
 	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
-	private boolean powerUp = false;
 
 	// Lists to maintain what is going on.
 	// allCreatures is a list of every monster and every alive character. We
@@ -171,7 +171,7 @@ public class TurnProcessor implements IPresenterTurnState {
 				lastPause = pauseTurnProcessing;
 			}
 
-			if (!powerUp && pauseTurnProcessing == false) {
+			if (gameState != GameState.POWERUP && pauseTurnProcessing == false) {
 				processNextCreature();
 			}
 		}
@@ -598,7 +598,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			EventBus.getDefault().event(TutorialPresenter.SOLO_ON_EVENT, null);
 		}
 		
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return;
 		}
 		setSoloMode(!soloStatus);
@@ -632,7 +632,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			EventBus.getDefault().event(TutorialPresenter.STEALTH_ON_EVENT, null);
 		}
 		
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return;
 		}
 		
@@ -646,7 +646,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		if (LOG) L.log("Pass turn pressed");
 		EventBus.getDefault().event(TutorialPresenter.PASS_ON_EVENT, null);
 		
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return;
 		}
 		
@@ -661,7 +661,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override
 	public void stairDescendSelected() {
 		EventBus.getDefault().event(TutorialPresenter.LEADER_ON_EVENT, null);
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return;
 		}
 		if (acceptInput == false || currentCharacter == nobody) { // in case pounding n th descent key cheap hack
@@ -693,9 +693,7 @@ public class TurnProcessor implements IPresenterTurnState {
 					public void animEvent() {
 						acceptInput = true;
 						if (allCharacters.size() == charactersFallingOut.size()) {
-							powerUp = true;
 							startPowerup();
-							EventBus.getDefault().event(GameStatePresenter.POWERUP_START, tp);
 						}
 					}
 				});
@@ -703,16 +701,9 @@ public class TurnProcessor implements IPresenterTurnState {
 		characterEndsTurn(currentCharacter);
 	}
 	
-	@Override 
-	public void powerUpComplete() {
-		powerUp = false;
-		level++;
-		startNewLevel(level, false);
-	}
-	
 	@Override
 	public boolean itemPickupSelected(Character character, Ability ability) {
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return false;
 		}
 		
@@ -721,7 +712,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public boolean itemDropSelected() {
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return false;
 		} else {
 			return true;
@@ -730,7 +721,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public boolean abilitySelected(Character character, Ability ability) {
-		if (gameState != GameState.START_GAME) {
+		if (gameState != GameState.GAME_IN_PROGRESS) {
 			return false;
 		}
 		
@@ -788,8 +779,11 @@ public class TurnProcessor implements IPresenterTurnState {
 			case NEW_GAME:
 				event = GameStatePresenter.NEW_GAME_EVENT;
 				break;
-			case START_GAME:
+			case GAME_IN_PROGRESS:
 				event = GameStatePresenter.START_GAME_EVENT;
+				break;
+			case POWERUP:
+				event = GameStatePresenter.POWERUP_START;
 				break;
 			case GAME_OVER:
 				event = GameStatePresenter.GAME_OVER_EVENT;
@@ -996,8 +990,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		theChars.add(new Character(Creature.getIdForName("web shooter"), p, 2, dungeonEvents, dungeonQuery, this));
 		theChars.add(new Character(Creature.getIdForName("pit viper"), p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = theChars.get(0);
-		c.removeAbility("sling");
-		c.addAbility(new Ability(Ability.getIdForName("extra_magic"), null, 20, dungeonEvents, dungeonQuery), null);
+//		c.removeAbility("sling");
+//		c.addAbility(new Ability(Ability.getIdForName("extra_magic"), null, 20, dungeonEvents, dungeonQuery), null);
 		return theChars;
 	}
 
@@ -1015,7 +1009,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		charactersFallingOut = new Vector<Character>();
 		charactersFallingOut.addAll(allCharacters);
 		gameStats = new GameStats();
-		setGameState(GameState.START_GAME);
+		setGameState(GameState.GAME_IN_PROGRESS);
 		EventBus.getDefault().event(GameStatePresenter.START_GAME_EVENT, this);
 		if (tutorialMode) {
 			EventBus.getDefault().event(GameStatePresenter.START_TUTORIAL_EVENT, this);
@@ -1109,9 +1103,19 @@ public class TurnProcessor implements IPresenterTurnState {
 		EventBus.getDefault().event(AVAILABLE_XP_EVENT, getTotalXp() - spentXp);
 	}
 
-	public void startPowerup() {
+	public void startPowerup() {	
 		for (Character character : allCharacters) {
 			character.startPowerup();
 		}
+		setGameState(GameState.POWERUP);
+		sendGameStateEvent();
+	}
+	
+	@Override 
+	public void powerUpComplete() {
+		gameState = GameState.GAME_IN_PROGRESS;
+		EventBus.getDefault().event(GameStatePresenter.POWERUP_OVER, this);
+		level++;
+		startNewLevel(level, false);
 	}
 }
