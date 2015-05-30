@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.dbash.models.Ability;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
+import com.dbash.models.IEventAction;
 import com.dbash.models.ItemList;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
@@ -26,6 +27,16 @@ public class ItemListPresenter extends ListPresenter{
 	
 	public ItemListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		super(model, gui, touchEventProvider, area);
+		
+		EventBus.getDefault().onEvent(Character.ITEM_LIST_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character.isPlayerCharacter()) {
+					listInfoUpdate();
+				}
+			}
+		});
 	}
 	
 	// Called when the underlying ability list in the model changes in some way.
@@ -133,18 +144,6 @@ public class ItemListPresenter extends ListPresenter{
 		
 		// tell the scrolling list to animate that element.
 		scrollingList.scrollElement(element, element.index, count);
-	}
-	
-	@Override
-	protected void newCharacter(Character character)
-	{	
-		super.newCharacter(character);
-		
-		character.onChangeToInventory((new UIInfoListener() {
-			public void UIInfoChanged() {
-				listInfoUpdate();
-			}
-		}));
 	}
 	
 }

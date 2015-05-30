@@ -50,6 +50,14 @@ import com.dbash.util.SequenceNumber;
 public class Character extends Creature implements IPresenterCharacter {
 	public static final boolean LOG = false && L.DEBUG;
 	
+public static final String ABILITY_LIST_CHANGED = "ABILITY_LIST_CHANGED";
+public static final String EFFECT_LIST_CHANGED = "EFFECT_LIST_CHANGED";
+public static final String EFFECT_LIST_RESET = "EFFECT_LIST_RESET";
+public static final String STAT_LIST_CHANGED = "STAT_LIST_CHANGED";
+public static final String ITEM_LIST_CHANGED = "ITEM_LIST_CHANGED";
+public static final String POWERUP_LIST_CHANGED = "POWERUP_LIST_CHANGED";
+public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
+	
 	private class BestDir {
 		public BestDir () {
 			direction = DungeonPosition.NO_DIR;
@@ -108,7 +116,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	private PowerupState powerupState;
 	
 	protected ShouldMoveStrategy shouldMove = new ShouldMoveStrategy();
-	//Sprite manSprite = FileManager.createSpriteFromSingleImage("res/fresh/b.png", 1.0f);
 	LinkedList<DungeonPosition> path = new LinkedList<DungeonPosition>();
 	boolean amActiveFollower;
 	Character theLeader;
@@ -145,8 +152,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 	
 	private void initChar(final TurnProcessor turnProcessor) {
-		makeNewBagsOfListeners();
-		effectListListeners = new UIInfoListenerBag();
 		creatureStats.isCharacter = true;
 		shadowMap = new ShadowMap(this);
 		charCount = charCounter;
@@ -166,16 +171,6 @@ public class Character extends Creature implements IPresenterCharacter {
 		out.writeInt(selectedIndex);  // currently selected ability index
 	}
 
-	private void makeNewBagsOfListeners() 
-	{
-		abilityListListeners = new UIInfoListenerBag();
-		characterStatListeners = new UIInfoListenerBag();
-		itemListListeners = new UIInfoListenerBag();
-		powerupListListeners = new UIInfoListenerBag();
-		stealthStatusListeners = new UIInfoListenerBag();
-	}
-
-	
 	private void alertThatIAmTheCurrentCharacter()
 	{
 		turnProcessor.setCurrentCharacter(this);
@@ -730,17 +725,10 @@ public class Character extends Creature implements IPresenterCharacter {
 
 	private boolean characterIsUsingEye = false;
 	
-	private UIInfoListenerBag abilityListListeners;
-	private UIInfoListenerBag effectListListeners;
-	private UIInfoListenerBag characterStatListeners;
-	private UIInfoListenerBag itemListListeners;
-	private UIInfoListenerBag powerupListListeners;
-	private UIInfoListenerBag stealthStatusListeners;
-	
 	// METHODS
 	@Override
 	protected void death() {
-		effectListListeners.clear();
+		//effectListListeners.clear();
 		super.death();
 		isAlive = false;
 		boolean shouldDropstuff = turnProcessor.characterDied(this);
@@ -795,12 +783,6 @@ public class Character extends Creature implements IPresenterCharacter {
 			visualStatusListener.UIInfoChanged();
 		}
 		super.endTurn();
-		makeNewBagsOfListeners(); // easiest way of throwing away old listeners without concurrency issues.
-	}
-
-	@Override
-	public void onChangeToAbilitySelectionList(UIInfoListener listener) {
-		abilityListListeners.add(listener);
 	}
 
 	@Override
@@ -822,7 +804,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			return false;
 		}
 		
-		effectListListeners.resetList();
+		EventBus.getDefault().event(EFFECT_LIST_RESET, this);
 		
 		// This will set/unset selectable items such as melee weapons and armor.
 		// It will activate instant or oneshot items
@@ -850,10 +832,10 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		
 		// alert the list to reflect changes in the model.
-		abilityListListeners.alertListeners();
+		EventBus.getDefault().event(ABILITY_LIST_CHANGED, this);
 		
 		// alert effectpresenter to change.
-		effectListListeners.alertListeners();
+		EventBus.getDefault().event(EFFECT_LIST_CHANGED, this);
 		
 		// if a one-shot, then thats it.
 		if (ability.invokeFinishesTurn()) {
@@ -941,16 +923,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	public Character getReleventCharacter() {
 		return this;
 	}
-
-	@Override
-	public void onChangeToCharacterStats(UIInfoListener listener) {
-		characterStatListeners.add(listener);
-	}
-
-	@Override
-	public void onChangeToStealthStatus(UIInfoListener listener) {
-		stealthStatusListeners.add(listener);
-	}
 	
 	@Override
 	public CreatureStats getCharacterStats() {
@@ -962,15 +934,10 @@ public class Character extends Creature implements IPresenterCharacter {
 		boolean statsChanged = super.updateStats(ab, pos);
 		
 		if (statsChanged) {
-			characterStatListeners.alertListeners();
+			EventBus.getDefault().event(STAT_LIST_CHANGED, this);
 		}
 		
 		return statsChanged;
-	}
-
-	@Override
-	public void onChangeToEffectList(UIInfoListener listener) {
-		effectListListeners.add(listener);
 	}
 
 	@Override
@@ -1088,7 +1055,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		}
 		dropObject(ability);
 		trySetDefaultMelee();
-		itemListListeners.alertListeners();
+		EventBus.getDefault().event(ITEM_LIST_CHANGED, this);
 		
 		// if the item dropped was equipped, it could affect headline stats and highlighted ability
 		updateStats(null, null);
@@ -1112,7 +1079,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		int result = super.respondAttack(attack, attacker);
 		
 		if (result >= 0) {
-			characterStatListeners.alertListeners();
+			EventBus.getDefault().event(STAT_LIST_CHANGED, this);
 		}
 		
 		return result;
@@ -1146,7 +1113,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			hide(this);
 		}
 
-		stealthStatusListeners.alertListeners();
+		EventBus.getDefault().event(STEALTH_LIST_CHANGED, this);
 	}
 	
 	private boolean fallComplete = true;
@@ -1171,7 +1138,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			if (canHide == false) {
 				notHiding(this);
 				stealthStatus = StealthStatus.HIDING_IMPOSSIBLE;
-				stealthStatusListeners.alertListeners();
+				EventBus.getDefault().event(STEALTH_LIST_CHANGED, this);
 				// special case when a hidden character is uncovered, we have to reset its own visual flags.
 //				if (currentlySeenByMonster == false) {
 //					dungeonQuery.checkForCloseToMonster(this);
@@ -1181,13 +1148,13 @@ public class Character extends Creature implements IPresenterCharacter {
 		case HIDING_POSSIBLE:
 			if (canHide == false) {
 				stealthStatus = StealthStatus.HIDING_IMPOSSIBLE;
-				stealthStatusListeners.alertListeners();
+				EventBus.getDefault().event(STEALTH_LIST_CHANGED, this);
 			}
 			break;
 		case HIDING_IMPOSSIBLE:
 			if (canHide) {
 				stealthStatus = StealthStatus.HIDING_POSSIBLE;
-				stealthStatusListeners.alertListeners();
+				EventBus.getDefault().event(STEALTH_LIST_CHANGED, this);
 			}
 			break;
 		}
@@ -1255,11 +1222,6 @@ public class Character extends Creature implements IPresenterCharacter {
 	}
 
 	@Override
-	public void onChangeToInventory(UIInfoListener listener) {
-		itemListListeners.add(listener);
-	}
-
-	@Override
 	public ItemList getItemList() {
 		return new ItemList(this, false);
 	}
@@ -1270,7 +1232,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			dungeonEvents.objectPickup(SequenceNumber.getNext(), this, ability, mapPosition);
 			abilities.add(0, ability);
 			ability.setOwned(this, true);
-			itemListListeners.alertListeners();
+			EventBus.getDefault().event(ITEM_LIST_CHANGED, this);
 		} 
 	}
 	
@@ -1281,13 +1243,6 @@ public class Character extends Creature implements IPresenterCharacter {
 		} else {
 			return false;
 		}
-	}
-	
-	
-	@Override
-	public void onChangeToPowerup(UIInfoListener listener) {
-		powerupListListeners.clear();
-		powerupListListeners.add(listener);
 	}
 
 	@Override
@@ -1311,7 +1266,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		int spentXp = turnProcessor.getSpentXp();
 		turnProcessor.setSpentXp(spentXp + ability.getXpCost());
 		powerupState.buyAbility(ability, this);
-		powerupListListeners.alertListeners();
+		EventBus.getDefault().event(POWERUP_LIST_CHANGED, this);
 		return true;
 	}
 
@@ -1320,7 +1275,7 @@ public class Character extends Creature implements IPresenterCharacter {
 		int spentXp = turnProcessor.getSpentXp();
 		turnProcessor.setSpentXp(spentXp - ability.getXpCost());
 		powerupState.sellAbility(ability, this);
-		powerupListListeners.alertListeners();
+		EventBus.getDefault().event(POWERUP_LIST_CHANGED, this);
 	}
 	
 	public void startPowerup() {
@@ -1431,6 +1386,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			}
 			addAbility(ability, null);
 			updateStats(ability, creature.mapPosition);
+			EventBus.getDefault().event(EFFECT_LIST_CHANGED, this);
 			boughtAbilities.add(ability);
 			buyableAbilities = calcBuyableAbilities();
 		}
@@ -1440,6 +1396,7 @@ public class Character extends Creature implements IPresenterCharacter {
 			abilities.remove(ability);			
 			boughtAbilities.remove(ability);
 			updateStats(ability, creature.mapPosition);
+			EventBus.getDefault().event(EFFECT_LIST_CHANGED, this);
 			
 			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
 			if (statInfo != null) {

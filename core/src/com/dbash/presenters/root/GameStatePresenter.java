@@ -16,6 +16,7 @@ public class GameStatePresenter {
 	EventBus eventBus;
 	UIDepend gui;
 	TutorialPresenter tutorialPresenter;
+	OverlayPresenter powerupPresenter;
 	PresenterDepend model;
 
 	public static final String GAME_OVER_EVENT = "gameover";
@@ -27,6 +28,7 @@ public class GameStatePresenter {
 	public static final String TUTORIAL_OVER_EVENT = "tutorialover";
 	public static final String POWERUP_START = "POWERUP_START";
 	public static final String POWERUP_OVER = "POWERUP_OVER";
+	public static final String POWERUP_REMOVE = "POWERUP_REMOVE";
 	
 	public GameStatePresenter(PresenterDepend model, UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
@@ -95,7 +97,7 @@ public class GameStatePresenter {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_START");
-				OverlayPresenter powerupPresenter = new PowerupOverlayPresenter((IPresenterTurnState) param);
+				powerupPresenter = new PowerupOverlayPresenter((IPresenterTurnState) param);
 				gui.overlayQueues.addSequential(powerupPresenter);
 			}
 		});
@@ -117,5 +119,11 @@ public class GameStatePresenter {
 			tutorialPresenter.onDestroy();
 		}
 		tutorialPresenter = null;
+		
+		if (powerupPresenter != null) {
+			powerupPresenter.destroy();
+			EventBus.getDefault().event(POWERUP_REMOVE, null);
+		}
+		powerupPresenter = null;
 	}
 }

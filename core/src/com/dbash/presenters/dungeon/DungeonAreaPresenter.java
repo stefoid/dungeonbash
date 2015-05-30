@@ -74,7 +74,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	private MapPresenter			mapPresenter;
 	private AnimQueue				animQueue;
 	private AnimQueue				effectAnimQueue;
-	private HashMap<Character, EffectPresenter> effectPresenters;
+	private HashMap<Character, EffectScrollPresenter> effectPresenters;
 
 	// The area passed to this presenter, like any presenter, is where it is suppsoed to draw in 'world' coordinates.
 	// the cameraViewport passed in the gui dependencies is the the one used to draw this presenter and its children.
@@ -83,7 +83,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		this.effectAnimQueue = new AnimQueue();
 		effectAnimQueue.setMaxAnims(12);
 		this.gui = new UIDepend(gui);
-		this.effectPresenters = new HashMap<Character, EffectPresenter>();
+		this.effectPresenters = new HashMap<Character, EffectScrollPresenter>();
 		this.model = model;
 		this.model.animQueue = animQueue;
 		mapPresenter = new MapPresenter(this.gui, model, touchEventProvider, area);
@@ -630,14 +630,14 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	@Override
 	public void newCharacterFocus(Character newFocusCharacter) {
 		if (LOG) L.log("newFocusCharacter: %s", newFocusCharacter);
-		EffectPresenter effectPresenter = effectPresenters.get(newFocusCharacter);
+		EffectScrollPresenter effectPresenter = effectPresenters.get(newFocusCharacter);
 		if (effectPresenter == null) {
-			effectPresenter = new EffectPresenter(gui, model, newFocusCharacter, mapPresenter, effectAnimQueue);
+			effectPresenter = new EffectScrollPresenter(gui, model, newFocusCharacter, mapPresenter, effectAnimQueue);
 			effectPresenters.put(newFocusCharacter, effectPresenter);
 		}
 		
 		// make the current Effect presenter... current.
-		for (EffectPresenter ep : effectPresenters.values()) {
+		for (EffectScrollPresenter ep : effectPresenters.values()) {
 			ep.clearCurrent();
 		}
 		effectPresenter.setCurrent();

@@ -205,6 +205,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		}
 	}
 	
+	@Override
 	public void destroy() {
 		//cancelButton.removeYourself();
 		EventBus.getDefault().event(POWERUP_TAB_BUTTON_OFF_EVENT, null);

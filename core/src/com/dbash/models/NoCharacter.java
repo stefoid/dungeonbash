@@ -67,14 +67,6 @@ public class NoCharacter extends Character {
 	}
 	
 	@Override
-	public void onChangeToAbilitySelectionList(UIInfoListener listener) {
-	};
-	
-	@Override
-	public void onChangeToCharacterStats(UIInfoListener listener) {
-	};
-	
-	@Override
 	public boolean isCharacterOnStairs() {
 		return false;
 	}

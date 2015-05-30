@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.dbash.models.Ability;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
+import com.dbash.models.IEventAction;
 import com.dbash.models.PowerupList;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
@@ -13,6 +14,7 @@ import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.IListElement;
 import com.dbash.presenters.widgets.ISelectionListener;
 import com.dbash.presenters.widgets.ListPresenter;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -24,6 +26,15 @@ public class PowerupListPresenter extends ListPresenter{
 	
 	public PowerupListPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 		super(model, gui, touchEventProvider, area);
+		
+		EventBus.getDefault().onEvent(Character.POWERUP_LIST_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				if ((Character) param == currentCharacter) {
+					listInfoUpdate();
+				}
+			}
+		});
 	}
 	
 	// Called when the underlying ability list in the model changes in some way.
@@ -129,18 +140,6 @@ public class PowerupListPresenter extends ListPresenter{
 		
 		// tell the scrolling list to animate that element.
 		scrollingList.scrollElement(element, element.index, count);
-	}
-	
-	@Override
-	protected void newCharacter(Character character)
-	{	
-		super.newCharacter(character);
-		
-		character.onChangeToPowerup((new UIInfoListener() {
-			public void UIInfoChanged() {
-				listInfoUpdate();
-			}
-		}));
 	}
 	
 }

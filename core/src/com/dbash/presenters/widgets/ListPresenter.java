@@ -10,6 +10,7 @@ import com.dbash.models.UIInfoListener;
 import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -26,7 +27,7 @@ public abstract class ListPresenter {
 	protected Rect elementArea;
 	protected PresenterDepend model;
 	protected HashMap<Character, Float> characters;
-	protected Character oldCharacter;
+	protected Character currentCharacter;
 	protected ImagePatchView border;
 	protected TouchEventProvider touchEventProvider;
 	protected Rect listArea;
@@ -41,7 +42,7 @@ public abstract class ListPresenter {
 		this.characters = new HashMap<Character, Float>();
 		scrollingList = new ScrollingListView(gui, touchEventProvider, area, elementHeight);
 		this.border = new ImagePatchView(gui, "9patchlistsides", area); 
-		oldCharacter = null;
+		currentCharacter = null;
 		this.touchEventProvider = touchEventProvider;
 		setup();
 	}
@@ -66,11 +67,11 @@ public abstract class ListPresenter {
 	
 	protected void newCharacter(Character character) {	
 		// save the listPosition of the previous character for next time it is called up.
-		if (oldCharacter != null) {
-			characters.put(oldCharacter, new Float(scrollingList.getListPosition()));
+		if (currentCharacter != null) {
+			characters.put(currentCharacter, new Float(scrollingList.getListPosition()));
 		}
 		
-		oldCharacter = character;
+		currentCharacter = character;
 		
 		// used to save the list position for the character, if we havent seen this character before.
 		if (characters.containsKey(character) == false) {
@@ -103,5 +104,10 @@ public abstract class ListPresenter {
 	
 	protected void saveListPosition() {
 		characters.put(model.presenterTurnState.getCurrentCharacter(), new Float(scrollingList.getListPosition()));
+	}
+	
+	public void onDestroy() {
+		EventBus.getDefault().removeAll(this);
+		deactivate();
 	}
 }

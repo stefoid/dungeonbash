@@ -59,6 +59,7 @@ public class DataHeaderPresenter {
 	private AnimationView soloButtonAnim;
 	private AnimationView passButtonAnim;
 	private AnimationView stealthButtonAnim;
+	private Character currentCharacter;
 	
 	public DataHeaderPresenter(PresenterDepend model, UIDepend gui, TouchEventProvider touchEventProvider, Rect area) {
 	
@@ -152,6 +153,28 @@ public class DataHeaderPresenter {
 	private void setup() {
 		// Subscribe to changes to the current character.
 		newCharacter(mod.presenterTurnState.getCurrentCharacter());
+		
+		EventBus.getDefault().onEvent(Character.STAT_LIST_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character == currentCharacter) {
+					CreatureStats stats = character.getCharacterStats();
+					updateStats(stats);
+				}
+			}
+		});
+		
+		EventBus.getDefault().onEvent(Character.STEALTH_LIST_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character == currentCharacter) {
+					processStealthStatus(character.getStealthStatus());
+				}
+			}
+		});
+		
 		mod.presenterTurnState.onChangeToCurrentCharacter(new UIInfoListener() {
 			public void UIInfoChanged() {
 				Character character = mod.presenterTurnState.getCurrentCharacter();
@@ -282,21 +305,7 @@ public class DataHeaderPresenter {
 	}
 	
 	private void newCharacter(Character character) {
-		final Character currentCharacter = character;
-		
-		character.onChangeToCharacterStats((new UIInfoListener() {
-			public void UIInfoChanged() {
-				CreatureStats stats = currentCharacter.getCharacterStats();
-				updateStats(stats);
-			}
-		}));
-		
-		character.onChangeToStealthStatus((new UIInfoListener() {
-			public void UIInfoChanged() {
-				processStealthStatus(currentCharacter.getStealthStatus());
-			}
-		}));
-		
+		currentCharacter = character;
 		CreatureStats stats = currentCharacter.getCharacterStats();
 		updateStats(stats);
 		

@@ -61,18 +61,4 @@ public class EffectListPresenter extends ListPresenter{
 		}
 		scrollingList.setListElements(elements, listPos);
 	}
-	
-	@Override
-	protected void newCharacter(Character character)
-	{	
-		super.newCharacter(character);
-		
-		
-		// Actually, no need for this, since you cant change anything while viewing this tab.  right no at least.
-//		character.onChangeToEffectList((new UIInfoListener() {
-//			public void UIInfoChanged() {
-//				listInfoUpdate();
-//			}
-//		}));
-	}
 }

@@ -16,7 +16,6 @@ import com.dbash.presenters.tabs.AbilitySelectionList;
 public interface IPresenterCharacter {
 
 	// Character abilities of whichever character this is
-	public void onChangeToAbilitySelectionList(UIInfoListener listener);
 	public AbilitySelectionList getAbilitySelectionList();
 	
 	// Ability selected for use.
@@ -30,18 +29,12 @@ public interface IPresenterCharacter {
 	public void setCharacterisUsingEye(boolean usingEye);
 	
 	// Character abilities of whichever character this is
-	public void onChangeToCharacterStats(UIInfoListener listener);
 	public CreatureStats getCharacterStats();
 	
-	// Character abilities of whichever character this is
-	public void onChangeToStealthStatus(UIInfoListener listener);
-	
 	// Character effects affecting whichever character this is
-	public void onChangeToEffectList(UIInfoListener listener);
 	public EffectList getEffectList();
 	
 	// Character inventory
-	public void onChangeToInventory(UIInfoListener listener);
 	public ItemList getItemList();
 	
 	public boolean itemPickupSelected(Ability ability);
@@ -49,7 +42,6 @@ public interface IPresenterCharacter {
 	public void itemDropSelected(Ability ability);
 	
 	// powerup related
-	public void onChangeToPowerup(UIInfoListener listener);
 	public PowerupList getAvailablePowerupList();
 	public PowerupList getPurchasedPowerupList();
 	public boolean buyPowerup(Ability ability);

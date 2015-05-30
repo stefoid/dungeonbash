@@ -28,6 +28,7 @@ public class EffectTab extends TabPresenter {
 	private IPresenterTurnState turnState;
 	private UIDepend gui;
 	private AnimationView tabButtonAnim;
+	private Character currentCharacter;
 	 
 	public EffectTab(PresenterDepend model, final UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 		super(model, gui, touchEventProvider, tabArea, bodyArea);
@@ -48,6 +49,17 @@ public class EffectTab extends TabPresenter {
 			public void UIInfoChanged() {
 				Character character = turnState.getCurrentCharacter();
 				newCharacter(character);
+			}
+		});
+		
+		EventBus.getDefault().onEvent(Character.STAT_LIST_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character == currentCharacter) {
+					CreatureStats stats = character.getCharacterStats();
+					updateImage(stats);
+				}
 			}
 		});
 		
@@ -83,19 +95,9 @@ public class EffectTab extends TabPresenter {
 	}
 
 	// When there is  new character, get that Characters stats
-	protected void newCharacter(Character character)
-	{	
+	protected void newCharacter(Character character) {	
 		if (character.isPlayerCharacter()) {
-			final Character currentCharacter = character;
-			
-			// the effect tab is could be updated when the character stats change
-			character.onChangeToCharacterStats((new UIInfoListener() {
-				public void UIInfoChanged() {
-					CreatureStats stats = currentCharacter.getCharacterStats();
-					updateImage(stats);
-				}
-			}));
-			
+			currentCharacter = character;
 			CreatureStats stats = currentCharacter.getCharacterStats();
 			updateImage(stats);
 		}

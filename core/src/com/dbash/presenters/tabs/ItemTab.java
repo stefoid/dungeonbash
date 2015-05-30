@@ -47,6 +47,16 @@ import com.dbash.util.Rect.VAlignment;
 			
 			newCharacter(turnState.getCurrentCharacter());
 			
+			EventBus.getDefault().onEvent(Character.ITEM_LIST_CHANGED, this, new IEventAction() {
+				@Override
+				public void action(Object param) {
+					Character character = (Character) param;
+					if (character.isPlayerCharacter()) {
+						updateCapacity(character);
+					}
+				}
+			});
+			
 			// Subscribe to changes to the current character.
 			turnState.onChangeToCurrentCharacter(new UIInfoListener() {
 				public void UIInfoChanged() {
@@ -87,17 +97,9 @@ import com.dbash.util.Rect.VAlignment;
 		}
 
 		// When there is  new character, get that Characters stats
-		protected void newCharacter(Character character)
-		{	
+		protected void newCharacter(Character character) {	
 			if (character.isPlayerCharacter()) {
 				final Character currentCharacter = character;
-				
-				// the effect tab is could be updated when the character stats change
-				character.onChangeToInventory((new UIInfoListener() {
-					public void UIInfoChanged() {
-						updateCapacity(currentCharacter);
-					}
-				}));
 				updateCapacity(currentCharacter);
 			}
 		}
@@ -146,4 +148,5 @@ import com.dbash.util.Rect.VAlignment;
 				tabButtonAnim.draw(spriteBatch);
 			}
 		}
+		
 	}

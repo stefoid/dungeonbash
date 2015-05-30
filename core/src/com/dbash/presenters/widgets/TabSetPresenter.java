@@ -260,10 +260,10 @@ public class TabSetPresenter implements TouchEventListener{
 			}
 		});
 		
-		eventBus.onEvent(GameStatePresenter.POWERUP_OVER, this, new IEventAction() {
+		eventBus.onEvent(GameStatePresenter.POWERUP_REMOVE, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				if (LOG) L.log("POWERUP_OVER");
+				if (LOG) L.log("POWERUP_REMOVE");
 				boolean setTabCurrent = false;
 				if (currentTab.getClass() == PowerupTab.class) {
 					setTabCurrent = true;

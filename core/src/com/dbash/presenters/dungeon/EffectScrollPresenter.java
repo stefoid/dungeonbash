@@ -5,6 +5,7 @@ import com.dbash.models.AbilityInfo;
 import com.dbash.models.Character;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.EffectList;
+import com.dbash.models.IEventAction;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
@@ -12,6 +13,7 @@ import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.AnimQueue;
+import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
 
@@ -21,7 +23,7 @@ import com.dbash.util.Rect;
  * This registers for changes to the effect list of the creature it displays, and displays those changes with an animation.
  * display is done through throwing animation on the anim queue so no draw function required.
  */
-public class EffectPresenter {
+public class EffectScrollPresenter {
 	public static final boolean LOG = false && L.DEBUG;
 	
 	
@@ -33,7 +35,7 @@ public class EffectPresenter {
 	private EffectList effectList;
 	private MapPresenter mapPresenter;
 	
-	public EffectPresenter(UIDepend gui, PresenterDepend model, Character theCharacter, MapPresenter mapPresenter, AnimQueue animQueue) {
+	public EffectScrollPresenter(UIDepend gui, PresenterDepend model, Character theCharacter, MapPresenter mapPresenter, AnimQueue animQueue) {
 		this.gui = gui;
 		this.character = theCharacter;
 		this.model = model;
@@ -41,19 +43,28 @@ public class EffectPresenter {
 		this.animQueue = animQueue;
 		this.isCurrent = false;
 		
-		character.onChangeToEffectList(new UIInfoListener() {
+		EventBus.getDefault().onEvent(Character.EFFECT_LIST_CHANGED, this, new IEventAction() {
 			@Override
-			public void UIInfoChanged() {
-				if (LOG) L.log("character :%s", character);
-				if (isCurrent) {
-					processEffectList();
-				} else {
-					effectList = character.getEffectList();
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character.isPlayerCharacter()) {
+					if (LOG) L.log("character :%s", character);
+					if (isCurrent) {
+						processEffectList();
+					} else {
+						effectList = character.getEffectList();
+					}
 				}
 			}
-			
-			public void resetUIInfo() {
-				effectList = character.getEffectList();
+		});
+		
+		EventBus.getDefault().onEvent(Character.EFFECT_LIST_RESET, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character.isPlayerCharacter()) {
+					effectList = character.getEffectList();
+				}
 			}
 		});
 	}
