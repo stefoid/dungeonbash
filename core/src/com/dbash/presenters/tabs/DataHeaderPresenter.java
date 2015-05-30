@@ -9,6 +9,7 @@ import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.models.TurnProcessor;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.Audio;
@@ -175,9 +176,10 @@ public class DataHeaderPresenter {
 			}
 		});
 		
-		mod.presenterTurnState.onChangeToCurrentCharacter(new UIInfoListener() {
-			public void UIInfoChanged() {
-				Character character = mod.presenterTurnState.getCurrentCharacter();
+		EventBus.getDefault().onEvent(TurnProcessor.CURRENT_CHARACTER_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
 				if (character.isPlayerCharacter()) {
 					newCharacter(character);
 				}

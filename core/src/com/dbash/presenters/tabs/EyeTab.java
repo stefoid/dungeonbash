@@ -93,4 +93,10 @@ public class EyeTab extends TabPresenter {
 	private void alertToUsingEye(boolean usingEye) {
 		model.presenterTurnState.usingEye(usingEye);
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		listPresenter.onDestroy();
+	}
 }

@@ -36,16 +36,6 @@ public class PowerupTab extends TabPresenter {
 		this.gui = gui;
 		final Rect animArea = this.tabArea;
 		
-//		newCharacter(turnState.getCurrentCharacter());
-//		
-//		// Subscribe to changes to the current character.
-//		turnState.onChangeToCurrentCharacter(new UIInfoListener() {
-//			public void UIInfoChanged() {
-//				Character character = turnState.getCurrentCharacter();
-//				newCharacter(character);
-//			}
-//		});
-		
 		EventBus.getDefault().onEvent(PowerupOverlayPresenter.POWERUP_TAB_BUTTON_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
@@ -69,22 +59,6 @@ public class PowerupTab extends TabPresenter {
 			}
 		});
 	}
-
-//	// When there is  new character, get that Characters stats
-//	protected void newCharacter(Character character)
-//	{	
-//		if (character.isPlayerCharacter()) {
-//			final Character currentCharacter = character;
-//			
-//			// the effect tab is could be updated when the character stats change
-//			character.onChangeToInventory((new UIInfoListener() {
-//				public void UIInfoChanged() {
-//					//updateCapacity(currentCharacter);
-//				}
-//			}));
-//			//updateCapacity(currentCharacter);
-//		}
-//	}
 	
 	@Override
 	public void setCurrent() {
@@ -111,5 +85,11 @@ public class PowerupTab extends TabPresenter {
 		if (tabButtonAnim != null) {
 			tabButtonAnim.draw(spriteBatch);
 		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		listPresenter.onDestroy();
 	}
 }

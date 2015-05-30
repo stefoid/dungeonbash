@@ -32,7 +32,6 @@ public interface IPresenterTurnState {
 	public void powerUpComplete();
 	
 	// Current character related
-	public void onChangeToCurrentCharacter(UIInfoListener listener);
 	public Character getCurrentCharacter();
 	public Character getCharacterForTouchEvents();
 	public void setCurrentCharacter(Character character);

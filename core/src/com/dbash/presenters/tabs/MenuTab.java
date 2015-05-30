@@ -85,4 +85,10 @@ public class MenuTab extends TabPresenter {
 			tabButtonAnim.draw(spriteBatch);
 		}
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		listPresenter.onDestroy();
+	}
 }

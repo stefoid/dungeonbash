@@ -8,6 +8,7 @@ import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.models.TurnProcessor;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
@@ -45,10 +46,13 @@ public class EffectTab extends TabPresenter {
 		newCharacter(turnState.getCurrentCharacter());
 		
 		// Subscribe to changes to the current character.
-		turnState.onChangeToCurrentCharacter(new UIInfoListener() {
-			public void UIInfoChanged() {
-				Character character = turnState.getCurrentCharacter();
-				newCharacter(character);
+		EventBus.getDefault().onEvent(TurnProcessor.CURRENT_CHARACTER_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
+				if (character.isPlayerCharacter()) {
+					newCharacter(character);
+				}
 			}
 		});
 		
@@ -150,5 +154,11 @@ public class EffectTab extends TabPresenter {
 		if (tabButtonAnim != null) {
 			tabButtonAnim.draw(spriteBatch);
 		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		listPresenter.onDestroy();
 	}
 }

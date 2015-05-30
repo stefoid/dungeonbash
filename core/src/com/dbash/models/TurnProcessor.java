@@ -24,6 +24,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	public static final int NUM_CHARS = 3;
 	public static String AVAILABLE_XP_EVENT = "SPENT_XP_EVENT"; 
+	public static String CURRENT_CHARACTER_CHANGED = "CURRENT_CHARACTER_CHANGED"; 
 	
 	public static enum GameState {
 		NO_SAVED_GAME,
@@ -43,7 +44,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	private Character leaderWhoPassed;
 	private Character currentCharacter; // the character whose turn is now
 										// active
-	private UIInfoListenerBag currentCharacterListeners;
 	private UIInfoListenerBag leaderStatusListeners;
 	private UIInfoListenerBag soloStatusListeners;
 	private LeaderStatus leaderStatus;
@@ -386,13 +386,13 @@ public class TurnProcessor implements IPresenterTurnState {
 	public void setCurrentCharacter(Character character) {
 		currentCharacter = character;
 		currentCharacter.setCharacterisUsingEye(usingEye);
-		currentCharacterListeners.alertListeners();
+		EventBus.getDefault().event(CURRENT_CHARACTER_CHANGED, character);
 	}
 	
 	@Override
 	public void setCurrentCharacterOutsideOfTurnProcessing(Character character) {
 		currentCharacter = character;
-		currentCharacterListeners.alertListeners();
+		EventBus.getDefault().event(CURRENT_CHARACTER_CHANGED, character);
 	}
 
 	// returns true if the character should drop its stuff, false otherwise.
@@ -519,12 +519,6 @@ public class TurnProcessor implements IPresenterTurnState {
 		// }
 
 		return theChars;
-	}
-
-	// IPresenterTurn State interface
-	@Override
-	public void onChangeToCurrentCharacter(UIInfoListener listener) {
-		currentCharacterListeners.add(listener);
 	}
 
 	@Override
@@ -823,7 +817,6 @@ public class TurnProcessor implements IPresenterTurnState {
 			IDungeonQuery dungeonQuery, IDungeonControl dungeon) {
 		// Do the one-time stuff.
 		Creature.initializeData();
-		currentCharacterListeners = new UIInfoListenerBag();
 		leaderStatusListeners = new UIInfoListenerBag();
 		soloStatusListeners = new UIInfoListenerBag();
 		nobody = new NoCharacter();

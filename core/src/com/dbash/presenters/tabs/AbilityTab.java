@@ -87,4 +87,10 @@ import com.dbash.util.Rect;
 				tabButtonAnim.draw(spriteBatch);
 			}
 		}
+		
+		@Override
+		public void onDestroy() {
+			super.onDestroy();
+			listPresenter.onDestroy();
+		}
 	}

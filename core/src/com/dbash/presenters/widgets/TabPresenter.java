@@ -9,6 +9,7 @@ import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 
 
@@ -84,6 +85,7 @@ public abstract class TabPresenter implements TouchEventListener {
 	}
 	
 	public void onDestroy() {
+		EventBus.getDefault().removeAll(this);
 		touchEventProvider.removeTouchEventListener(this);
 	}
 }

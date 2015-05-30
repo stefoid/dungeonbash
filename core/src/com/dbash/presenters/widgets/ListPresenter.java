@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Character;
+import com.dbash.models.IEventAction;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.models.TurnProcessor;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.ImagePatchView;
 import com.dbash.platform.SizeCalculator;
@@ -50,9 +52,10 @@ public abstract class ListPresenter {
 	protected void setup() {
 		// Subscribe to changes to the current character.
 		newCharacter(model.presenterTurnState.getCurrentCharacter());
-		model.presenterTurnState.onChangeToCurrentCharacter(new UIInfoListener() {
-			public void UIInfoChanged() {
-				Character character = model.presenterTurnState.getCurrentCharacter();
+		EventBus.getDefault().onEvent(TurnProcessor.CURRENT_CHARACTER_CHANGED, this, new IEventAction() {
+			@Override
+			public void action(Object param) {
+				Character character = (Character) param;
 				if (character.isPlayerCharacter()) {
 					newCharacter(character);
 				}

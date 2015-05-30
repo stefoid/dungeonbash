@@ -9,6 +9,7 @@ import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.TouchEventProvider;
+import com.dbash.models.TurnProcessor;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
@@ -31,6 +32,7 @@ import com.dbash.util.Rect.VAlignment;
 		private IPresenterTurnState turnState;
 		private UIDepend gui;
 		private AnimationView tabButtonAnim;
+		private Character currentCharacter;
 		
 		public ItemTab(PresenterDepend model, final UIDepend gui, TouchEventProvider touchEventProvider, Rect tabArea, Rect bodyArea) {
 			super(model, gui, touchEventProvider, tabArea, bodyArea);
@@ -51,17 +53,20 @@ import com.dbash.util.Rect.VAlignment;
 				@Override
 				public void action(Object param) {
 					Character character = (Character) param;
-					if (character.isPlayerCharacter()) {
+					if (character == currentCharacter) {
 						updateCapacity(character);
 					}
 				}
 			});
 			
 			// Subscribe to changes to the current character.
-			turnState.onChangeToCurrentCharacter(new UIInfoListener() {
-				public void UIInfoChanged() {
-					Character character = turnState.getCurrentCharacter();
-					newCharacter(character);
+			EventBus.getDefault().onEvent(TurnProcessor.CURRENT_CHARACTER_CHANGED, this, new IEventAction() {
+				@Override
+				public void action(Object param) {
+					Character character = (Character) param;
+					if (character.isPlayerCharacter()) {
+						newCharacter(character);
+					}
 				}
 			});
 			
@@ -99,7 +104,7 @@ import com.dbash.util.Rect.VAlignment;
 		// When there is  new character, get that Characters stats
 		protected void newCharacter(Character character) {	
 			if (character.isPlayerCharacter()) {
-				final Character currentCharacter = character;
+				currentCharacter = character;
 				updateCapacity(currentCharacter);
 			}
 		}
@@ -149,4 +154,9 @@ import com.dbash.util.Rect.VAlignment;
 			}
 		}
 		
+		@Override
+		public void onDestroy() {
+			super.onDestroy();
+			listPresenter.onDestroy();
+		}
 	}
