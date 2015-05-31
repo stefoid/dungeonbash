@@ -14,14 +14,14 @@ import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
 
-public class EffectScrollOverlayPresenter extends OverlayPresenter {
+public class EffectScroller {
 
 	private HashMap<Character, EffectScrollPresenter> effectPresenters;
 	private AnimQueue effectAnimQueue;
 	Rect dungeonArea;
 	UIDepend gui;
 	
-	public EffectScrollOverlayPresenter(UIDepend gui, Rect dungeonArea) {
+	public EffectScroller(UIDepend gui, Rect dungeonArea) {
 		this.gui = gui;
 		this.dungeonArea = dungeonArea;
 		this.effectAnimQueue = new AnimQueue();
@@ -39,21 +39,8 @@ public class EffectScrollOverlayPresenter extends OverlayPresenter {
 		});
 	}
 	
-	@Override
-	public void init(UIDepend gui) {
-	}
-
-	@Override
-	public void start(Rect area, TouchEventProvider touchEventProvider) {
-	}
-
-	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 		effectAnimQueue.draw(spriteBatch);  // draws character stat effects
-	}
-
-	@Override
-	public void destroy() {
 	}
 	
 	public void newCharacter(Character character) {

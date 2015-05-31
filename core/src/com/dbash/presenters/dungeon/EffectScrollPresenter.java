@@ -25,7 +25,7 @@ import com.dbash.util.Rect;
  * display is done through throwing animation on the anim queue so no draw function required.
  */
 public class EffectScrollPresenter {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	
 	private UIDepend gui;
@@ -45,8 +45,8 @@ public class EffectScrollPresenter {
 		EventBus.getDefault().onEvent(Character.EFFECT_LIST_CHANGED, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				Character character = (Character) param;
-				if (character.isPlayerCharacter()) {
+				Character c = (Character) param;
+				if (character == c) {
 					if (LOG) L.log("character :%s", character);
 					if (isCurrent) {
 						processEffectList();
@@ -60,8 +60,8 @@ public class EffectScrollPresenter {
 		EventBus.getDefault().onEvent(Character.EFFECT_LIST_RESET, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				Character character = (Character) param;
-				if (character.isPlayerCharacter()) {
+				Character c = (Character) param;
+				if (character == c) {
 					effectList = character.getEffectList();
 				}
 			}

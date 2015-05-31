@@ -157,16 +157,16 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
-			backgroundImage.draw(spriteBatch, x, y);
-			mainBorder.draw(spriteBatch, x, y);
-			chooseText.draw(spriteBatch, x, y);
-			for (int i=0; i<TurnProcessor.NUM_CHARS; i++) {
-				charViews[i].draw(spriteBatch, x, y);
-			}
-			cancelButton.draw(spriteBatch, x, y);
-			tutorialButton.draw(spriteBatch, x, y);
-			startGameButton.draw(spriteBatch, x, y);
-			newCharsButton.draw(spriteBatch, x, y);
+		backgroundImage.draw(spriteBatch, x, y);
+		mainBorder.draw(spriteBatch, x, y);
+		chooseText.draw(spriteBatch, x, y);
+		for (int i=0; i<TurnProcessor.NUM_CHARS; i++) {
+			charViews[i].draw(spriteBatch, x, y);
+		}
+		cancelButton.draw(spriteBatch, x, y);
+		tutorialButton.draw(spriteBatch, x, y);
+		startGameButton.draw(spriteBatch, x, y);
+		newCharsButton.draw(spriteBatch, x, y);
 	}
 	
 	@Override
@@ -175,7 +175,6 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 	}
 	
 	private void createNewChars() {
-		
 		characters = turnProcessor.createRandomCharacters();
 		
 		if (charViews == null) {

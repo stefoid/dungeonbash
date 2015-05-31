@@ -26,6 +26,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	private Rect 					dungeonArea;
 	private Rect					screenArea;
 	private GameStatePresenter		gameStatePresenter;
+	private EffectScroller 			effectScroller;
 	
 	UIDepend 						gui;
 	PresenterDepend 				model;
@@ -46,6 +47,8 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 
 		// popups always appear over the top of everything else. (using dataArea presenters cameraViewPort
 		overlayQueues.draw(spriteBatch, 0, 0);
+		
+		effectScroller.draw(spriteBatch, 0, 0);
 		
 		gui.audio.processVolume();
 	}
@@ -119,8 +122,7 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		gui.cameraViewPort = wholeScreenViewPort;
 		gameStatePresenter = new GameStatePresenter(model, gui);
 		
-		EffectScrollOverlayPresenter effectScroller = new EffectScrollOverlayPresenter(gui, dungeonArea);
-		overlayQueues.addParallel(effectScroller);
+		effectScroller = new EffectScroller(gui, dungeonArea);
 	}
 	
 	
@@ -179,7 +181,6 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 	// that a click.
 	public boolean handleTouchEvent(TouchEvent touchEvent) {
 		switch (touchEvent.getTouchType()) {
-			
 			case DOWN:
 				previousTouchEvent = touchEvent;
 				for (TEListener tel : teListeners) {   
@@ -191,7 +192,6 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 					}
 				}
 				break;
-				
 			case MOVE:
 				if (gotDownListener != null) {
 					touchEvent.setTouchMemory(previousTouchEvent);
@@ -210,7 +210,6 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 					previousTouchEvent = touchEvent;
 				}
 				break;
-				
 			case UP:
 				if (gotDownListener != null) {
 					touchEvent.setTouchMemory(previousTouchEvent);
@@ -226,16 +225,12 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 					handTouchEventToListener(gotDownListener, touchEvent);
 				}
 				break;
-				
 			case CLICK:
 				break;
-				
 			case UP_INSIDE:
 				break;
-				
 			default:
 				break;
-				
 		}
 		
 		return true;
