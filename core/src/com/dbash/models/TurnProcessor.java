@@ -693,6 +693,7 @@ public class TurnProcessor implements IPresenterTurnState {
 					public void animEvent() {
 						acceptInput = true;
 						if (allCharacters.size() == charactersFallingOut.size()) {
+							rememberState();
 							startPowerup();
 						}
 					}
@@ -1064,13 +1065,20 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public void cancelNewGameSelected() {
-		if (previousGameState == GameState.NO_SAVED_GAME) {
-			return;
+		switch (previousGameState) {
+		case NO_SAVED_GAME:
+			break;
+		case POWERUP:
+			//setCurrentCharacter(previousCurrentCharacter);
+			currentCharacter = previousCurrentCharacter;
+			startPowerup();
+			break;
+		default:
+			setGameState(previousGameState);
+			setCurrentCharacter(previousCurrentCharacter);
+			sendGameStateEvent();
+			break;
 		}
-		
-		setGameState(previousGameState);
-		setCurrentCharacter(previousCurrentCharacter);
-		sendGameStateEvent();
 	}
 
 	public void addExperience(int exp) {
@@ -1114,7 +1122,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	@Override 
 	public void powerUpComplete() {
 		gameState = GameState.GAME_IN_PROGRESS;
-		EventBus.getDefault().event(GameStatePresenter.POWERUP_OVER, this);
+		currentCharacter = previousCurrentCharacter;
 		level++;
 		startNewLevel(level, false);
 	}

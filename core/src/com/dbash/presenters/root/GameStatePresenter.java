@@ -97,6 +97,7 @@ public class GameStatePresenter {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_START");
+				removePresenters();
 				powerupPresenter = new PowerupOverlayPresenter((IPresenterTurnState) param);
 				gui.overlayQueues.addSequential(powerupPresenter);
 			}
