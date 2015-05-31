@@ -11,7 +11,7 @@ import com.dbash.util.L;
 
 public class GameStatePresenter {
 
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	EventBus eventBus;
 	UIDepend gui;

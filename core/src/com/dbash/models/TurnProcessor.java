@@ -20,7 +20,7 @@ import com.me.dbash.Dbash;
 @SuppressWarnings("unused")
 
 public class TurnProcessor implements IPresenterTurnState {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static final int NUM_CHARS = 3;
 	public static String AVAILABLE_XP_EVENT = "SPENT_XP_EVENT"; 
@@ -131,10 +131,16 @@ public class TurnProcessor implements IPresenterTurnState {
 
 		processLeaderMode();
 		
-		if (getGameState() == GameState.NO_SAVED_GAME) {
+		switch(getGameState()) {
+		case NO_SAVED_GAME:
 			doNewGame();
-		} else {
+			break;
+		case POWERUP:
+			startPowerup();
+			break;
+		default:
 			sendGameStateEvent();
+			break;
 		}
 		
 		if (L.TUTORIAL_MODE) {
