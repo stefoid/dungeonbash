@@ -118,6 +118,9 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 		CameraViewPort wholeScreenViewPort = new CameraViewPort(overlayArea);
 		gui.cameraViewPort = wholeScreenViewPort;
 		gameStatePresenter = new GameStatePresenter(model, gui);
+		
+		EffectScrollOverlayPresenter effectScroller = new EffectScrollOverlayPresenter(gui, dungeonArea);
+		overlayQueues.addParallel(effectScroller);
 	}
 	
 	

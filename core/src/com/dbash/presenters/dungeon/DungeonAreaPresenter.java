@@ -1,7 +1,5 @@
 package com.dbash.presenters.dungeon;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.Ability;
 import com.dbash.models.Ability.AbilityEffectType;
@@ -73,17 +71,13 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	private PresenterDepend 		model;
 	private MapPresenter			mapPresenter;
 	private AnimQueue				animQueue;
-	private AnimQueue				effectAnimQueue;
-	private HashMap<Character, EffectScrollPresenter> effectPresenters;
 
 	// The area passed to this presenter, like any presenter, is where it is suppsoed to draw in 'world' coordinates.
 	// the cameraViewport passed in the gui dependencies is the the one used to draw this presenter and its children.
 	public DungeonAreaPresenter(UIDepend gui, final PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		this.animQueue = new AnimQueue();
-		this.effectAnimQueue = new AnimQueue();
-		effectAnimQueue.setMaxAnims(12);
 		this.gui = new UIDepend(gui);
-		this.effectPresenters = new HashMap<Character, EffectScrollPresenter>();
+		
 		this.model = model;
 		this.model.animQueue = animQueue;
 		mapPresenter = new MapPresenter(this.gui, model, touchEventProvider, area);
@@ -101,7 +95,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		spriteBatch.begin();
 		mapPresenter.draw(spriteBatch);  // will draw the map, and creatures on the map 
 		animQueue.draw(spriteBatch); // will draw characters and so on.
-		effectAnimQueue.draw(spriteBatch);  // draws character stat effects
 		mapPresenter.refreshLighting();
 		spriteBatch.end();
 	}
@@ -629,18 +622,6 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	
 	@Override
 	public void newCharacterFocus(Character newFocusCharacter) {
-		if (LOG) L.log("newFocusCharacter: %s", newFocusCharacter);
-		EffectScrollPresenter effectPresenter = effectPresenters.get(newFocusCharacter);
-		if (effectPresenter == null) {
-			effectPresenter = new EffectScrollPresenter(gui, model, newFocusCharacter, mapPresenter, effectAnimQueue);
-			effectPresenters.put(newFocusCharacter, effectPresenter);
-		}
-		
-		// make the current Effect presenter... current.
-		for (EffectScrollPresenter ep : effectPresenters.values()) {
-			ep.clearCurrent();
-		}
-		effectPresenter.setCurrent();
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.dbash.models.DungeonPosition;
 import com.dbash.models.EffectList;
 import com.dbash.models.IEventAction;
 import com.dbash.models.PresenterDepend;
+import com.dbash.models.TurnProcessor;
 import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.TextImageView;
@@ -28,20 +29,18 @@ public class EffectScrollPresenter {
 	
 	
 	private UIDepend gui;
-	private PresenterDepend model;
 	private Character character;
 	private AnimQueue animQueue;
 	private boolean isCurrent;
 	private EffectList effectList;
-	private MapPresenter mapPresenter;
+	private Rect area;
 	
-	public EffectScrollPresenter(UIDepend gui, PresenterDepend model, Character theCharacter, MapPresenter mapPresenter, AnimQueue animQueue) {
+	public EffectScrollPresenter(UIDepend gui, Character theCharacter, Rect area, AnimQueue animQueue) {
 		this.gui = gui;
 		this.character = theCharacter;
-		this.model = model;
-		this.mapPresenter = mapPresenter;
 		this.animQueue = animQueue;
 		this.isCurrent = false;
+		this.area = area;
 		
 		EventBus.getDefault().onEvent(Character.EFFECT_LIST_CHANGED, this, new IEventAction() {
 			@Override
@@ -86,7 +85,7 @@ public class EffectScrollPresenter {
 	
 	private void createAnim(AbilityInfo abilityInfo, int dif) {
 		
-		Rect fromRect = getTileArea(character.getPosition());
+		Rect fromRect = new Rect(area, 0.1f);
 		float height = fromRect.height;
 		fromRect = new Rect(fromRect, 5);
 		float yOffset = fromRect.height/2;
@@ -107,11 +106,6 @@ public class EffectScrollPresenter {
 
 		// damage due to bursts is a special case where the damage should play near the end of the burst, but not after it
 		animQueue.chainConcurrentWithLast(messageAnim, 40f, false);
-	}
-	
-	private Rect getTileArea(DungeonPosition position) {
-		LocationPresenter locPres = mapPresenter.locationPresenter(position);
-		return locPres.getScreenArea();
 	}
 	
 	public void setCurrent() {
