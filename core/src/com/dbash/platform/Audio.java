@@ -57,6 +57,8 @@ public class Audio {
 	public static final String GAME_OVER_TUNE = "Game Over Theme";
 	public static final String ZAP = "Zap";
 
+	public static final String CASH_REGISTER = "CashRegister";
+	public static final String COINS = "Coins";
 	
 	// Music
 	public static final String BATTLE_THEME = "Battle Theme";  
@@ -105,6 +107,8 @@ public class Audio {
 		addSound(STAIR_DOWN);
 		addSound(GAME_OVER_TUNE);
 		addSound(ZAP);
+		addSound(CASH_REGISTER);
+		addSound(COINS);
 		
 		music = new HashMap<String, Song>();
 		addMusic(BATTLE_THEME);

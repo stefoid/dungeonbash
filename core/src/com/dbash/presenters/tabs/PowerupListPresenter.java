@@ -62,6 +62,7 @@ public class PowerupListPresenter extends ListPresenter{
 					if (ability != null) {
 						saveListPosition();  // do this first because processing the ability will create a new list
 						character.sellPowerup(ability);
+						gui.audio.playSound(Audio.COINS);
 						element.abilityInfo.isAvailable = true;
 						element.setBackgroundImage();
 						scrollItem(element);
@@ -87,6 +88,7 @@ public class PowerupListPresenter extends ListPresenter{
 						} else {
 							saveListPosition();  // do this first because processing the ability will create a new list
 							character.buyPowerup(ability);
+							gui.audio.playSound(Audio.CASH_REGISTER);
 							element.abilityInfo.isAvailable = false;
 							element.setBackgroundImage();
 							scrollItem(element);

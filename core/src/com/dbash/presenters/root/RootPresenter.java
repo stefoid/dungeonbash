@@ -47,8 +47,8 @@ public class RootPresenter implements InputProcessor, TouchEventProvider {
 
 		// popups always appear over the top of everything else. (using dataArea presenters cameraViewPort
 		overlayQueues.draw(spriteBatch, 0, 0);
-		
 		effectScroller.draw(spriteBatch, 0, 0);
+		spriteBatch.end();
 		
 		gui.audio.processVolume();
 	}

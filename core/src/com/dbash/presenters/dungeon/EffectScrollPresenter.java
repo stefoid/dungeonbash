@@ -85,10 +85,10 @@ public class EffectScrollPresenter {
 	
 	private void createAnim(AbilityInfo abilityInfo, int dif) {
 		
-		Rect fromRect = new Rect(area, 0.1f);
+		Rect fromRect = new Rect(area, 0.07f);
 		float height = fromRect.height;
 		fromRect = new Rect(fromRect, 5);
-		float yOffset = fromRect.height/2;
+		float yOffset = fromRect.height/1.4f;
 		Rect toRect = new Rect(fromRect);
 		fromRect.height = height;
 		fromRect.y += yOffset;

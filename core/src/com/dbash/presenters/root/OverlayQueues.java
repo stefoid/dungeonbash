@@ -79,8 +79,6 @@ public class OverlayQueues {
 			OverlayPresenter overlayPresenter = sequentialList.get(0);
 			overlayPresenter.draw(spriteBatch, x, y);
 		}
-		
-		spriteBatch.end();
 	}
 	
 	public void remove(OverlayPresenter overlayPresenter) {
