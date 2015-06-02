@@ -1496,6 +1496,12 @@ public abstract class Creature implements IPresenterCreature
 	protected int modifyValue(int commandName, int commandValue) {
 		AbilityCommand command = new AbilityCommand(commandName, commandValue, getCreature().head, getCreature().hands, getCreature().humanoid);
 
+		// first we apply multiply abilitities 
+		for (int i = 0; i < abilities.size(); i++) {
+			command.value = abilities.get(i).executeCommandValueMultiply(command, this);
+		}
+		
+		// then add to the result.
 		for (int i = 0; i < abilities.size(); i++) {
 			command.value = abilities.get(i).executeCommandValue(command, this);
 		}

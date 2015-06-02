@@ -423,7 +423,24 @@ public class Ability
 						newValue = ability.executeParam1[i];
 					if (LOG) L.log(ability.toString());
 					if (LOG) L.log("newValue: %s", newValue);
-				} else if (ability.executeStrategy[i] == VALUE_MULTIPLIER) { // set the value to the specified amount, if the value is smaller than the ability
+				} 
+			}
+		}
+
+		return newValue;
+	}
+	
+	public int executeCommandValueMultiply(AbilityCommand	command, Creature owner) {
+		int newValue = command.value;
+
+		for (int i=0; i<numberOfCommands; i++)
+		{
+			if (command.name == ability.command[i])  // does the command sent from the Creature match a command that this ability responds to?
+			{
+				if (isUsed() == false)
+					return newValue;
+			
+				if (ability.executeStrategy[i] == VALUE_MULTIPLIER) { // set the value to the specified amount, if the value is smaller than the ability
 					newValue *= ability.executeParam1[i];
 					newValue /= 100;
 					if (LOG) L.log(ability.toString());
