@@ -18,13 +18,41 @@ public class Monster extends Creature
 {
 	// ATTRIBUTES
 
+	private class LastCharacterPosition {
+		public Character character;
+		public DungeonPosition dungeonPosition;
+		
+		public LastCharacterPosition(DungeonPosition dungeonPosition, Character character) {
+			this.dungeonPosition = dungeonPosition;
+			this.character = character;
+		}
+		
+		public void invalidate() {
+			this.character = null;
+		}
+		
+		public boolean isValid(DungeonPosition monsterPosition) {
+			if (character == null || dungeonPosition == null || dungeonPosition.equals(monsterPosition)) {
+				invalidate();
+				return false;
+			}
+			
+			if (character.isOnMap() == false) {
+				invalidate();
+				return false;
+			}
+			
+			return true;
+		}
+	}
+	
 	// direction to move for the monsters turn
-	private int					moveDirection				= DungeonPosition.WEST;				
+	private int					moveDirection = DungeonPosition.WEST;				
 	private Ability				rangedAttack;	 				// ranged attack to use
 	private Character			closestCharacter;				// character  to act against
 	private boolean 			isNearCharacter;
 
-	private DungeonPosition		LastCharacterPos			= new DungeonPosition(0, 0, 0, 0);
+	private LastCharacterPosition lastCharacterPos = new LastCharacterPosition(null, null);
 	
 	// this constructor returns a monster that fits a certain level, either of a
 	// type that swarms or a type that doesnt swarm
@@ -153,10 +181,10 @@ public class Monster extends Creature
 		{
 			// record this last known siting in case he looses us, we can
 			// still try to get there to pick up the scent again
-			LastCharacterPos = closestCharacter.getPosition();
+			lastCharacterPos = new LastCharacterPosition(closestCharacter.getPosition(), closestCharacter);
 
 			// Work out the best direction
-			moveDirection = findBestDirection(LastCharacterPos, true, canMove);
+			moveDirection = findBestDirection(lastCharacterPos.dungeonPosition, true, canMove);
 			
 			// if you are almost dead, run away!
 			if ((health < calculateMaxHealth() / 5) ||
@@ -168,13 +196,10 @@ public class Monster extends Creature
 			
 			// two options: either go to the last known location of a
 			// character, or do a random move
-			if (((LastCharacterPos.x == 0) && (LastCharacterPos.y == 0)) || LastCharacterPos.equals(mapPosition)) {
-				LastCharacterPos.x = 0;
-				LastCharacterPos.y = 0;
+			if (lastCharacterPos.isValid(mapPosition)) {
+				moveDirection = findBestDirection(lastCharacterPos.dungeonPosition, true, canMove); // towards last known character position
+			} else {
 				moveDirection = findBestDirection(null, true, canMove);  // random direction
-			}
-			else {
-				moveDirection = findBestDirection(LastCharacterPos, true, canMove); // towards last known character position
 			}
 		}
 		
@@ -215,7 +240,7 @@ public class Monster extends Creature
 		
 		return;
 	}
-
+	
 	// Selects a random ranged or self-targeting ability to use, based on a few factors.
 	private Ability getRandomRangedAttack()
 	{

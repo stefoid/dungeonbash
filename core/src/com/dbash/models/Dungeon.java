@@ -842,9 +842,10 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			if (position.distanceTo(character.getPosition()) < 5 + 3) {
 				return false;
 			}
-			if (isCreatureNearEntrance(position)) {
-				return false;
-			}
+		}
+		
+		if (isCreatureNearEntrance(position)) {
+			return false;
 		}
 		return true;
 	}

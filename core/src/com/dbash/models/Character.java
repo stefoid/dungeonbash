@@ -1072,7 +1072,16 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 		testStealth();
 	}
 
-
+	public boolean isOnMap() {
+		if (turnProcessor.charactersFallingIn.contains(this) 
+				|| turnProcessor.charactersFallingOut.contains(this)
+				|| isAlive() == false) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	@Override
 	public int respondAttack(AbilityCommand attack, Creature attacker) {
 		if (LOG) L.log("attacker: %s", attacker);
