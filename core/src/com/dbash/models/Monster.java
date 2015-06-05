@@ -177,7 +177,12 @@ public class Monster extends Creature
 		SequenceNumber.bumpSequenceNumberforNewCharacter();
 		
 		// 1.  So if we have a character in LOS, we can act towards it.
-		if (null != closestCharacter)
+		boolean validClosestChar = false;
+		if (null != closestCharacter) {
+			validClosestChar = closestCharacter.isAlive();
+		}
+		
+		if (validClosestChar)
 		{
 			// record this last known siting in case he looses us, we can
 			// still try to get there to pick up the scent again
@@ -193,7 +198,7 @@ public class Monster extends Creature
 				moveDirection = oppositeDirection(moveDirection); // run
 			}
 		} else { // Get the strategy when there is no character
-			
+			closestCharacter = null;
 			// two options: either go to the last known location of a
 			// character, or do a random move
 			if (lastCharacterPos.isValid(mapPosition)) {

@@ -9,7 +9,7 @@ import com.dbash.util.EventBus;
 import com.dbash.util.L;
 
 public class TutorialPresenter {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public static final String ON_ENTRY_EVENT = "ON_ENTRY_EVENT";
 	public static final String DROPPING_IN_EVENT = "DROPPING_IN_EVENT";

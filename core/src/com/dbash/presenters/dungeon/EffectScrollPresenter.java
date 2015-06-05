@@ -25,7 +25,7 @@ import com.dbash.util.Rect;
  * display is done through throwing animation on the anim queue so no draw function required.
  */
 public class EffectScrollPresenter {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	
 	private UIDepend gui;

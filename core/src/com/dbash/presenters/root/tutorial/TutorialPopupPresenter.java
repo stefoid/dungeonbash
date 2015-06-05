@@ -11,7 +11,7 @@ import com.dbash.util.L;
 import com.dbash.util.Rect;
 
 public abstract class TutorialPopupPresenter extends OverlayPresenter {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	protected ArrayList<OverlayPresenter> myOverlays;
 	
