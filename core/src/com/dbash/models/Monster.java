@@ -16,7 +16,7 @@ import com.dbash.util.SequenceNumber;
 
 public class Monster extends Creature
 {
-	// ATTRIBUTES
+	public static final boolean LOG = true && L.DEBUG;
 
 	private class LastCharacterPosition {
 		public Character character;
@@ -202,8 +202,10 @@ public class Monster extends Creature
 			// two options: either go to the last known location of a
 			// character, or do a random move
 			if (lastCharacterPos.isValid(mapPosition)) {
+				if (LOG) L.log("move toward char: %s", this);
 				moveDirection = findBestDirection(lastCharacterPos.dungeonPosition, true, canMove); // towards last known character position
 			} else {
+				if (LOG) L.log("move random: %s", this);
 				moveDirection = findBestDirection(null, true, canMove);  // random direction
 			}
 		}
@@ -355,8 +357,9 @@ public class Monster extends Creature
 	
 	// if the monster actually does something, pass the turnFinishedBlock to the dungeon for asynch callback, otherwise call it immediately.
 	// this is used to tell the turn processor to wait until that something has been animated before proceeding.
-	private void takeTurn()
-	{	
+	private void takeTurn() {	
+		if (LOG) L.log("creature: %s", this);
+		
 		// Move first or ranged attack?
 		boolean useRanged = false;
 

@@ -34,7 +34,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents,
 								IDungeonQuery, IPresenterDungeon {
 	
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public enum MoveType {
 		NORMAL_MOVE,
@@ -325,6 +325,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 				} 					
 			}
 			
+			if (LOG) L.log("creature moved IN LOS: %s",  actingCreature);
+			// By definition, if this move is in LOS of a Character, we can turn leader mode off immeidately.
+			if (actingCreature instanceof Monster) {
+				turnProcessor.turnLeaderModeNow();
+			}
 			
 			// ok, so presumably we can see this move, one way or the other.
 			final IAnimListener moveListener = new IAnimListener() {
@@ -350,6 +355,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 			}
 		} else {
 			// we wont animate, but creature presenter needs to be updated.
+			if (LOG) L.log("creature moved out of LOS: %s",  actingCreature);
 			dungeonEventListener.creatureMovedOutOfLOS(sequenceNumber, actingCreature, fromPosition, toPosition, direction, moveType);
 			fromLocation.updatePresenter();
 			toLocation.updatePresenter();
@@ -813,6 +819,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 //    This sets inLOSOfMosnter = true;
 //	  if it also determines the closest character it can see it sets amClosestToMonster = true;
 	private void processCreaturePositions() {
+		if (LOG) L.log("");
 		Set<Character> characters = shadowMaps.keySet();
 		// reset flags
 		for (Character character : characters) {

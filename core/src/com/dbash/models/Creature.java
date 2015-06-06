@@ -28,7 +28,7 @@ import com.dbash.util.SequenceNumber;
 
 public abstract class Creature implements IPresenterCreature
 {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static enum CreatureSize {
 		SMALL,
@@ -1154,15 +1154,13 @@ public abstract class Creature implements IPresenterCreature
 	
 	public int calculateDefenceSkill() {
 		int newDefence = defenceSkill + (defenceSkill * getExpFactor()) / 100;
-		int dd = modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence);
-		if (LOG) L.log("new defence: %s", dd); 
+		int dd = modifyValue(AbilityCommand.MODIFY_DEFENCE_SKILL, newDefence); 
 		return dd;
 	}
 	
 	public int calculateDefenceAgainstMissilesSkill() {
 		int defence = calculateDefenceSkill();	
-		defence = modifyValue(AbilityCommand.MODIFY_MISSILE_DEFENCE, defence);
-		if (LOG) L.log("missile defence: %s", defence); 
+		defence = modifyValue(AbilityCommand.MODIFY_MISSILE_DEFENCE, defence); 
 		return defence;
 	}
 

@@ -172,8 +172,7 @@ public class TurnProcessor implements IPresenterTurnState {
 			}
 			
 			if (pauseTurnProcessing != lastPause) {
-				// if (LOG)
-				// Logger.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
+				//if (LOG) L.log("PAUSED : "+lastPause+" >> "+pauseTurnProcessing);
 				lastPause = pauseTurnProcessing;
 			}
 
@@ -206,6 +205,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// if the creature is a character that has to wait for player input, it
 	// calls waitForPlayerInput() at that point
 	private void processNextCreature() {
+		
 		if (creatureTurn >= allCreatures.size())
 			creatureTurn = 0;
 
@@ -222,6 +222,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		do {
 			// get the next creature
 			currentCreature = (Creature) allCreatures.elementAt(creatureTurn);
+			//if (LOG) L.log("testing currentCreature: %s", currentCreature);
 			// increment counter for next time
 			creatureTurn++;
 			if (creatureTurn >= allCreatures.size())
@@ -962,6 +963,15 @@ public class TurnProcessor implements IPresenterTurnState {
 		creatureMoved = true;
 	}
 	
+	public void turnLeaderModeNow() {
+		if (currentLeader != null) {
+			leaderStatus = LeaderStatus.LEADER_DISABLED;
+			currentLeader.leaderStatusOff();
+			currentLeader = null;
+			leaderStatusListeners.alertListeners();
+		}
+	}
+	
 	public void processLeaderMode() {
 		if (currentLeader == null) {
 			leaderStatus = LeaderStatus.NO_LEADER;
@@ -970,9 +980,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 		
 		Character sawMonster = dungeonQuery.leaderModeOK();
+		if (LOG) L.log("saw monster: %s",  sawMonster);
 		if (sawMonster != null) {
 			leaderStatus = LeaderStatus.LEADER_DISABLED;
 			if (currentLeader != null) {
+				if (LOG) L.log("%s saw monster", currentLeader);
 				currentLeader.leaderStatusOff();
 				currentLeader = null;
 			}
