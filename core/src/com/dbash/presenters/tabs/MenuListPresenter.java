@@ -47,86 +47,44 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				null,       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"In dungeon Bash, you control a team of three different characters.  The aim is to descend to level 20 and kill the powerful evil wizard.", 
+				"In dungeon Bash, you control a team of three different characters.  Your task is to descend to level 20 and kill the powerful evil wizard.", 
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "TUTORIAL", elementArea),      // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Use the tutorial button when you start a new game to learn the basics of Dungeon Bash.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
 				null,       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Your characters drop into a level one at a time.  The next character cannot appear until the landing spot is clear.", 
+				"POWERUP!",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				new ImageView(gui, "POWERUP", elementArea),      // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Every time you kill a monster or exit a level, you recieve XP you can use to increase your character's stats and buy new abilities.", 
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "HIGHLIGHT", elementArea),      // the image
+				null,       // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Characters have a faint highlight around them.  Monsters do not.    The animated highlight shows whose turn it is.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "SWIPE", elementArea),      // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Swipe in a direction to move or melee attack.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "RANGED", elementArea),       // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Highlight a ranged item (if you have one) on the blue 'abilities' tab and touch a target tile to shoot.  Ranged items have a target symbol",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "LEADER_BUTTON", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use leader mode  to control the team as a group - when no monsters are around the crown button  becomes enabled.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "LEADER", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Swipe and release on any tile in Line of Sight to walk to that destination.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "PASS", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use defend to forgo an action, but gain a significant bonus to defence skill until the next turn.  A slow penalty is applied.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "SOLO", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Use Solo mode to control only one character.  Other Characters will skip their turns (defend).",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "INVENTORY", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"To manage your inventory, walk to a tile with stuff on it, and use this tab to drop and pick up items (max 10).",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "ITEMS", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Green items are in your inventory.  Red items are on the ground.  Items that cannot be picked up by that character will appear grey.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "EQUIP", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"Equip one weapon, one defensive item and one amulet using the blue tab - click on the item to be equipped.  Items that cannot be used will appear grey.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
-		
-		helpElements.add(new ImageTextListElementView(gui,
-				new ImageView(gui, "STAIRS", elementArea),     // the image
-				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"To go to the next level, find the stairs, and put a character on it - the 'stairs' button will become enabled.",
-				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+				"FLANKING",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "FLANK", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"In Melee, monsters prefer to attack orthogonal enemies, allowing flank attacks from the diagonal.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"TERRAIN",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "TERRAIN", elementArea),     // the image
@@ -139,6 +97,12 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"There are also holes that only flying creatures can pass over.  But beware - stunning a flyer will cause it to fall into the hole and die, as will knocking a non-flyer into a hole.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"STEALTH",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "STEALTH", elementArea),     // the image
@@ -157,6 +121,12 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"Use larger characetrs with poor steath skills to attract attention away from stealthy characters.  Then use shadow and rocks to move into ambush position.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"GOOD LUCK!!",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
 		
 		for (ImageTextListElementView helpElement: helpElements) {
 			helpElement.addToList(elements);
