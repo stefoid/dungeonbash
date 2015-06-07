@@ -57,7 +57,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
 	public static final int INITIAL_EXP = 500;
-	public static final int EXP_PER_LEVEL = 220;
+	public static final int EXP_PER_LEVEL = 100220;
 	public GameStats gameStats;
 
 	// Lists to maintain what is going on.
@@ -504,9 +504,9 @@ public class TurnProcessor implements IPresenterTurnState {
 			theChars.add(new Character(Creature.getIdForName(L.c3), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
 			c.addAbility(new Ability(Ability.getIdForName("amulet of wizardry"), null, 20, dungeonEvents, dungeonQuery), null);
-//			c.addAbility(new Ability(Ability.getIdForName("amulet of bracing"), null, 20, dungeonEvents, dungeonQuery), null);
-//			c.addAbility(new Ability(Ability.getIdForName("bow"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
-//			c.addAbility(new Ability(Ability.getIdForName("wand of sun flare"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("light magic potion"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("light health potion"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
+			c.addAbility(new Ability(Ability.getIdForName("healing prayer"), null, 20, dungeonEvents, dungeonQuery), null);
 		
 		}
 		// c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));

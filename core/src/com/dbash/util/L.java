@@ -4,8 +4,8 @@ public class L {
 
 	public static boolean DEBUG = true;
 	
-	public static boolean TESTCHARS = false;
-	public static String c1 = "orc";
+	public static boolean TESTCHARS = true;
+	public static String c1 = "gnome";
 	public static String c2 = "minotaur";
 	public static String c3 = "orc";
 	
