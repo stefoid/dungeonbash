@@ -56,7 +56,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean soloStatus;
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
-	public static final int INITIAL_EXP = 500;
+	public static final int INITIAL_EXP = 0;
 	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
 
@@ -431,8 +431,10 @@ public class TurnProcessor implements IPresenterTurnState {
 			dungeonEvents.waitingForAnimToComplete(SequenceNumber.getCurrent(),
 					new IAnimListener() {
 						public void animEvent() {
-							level++;
-							startNewLevel(level, false);
+							rememberState();
+							startPowerup();
+//							level++;
+//							startNewLevel(level, false);
 						}
 					});
 			return false;

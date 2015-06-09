@@ -34,7 +34,7 @@ import com.dbash.util.Rect;
 public class Dbash implements ApplicationListener {
 	public static final boolean LOG = false && L.DEBUG;
 	
-	public static String SAVE_FILE_VERISON = "V17I15";
+	public static String SAVE_FILE_VERISON = "A17I15";
 	
 	enum GameState {
 		SPLASH,
