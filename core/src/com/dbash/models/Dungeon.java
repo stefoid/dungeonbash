@@ -950,4 +950,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		return monster;
 	}
 
+	public int getXpMonsters() {
+		int xp = 0;
+		for (Creature c : mobs) {
+			xp += c.getExpValue();
+		}
+		return xp;
+	}
 }

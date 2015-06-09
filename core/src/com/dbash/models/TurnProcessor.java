@@ -57,7 +57,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
 	public static final int INITIAL_EXP = 500;
-	public static final int EXP_PER_LEVEL = 100220;
+	public static final int EXP_PER_LEVEL = 220;
 	public GameStats gameStats;
 
 	// Lists to maintain what is going on.
@@ -106,7 +106,7 @@ public class TurnProcessor implements IPresenterTurnState {
 		allCreatures = new AllCreatures();
 		allCreatures.addAll(charactersFallingIn);
 		allCreatures.addAll(dungeonQuery.getAllMonsters());
-		addExperience(level * EXP_PER_LEVEL);
+		addExperience(getLevelXp(level));
 	}
 
 	public void resume() {
@@ -503,27 +503,12 @@ public class TurnProcessor implements IPresenterTurnState {
 			theChars.add(new Character(Creature.getIdForName(L.c2), p, 2, dungeonEvents, dungeonQuery, this));
 			theChars.add(new Character(Creature.getIdForName(L.c3), p, 3, dungeonEvents, dungeonQuery, this));
 			Creature c = theChars.get(0);
-			c.addAbility(new Ability(Ability.getIdForName("weak spit"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("poison spit"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("light health potion"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
-			c.addAbility(new Ability(Ability.getIdForName("healing prayer"), null, 20, dungeonEvents, dungeonQuery), null);
+//			c.addAbility(new Ability(Ability.getIdForName("weak spit"), null, 20, dungeonEvents, dungeonQuery), null);
+//			c.addAbility(new Ability(Ability.getIdForName("poison spit"), null, 20, dungeonEvents, dungeonQuery), null);
+//			c.addAbility(new Ability(Ability.getIdForName("light health potion"), null, 20, dungeonEvents, dungeonQuery), null);c.addAbility(new Ability(Ability.getIdForName("wand of smiting"), null, 20, dungeonEvents, dungeonQuery), null);
+//			c.addAbility(new Ability(Ability.getIdForName("healing prayer"), null, 20, dungeonEvents, dungeonQuery), null);
 		
 		}
-		// c.addAbility(new Ability(69, null, 20, dungeonEvents, dungeonQuery));
-		// c.addAbility(new Ability(143, null, 20, dungeonEvents,
-		// dungeonQuery));
-		// c.addAbility(new Ability(112, null, 20, dungeonEvents,
-		// dungeonQuery));
-		// c.addAbility(new Ability(105, null, 20, dungeonEvents,
-		// dungeonQuery));
-		// c.addAbility(new Ability(58, null, 20, dungeonEvents, dungeonQuery));
-		// // 149 + 75
-		// // test
-		//
-		// for (Character ch : theChars) {
-		// ch.health = 1;
-		// ch.maximumHealth = 1;
-		// }
 
 		return theChars;
 	}
@@ -1021,6 +1006,19 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public void startGame(List<Character> characters, boolean tutorialMode) {
+		if (L.TEST_EXP) {
+			for (int i=1; i<= Dungeon.FINAL_LEVEL; i++) {
+				dungeon.createLevel(this, i);
+				int levelXp = getLevelXp(i);
+				int monXp = ((Dungeon) dungeon).getXpMonsters();
+				gameStats.xpGiven(monXp);
+				gameStats.xpGiven(levelXp);
+				L.log("LEVEL# %s.  LEVEL XP = %s, MON XP = %s.  LEVEL_TOTAL: %s,   TOTAL XP: %s",
+						i, levelXp, monXp, levelXp+monXp, getTotalXp());
+			}
+			System.exit(1);
+		} 
+		
 		this.tutorialMode = tutorialMode;
 		allCharacters = new Vector<Character>();
 		allCharacters.addAll(characters);
@@ -1143,5 +1141,9 @@ public class TurnProcessor implements IPresenterTurnState {
 		currentCharacter = previousCurrentCharacter;
 		level++;
 		startNewLevel(level, false);
+	}
+	
+	private int getLevelXp(int level) {
+		return level * EXP_PER_LEVEL;
 	}
 }
