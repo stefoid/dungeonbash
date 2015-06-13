@@ -72,6 +72,11 @@ public class Monster extends Creature
 		if (creatureLevel < level) {
 			addExperience(300 * (level - creatureLevel), true);
 		}
+		
+		// also add power-upupable abilities that characters haev to wait to buy
+		for (Ability ability : possiblePowerups) {
+			addAbility(ability, null);
+		}
 	}
 
 	@Override

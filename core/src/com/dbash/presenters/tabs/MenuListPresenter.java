@@ -107,7 +107,7 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 		helpElements.add(new ImageTextListElementView(gui,
 				new ImageView(gui, "STEALTH", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
-				"The stealth button enables when the character has the option to hide.  Characters automatically try to hide when entering a new level.  Hiding characters get a big attack skill bonus for ambush.",
+				"The stealth button enables when the character has the option to hide.  Characters automatically try to hide when entering a new level.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,
@@ -120,6 +120,18 @@ public class MenuListPresenter extends ListPresenter implements TouchEventProvid
 				new ImageView(gui, "HIDING", elementArea),     // the image
 				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
 				"Use larger characetrs with poor steath skills to attract attention away from stealthy characters.  Then use shadow and rocks to move into ambush position.",
+				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"AMBUSH",
+				HEADING_SIZE, HAlignment.CENTER, elementArea));
+		
+		helpElements.add(new ImageTextListElementView(gui,
+				null,       // the image
+				new ImageView(gui, "MENU_HELP_BACKGROUND", elementArea),	 // the backgroud image for the element
+				"Hiding characters get a big attack skill bonus for ambush, whether they break cover by making an attack, or they have just been discovered.  Remember that the characters very first attack after dropping into a new level will have this bonus, whether ranged or melee.",
 				HELP_TEXT_SIZE, HAlignment.LEFT, elementArea));
 		
 		helpElements.add(new ImageTextListElementView(gui,

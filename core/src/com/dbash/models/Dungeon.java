@@ -228,16 +228,17 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		// must set the map now so that it can observe changes to Locations as monsters are added to the currentLevel.
 		mapEventListener.setMap(map);
 
-		// TOTO turn off monsters to test character anim for now
 		// add monsters to currentLevel
-		for (int i = 0; i < ((map.height - 11) * 2); i++)
-		{
-			if ((currentLevel > 4) && (Randy.getRand(1, 10) == 1))
-			{
+		int monsterNum = map.height - 11 * 2;
+		
+		if (currentLevel < 4) {
+			monsterNum = currentLevel * 2 + 1;
+		}
+		
+		for (int i = 0; i < monsterNum; i++) {
+			if ((currentLevel > 4) && (Randy.getRand(1, 10) == 1)) {
 				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)], null);
-			}
-			else
-			{
+			} else {
 				try {
 					placeMonster(map.getRandomPoint(true));
 				} catch (Map.MapException e) {

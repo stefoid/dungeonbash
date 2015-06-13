@@ -40,7 +40,7 @@ public class DroppingInPresenter extends TutorialPopupPresenter implements Touch
 		addFadeBoxSeq(fb3);
 		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb4 = new FadeBoxPresenter("Move 4 times by swiping right now.", 
+		FadeBoxPresenter fb4 = new FadeBoxPresenter("A swipe does not have to start on the character tile.  Move 4 times by swiping right now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();
