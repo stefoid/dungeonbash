@@ -1219,7 +1219,7 @@ def writeStatAbilities(outFile):
 def writeStatAbility(outFile, statName, stat_type, increment, xp_mult, index):
     v = str(index*increment + 100)
     xpval = str(index*index*xp_mult + 50)
-    sa = statName + " + " + str(index*increment) + "%,stat." + statName + "-" + str(index) + ",,0,0,-1,0,0,0," + xpval + ",0,0," + str(stat_type) + ",7,"+v+",0,0,0,*"
+    sa = statName + " +" + str(index*increment) + "%,upgrade-" + statName + "-" + str(index) + ",,0,0,-1,0,0,0," + xpval + ",0,0," + str(stat_type) + ",7,"+v+",0,0,0,*"
     outFile.write(sa)
 
 def drawMainButtons():

@@ -52,6 +52,12 @@ public class Ability
 	public static String NO_HIGHLIGHT_TAG = "nohighlight";
 	public static String AMBUSH_TAG = "ambush";
 	public static String UPGRADE_TAG = "upgrade";
+	public static String HEALTH_UPGRADE_TAG = "health";
+	public static String MAGIC_UPGRADE_TAG = "magic";
+	public static String ATTACK_UPGRADE_TAG = "attack";
+	public static String DEFEND_UPGRADE_TAG = "defence";
+	public static String SPEED_UPGRADE_TAG = "speed";
+	public static String STEALTH_UPGRADE_TAG = "stealth";
 	
 //	public static enum StatType {
 //        HEALTH("health"), 
@@ -847,8 +853,10 @@ public class Ability
 	public static int getStatPowerupId(String upgradeType, int level) {
 		for (int i=0; i<abilityData.size();i++) {
 			StatAbilityInfo si = getStatInfo(i);
-			if (si.statType == upgradeType && si.level == level) {
-				return si.id;
+			if (si != null) {
+				if (si.statType.equals(upgradeType) && si.level == level) {
+					return si.id;
+				}
 			}
 		}
 		return -1;
@@ -864,6 +872,7 @@ public class Ability
 				si.id = id;
 				si.statType = typeTags[1];
 				si.level = Integer.parseInt(typeTags[2]);
+				return si;
 			}
 		}
 		

@@ -12,7 +12,6 @@ import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.Ability.StatAbilityInfo;
-import com.dbash.models.Ability.StatType;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.presenters.tabs.AbilitySelectionList;
@@ -1312,12 +1311,12 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 
 		public ArrayList<Ability> buyableAbilities;
 		public ArrayList<Ability> boughtAbilities;
-		public HashMap<Ability.StatType , Integer> baseLevels;
+		public HashMap<String , Integer> baseLevels;
 		
 		public PowerupState() {
 			buyableAbilities = calcBuyableAbilities();
 			boughtAbilities = new ArrayList<Ability>();
-			baseLevels = new HashMap<Ability.StatType , Integer>();
+			baseLevels = new HashMap<String , Integer>();
 			for (Ability ability : abilities) {
 				StatAbilityInfo si = ability.getStatInfo();
 				if (si != null) {
@@ -1339,30 +1338,27 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 			}
 			
 			// For each stat ability we have, add the next one in the list to possibles
-			addNextStatAbility(StatType.HEALTH, buyables);
-			addNextStatAbility(StatType.MAGIC, buyables);
-			addNextStatAbility(StatType.ATTACK, buyables);
-			addNextStatAbility(StatType.DEFEND, buyables);
-			addNextStatAbility(StatType.SPEED, buyables);
-			addNextStatAbility(StatType.STEALTH, buyables);
+			for (String upgradeType : upgradeTypes) {
+				addNextStatAbility(upgradeType, buyables);
+			}
 			
 			return buyables;
 		}
 		
-		private void addNextStatAbility(StatType statType, List<Ability> list) {
+		private void addNextStatAbility(String statType, List<Ability> list) {
 			Ability ability = getNextStatAbility(statType);
 			if (ability != null) {
 				list.add(ability);
 			}
 		}
 		
-		private Ability getNextStatAbility(StatType statType) {
+		private Ability getNextStatAbility(String statType) {
 			int nextLevel = 1;
 			Ability nextStatAbility = null;
 			
 			for (Ability ability : abilities) {
 				StatAbilityInfo si = ability.getStatInfo();
-				if (si != null && si.statType == statType) {
+				if (si != null && si.statType.equals(statType)) {
 					nextLevel = si.level+1;
 				} 
 			}
@@ -1376,12 +1372,12 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 			return nextStatAbility;
 		}
 		
-		private void removeFromList(StatType statType, List<Ability> list) {
+		private void removeFromList(String statType, List<Ability> list) {
 			Iterator<Ability> iter = list.iterator();
 			while (iter.hasNext()) {
 				Ability ability = iter.next();
 				Ability.StatAbilityInfo statInfo = ability.getStatInfo();
-				if (statInfo != null && statInfo.statType == statType) {
+				if (statInfo != null && statInfo.statType.equals(statType)) {
 					iter.remove();
 				}
 			}
@@ -1405,7 +1401,6 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 		public void sellAbility(Ability ability, Creature creature) {
 			abilities.remove(ability);			
 			boughtAbilities.remove(ability);
-			updateStats(null, creature.mapPosition);
 			EventBus.getDefault().event(EFFECT_LIST_CHANGED, creature);
 			
 			Ability.StatAbilityInfo statInfo = ability.getStatInfo();
@@ -1423,6 +1418,8 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 					}
 				}
 			}
+			
+			updateStats(null, creature.mapPosition);
 
 			buyableAbilities = calcBuyableAbilities();
 		}

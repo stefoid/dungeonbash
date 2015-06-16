@@ -1120,7 +1120,7 @@ public class TurnProcessor implements IPresenterTurnState {
 
 	@Override
 	public int getTotalXp() {
-		return gameStats.xp;
+		return gameStats.xp + 1000;
 	}
 
 	@Override

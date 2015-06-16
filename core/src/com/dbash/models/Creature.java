@@ -12,6 +12,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
+import com.dbash.models.Ability.StatAbilityInfo;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.platform.TextResourceIdentifier;
@@ -110,6 +111,7 @@ public abstract class Creature implements IPresenterCreature
 	protected Light light = null;
 	protected StealthStatus stealthStatus;
 	protected ArrayList<Ability> possiblePowerups;
+	protected ArrayList<String> upgradeTypes;
 	
 	// instance data
 	protected HighlightStatus highlightStatus;
@@ -344,11 +346,24 @@ public abstract class Creature implements IPresenterCreature
 
 	protected void setPossiblePowerups() {
 		possiblePowerups = new ArrayList<Ability>();
+		upgradeTypes = new ArrayList<String>();
+		upgradeTypes.add(Ability.HEALTH_UPGRADE_TAG);
+		upgradeTypes.add(Ability.MAGIC_UPGRADE_TAG);
+		upgradeTypes.add(Ability.ATTACK_UPGRADE_TAG);
+		upgradeTypes.add(Ability.DEFEND_UPGRADE_TAG);
+		upgradeTypes.add(Ability.SPEED_UPGRADE_TAG);
+		upgradeTypes.add(Ability.STEALTH_UPGRADE_TAG);
+		
 		for (String powerupName : creature.powerups.split("\\.")) {
 			int abilityId = Ability.getIdForName(powerupName);
 			if (abilityId >= 0) {
 				Ability ability = new Ability(abilityId, null, 1, dungeonEvents, dungeonQuery);
-				possiblePowerups.add(ability);
+				StatAbilityInfo si = ability.getStatInfo();
+				if (si == null) {
+					possiblePowerups.add(ability);
+				} else {
+					upgradeTypes.add(si.statType);
+				}
 			}
 		}
 	}
