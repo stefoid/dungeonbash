@@ -12,7 +12,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import com.dbash.models.Ability.AbilityType;
-import com.dbash.models.Ability.StatAbilityInfo;
+import com.dbash.models.Ability.UpgradeAbilityInfo;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.platform.TextResourceIdentifier;
@@ -358,11 +358,11 @@ public abstract class Creature implements IPresenterCreature
 			int abilityId = Ability.getIdForName(powerupName);
 			if (abilityId >= 0) {
 				Ability ability = new Ability(abilityId, null, 1, dungeonEvents, dungeonQuery);
-				StatAbilityInfo si = ability.getStatInfo();
+				UpgradeAbilityInfo si = ability.getUpgradeInfo();
 				if (si == null) {
 					possiblePowerups.add(ability);
 				} else {
-					upgradeTypes.add(si.statType);
+					upgradeTypes.add(si.upgradeType);
 				}
 			}
 		}

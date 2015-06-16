@@ -835,9 +835,9 @@ public class Ability
 //		return possibleStatPowerups;
 //	}
 	
-	public static class StatAbilityInfo {
+	public static class UpgradeAbilityInfo {
 		public int id;
-		public String statType;
+		public String upgradeType;
 		public int level;
 	}
 	
@@ -850,11 +850,11 @@ public class Ability
 		}
 	}
 	
-	public static int getStatPowerupId(String upgradeType, int level) {
+	public static int getUpgradeId(String upgradeType, int level) {
 		for (int i=0; i<abilityData.size();i++) {
-			StatAbilityInfo si = getStatInfo(i);
+			UpgradeAbilityInfo si = getUpgradeInfo(i);
 			if (si != null) {
-				if (si.statType.equals(upgradeType) && si.level == level) {
+				if (si.upgradeType.equals(upgradeType) && si.level == level) {
 					return si.id;
 				}
 			}
@@ -862,15 +862,15 @@ public class Ability
 		return -1;
 	}
 	
-	public static StatAbilityInfo getStatInfo(int id) {
+	public static UpgradeAbilityInfo getUpgradeInfo(int id) {
 		String tagString = abilityData.get(id).tag;
 		String[] tags = tagString.split("\\.");
 		for (String tag : tags) {
 			if (tag.startsWith(UPGRADE_TAG)) {   
 				String[] typeTags = tag.split("-");
-				StatAbilityInfo si = new StatAbilityInfo();
+				UpgradeAbilityInfo si = new UpgradeAbilityInfo();
 				si.id = id;
-				si.statType = typeTags[1];
+				si.upgradeType = typeTags[1];
 				si.level = Integer.parseInt(typeTags[2]);
 				return si;
 			}
@@ -879,8 +879,8 @@ public class Ability
 		return null;
 	}
 
-	public StatAbilityInfo getStatInfo() {
-		return Ability.getStatInfo(myId);
+	public UpgradeAbilityInfo getUpgradeInfo() {
+		return Ability.getUpgradeInfo(myId);
 	}
 
 	public boolean meetsNeeds(boolean head, boolean hands, boolean humanoid) {
