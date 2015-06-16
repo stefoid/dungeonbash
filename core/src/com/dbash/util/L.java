@@ -4,17 +4,17 @@ public class L {
 
 	public static boolean DEBUG = true;
 	
-	public static boolean TESTCHARS = false;
+	public static boolean TESTCHARS = true;
 	public static String c1 = "imp";
-	public static String c2 = "tarantuloid";
-	public static String c3 = "dark faery";
+	public static String c2 = "pit viper";
+	public static String c3 = "plate beatle";
 	
 	public static boolean TUTORIAL_MODE = false;
 	
 	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;
-	public static boolean NO_SAVE = false;
+	public static boolean NO_SAVE = true;
 	public static int LEVEL = 1;
 	
 	public static int EXTRA_XP = 100000;

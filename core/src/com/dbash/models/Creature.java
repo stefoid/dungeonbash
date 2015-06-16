@@ -347,25 +347,27 @@ public abstract class Creature implements IPresenterCreature
 	protected void setPossiblePowerups() {
 		possiblePowerups = new ArrayList<Ability>();
 		upgradeTypes = new ArrayList<String>();
+		
+		for (String powerupName : creature.powerups.split("\\.")) {
+			int abilityId = Ability.getIdForName(powerupName);
+			if (abilityId >= 0) {
+				Ability ability = new Ability(abilityId, null, 1, dungeonEvents, dungeonQuery);
+				possiblePowerups.add(ability);
+			} else {
+				String[] sup = powerupName.split("-");
+				if (sup.length > 1) {
+					String ugradeType = sup[1];
+					upgradeTypes.add(ugradeType);
+				}
+			}
+		}
+		
 		upgradeTypes.add(Ability.HEALTH_UPGRADE_TAG);
 		upgradeTypes.add(Ability.MAGIC_UPGRADE_TAG);
 		upgradeTypes.add(Ability.ATTACK_UPGRADE_TAG);
 		upgradeTypes.add(Ability.DEFEND_UPGRADE_TAG);
 		upgradeTypes.add(Ability.SPEED_UPGRADE_TAG);
 		upgradeTypes.add(Ability.STEALTH_UPGRADE_TAG);
-		
-		for (String powerupName : creature.powerups.split("\\.")) {
-			int abilityId = Ability.getIdForName(powerupName);
-			if (abilityId >= 0) {
-				Ability ability = new Ability(abilityId, null, 1, dungeonEvents, dungeonQuery);
-				UpgradeAbilityInfo si = ability.getUpgradeInfo();
-				if (si == null) {
-					possiblePowerups.add(ability);
-				} else {
-					upgradeTypes.add(si.upgradeType);
-				}
-			}
-		}
 	}
 	
 	public boolean isReadyForTurn() {
