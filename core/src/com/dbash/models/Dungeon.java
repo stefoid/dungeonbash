@@ -229,7 +229,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents,
 		mapEventListener.setMap(map);
 
 		// add monsters to currentLevel
-		int monsterNum = map.height - 11 * 2;
+		int monsterNum = (map.height - 11) * 2;
 		
 		if (currentLevel < 4) {
 			monsterNum = currentLevel * 2 + 1;

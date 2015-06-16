@@ -51,36 +51,36 @@ public class Ability
 	public static String SETABLE_TAG = "setable";
 	public static String NO_HIGHLIGHT_TAG = "nohighlight";
 	public static String AMBUSH_TAG = "ambush";
-	public static String STAT_TAG = "stat";
+	public static String UPGRADE_TAG = "upgrade";
 	
-	public static enum StatType {
-        HEALTH("health"), 
-        MAGIC("magic"), 
-        ATTACK("attack"), 
-        DEFEND("defence"),
-        STEALTH("stealth"),
-        SPEED("speed");
-        
-        private String value;
-
-        private StatType(String value) {
-                this.value = value;
-        }
-        
-        private static final HashMap<String, StatType> _map = new HashMap<String, StatType>();
-        static {
-            for (StatType statType : StatType.values())
-                _map.put(statType.value, statType);
-        }
-
-        public static StatType from(String value) {
-            return _map.get(value);
-        }
-        
-        public String getValue() {
-        	return value;
-        }
-	}; 
+//	public static enum StatType {
+//        HEALTH("health"), 
+//        MAGIC("magic"), 
+//        ATTACK("attack"), 
+//        DEFEND("defence"),
+//        STEALTH("stealth"),
+//        SPEED("speed");
+//        
+//        private String value;
+//
+//        private StatType(String value) {
+//                this.value = value;
+//        }
+//        
+//        private static final HashMap<String, StatType> _map = new HashMap<String, StatType>();
+//        static {
+//            for (StatType statType : StatType.values())
+//                _map.put(statType.value, statType);
+//        }
+//
+//        public static StatType from(String value) {
+//            return _map.get(value);
+//        }
+//        
+//        public String getValue() {
+//        	return value;
+//        }
+//	}; 
 	
 	public enum AbilityType {
 		WEAPON(3),
@@ -136,8 +136,6 @@ public class Ability
 	public int usageCount = 0;  // Every time an ability is used, this number is incremented for ordering the selection list.
 	
 	public int turnsUntilCooldown;
-	
-	static protected ArrayList<StatAbilityInfo> possibleStatPowerups;
 	
 	public static int getIdForName(String name) {
 		for (int i=0; i<abilityData.size();i++) {
@@ -827,58 +825,53 @@ public class Ability
 		return finalIndex+1;
 	}	
 
-	public static ArrayList<StatAbilityInfo> getStatPowerups() {
-		return possibleStatPowerups;
-	}
+//	public static ArrayList<StatAbilityInfo> getStatPowerups() {
+//		return possibleStatPowerups;
+//	}
 	
 	public static class StatAbilityInfo {
 		public int id;
-		public StatType statType;
+		public String statType;
 		public int level;
 	}
 	
 	private void initializeData() {
 		int 	index = 0;
 		String	abilities = new TextResourceIdentifier("a.txt").getFileContents();
-		possibleStatPowerups = new ArrayList<StatAbilityInfo>();
 		
 		while (index < abilities.length()) {
 			index = addNextAbility(abilities, index);
 		}
-
-		for (int i=0; i<abilityData.size();i++) {
-			String tag = abilityData.get(i).tag;
-			String[] tags = tag.split("\\.");
-			for (String t : tags) {
-				if (t.equals(STAT_TAG)) {
-					String[] typeTags = tags[1].split("-");
-					StatAbilityInfo si = new StatAbilityInfo();
-					si.id = i;
-					si.statType = StatType.from(typeTags[0]);
-					si.level = Integer.parseInt(typeTags[1]);
-					possibleStatPowerups.add(si);
-				}
-			}
-		}
 	}
 	
-	public static int getStatPowerupId(StatType statType, int level) {
-		for (StatAbilityInfo si : possibleStatPowerups) {
-			if (si.statType == statType && si.level == level) {
+	public static int getStatPowerupId(String upgradeType, int level) {
+		for (int i=0; i<abilityData.size();i++) {
+			StatAbilityInfo si = getStatInfo(i);
+			if (si.statType == upgradeType && si.level == level) {
 				return si.id;
 			}
 		}
 		return -1;
 	}
 	
-	public StatAbilityInfo getStatInfo() {
-		for (StatAbilityInfo si : possibleStatPowerups) {
-			if (si.id == myId) {
-				return si;
+	public static StatAbilityInfo getStatInfo(int id) {
+		String tagString = abilityData.get(id).tag;
+		String[] tags = tagString.split("\\.");
+		for (String tag : tags) {
+			if (tag.startsWith(UPGRADE_TAG)) {   
+				String[] typeTags = tag.split("-");
+				StatAbilityInfo si = new StatAbilityInfo();
+				si.id = id;
+				si.statType = typeTags[1];
+				si.level = Integer.parseInt(typeTags[2]);
 			}
 		}
 		
 		return null;
+	}
+
+	public StatAbilityInfo getStatInfo() {
+		return Ability.getStatInfo(myId);
 	}
 
 	public boolean meetsNeeds(boolean head, boolean hands, boolean humanoid) {
