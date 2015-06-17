@@ -5,7 +5,7 @@ public class L {
 	public static boolean DEBUG = true;
 	
 	public static boolean TESTCHARS = true;
-	public static String c1 = "imp";
+	public static String c1 = "wolf";
 	public static String c2 = "pit viper";
 	public static String c3 = "plate beatle";
 	
