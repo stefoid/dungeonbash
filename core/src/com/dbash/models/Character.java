@@ -1401,7 +1401,6 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 		public void sellAbility(Ability ability, Creature creature) {
 			abilities.remove(ability);			
 			boughtAbilities.remove(ability);
-			EventBus.getDefault().event(EFFECT_LIST_CHANGED, creature);
 			
 			Ability.UpgradeAbilityInfo upgradeInfo = ability.getUpgradeInfo();
 			if (upgradeInfo != null) {
@@ -1419,6 +1418,7 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 				}
 			}
 			
+			EventBus.getDefault().event(EFFECT_LIST_CHANGED, creature);
 			updateStats(null, creature.mapPosition);
 
 			buyableAbilities = calcBuyableAbilities();

@@ -58,6 +58,7 @@ public class Ability
 	public static String DEFEND_UPGRADE_TAG = "defence";
 	public static String SPEED_UPGRADE_TAG = "speed";
 	public static String STEALTH_UPGRADE_TAG = "stealth";
+	public static String NO_END_TURN_TAG = "no-end-turn";
 	
 //	public static enum StatType {
 //        HEALTH("health"), 
@@ -584,7 +585,10 @@ public class Ability
 				attackingCreature.usedMagic(magicCost);
 				
 				if (isCooldownAbility()) {
-					turnsUntilCooldown = ability.cooldown + 1;
+					turnsUntilCooldown = ability.cooldown;
+					if (hasTag(NO_END_TURN_TAG) == false) {
+						turnsUntilCooldown++;
+					}
 					set = false;
 				}
 				
@@ -679,13 +683,18 @@ public class Ability
     		return false;
     	}
     }
-	public boolean invokeFinishesTurn()
-	{
+	public boolean invokeFinishesTurn() {
+		boolean result = false;
 		if ((ability.invokingStrategy == INSTANT_ABILITY) ||
-		(ability.invokingStrategy == INSTANT_ONESHOT))
-			return true;
-		else
-			return false;
+		(ability.invokingStrategy == INSTANT_ONESHOT)) {
+			result = true;
+		}
+		
+		if (hasTag(NO_END_TURN_TAG)) {
+			result = false;
+		}
+		
+		return result;
 	}
 
 	// ATTRIBUTES

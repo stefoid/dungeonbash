@@ -2,7 +2,7 @@
 +"fire burst,ma,5,2,1,-1,0,0,0,14000,1,10,19,3,3,8,-1,2,*"// fire burst: ATTACKER,
 +"strong bite,aa.upgrade-bite-2,4,0,3,-1,0,0,1,8000,1,0,8,3,2,6,-1,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// strong bite: ATTACKER,DESELECT,SELECT,
 +"acid splash,ma,5,0,1,-1,0,0,0,8000,1,0,19,3,4,3,-1,1,*"// acid splash: ATTACKER,
-+"sudden speed,ia,-1,0,1,-1,0,0,0,3000,0,10,19,4,5,0,0,0,*"// sudden speed: ABILITY ADDER,
++"sudden speed,ia.no-end-turn,-1,0,1,-1,0,0,0,3000,0,15,19,4,5,0,0,0,*"// sudden speed: ABILITY ADDER,
 +"blinding speed,ia,-1,0,0,2,0,0,0,1,0,0,10,1,20,0,0,0,*"// blinding speed: VALUE MODIFIER,
 +"wave of smiting,ma,5,0,1,-1,0,0,0,8000,1,0,19,3,5,0,38,1,*"// wave of smiting: ATTACKER,
 +"light tread,ia,-1,0,0,-1,0,0,0,10000,0,0,22,1,3,0,0,0,*"// light tread: VALUE MODIFIER,

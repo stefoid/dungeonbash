@@ -1204,23 +1204,25 @@ def exitProg():
 
 
 def writeStatAbilities(outFile):
-    for i in range (1,20):
+    for i in range (1,21):
         writeStatAbility(outFile, "health", 12, 10, 50, i)    # "MODIFY_MAX_HEALTH": result = 12
         writeStatAbility(outFile, "magic", 14, 10, 50, i)     # "MODIFY_MAX_MAGIC": result = 14
         writeStatAbility(outFile, "attack", 15, 10, 50, i)  # "MODIFY_ATTACK_SKILL": result = 15
         writeStatAbility(outFile, "defence", 16, 10, 50, i)  # "MODIFY_DEFENCE_SKILL": result = 16
 
-    for i in range (1,3):
-        writeStatAbility(outFile, "speed", 10, 10, i*1000, i)  # "MODIFY_SPEED": result = 10
+    for i in range (1,4):
+        writeStatAbility(outFile, "speed", 10, 10, 1000-i*200, i)  # "MODIFY_SPEED": result = 10
 
-    for i in range (1,5):
-        writeStatAbility(outFile, "stealth", 22, 10, i*1000, i)    # "MODIFY_STEALTH": result = 22
+    for i in range (1,6):
+        writeStatAbility(outFile, "stealth", 22, 10, 500-i*50, i)    # "MODIFY_STEALTH": result = 22
 
 def writeStatAbility(outFile, statName, stat_type, increment, xp_mult, index):
     v = str(index*increment + 100)
     xpval = str(index*index*xp_mult + 50)
     sa = statName + " +" + str(index*increment) + "%,upgrade-" + statName + "-" + str(index) + ",,0,0,-1,0,0,0," + xpval + ",0,0," + str(stat_type) + ",7,"+v+",0,0,0,*"
     outFile.write(sa)
+    log = "stat "+statName + "-" + str(index) + " xp:"+xpval
+    print(log)
 
 def drawMainButtons():
     global win

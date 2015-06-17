@@ -2,9 +2,9 @@ package com.dbash.util;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
-	public static boolean TESTCHARS = true;
+	public static boolean TESTCHARS = false;
 	public static String c1 = "wolf";
 	public static String c2 = "pit viper";
 	public static String c3 = "plate beatle";
@@ -14,10 +14,10 @@ public class L {
 	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;
-	public static boolean NO_SAVE = true;
+	public static boolean NO_SAVE = false;
 	public static int LEVEL = 1;
 	
-	public static int EXTRA_XP = 100000;
+	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;
 	public static int TORCH_DENSITY = 8;  // higher is less dense. default is 8
 	public static boolean SHOWTEXTBOXES = false;
