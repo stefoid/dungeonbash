@@ -254,7 +254,7 @@
 +"lesser demon,h, ,1,1,1,0,15,20,4,12,12,8,8,8,0,0,-2,-2,-3,*"// lesser demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , 
 +"demon,n, ,1,1,1,0,18,30,4,15,15,11,10,10,0,0,-2,-2,-3,-3,*"// demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , RANDOM MAGIC , 
 +"greater demon,i, ,1,1,1,0,30,40,3,17,17,14,12,12,0,0,-2,-2,-3,-3,*"// greater demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , RANDOM MAGIC , 
-+"pit viper,e,sudden speed.upgrade-spit,1,0,0,0,8,1,2,9,3,5,14,8,1,196,198,*"// pit viper: strong poison bite , weak spit , 
++"pit viper,e,sudden speed.upgrade-spit,1,0,0,0,8,1,2,9,9,5,14,8,1,196,198,*"// pit viper: strong poison bite , weak spit , 
 +"hell slime,g, ,1,0,0,1,16,3,3,18,10,12,6,6,0,186,147,106,75,56,193,*"// hell slime: acid attack , resist stun , resist chem 90 , acid spray , resist poison , acid spit , 
 +"elf,a,light tread,1,1,1,0,5,7,3,12,8,4,10,10,1,0,58,195,201,*"// elf: bash , sword , bow , chainmail , 
 +"dwarf,k, ,1,1,1,0,10,3,2,9,14,3,4,5,1,0,95,194,-2,*"// dwarf: bash , leather armor , axe , RANDOM ITEM , 
