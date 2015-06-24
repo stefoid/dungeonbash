@@ -1260,16 +1260,24 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 		if (turnProcessor != null) {
 			availableXp = turnProcessor.getTotalXp() - turnProcessor.getSpentXp();
 		}
+		ensurePowerup();
 		PowerupList pup = new PowerupList(this, powerupState.buyableAbilities, true, availableXp);
 		return pup;
 	}
 
 	@Override
 	public PowerupList getPurchasedPowerupList() {
+		ensurePowerup();
 		PowerupList pup = new PowerupList(this, powerupState.boughtAbilities, false, 0);
 		return pup;
 	}
 
+	private void ensurePowerup() {
+		if (powerupState == null) {
+			startPowerup();
+		}
+	}
+	
 	@Override
 	public boolean buyPowerup(Ability ability) {
 		int spentXp = turnProcessor.getSpentXp();

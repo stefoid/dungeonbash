@@ -50,7 +50,7 @@
 +"headbutt,aa,4,0,3,-1,0,0,1,1,1,0,8,3,1,3,38,0,7,5,0,0,0,0,9,6,7,53,0,0,*"// headbutt: ATTACKER,DESELECT,SELECT,
 +"slash,aa,4,0,3,-1,0,0,1,1,1,0,8,3,2,3,38,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// slash: ATTACKER,DESELECT,SELECT,
 +"resist knockback,ia,-1,0,0,0,0,0,0,0,0,0,21,0,38,0,0,0,*"// resist knockback: NO STRATEGY,
-+"charge,charge,6,0,0,-1,0,0,0,4000,1,0,*"// charge: 
++"charge,charge,6,0,0,-1,0,0,0,500,1,0,*"// charge: 
 +"knockback,knockback,-1,0,0,-1,0,0,0,1,0,0,*"// knockback: 
 +"flight,flight,-1,0,0,-1,0,0,0,1,0,0,*"// flight: 
 +"torches,ad,6,2,2,-1,1,0,1,1,1,0,19,3,3,5,-1,0,*"// torches: ATTACKER,
@@ -233,7 +233,7 @@
 +"strangler vine,s, ,0,0,0,0,12,1,2,15,4,8,12,2,0,0,67,147,*"// strangler vine: bash , tendrils , resist stun , 
 +"creeping death,s, ,0,0,0,0,20,20,2,15,4,11,6,10,0,77,200,67,147,*"// creeping death: nibble , poison cloud , tendrils , resist stun , 
 +"crazed minion,a, ,1,1,1,1,5,3,3,8,1,1,6,8,0,0,-2,21,*"// crazed minion: bash , RANDOM ITEM , dash , 
-+"tarantuloid,d,charge.light tread,1,0,0,0,14,1,6,12,4,2,12,8,1,187,*"// tarantuloid: poison bite , 
++"tarantuloid,d,charge.light tread,1,0,0,0,14,1,6,12,4,4,12,8,1,187,*"// tarantuloid: poison bite , 
 +"dark faery,r,upgrade-drain.hand of smiting.wave of smiting,1,1,0,1,5,8,4,8,10,4,12,8,1,203,147,54,*"// dark faery: energy drain , resist stun , flight , 
 +"vat creature,a, ,1,1,1,0,12,2,2,8,6,2,2,3,1,0,131,*"// vat creature: bash , regeneration , 
 +"dummy,a, ,1,1,1,0,3,0,1,1,1,1000,1,1,0,58,141,95,65,*"// dummy: sword , sling , leather armor , amulet of resist poison , 
@@ -254,7 +254,7 @@
 +"lesser demon,h, ,1,1,1,0,15,20,4,12,12,8,8,8,0,0,-2,-2,-3,*"// lesser demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , 
 +"demon,n, ,1,1,1,0,18,30,4,15,15,11,10,10,0,0,-2,-2,-3,-3,*"// demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , RANDOM MAGIC , 
 +"greater demon,i, ,1,1,1,0,30,40,3,17,17,14,12,12,0,0,-2,-2,-3,-3,*"// greater demon: bash , RANDOM ITEM , RANDOM ITEM , RANDOM MAGIC , RANDOM MAGIC , 
-+"pit viper,e,sudden speed.upgrade-spit,1,0,0,0,8,1,2,9,9,5,14,8,1,196,198,*"// pit viper: strong poison bite , weak spit , 
++"pit viper,e,sudden speed.upgrade-spit,1,0,0,0,8,1,2,9,8,5,14,8,1,196,198,*"// pit viper: strong poison bite , weak spit , 
 +"hell slime,g, ,1,0,0,1,16,3,3,18,10,12,6,6,0,186,147,106,75,56,193,*"// hell slime: acid attack , resist stun , resist chem 90 , acid spray , resist poison , acid spit , 
 +"elf,a,light tread,1,1,1,0,5,7,3,12,8,4,10,10,1,0,58,195,201,*"// elf: bash , sword , bow , chainmail , 
 +"dwarf,k, ,1,1,1,0,10,3,2,9,14,3,4,5,1,0,95,194,-2,*"// dwarf: bash , leather armor , axe , RANDOM ITEM , 
@@ -275,7 +275,7 @@
 +"warrior monk,a, ,1,1,1,0,9,5,4,10,10,3,10,8,1,0,52,*"// warrior monk: bash , charge , 
 +"priest,a,healing prayer,1,1,1,0,8,10,2,7,8,4,3,6,1,0,-3,-3,*"// priest: bash , RANDOM MAGIC , RANDOM MAGIC , 
 +"cave bear,b, ,1,1,0,0,26,1,2,14,8,7,3,7,0,209,52,*"// cave bear: squeeze , charge , 
-+"wolf,c,upgrade-dash,1,0,0,1,12,1,6,10,10,2,8,14,1,52,132,*"// wolf: charge , bite , 
++"wolf,c,upgrade-dash,1,0,0,1,12,1,6,10,10,4,8,14,1,52,132,*"// wolf: charge , bite , 
 +"hell hound,c, ,1,0,0,1,28,4,7,20,15,13,4,10,0,50,52,21,*"// hell hound: slash , charge , dash , 
 +"giant,b, ,1,1,0,0,40,4,2,20,5,14,2,2,0,83,48,57,51,29,*"// giant: giant mace , smash , resist holding , resist knockback , bolders , 
 +"rot worm,e, ,1,0,0,1,19,1,2,18,10,8,10,2,0,186,106,193,*"// rot worm: acid attack , resist chem 90 , acid spit , 

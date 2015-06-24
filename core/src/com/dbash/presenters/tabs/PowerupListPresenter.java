@@ -100,8 +100,10 @@ public class PowerupListPresenter extends ListPresenter{
 		
 		// if the item list is totally empty, put some text there to say that so it doesnt look dumb
 		if (elements.size() == 0) {
-			AbilityInfo firstInfo = new AbilityInfo("No items carried", false);
+			AbilityInfo firstInfo = new AbilityInfo("No powerups left", false);
 			firstInfo.isCarried = true;
+			firstInfo.isAffordable = true;
+			firstInfo.isAvailable= true;
 			PowerupListElementView first = new PowerupListElementView(gui, null, firstInfo, elementArea, index++);
 			first.addToList(elements);
 		}

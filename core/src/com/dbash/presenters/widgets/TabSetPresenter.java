@@ -250,15 +250,9 @@ public class TabSetPresenter implements TouchEventListener{
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_START");
-				boolean setTabCurrent = false;
-				if (currentTab.getClass() == ItemTab.class) {
-					setTabCurrent = true;
-				}
 				removeTab(ItemTab.class);
 				addTab(TabType.POWERUP_TAB, powerupIndex);
-				if (setTabCurrent) {
-					setCurrentTab(findTab(PowerupTab.class)); // arbitrarily set tab back to ability tab for now.
-				}
+				setCurrentTab(findTab(PowerupTab.class)); // arbitrarily set tab back to ability tab for now.
 			}
 		});
 		
@@ -266,15 +260,9 @@ public class TabSetPresenter implements TouchEventListener{
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_REMOVE");
-				boolean setTabCurrent = false;
-				if (currentTab.getClass() == PowerupTab.class) {
-					setTabCurrent = true;
-				}
 				removeTab(PowerupTab.class);
 				addTab(TabType.ITEM_TAB, powerupIndex);
-				if (setTabCurrent) {
-					setCurrentTab(ItemTab.class); // arbitrarily set tab back to ability tab for now.
-				}
+				setCurrentTab(AbilityTab.class); // arbitrarily set tab back to ability tab for now.
 			}
 		});
 	}
