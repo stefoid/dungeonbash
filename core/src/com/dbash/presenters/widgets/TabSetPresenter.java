@@ -43,7 +43,7 @@ public class TabSetPresenter implements TouchEventListener{
 		POWERUP_TAB
 	}
 
-	public static final int powerupIndex = 1;
+	public static final int powerupIndex = 0;
 	
 	List<TabPresenter>	tabs = new LinkedList<TabPresenter>();
 	private TabPresenter currentTab;
@@ -246,22 +246,26 @@ public class TabSetPresenter implements TouchEventListener{
 	private void setEventListeners() {
 		EventBus eventBus = EventBus.getDefault();
 		
-		eventBus.onEvent(GameStatePresenter.POWERUP_START, this, new IEventAction() {
+		eventBus.onEvent(GameStatePresenter.POWERUP_TAB_ADD, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
-				if (LOG) L.log("POWERUP_START");
-				removeTab(ItemTab.class);
+				if (LOG) L.log("POWERUP_TAB_ADD");
+				removeTab(EyeTab.class);
 				addTab(TabType.POWERUP_TAB, powerupIndex);
-				setCurrentTab(findTab(PowerupTab.class)); // arbitrarily set tab back to ability tab for now.
+				if (param == null) {
+					setCurrentTab(findTab(PowerupTab.class)); // arbitrarily set tab back to ability tab for now.
+				} else {
+					setCurrentTab(AbilityTab.class);
+				}
 			}
 		});
 		
-		eventBus.onEvent(GameStatePresenter.POWERUP_REMOVE, this, new IEventAction() {
+		eventBus.onEvent(GameStatePresenter.POWERUP_TAB_REMOVE, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				if (LOG) L.log("POWERUP_REMOVE");
 				removeTab(PowerupTab.class);
-				addTab(TabType.ITEM_TAB, powerupIndex);
+				addTab(TabType.EYE_TAB, powerupIndex);
 				setCurrentTab(AbilityTab.class); // arbitrarily set tab back to ability tab for now.
 			}
 		});

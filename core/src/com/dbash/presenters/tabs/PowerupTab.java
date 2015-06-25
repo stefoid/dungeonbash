@@ -10,6 +10,7 @@ import com.dbash.models.UIInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.root.GameStatePresenter;
 import com.dbash.presenters.root.HighlightAnimView;
 import com.dbash.presenters.root.PowerupOverlayPresenter;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
@@ -36,7 +37,7 @@ public class PowerupTab extends TabPresenter {
 		this.gui = gui;
 		final Rect animArea = this.tabArea;
 		
-		EventBus.getDefault().onEvent(PowerupOverlayPresenter.POWERUP_TAB_BUTTON_ON_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(GameStatePresenter.POWERUP_TAB_BUTTON_ON_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				Rect fromRect = new Rect(animArea, .6f);
@@ -49,7 +50,7 @@ public class PowerupTab extends TabPresenter {
 			}
 		});
 		
-		EventBus.getDefault().onEvent(PowerupOverlayPresenter.POWERUP_TAB_BUTTON_OFF_EVENT, this, new IEventAction() {
+		EventBus.getDefault().onEvent(GameStatePresenter.POWERUP_TAB_BUTTON_OFF_EVENT, this, new IEventAction() {
 			@Override
 			public void action(Object param) {
 				if (tabButtonAnim != null) {

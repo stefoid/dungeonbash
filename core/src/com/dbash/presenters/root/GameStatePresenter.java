@@ -28,7 +28,11 @@ public class GameStatePresenter {
 	public static final String TUTORIAL_OVER_EVENT = "tutorialover";
 	public static final String POWERUP_START = "POWERUP_START";
 	public static final String POWERUP_OVER = "POWERUP_OVER";
-	public static final String POWERUP_REMOVE = "POWERUP_REMOVE";
+	public static final String POWERUP_TAB_ADD = "POWERUP_TAB_ADD";
+	public static final String POWERUP_TAB_REMOVE = "POWERUP_TAB_REMOVE";
+	public static final String POWERUP_TAB_BUTTON_OFF_EVENT = "POWERUP_TAB_BUTTON_OFF_EVENT";
+	public static final String POWERUP_TAB_BUTTON_ON_EVENT = "POWERUP_TAB_BUTTON_ON_EVENT";
+	
 	
 	public GameStatePresenter(PresenterDepend model, UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
@@ -56,6 +60,7 @@ public class GameStatePresenter {
 				removePresenters();
 				OverlayPresenter newGamePresenter = new NewGameOverlayPresenter((IPresenterTurnState) param, false);
 				gui.overlayQueues.addSequential(newGamePresenter);
+				eventBus.event(POWERUP_TAB_ADD, true);
 			}
 		});
 		
@@ -123,7 +128,7 @@ public class GameStatePresenter {
 		
 		if (powerupPresenter != null) {
 			powerupPresenter.destroy();
-			EventBus.getDefault().event(POWERUP_REMOVE, null);
+			EventBus.getDefault().event(POWERUP_TAB_REMOVE, null);
 		}
 		powerupPresenter = null;
 	}

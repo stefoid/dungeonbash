@@ -20,6 +20,7 @@ import com.dbash.presenters.tabs.CreatureListElementView;
 import com.dbash.presenters.widgets.ButtonView;
 import com.dbash.presenters.widgets.CheckBoxView;
 import com.dbash.presenters.widgets.IClickListener;
+import com.dbash.util.EventBus;
 import com.dbash.util.Rect;
 import com.dbash.util.Rect.HAlignment;
 import com.dbash.util.Rect.VAlignment;
@@ -230,6 +231,7 @@ public class NewGameOverlayPresenter extends OverlayPresenter implements TouchEv
 		newCharsButton.removeYourself();
 		killCharButtons();
 		touchEventProvider.removeTouchEventListener(this);
+		EventBus.getDefault().event(GameStatePresenter.POWERUP_TAB_REMOVE, null);
 	}
 
 }

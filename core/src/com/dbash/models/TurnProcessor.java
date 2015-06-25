@@ -1135,6 +1135,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		}
 		setGameState(GameState.POWERUP);
 		sendGameStateEvent();
+		EventBus.getDefault().event(GameStatePresenter.POWERUP_TAB_ADD, null);
+		EventBus.getDefault().event(GameStatePresenter.POWERUP_TAB_BUTTON_ON_EVENT, null);
 	}
 	
 	@Override 

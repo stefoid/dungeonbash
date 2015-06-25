@@ -28,9 +28,6 @@ import com.dbash.util.Rect.VAlignment;
 
 public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEventListener {
 	
-	public static final String POWERUP_TAB_BUTTON_OFF_EVENT = "POWERUP_TAB_BUTTON_OFF_EVENT";
-	public static final String POWERUP_TAB_BUTTON_ON_EVENT = "POWERUP_TAB_BUTTON_ON_EVENT";
-	
 	private class CharacterView {
 		public Rect area;
 		public ButtonView button;
@@ -132,8 +129,6 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 		});
 
 		createNewChars();
-		
-		EventBus.getDefault().event(POWERUP_TAB_BUTTON_ON_EVENT, null);
 	}
 	
 	public void updateXpText(Integer available) {
@@ -208,7 +203,7 @@ public class PowerupOverlayPresenter extends OverlayPresenter implements TouchEv
 	@Override
 	public void destroy() {
 		//cancelButton.removeYourself();
-		EventBus.getDefault().event(POWERUP_TAB_BUTTON_OFF_EVENT, null);
+		EventBus.getDefault().event(GameStatePresenter.POWERUP_TAB_BUTTON_OFF_EVENT, null);
 		EventBus.getDefault().removeAll(this);
 		okButton.removeYourself();
 		killCharButtons();
