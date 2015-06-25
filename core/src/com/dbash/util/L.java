@@ -7,7 +7,7 @@ public class L {
 	public static boolean TESTCHARS = true;
 	public static String c1 = "vampire bat";
 	public static String c2 = "pit viper";
-	public static String c3 = "plate beatle";
+	public static String c3 = "dark faery";
 	
 	public static boolean TUTORIAL_MODE = false;
 	

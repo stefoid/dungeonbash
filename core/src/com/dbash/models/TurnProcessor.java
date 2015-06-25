@@ -57,7 +57,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	private boolean firstCharToDrop;
 	public static final int NO_CURRENT_CREATURE = -1;
 	public static final int INITIAL_EXP = 0;
-	public static final int EXP_PER_LEVEL = 220;
+	public static final int EXP_PER_LEVEL = 400;
 	public GameStats gameStats;
 
 	// Lists to maintain what is going on.
@@ -1146,6 +1146,6 @@ public class TurnProcessor implements IPresenterTurnState {
 	}
 	
 	private int getLevelXp(int level) {
-		return level * EXP_PER_LEVEL;
+		return EXP_PER_LEVEL;
 	}
 }
