@@ -1095,8 +1095,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 	}
 
 	@Override
-	public Creature addMonsterToMap(String monsterName,
-			DungeonPosition dungeonPosition) {
+	public Creature addMonsterToMap(String monsterName, DungeonPosition dungeonPosition) {
 		Monster monster = new Monster(Creature.getIdForName(monsterName),
 				currentLevel, dungeonPosition, this, this, turnProcessor);
 		map.location(dungeonPosition).creature = monster;
