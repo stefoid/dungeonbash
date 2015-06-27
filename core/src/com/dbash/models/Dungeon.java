@@ -201,6 +201,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 		// If its the last currentLevel, put nashkur at the exit instead of an
 		// exit.
 		map.onCreate();
+		map.setRoomMonsters(this);
 
 		switch (currentLevel) {
 		case Dungeon.FINAL_LEVEL:
@@ -1096,8 +1097,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 
 	@Override
 	public Creature addMonsterToMap(String monsterName, DungeonPosition dungeonPosition) {
-		Monster monster = new Monster(Creature.getIdForName(monsterName),
-				currentLevel, dungeonPosition, this, this, turnProcessor);
+		Monster monster = new Monster(Creature.getIdForName(monsterName), currentLevel, dungeonPosition, this, this, turnProcessor);
 		map.location(dungeonPosition).creature = monster;
 		mobs.add(monster);
 		return monster;

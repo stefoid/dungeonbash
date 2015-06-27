@@ -93,8 +93,13 @@ public class Map implements IPresenterMap {
 					attemptRoom(roomPoints[i]);
 				}
 				
-				setIslands();
+				for (Room room : rooms) {
+					room.addRoughTerrain(dungeonEvents, dungeonQuery);
+					room.setIslands();
+				}
+				
 				setStartAndExitPoints();
+				setIslands();
 				
 				// Now make a preliminary pass to determine Tile types
 				for (int x=0; x<width; x++) {
@@ -277,18 +282,20 @@ public class Map implements IPresenterMap {
 	}
 
 	protected void setStartAndExitPoints() throws MapException {
-		int tries = 0; // just in case it is impossible.
-		do {
+		exitPoint = null;
+		for (int i=0; i<200; i++) {
 			startPoint = getRandomPointAnywhere(true);
-			exitPoint = getWideSpaceLocation().getPosition();
-			tries++;
-		} while (((Math.abs(startPoint.x - exitPoint.x) + Math.abs(startPoint.y - exitPoint.y)) < (height / 2)) && (tries < 200));
-		
-		if (tries >= 200) {
-			throw new MapException();
+			Location exitLocation = getWideSpaceLocation();
+			if (exitLocation != null) {
+				exitPoint = exitLocation.getPosition();
+				if ((Math.abs(startPoint.x - exitPoint.x) + Math.abs(startPoint.y - exitPoint.y)) >= (height / 2)) {
+					// tell the exit Location 
+					location(exitPoint).setAsExit();
+					return;
+				}
+			}
 		}
-		// tell the exit Location 
-		location(exitPoint).setAsExit();
+		throw new MapException();
 	}
 	
 	protected void setIslands() {
@@ -507,6 +514,12 @@ public class Map implements IPresenterMap {
 		return location(dungeonPosition.x, dungeonPosition.y);
 	}
 	
+	public void setRoomMonsters(IDungeonEvents dungeonEvents) {
+		for (Room room : rooms) {
+			room.setMonsters(dungeonEvents);
+		}
+	}
+	
 	// Used by Location when calculating its type - assumes out of bounds indexes are solid rock.
 	public Location safeLocation(int x, int y) {
 		if (x>=0 && x<width && y>=0 && y<height) {
@@ -672,8 +685,8 @@ public class Map implements IPresenterMap {
 		" hhhh ",
 		" hhhh ",
 		"  hh  ",
-		"      "};
-	private static String[] holeMonsters = {};
+		"  0   "};
+	private static String[] holeMonsters = {"acid blob"};
 	
 	private static String[] mudMap = {
 		"      ",
