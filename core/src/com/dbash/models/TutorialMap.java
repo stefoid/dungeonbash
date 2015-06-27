@@ -17,16 +17,14 @@ public class TutorialMap extends Map {
 "*****                      0     h     *********       mmm   ********             **t     rr    3 ***" ,
 "*****     b       ********             t********   mmmmm 1   *t******             ***      r      ***" ,
 "****t             ********             *********                                  ***            X***" ,
-"*****************************************************************************************************",
-"*****************************************************************************************************" 
-		};
+"*****************************************************************************************************" ,
+"*****************************************************************************************************"};
 	
 	private String[] tutorialMonsters = {
 			"dummy",
 			"dummy",
 			"dummy",
-			"warrior"
-	};
+			"warrior"};
 	
 	Room room;
 	IDungeonEvents dungeonEvents;
@@ -51,8 +49,8 @@ public class TutorialMap extends Map {
 			}
 		}
 		
-		room = new Room(tutorialMap, tutorialMonsters, 0, location);
-		room.setPosition(new DungeonPosition(0,0));
+		room = new Room(tutorialMap, tutorialMonsters, 0);
+		room.setPosition(new DungeonPosition(0,0), location);
 		room.clearSpaces();
 		room.setIslands();
 		setStartAndExitPoints();

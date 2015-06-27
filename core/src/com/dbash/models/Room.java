@@ -8,26 +8,27 @@ public class Room {
 	private String[] charMap;;
 	private String[] monsters;
 	
-	int width;
-	int height;
-	int mx;
-	int my;
-	Location[][] location;
-	int edgeLimit;
-	Rect area;
+	private int mx;
+	private int my;
+	private Location[][] location;
+	private int edgeLimit;
+	private Rect area;
 	
-	public Room(String[] charMap, String[] monsters, int edgeLimit, Location[][] location) {
+	public int width;
+	public int height;
+	
+	public Room(String[] charMap, String[] monsters, int edgeLimit) {
 		this.charMap = charMap;
 		this.monsters = monsters;
 		width = charMap[0].length();
 		height = charMap.length;
-		this.location = location;
 		this.edgeLimit = edgeLimit;
 	}
 	
-	public void setPosition(DungeonPosition position) {
+	public void setPosition(DungeonPosition position, Location[][] location) {
 		this.mx = position.x;
 		this.my = position.y;
+		this.location = location;
 		area = new Rect(mx+edgeLimit, my+edgeLimit, width-edgeLimit*2, height-edgeLimit*2);
 	}
 	

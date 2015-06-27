@@ -39,6 +39,8 @@ public class Map implements IPresenterMap {
 	
 	protected IDungeonQuery dungeonQuery;
 	
+	protected ArrayList<Room> rooms;
+	
 	protected Vector<UILocationInfoListener> locationInfoListeners;
 	protected Location solidRock = new Location();
 	protected boolean lightingChanged;
@@ -54,6 +56,7 @@ public class Map implements IPresenterMap {
 		this.dungeonQuery = dungeonQuery;
 		while (dungeonNotCompleted) {
 			try {
+				rooms = new ArrayList<Room>();
 				retainFocusBag = new UIInfoListenerBag();
 				locationInfoListeners = new Vector<UILocationInfoListener>();
 				width = 13 + level + border*2 - 2;
@@ -83,9 +86,10 @@ public class Map implements IPresenterMap {
 					roomPoints[i] = getRandomPoint(true, 2+ border);
 				}
 
-				for (int i = 0; i < roomPoints.length; i++)
+				for (int i = 0; i < roomPoints.length; i++) {
 					// otherwise all the rooms will be most likely drawn together
-					drawRoom(roomPoints[i]);
+					attemptRoom(roomPoints[i]);
+				}
 				
 				setIslands();
 				setStartAndExitPoints();
@@ -234,21 +238,31 @@ public class Map implements IPresenterMap {
 	 */
 	public DungeonPosition getRandomPoint(boolean isFloorRequired, int minDistanceToEdge) throws MapException {
 
-		DungeonPosition l = new DungeonPosition();
+		DungeonPosition posi = new DungeonPosition();
 		int tries = 0;
 		boolean found = false;
 		while (!found && tries<500) {
 			tries++;
-            l.x = Randy.getRand(minDistanceToEdge, width - 1 - minDistanceToEdge);
-            l.y = Randy.getRand(minDistanceToEdge, height - 1 - minDistanceToEdge);
-            if (isFloorRequired)
-				found = !location(l).isOpaque();
-			else
+            posi.x = Randy.getRand(minDistanceToEdge, width - 1 - minDistanceToEdge);
+            posi.y = Randy.getRand(minDistanceToEdge, height - 1 - minDistanceToEdge);
+            
+            if (isFloorRequired) {
+				found = !location(posi).isOpaque();
+            } else {
 				found = true;
+            }
+            
+            // cant be inside any hard rooms
+            for (Room room : rooms) {
+            	if (room.isInside(posi)) {
+            		found = false;
+            		break;
+            	}
+            }
 		}
 		
 		if (tries < 500) {
-			return l;
+			return posi;
 		} else {
 			throw new MapException();
 		}
@@ -280,7 +294,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	public void drawRoom(DungeonPosition dungeonLocation) {
+	public void drawBlankRoom(DungeonPosition dungeonLocation) {
 		int roomW = Randy.getRand(2, height / 8);
 		int roomH = Randy.getRand(2, height / 8);
 		DungeonPosition min = new DungeonPosition(dungeonLocation.x - roomW / 2, dungeonLocation.y - roomH / 2);
@@ -291,6 +305,16 @@ public class Map implements IPresenterMap {
 		if (max.y >= height-(border-1)) max.y = height-(border+1);
 		
 		drawRectangle(min, max);
+	}
+	
+//	pick a random spot - it can’t be in any of the off-limits areas.
+//	on a 1:N chance, try to implement a Room.  Pick a Room from the list.  get its size.
+//	Make a proposed rectangle and test it against  (a) will it fit inside the entire map and (b) all the implemented rooms.
+//	It might be nice to have a Rect constructor that takes a dungeonPoint and a width and height.
+//	IF there is no overlap,  we have a good spot for a room, so set its point and tell it to room.clear() and add it to the list of rooms.
+//	 - we remember the room for latter processing stages in an array, along with the miniboss Room, if there is one.
+	public void attemptRoom(DungeonPosition dungeonPosition) {
+		drawBlankRoom(dungeonPosition);
 	}
 	
 	public void drawRectangle(DungeonPosition min, DungeonPosition max) {
@@ -600,5 +624,27 @@ public class Map implements IPresenterMap {
 	}
 	
 	public void onCreate() {
+	}
+	
+	private static String[] holeMap = {
+		"      ",
+		"  hh  ",
+		" hhhh ",
+		" hhhh ",
+		" hhhh ",
+		"  hh  ",
+		"      "};
+	private static String[] holeMonsters = {};
+	
+	
+	
+	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
+	
+	private static ArrayList<Room> makeHardRooms() {
+		ArrayList<Room> theRooms = new ArrayList<Room>();
+		
+		theRooms.add(new Room(holeMap, holeMonsters, 0));
+		
+		return theRooms;
 	}
 }
