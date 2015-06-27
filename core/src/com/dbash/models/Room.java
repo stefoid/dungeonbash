@@ -12,8 +12,8 @@ public class Room {
 	private int my;
 	private Location[][] location;
 	private int edgeLimit;
-	private Rect area;
 	
+	public Rect area;
 	public int width;
 	public int height;
 	
@@ -25,11 +25,19 @@ public class Room {
 		this.edgeLimit = edgeLimit;
 	}
 	
+	public Room(Room room) {
+		this.charMap = room.charMap;
+		this.monsters = room.monsters;
+		this.edgeLimit = room.edgeLimit;
+		this.width = room.width;
+		this.height = room.height;
+	}
+	
 	public void setPosition(DungeonPosition position, Location[][] location) {
-		this.mx = position.x;
-		this.my = position.y;
 		this.location = location;
-		area = new Rect(mx+edgeLimit, my+edgeLimit, width-edgeLimit*2, height-edgeLimit*2);
+		area = new Rect(position, width, height);
+		this.mx = (int) area.x;
+		this.my = (int) area.y;
 	}
 	
 	public boolean isInside(DungeonPosition position) {

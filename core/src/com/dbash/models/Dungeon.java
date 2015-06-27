@@ -35,7 +35,7 @@ import com.dbash.util.Randy;
 public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 		IPresenterDungeon {
 
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 
 	public enum MoveType {
 		NORMAL_MOVE, LEADER_MOVE, FOLLOWER_MOVE, KNOCKBACK_MOVE, CHARGE_MOVE, SHUDDER_MOVE
@@ -250,7 +250,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 						map.roomPoints.length - 1)], null);
 			} else {
 				try {
-					placeMonster(map.getRandomPoint(true));
+					placeMonster(map.getRandomPointAnywhere(true));
 				} catch (Map.MapException e) {
 
 				}

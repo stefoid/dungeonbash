@@ -47,7 +47,7 @@ import com.dbash.util.SequenceNumber;
  */
 
 public class Character extends Creature implements IPresenterCharacter {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 public static final String ABILITY_LIST_CHANGED = "ABILITY_LIST_CHANGED";
 public static final String EFFECT_LIST_CHANGED = "EFFECT_LIST_CHANGED";

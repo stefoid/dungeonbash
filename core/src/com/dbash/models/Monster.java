@@ -16,7 +16,7 @@ import com.dbash.util.SequenceNumber;
 
 public class Monster extends Creature
 {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 
 	private class LastCharacterPosition {
 		public Character character;

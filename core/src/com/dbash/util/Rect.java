@@ -1,5 +1,7 @@
 package com.dbash.util;
 
+import com.dbash.models.DungeonPosition;
+
 public class Rect {
 
 	public enum HAlignment {
@@ -57,7 +59,24 @@ public class Rect {
 		this.y = area.y + botPer;
 		this.height = area.height - botPer - topPer;
 	}
-
+	
+	public Rect(DungeonPosition position, int width, int height) {
+		int x = position.x - width/2;
+		int y = position.y - height/2;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public boolean overlaps(Rect r) {
+	    return x < r.x + r.width && x + width > r.x && y < r.y + r.height && y + height > r.y;
+	}
+	
+	public boolean isInside(Rect r) {
+	    return x>=r.x && width <= r.width && y>= r.y && height <= r.height;
+	}
+	
 	// Return a rect of the specified width and height with an x and y pos alligned as specified within the enclosing Rect.
 	// for laying out children.
 	public Rect (Rect area, HAlignment hAlign, VAlignment vAlign, float width, float height)

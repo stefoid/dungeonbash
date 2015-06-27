@@ -20,7 +20,7 @@ import com.me.dbash.Dbash;
 @SuppressWarnings("unused")
 
 public class TurnProcessor implements IPresenterTurnState {
-	public static final boolean LOG = true && L.DEBUG;
+	public static final boolean LOG = false && L.DEBUG;
 	
 	public static final int NUM_CHARS = 3;
 	public static String AVAILABLE_XP_EVENT = "SPENT_XP_EVENT"; 
@@ -1115,12 +1115,20 @@ public class TurnProcessor implements IPresenterTurnState {
 	
 	@Override
 	public int getSpentXp() {
-		return gameStats.spentXp;
+		if (gameState != GameState.NEW_GAME) {
+			return gameStats.spentXp;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
 	public int getTotalXp() {
-		return gameStats.xp + L.EXTRA_XP;
+		if (gameState != GameState.NEW_GAME) {
+			return gameStats.xp + L.EXTRA_XP;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
