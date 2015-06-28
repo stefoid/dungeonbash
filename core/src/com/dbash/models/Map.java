@@ -685,18 +685,60 @@ public class Map implements IPresenterMap {
 		" hhhh ",
 		" hhhh ",
 		"  hh  ",
-		"  0   "};
-	private static String[] holeMonsters = {"acid blob"};
+		"      "};
+	private static String[] holeMonsters = {};
 	
 	private static String[] mudMap = {
-		"      ",
-		"  mm  ",
-		" mmmm ",
-		" mmmm ",
-		" mmmm ",
-		"  mm  ",
-		"      "};
+		"   mmmm ",
+		" mmmmmmm",
+		"mmmmm   ",
+		"  mm    "};
 	private static String[] mudMonsters = {};
+	
+	private static String[] boneMap = {
+		" bbb      ",
+		"bbbb      ",
+		"  bbbbbb  ",
+		" bbbbibbbb",
+		"bbbbbbbbb ",
+		"   bb     "};
+	private static String[] boneMonsters = {};
+	
+	private static String[] rockMap = {
+		"  rr rr",
+		"rrrrrrr",
+		"  rrrrrrr",
+		" rrrrr   ",
+		"rr  rrr r"};
+	private static String[] rockMonsters = {};
+	
+	private static String[] ravVertMap = {
+		"   ",
+		" h ",
+		" h ",
+		" h ",
+		" h ",
+		" h ",
+		" h ",
+		" h ",
+		"   "};
+	private static String[] ravVertMonsters = {};
+	
+	private static String[] ravHorMap = {
+		"              ",
+		" hhhhhhhhhhhh ",
+		"              "};
+	private static String[] ravHorMonsters = {};
+	
+	private static String[] gridMap = {
+		"             ",
+		" *   *   *   ",
+		"   *   *   * ",
+		" *   *   *   ",
+		"   *   *   * ",
+		" *   *   *   ",
+		"             "};
+	private static String[] gridMonsters = {};
 	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
 	
@@ -705,6 +747,11 @@ public class Map implements IPresenterMap {
 		
 		theRooms.add(new Room(holeMap, holeMonsters, 0));
 		theRooms.add(new Room(mudMap, mudMonsters, 0));
+		theRooms.add(new Room(ravVertMap, ravVertMonsters, 0));
+		theRooms.add(new Room(ravHorMap, ravHorMonsters, 0));
+		theRooms.add(new Room(gridMap, gridMonsters, 0));
+		theRooms.add(new Room(boneMap, boneMonsters, 0));
+		theRooms.add(new Room(rockMap, rockMonsters, 0));
 		
 		return theRooms;
 	}
