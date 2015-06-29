@@ -326,6 +326,10 @@ public class Location {
 		locationType = LocationType.FLOOR;
 	}
 	
+	public void setLocationToWall() {
+		locationType = LocationType.WALL;
+	}
+	
 	public void setRoughTerrain(RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
 		int id = Ability.getIdForName(roughTerrainType.getValue());
 		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 

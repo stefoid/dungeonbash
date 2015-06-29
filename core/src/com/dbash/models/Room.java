@@ -14,6 +14,7 @@ public class Room {
 	private int edgeLimit;
 	
 	public Rect area;
+	private Rect insideArea;
 	public int width;
 	public int height;
 	
@@ -38,10 +39,15 @@ public class Room {
 		area = new Rect(position, width, height);
 		this.mx = (int) area.x;
 		this.my = (int) area.y;
+		insideArea = new Rect(mx+edgeLimit, my+edgeLimit, width-edgeLimit*2, height-edgeLimit*2);
 	}
 	
 	public boolean isInside(DungeonPosition position) {
 		return area.isInside(position.x, position.y);
+	}
+	
+	public boolean isInsideForTunnels(DungeonPosition position) {
+		return insideArea.isInside(position.x, position.y);
 	}
 	
 	public DungeonPosition getStartPosition() {
@@ -70,6 +76,8 @@ public class Room {
 				char c = charMap[y].charAt(x);
 				if (c != '*' && c != 't') {
 					location[mx+x][my+height-1-y].clearLocation();
+				} else {
+					location[mx+x][my+height-1-y].setLocationToWall();
 				}
 			}
 		}

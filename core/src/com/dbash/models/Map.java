@@ -73,12 +73,15 @@ public class Map implements IPresenterMap {
 					}
 				}
 				
-				DungeonPosition start = getRandomPointAnywhere(false);
-				location(start).clearLocation();
-				drawSquigglyLine(start);
+				// Start with a miniboss room or randomly placed squiggly line.
+				if (addMiniBossRoom() == false) {
+					DungeonPosition start = getRandomPointAnywhere(false);
+					location(start).clearLocation();
+					drawSquigglyLine(start);
+				}
 
 				for (int i = 0; i < ((height * 2) / 3); i++) {
-					drawSquigglyLine(getRandomPointAnywhere(true));
+					drawSquigglyLine(getRandomPointForTunnels(true));
 				}
 				
 				// now draw some rooms based on where the squigley lines have cleared space.
@@ -86,7 +89,7 @@ public class Map implements IPresenterMap {
 
 				for (int i = 0; i < roomPoints.length; i++) {
 					// calculate where to draw the rooms before starting to draw them
-					roomPoints[i] = getRandomPoint(true, true, 2+border);
+					roomPoints[i] = getRandomPoint(true, true, false, 2+border);
 				}
 
 				for (int i = 0; i < roomPoints.length; i++) {
@@ -218,17 +221,21 @@ public class Map implements IPresenterMap {
 	}
 
 	public DungeonPosition getRandomPointAnywhere(boolean isFloorRequired) throws MapException {
-		return getRandomPoint(isFloorRequired, false, border);
+		return getRandomPoint(isFloorRequired, false, false, border);
 	}
 	
 	public DungeonPosition getRandomPointNotInRooms(boolean isFloorRequired) throws MapException {
-		return getRandomPoint(isFloorRequired, true, border);
+		return getRandomPoint(isFloorRequired, true, false, border);
+	}
+	
+	public DungeonPosition getRandomPointForTunnels(boolean isFloorRequired) throws MapException {
+		return getRandomPoint(isFloorRequired, true, true, border);
 	}
 	
 	public Location getWideSpaceLocation() {
 		try {
 			 for (int i=0;i<500;i++) {
-				 DungeonPosition island = getRandomPoint(true, true, border+1);
+				 DungeonPosition island = getRandomPoint(true, true, false, border+1);
 				 boolean good = true;
 				 for (int x=-1; x<=1 && good; x++) {
 					 for (int y=-1; y<=1 && good; y++) {
@@ -253,7 +260,7 @@ public class Map implements IPresenterMap {
 	/**
 	 * Returns a random point, or null if it timed out.
 	 */
-	public DungeonPosition getRandomPoint(boolean isClearRequired, boolean notInRooms, int minDistanceToEdge) throws MapException {
+	public DungeonPosition getRandomPoint(boolean isClearRequired, boolean notInRooms, boolean forTunnels, int minDistanceToEdge) throws MapException {
 
 		DungeonPosition posi = new DungeonPosition();
 		int tries = 0;
@@ -272,7 +279,14 @@ public class Map implements IPresenterMap {
             if (notInRooms) {
                 // cant be inside any hard rooms
                 for (Room room : rooms) {
-                	if (room.isInside(posi)) {
+                	boolean isInside;
+                	if (forTunnels) {
+                		isInside = room.isInsideForTunnels(posi);
+                	} else {
+                		isInside = room.isInside(posi);
+                	}
+                	
+                	if (isInside) {
                 		found = false;
                 		break;
                 	}
@@ -336,17 +350,52 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	public void drawBlankRoom(DungeonPosition dungeonLocation) {
-		int roomW = Randy.getRand(2, height / 8);
-		int roomH = Randy.getRand(2, height / 8);
-		DungeonPosition min = new DungeonPosition(dungeonLocation.x - roomW / 2, dungeonLocation.y - roomH / 2);
-		if (min.x < border) min.x = border;
-		if (min.y < border) min.y = border;
-		DungeonPosition max = new DungeonPosition(min.x + roomW, min.y + roomH);
-		if (max.x >= width-(border-1)) max.x = width-(border+1);
-		if (max.y >= height-(border-1)) max.y = height-(border+1);
+	public void drawBlankRoom(DungeonPosition position) {
+		int w = Randy.getRand(2, height / 8);
+		int h = Randy.getRand(2, height / 8);
+		Rect area = new Rect(position, w, h);
+		DungeonPosition testPoint = new DungeonPosition(0,0);
 		
-		drawRectangle(min, max);
+		for (int x = (int) area.x; x < (int)(area.x+area.width); x++) {
+			for (int y = (int) area.y; y < (int) (area.y+area.height); y++) {
+				testPoint.x = x;
+				testPoint.y = y;
+				if (isPointClearOfRooms(testPoint)) {
+					location(testPoint).clearLocation();
+				}
+			}
+		}
+		
+	}
+
+	private boolean addMiniBossRoom() throws MapException{
+		Room room = null;
+		
+		switch (level) {
+			case 4:
+				room = new Room(level3Map, level3Monsters, 1);
+				break;
+			default:
+				room = new Room(level3Map, level3Monsters, 1);
+				break;
+		}
+		
+		if (room != null) {
+			for (int i = 0; i<200; i++) {
+				DungeonPosition position = getRandomPointAnywhere(false);
+				Rect area = new Rect(position, room.width, room.height);
+				if (isRectClearOfRooms(area)) {
+					room.setPosition(position, location);
+					rooms.add(room);
+					room.clearSpaces();
+					return true;
+				}
+			}
+		} else {
+			return false;
+		}
+		
+		throw new MapException();
 	}
 	
 //	pick a random spot - it can’t be in any of the off-limits areas.
@@ -379,6 +428,8 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
+	
+	
 	// check if the rect supplied is inside the map area and also clear of any overlapping rooms.
 	private boolean isRectClearOfRooms(Rect rect) {
 		boolean result = rect.isInside(validRect);
@@ -391,18 +442,22 @@ public class Map implements IPresenterMap {
 		return result;
 	}
 	
-	public void drawRectangle(DungeonPosition min, DungeonPosition max) {
-		for (int x = min.x; x <= max.x; x++) {
-			for (int y = min.y; y <= max.y; y++) {
-				location(x,y).clearLocation();
+	private boolean isPointClearOfRooms(DungeonPosition position) {
+		boolean result = validRect.isInside(position.x, position.y);
+		for (Room room : rooms) {
+			if (room.isInside(position)) {
+				result = false;
+				break;
 			}
 		}
+		return result;
 	}
 	
 	protected void drawSquigglyLine(DungeonPosition pos) {
 		int x = pos.x;
 		int y = pos.y;
-		int dir = Randy.getRand(0, 6);
+		DungeonPosition testPoint = new DungeonPosition(0,0);
+		int dir = Randy.getRand(0, 3);
 		int nx;
 		int ny;
 
@@ -430,8 +485,10 @@ public class Map implements IPresenterMap {
 					break;
 			}
 
-			if (isLegal(nx, ny))
-			{
+			//if (isLegal(nx, ny))
+			testPoint.x = nx;
+			testPoint.y = ny;
+			if (isPointClearOfRooms(testPoint)) {
 				x = nx;
 				y = ny;
 				location(x,y).clearLocation();
@@ -441,7 +498,7 @@ public class Map implements IPresenterMap {
 			// between 1-4
 			int nDir = Randy.getRand(0, height * 2);
 
-			if (nDir < 5) {
+			if (nDir < 4) {
 				dir = nDir;
 			}
 		}
@@ -761,13 +818,15 @@ public class Map implements IPresenterMap {
 	private static String[] ravHorMonsters = {};
 	
 	private static String[] gridMap = {
-		"             ",
-		" *   *   *   ",
-		"   *   *   * ",
-		" *   *   *   ",
-		"   *   *   * ",
-		" *   *   *   ",
-		"             "};
+		"        ",
+		"* * * * ",
+		"        ",
+		" * * * *",
+		"        ",
+		"* * * * ",
+		"        ",
+		" * * * *",
+		"        "};
 	private static String[] gridMonsters = {};
 	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
@@ -785,4 +844,15 @@ public class Map implements IPresenterMap {
 		
 		return theRooms;
 	}
+	
+	// mini boss rooms
+	private static String[] level3Map = {
+		"******",
+		"*    *",
+		"* X  *",
+		"*    *",
+		"*    *",
+		"*** **"};
+
+	private static String[] level3Monsters = {};
 }
