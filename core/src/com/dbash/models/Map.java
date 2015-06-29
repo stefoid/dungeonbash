@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.models.Location.TileType;
 import com.dbash.util.L;
@@ -72,9 +73,9 @@ public class Map implements IPresenterMap {
 					}
 				}
 				
-				startPoint = getRandomPointAnywhere(false);
-				location(startPoint).clearLocation();
-				drawSquigglyLine(startPoint);
+				DungeonPosition start = getRandomPointAnywhere(false);
+				location(start).clearLocation();
+				drawSquigglyLine(start);
 
 				for (int i = 0; i < ((height * 2) / 3); i++) {
 					drawSquigglyLine(getRandomPointAnywhere(true));
@@ -94,12 +95,15 @@ public class Map implements IPresenterMap {
 				}
 				
 				for (Room room : rooms) {
-					room.addRoughTerrain(dungeonEvents, dungeonQuery);
 					room.setIslands();
 				}
-				
-				setStartAndExitPoints();
 				setIslands();
+				
+				for (Room room : rooms) {
+					room.addRoughTerrain(dungeonEvents, dungeonQuery);
+				}
+				addRoughTerrain(dungeonEvents, dungeonQuery);
+				setStartAndExitPoints();
 				
 				// Now make a preliminary pass to determine Tile types
 				for (int x=0; x<width; x++) {
@@ -116,6 +120,9 @@ public class Map implements IPresenterMap {
 				}
 				
 				setupLighting();
+				for (Room room : rooms) {
+					room.setTorches();
+				}
 				// Then make the last pass to determine post process the whole map with appropriae tilenames
 				for (int x=0; x<width; x++) {
 					for (int y=0; y< height; y++) {
@@ -127,7 +134,6 @@ public class Map implements IPresenterMap {
 				}
 				
 				addExitLight();
-				addRoughTerrain(dungeonEvents, dungeonQuery);
 				dungeonNotCompleted = false;
 				
 				if (LOG) dump();
@@ -222,7 +228,7 @@ public class Map implements IPresenterMap {
 	public Location getWideSpaceLocation() {
 		try {
 			 for (int i=0;i<500;i++) {
-				 DungeonPosition island = getRandomPoint(true, false, border+1);
+				 DungeonPosition island = getRandomPoint(true, true, border+1);
 				 boolean good = true;
 				 for (int x=-1; x<=1 && good; x++) {
 					 for (int y=-1; y<=1 && good; y++) {
@@ -281,16 +287,38 @@ public class Map implements IPresenterMap {
 		}
 	}
 
+//	1) check through all hardcoded rooms.  If it has an exit point, set the exit point
+//	2) if it doesnt, pick a wide space for the exit as normal.
+//	3) check through all hardcoded rooms for a startpoint.  if you find one, set it and be happy.
+//	4) otherwise, find any clear location that is far enough away from the exit point, and set that.  Do noit use hardcoded rooms for this either.
+//	getWideSpaceLocation allready uses loc.totallyEmpty().
+//	the start location finder needs to do the same thing, although it doesnt have to be in a wide space.
 	protected void setStartAndExitPoints() throws MapException {
 		exitPoint = null;
-		for (int i=0; i<200; i++) {
-			startPoint = getRandomPointAnywhere(true);
+		for (Room room : rooms) {
+			if (room.getExitPosition() != null) {
+				exitPoint = room.getExitPosition();
+				location(exitPoint).setAsExit();
+				break;
+			}
+		}
+		
+		if (exitPoint == null) {
 			Location exitLocation = getWideSpaceLocation();
-			if (exitLocation != null) {
+			if (exitLocation == null) {
+				throw new MapException();
+			} else {
 				exitPoint = exitLocation.getPosition();
+				exitLocation.setAsExit();
+			}
+		}
+		
+		// Now set the start position
+		for (int i=0; i<200; i++) {
+			startPoint = getRandomPointNotInRooms(true);
+			Location loc = location(startPoint);
+			if (loc.isTotallyEmpty()) {
 				if ((Math.abs(startPoint.x - exitPoint.x) + Math.abs(startPoint.y - exitPoint.y)) >= (height / 2)) {
-					// tell the exit Location 
-					location(exitPoint).setAsExit();
 					return;
 				}
 			}
@@ -645,7 +673,7 @@ public class Map implements IPresenterMap {
 	public void refreshLighting() {
 		if (lightingChanged) {
 			lightingChanged = false;
-			if (LOG) L.log("");
+			//if (LOG) L.log("");
 			clearTempLighting();
 			shineTempLighting();
 		}
@@ -664,6 +692,8 @@ public class Map implements IPresenterMap {
 						System.out.print("<>");
 					} else if (location(x,y).isOpaque()) {
 						System.out.print("##");
+					} else if (location(x,y).locationType == LocationType.EXIT) {
+						System.out.print("XX");
 					} else {
 						System.out.print("  ");
 					}

@@ -74,7 +74,7 @@ public class Rect {
 	}
 	
 	public boolean isInside(Rect r) {
-	    return x>=r.x && width <= r.width && y>= r.y && height <= r.height;
+		return x>=r.x && x+width <= r.x+r.width && y>= r.y && y+height <= r.y+r.height;
 	}
 	
 	// Return a rect of the specified width and height with an x and y pos alligned as specified within the enclosing Rect.
