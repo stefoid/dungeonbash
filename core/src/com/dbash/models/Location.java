@@ -18,6 +18,8 @@ public class Location {
 	public static boolean LOG = false && L.DEBUG;
 	 
 	public static final String SOLID_ROCK = "SolidRock";
+	public static final String STATUE_ISLAND_TYPE = "statue";
+	public static final String ROCK_ISLAND_TYPE = "rock";
 	public static final float minNotVisibleTint = 0.22f;
 	public static final float minVisibleTint = 0.3f;
 	public static final float maxVisibileTint = 1f;
@@ -113,6 +115,7 @@ public class Location {
 	public LocationInfo locationInfo;
 	public ItemList itemInfoNoRough;
 	public ItemList itemInfoWithRough;
+	public String islandType;
 	 
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
@@ -206,7 +209,8 @@ public class Location {
 		return new DungeonPosition(x,y);
 	}
 	
-	public void setAsIsland() {
+	public void setAsIsland(String islandType) {
+		this.islandType = islandType;
 		locationType = LocationType.WALL;
 		tileType = TileType.ISLAND;
 	}
@@ -470,7 +474,7 @@ public class Location {
 		// torches
 		if (tileName.equals("statue")) {
 			addTorch(TorchType.CENTRAL);
-		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.notTooCloseToOtherTorches(this)) {
+		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.okToPlaceTorch(this)) {
 			createTorchAt();
 		}
 		updateLocationInfo();
@@ -504,7 +508,11 @@ public class Location {
 				tileName = null;
 				
 				if (tileType == TileType.ISLAND) {
-					return randomIslandTileName();
+					if (islandType != null) {
+						return islandType;
+					} else {
+						return randomIslandTileName();
+					}
 				}
 
 				// if the south of the tile is empty, it definitely a front facing tile

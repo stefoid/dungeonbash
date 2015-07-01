@@ -148,8 +148,12 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	public boolean notTooCloseToOtherTorches(Location location) {
-
+	public boolean okToPlaceTorch(Location location) {
+		
+		if (isPointClearOfRooms(location.getPosition()) == false) {
+			return false;
+		}
+		
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
 				if (location(x,y).hasTorch()) {
@@ -345,7 +349,7 @@ public class Map implements IPresenterMap {
 		for (int i=0;i<numIslands; i++) {
 			Location island = getWideSpaceLocation();
 			if (island != null) {
-				island.setAsIsland();
+				island.setAsIsland(null); // random island type
 			}
 		}
 	}

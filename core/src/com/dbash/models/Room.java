@@ -86,8 +86,10 @@ public class Room {
 	protected void setIslands() {
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
-				if (charMap[y].charAt(x) == 'i') {
-					location[mx+x][my+height-1-y].setAsIsland();
+				if (charMap[y].charAt(x) == 'I') {
+					location[mx+x][my+height-1-y].setAsIsland(Location.STATUE_ISLAND_TYPE);
+				} else if (charMap[y].charAt(x) == 'O') {
+					location[mx+x][my+height-1-y].setAsIsland(Location.ROCK_ISLAND_TYPE);
 				}
 			}
 		}
