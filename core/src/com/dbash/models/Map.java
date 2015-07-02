@@ -373,75 +373,6 @@ public class Map implements IPresenterMap {
 		}
 		
 	}
-
-	private boolean addMiniBossRoom() throws MapException{
-		Room room = null;
-		
-		switch (level) {
-			case 1:
-				room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 3:
-				room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 4:
-				statueName = "statue";
-				break;
-			case 6:
-				//room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 7:
-				statueName = "statue";
-				break;
-			case 9:
-				//room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 10:
-				statueName = "statue";
-				break;
-			case 12:
-				//room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 13:
-				statueName = "statue";
-				break;
-			case 15:
-				//room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 16:
-				statueName = "statue";
-				break;
-			case 18:
-				//room = new Room(level3Map, level3Monsters, 1);
-				break;
-			case 19:
-				statueName = "statue";
-				break;
-			case 20:
-				statueName = "statue";
-				//room = new Room(level3Map, level3Monsters, 1);
-				break;
-			default:
-				break;
-		}
-		
-		if (room != null) {
-			for (int i = 0; i<200; i++) {
-				DungeonPosition position = getRandomPointAnywhere(false);
-				Rect area = new Rect(position, room.width, room.height);
-				if (isRectClearOfRooms(area)) {
-					room.setPosition(position, location);
-					rooms.add(room);
-					room.clearSpaces();
-					return true;
-				}
-			}
-		} else {
-			return false;
-		}
-		
-		throw new MapException();
-	}
 	
 //	pick a random spot - it can’t be in any of the off-limits areas.
 //	on a 1:N chance, try to implement a Room.  Pick a Room from the list.  get its size.
@@ -814,6 +745,72 @@ public class Map implements IPresenterMap {
 	public void onCreate() {
 	}
 	
+	private boolean addMiniBossRoom() throws MapException{
+		Room room = null;
+		
+		switch (level) {
+			case 3:
+				room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 4:
+				statueName = "statue_dwarf";
+				break;
+			case 6:
+				room = new Room(level6Map, level6Monsters, 1);
+				break;
+			case 7:
+				statueName = "statue";
+				break;
+			case 9:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 10:
+				statueName = "statue";
+				break;
+			case 12:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 13:
+				statueName = "statue";
+				break;
+			case 15:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 16:
+				statueName = "statue";
+				break;
+			case 18:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 19:
+				statueName = "statue";
+				break;
+			case 20:
+				statueName = "statue";
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			default:
+				break;
+		}
+		
+		if (room != null) {
+			for (int i = 0; i<200; i++) {
+				DungeonPosition position = getRandomPointAnywhere(false);
+				Rect area = new Rect(position, room.width, room.height);
+				if (isRectClearOfRooms(area)) {
+					room.setPosition(position, location);
+					rooms.add(room);
+					room.clearSpaces();
+					return true;
+				}
+			}
+		} else {
+			return false;
+		}
+		
+		throw new MapException();
+	}
+	
 	private static String[] holeMap = {
 		"      ",
 		"  hh  ",
@@ -933,6 +930,14 @@ public class Map implements IPresenterMap {
 		"* I  *",
 		"*  O *",
 		"*** **"};
-
-	private static String[] level3Monsters = {"cave lion"};
+	private static String[] level3Monsters = {"crazed_boss"};
+	
+	private static String[] level6Map = {
+		"******",
+		"*    *",
+		"* X0 *",
+		"* I  *",
+		"*  O *",
+		"*** **"};
+	private static String[] level6Monsters = {"dwarf_boss"};
 }
