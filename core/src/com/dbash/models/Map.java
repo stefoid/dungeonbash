@@ -49,6 +49,8 @@ public class Map implements IPresenterMap {
 	protected final int border = 2; // how thick the enclosing rock wall is
 	protected Rect validRect;
 	
+	public String statueName = "statue";
+	
 	@SuppressWarnings("serial")
 	public class MapException extends Exception {
 	}
@@ -376,11 +378,50 @@ public class Map implements IPresenterMap {
 		Room room = null;
 		
 		switch (level) {
-			case 4:
+			case 1:
 				room = new Room(level3Map, level3Monsters, 1);
 				break;
-			default:
+			case 3:
 				room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 4:
+				statueName = "statue";
+				break;
+			case 6:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 7:
+				statueName = "statue";
+				break;
+			case 9:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 10:
+				statueName = "statue";
+				break;
+			case 12:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 13:
+				statueName = "statue";
+				break;
+			case 15:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 16:
+				statueName = "statue";
+				break;
+			case 18:
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			case 19:
+				statueName = "statue";
+				break;
+			case 20:
+				statueName = "statue";
+				//room = new Room(level3Map, level3Monsters, 1);
+				break;
+			default:
 				break;
 		}
 		
@@ -766,6 +807,10 @@ public class Map implements IPresenterMap {
 
 	}
 	
+	public String getStatueName() {
+		return statueName;
+	}
+	
 	public void onCreate() {
 	}
 	
@@ -833,6 +878,34 @@ public class Map implements IPresenterMap {
 		"        "};
 	private static String[] gridMonsters = {};
 	
+	private static String[] holegridMap = {
+		  "h  h    h ", 
+		  "h  h  h h ", 
+		  "  h h  h h", 
+		  " h h  h h ", 
+		  "  h  h h  "};
+	private static String[] holegridMonsters = {};
+	
+	private static String[] bridgeMap = {
+	  " hhhhh ",
+	  "hhhhhhh",
+	  "hhhhhhh",
+	  "       ",    
+	  "hhhhhhh",
+	  "hhhhhhh",
+	  " hhhhh "};
+	private static String[] bridgeMonsters = {};
+	
+	private static String[] crossMap = {
+	"  * *  ",
+	"  * *   ",
+	"*** ***",
+	"   S    ",
+	"*** ***",
+	"  * *  ",
+	"  * *  "};
+	private static String[] crossMonsters = {};
+	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
 	
 	private static ArrayList<Room> makeHardRooms() {
@@ -845,6 +918,9 @@ public class Map implements IPresenterMap {
 		theRooms.add(new Room(gridMap, gridMonsters, 0));
 		theRooms.add(new Room(boneMap, boneMonsters, 0));
 		theRooms.add(new Room(rockMap, rockMonsters, 0));
+		theRooms.add(new Room(holegridMap, holegridMonsters, 0));
+		theRooms.add(new Room(bridgeMap, bridgeMonsters, 0));
+		theRooms.add(new Room(crossMap, crossMonsters, 0));
 		
 		return theRooms;
 	}

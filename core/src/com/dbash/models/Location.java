@@ -508,11 +508,16 @@ public class Location {
 				tileName = null;
 				
 				if (tileType == TileType.ISLAND) {
+					String iType;
 					if (islandType != null) {
-						return islandType;
+						iType = islandType;
 					} else {
-						return randomIslandTileName();
+						iType = randomIslandTileName();
 					}
+					if (iType.equals(STATUE_ISLAND_TYPE)) {
+						iType = map.getStatueName();
+					}
+					return iType;
 				}
 
 				// if the south of the tile is empty, it definitely a front facing tile
