@@ -788,8 +788,8 @@ public class Map implements IPresenterMap {
 	public void dump() {
 		// debug print
 		if (LOG) {
-			for (int y=width-1; y>=0; y--) {
-				for (int x=0; x< height; x++) {
+			for (int y=height-1; y>=0; y--) {
+				for (int x=0; x< width; x++) {
 					if (location(x,y).tileType == TileType.ISLAND) {
 						System.out.print("<>");
 					} else if (location(x,y).isOpaque()) {
@@ -900,7 +900,7 @@ public class Map implements IPresenterMap {
 	"  * *  ",
 	"  * *   ",
 	"*** ***",
-	"   S    ",
+	"   I    ",
 	"*** ***",
 	"  * *  ",
 	"  * *  "};
@@ -929,10 +929,10 @@ public class Map implements IPresenterMap {
 	private static String[] level3Map = {
 		"******",
 		"*    *",
-		"* X  *",
-		"*    *",
-		"*    *",
+		"* X0 *",
+		"* I  *",
+		"*  O *",
 		"*** **"};
 
-	private static String[] level3Monsters = {};
+	private static String[] level3Monsters = {"cave lion"};
 }

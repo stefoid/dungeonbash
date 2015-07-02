@@ -40,7 +40,7 @@ public class TutorialMap extends Map {
 		height = tutorialMap.length;
 		
 		this.level = 1;
-		location = new Location[width][height];
+		location = new Location[width+1][height+1];
 		
 		// initialize array of locations - by default will be WALLS.
 		for (int x=0; x<width; x++) {
@@ -50,7 +50,7 @@ public class TutorialMap extends Map {
 		}
 		
 		room = new Room(tutorialMap, tutorialMonsters, 0);
-		room.setPosition(new DungeonPosition(0,0), location);
+		room.setPosition(new DungeonPosition(width/2,height/2), location);
 		room.clearSpaces();
 		room.setIslands();
 		setStartAndExitPoints();

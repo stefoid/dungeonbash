@@ -189,7 +189,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 	@Override
 	public void createLevel(TurnProcessor turnProcessor, int level) {
 		this.turnProcessor = turnProcessor;
-		if (L.DEBUG) {
+		if (L.DEBUG && L.LEVEL > 0) {
 			currentLevel = L.LEVEL;
 		} else {
 			currentLevel = level;
