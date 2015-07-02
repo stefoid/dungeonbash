@@ -352,7 +352,7 @@ class Creature:
     def __init__(self):    
         self.name = "new"
         self.tags  = "a"
-        self.powerups = ""
+        self.powerups = "_"
         self.head = 1
         self.hands = 0
         self.humanoid = 0

@@ -15,7 +15,7 @@ public class L {
 	
 	public static boolean NO_LOAD = false;
 	public static boolean NO_SAVE = false;
-	public static int LEVEL = 3;
+	public static int LEVEL = 6;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;
