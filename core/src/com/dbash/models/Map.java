@@ -930,7 +930,7 @@ public class Map implements IPresenterMap {
 		"* I  *",
 		"*  O *",
 		"*** **"};
-	private static String[] level3Monsters = {"crazed boss"};
+	private static String[] level3Monsters = {"crazed priest"};
 	
 	private static String[] level6Map = {
 		"******",
@@ -939,5 +939,5 @@ public class Map implements IPresenterMap {
 		"* I  *",
 		"*  O *",
 		"*** **"};
-	private static String[] level6Monsters = {"dwarf boss"};
+	private static String[] level6Monsters = {"dwarf king"};
 }
