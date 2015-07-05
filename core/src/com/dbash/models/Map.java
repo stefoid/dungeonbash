@@ -817,8 +817,7 @@ public class Map implements IPresenterMap {
 		" hhhh ",
 		" hhhh ",
 		" hhhh ",
-		"  hh  ",
-		"      "};
+		"  hh  "};
 	private static String[] holeMonsters = {};
 	
 	private static String[] mudMap = {
@@ -846,21 +845,19 @@ public class Map implements IPresenterMap {
 	private static String[] rockMonsters = {};
 	
 	private static String[] ravVertMap = {
-		"   ",
 		" h ",
 		" h ",
 		" h ",
 		" h ",
 		" h ",
 		" h ",
-		" h ",
-		"   "};
+		" h "};
 	private static String[] ravVertMonsters = {};
 	
 	private static String[] ravHorMap = {
-		"              ",
-		" hhhhhhhhhhhh ",
-		"              "};
+		"            ",
+		"hhhhhhhhhhhh",
+		"            "};
 	private static String[] ravHorMonsters = {};
 	
 	private static String[] gridMap = {
@@ -884,23 +881,25 @@ public class Map implements IPresenterMap {
 	private static String[] holegridMonsters = {};
 	
 	private static String[] bridgeMap = {
+      "       ",
 	  " hhhhh ",
 	  "hhhhhhh",
 	  "hhhhhhh",
 	  "       ",    
 	  "hhhhhhh",
 	  "hhhhhhh",
-	  " hhhhh "};
+	  " hhhhh ",
+	  "       "};
 	private static String[] bridgeMonsters = {};
 	
 	private static String[] crossMap = {
-	"  * *  ",
-	"  * *   ",
-	"*** ***",
-	"   I    ",
-	"*** ***",
-	"  * *  ",
-	"  * *  "};
+	"   * *   ",
+	"   * *   ",
+	" *** *** ",
+	"    I    ",
+	" *** *** ",
+	"   * *   ",
+	"   * *   "};
 	private static String[] crossMonsters = {};
 	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();

@@ -14,8 +14,8 @@ public class L {
 	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;
-	public static boolean NO_SAVE = false;
-	public static int LEVEL = 6;
+	public static boolean NO_SAVE = true;
+	public static int LEVEL = 4;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;

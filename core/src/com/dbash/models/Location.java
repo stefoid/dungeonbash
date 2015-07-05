@@ -472,7 +472,7 @@ public class Location {
 	public void doPostMapGenerationPrcessing() {
 		if (LOG) L.log("tileName: %s", tileName);
 		// torches
-		if (tileName.equals("statue")) {
+		if (tileType == TileType.ISLAND) {
 			addTorch(TorchType.CENTRAL);
 		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.okToPlaceTorch(this)) {
 			createTorchAt();
