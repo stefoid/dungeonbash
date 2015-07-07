@@ -14,11 +14,11 @@ public class L {
 	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;
-	public static boolean NO_SAVE = true;
-	public static int LEVEL = 15;
+	public static boolean NO_SAVE = false;
+	public static int LEVEL = 1;
 	
 	public static int EXTRA_XP = 0;
-	public static boolean TEST_EXP = false;
+	public static boolean TEST_EXP = false;  // run the total XP test for a level.
 	public static int TORCH_DENSITY = 8;  // higher is less dense. default is 8
 	public static boolean SHOWTEXTBOXES = false;
 	
