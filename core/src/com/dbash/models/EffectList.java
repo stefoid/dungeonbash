@@ -184,9 +184,9 @@ public class EffectList extends ArrayList<AbilityInfo>{
 			result += "poor";
 		} else if (val < 11) {
 			result += "ok";
-		} else if (val < 13) {
+		} else if (val < 14) {
 			result += "good";
-		} else if (val < 16) {
+		} else if (val < 18) {
 			result += "great";
 		} else {
 			result += "super";

@@ -31,6 +31,8 @@ public abstract class Creature implements IPresenterCreature
 {
 	public static final boolean LOG = false && L.DEBUG;
 	
+	public static final String BOSS_TAG = "boss";
+	
 	public static enum CreatureSize {
 		SMALL,
 		MEDIUM,
@@ -974,6 +976,19 @@ public abstract class Creature implements IPresenterCreature
 		return false;
 	}
 	
+	public boolean hasTag(String theTag) {
+      for (String tag: getTags()) {
+			if (tag.equals(theTag)) {
+				return true;
+			}
+       }
+		
+		return false;
+	}
+	
+	public String[] getTags() {
+		return creature.tag.split("\\.");
+	}
 	// when an ability has an instant effect that modifies an attribute
 	// absolutely, it should call this
 	// updating stats is in response to abilities, which dont have an instant effect on current health and magic
