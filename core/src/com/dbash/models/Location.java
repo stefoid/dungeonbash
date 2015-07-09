@@ -301,6 +301,15 @@ public class Location {
 		return result;
 	}
 	
+	public boolean isEmpty() {
+		boolean result = isClear();
+		if (locationType == LocationType.EXIT) {
+			result = false;
+		}
+		
+		return result;
+	}
+	
 	public boolean isNearWall() {
 		if (map.safeLocation(x-1, y).isOpaque()) { return true;}
 		if (map.safeLocation(x+1, y).isOpaque()) { return true;}
