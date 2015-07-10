@@ -482,7 +482,9 @@ public class Location {
 		if (LOG) L.log("tileName: %s", tileName);
 		// torches
 		if (tileType == TileType.ISLAND) {
-			addTorch(TorchType.CENTRAL);
+			if (islandType.equals(ROCK_ISLAND_TYPE) == false) {
+				addTorch(TorchType.CENTRAL);
+			}
 		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.okToPlaceTorch(this)) {
 			createTorchAt();
 		}
@@ -522,6 +524,7 @@ public class Location {
 						iType = islandType;
 					} else {
 						iType = randomIslandTileName();
+						islandType = iType;
 					}
 					if (iType.equals(STATUE_ISLAND_TYPE)) {
 						iType = map.getStatueName();

@@ -245,9 +245,8 @@ public class Map implements IPresenterMap {
 		location[0][0] = new Location(this, 0, 0);
 	}
 
-	public DungeonPosition getRandomPointForMonsterPlacement(
-			boolean isFloorRequired) throws MapException {
-		return getRandomPoint(isFloorRequired, false, false, border, true);
+	public DungeonPosition getRandomPointForMonsterPlacement() throws MapException {
+		return getRandomPoint(true, false, false, border, true);
 	}
 
 	public DungeonPosition getRandomPointAnywhere(boolean isFloorRequired)

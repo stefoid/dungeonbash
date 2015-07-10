@@ -208,8 +208,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 			addMonsterToMap("nashkur", map.exitPoint);
 			break;
 		case 1:
-			Monster mon1 = (Monster) addMonsterToMap(L.FIRST_MONSTER,
-					map.exitPoint);
+			Monster mon1 = (Monster) addMonsterToMap(L.FIRST_MONSTER, map.exitPoint);
 			// mon1.addAbility(new
 			// Ability(Ability.getIdForName("wand of percussion"), null, 20,
 			// this, this), null); // TODO
@@ -218,13 +217,13 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 			addMonsterToMap("halfling", map.exitPoint);
 			break;
 		case 3:
-			addMonsterToMap("dwarf", map.exitPoint);
+			//addMonsterToMap("dwarf", map.exitPoint);
 			break;
 		case 4:
-			addMonsterToMap("wizard", map.exitPoint);
+			//addMonsterToMap("wizard", map.exitPoint);
 			break;
 		case 5:
-			placeSwarm(map.exitPoint, Creature.getIdForName("crazed minion"));
+			//placeSwarm(map.exitPoint, Creature.getIdForName("crazed minion"));
 			break;
 		default:
 			break;
@@ -247,13 +246,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 
 		for (int i = 0; i < monsterNum; i++) {
 			if ((currentLevel > 4) && (Randy.getRand(1, 10) == 1)) {
-				placeSwarm(map.roomPoints[Randy.getRand(0,
-						map.roomPoints.length - 1)], null);
+				placeSwarm(map.roomPoints[Randy.getRand(0, map.roomPoints.length - 1)], null);
 			} else {
 				try {
-					placeMonster(map.getRandomPointAnywhere(true));
+					placeMonster(map.getRandomPointForMonsterPlacement());
 				} catch (Map.MapException e) {
-
 				}
 			}
 		}
