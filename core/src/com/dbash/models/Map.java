@@ -9,6 +9,7 @@ import java.util.Vector;
 import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.models.Location.TileType;
+import com.dbash.models.Location.TorchType;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.Rect;
@@ -799,9 +800,13 @@ public class Map implements IPresenterMap {
 					if (location(x, y).tileType == TileType.ISLAND) {
 						System.out.print("<>");
 					} else if (location(x, y).isOpaque()) {
-						System.out.print("##");
+						if (location(x,y).torch == TorchType.NONE) {
+							System.out.print("##");
+						} else {
+							System.out.print("**");
+						}
 					} else if (location(x, y).locationType == LocationType.EXIT) {
-						System.out.print("XX");
+						System.out.print("[]");
 					} else {
 						String s = "  ";
 						RoughTerrainType rtt = location(x,y).getRoughTerrain();
@@ -823,8 +828,11 @@ public class Map implements IPresenterMap {
 									break;
 							}
 						}
-
-						System.out.print(s);
+						if (location(x,y).torch == TorchType.NONE) {
+							System.out.print(s);
+						} else {
+							System.out.print("**");
+						}
 					}
 					// if (LOG) L.log("location: %s - locationInfo: %s",
 					// location(x,y), location(x,y).locationInfo);
@@ -914,7 +922,8 @@ public class Map implements IPresenterMap {
 		" hhhh ",
 		" hhhh ",
 		" hhhh ",
-		"  hh  "};
+		"  hh  ",
+		"      "};
 	private static String[] holeMonsters = {};
 	
 	private static String[] mudMap = {
@@ -934,27 +943,29 @@ public class Map implements IPresenterMap {
 	private static String[] boneMonsters = {};
 	
 	private static String[] rockMap = {
-		"  rr rr",
-		"rrrrrrr",
+		"  rr rr r",
+		"rrrrrrrr ",
 		"  rrrrrrr",
 		" rrrrr   ",
 		"rr  rrr r"};
 	private static String[] rockMonsters = {};
 	
 	private static String[] ravVertMap = {
+		"   ",
 		" h ",
 		" h ",
 		" h ",
 		" h ",
 		" h ",
 		" h ",
-		" h "};
+		" h ",
+		"   "};
 	private static String[] ravVertMonsters = {};
 	
 	private static String[] ravHorMap = {
-		"            ",
-		"hhhhhhhhhhhh",
-		"            "};
+		"              ",
+		" hhhhhhhhhhhh ",
+		"              "};
 	private static String[] ravHorMonsters = {};
 	
 	private static String[] gridMap = {
@@ -971,33 +982,61 @@ public class Map implements IPresenterMap {
 	
 	private static String[] holegridMap = {
 		  "h  h    h ", 
-		  "h  h  h h ", 
+		  " h h  h h ", 
 		  "  h h  h h", 
 		  " h h  h h ", 
 		  "  h  h h  "};
 	private static String[] holegridMonsters = {};
 	
 	private static String[] bridgeMap = {
-      "       ",
-	  " hhhhh ",
-	  "hhhhhhh",
-	  "hhhhhhh",
-	  "       ",    
-	  "hhhhhhh",
-	  "hhhhhhh",
-	  " hhhhh ",
-	  "       "};
+      "         ",
+	  "  hhhhh  ",
+	  " hhhhhhh ",
+	  " hhhhhhh ",
+	  "         ",    
+	  " hhhhhhh ",
+	  " hhhhhhh ",
+	  "  hhhhh  ",
+	  "         "};
 	private static String[] bridgeMonsters = {};
 	
 	private static String[] crossMap = {
-	"   * *   ",
-	"   * *   ",
+    "         ",
+	" *** *** ",
+	" *** *** ",
 	" *** *** ",
 	"    I    ",
 	" *** *** ",
-	"   * *   ",
-	"   * *   "};
+	" *** *** ",
+	" *** *** ",
+	"         "};
 	private static String[] crossMonsters = {};
+	
+	private static String[] rocks1Map = {
+		"rrr   ",
+		" rrhrr",
+		" rrr  "};
+	private static String[] rocks1Monsters = {};
+	
+	private static String[] rocks2Map = {
+		" rr",
+		"r r",
+		" r "};
+	private static String[] rocks2Monsters = {};
+	
+	private static String[] rocks3Map = {
+		"rr ",
+		"rrr",
+		" r ",
+		"rrr",
+		"r  "};
+	private static String[] rocks3Monsters = {};
+	
+	private static String[] rocks4Map = {
+		"rrr",
+		"rr ",
+		" rr"};
+	private static String[] rocks4Monsters = {};
 	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
 	
@@ -1014,6 +1053,10 @@ public class Map implements IPresenterMap {
 		theRooms.add(new Room(holegridMap, holegridMonsters, 0));
 		theRooms.add(new Room(bridgeMap, bridgeMonsters, 0));
 		theRooms.add(new Room(crossMap, crossMonsters, 0));
+		theRooms.add(new Room(rocks1Map, rocks1Monsters, 0));
+		theRooms.add(new Room(rocks2Map, rocks2Monsters, 0));
+		theRooms.add(new Room(rocks3Map, rocks3Monsters, 0));
+		theRooms.add(new Room(rocks4Map, rocks4Monsters, 0));
 		
 		return theRooms;
 	}
