@@ -1274,6 +1274,10 @@ public class Ability
 		return myId;
 	}
 	
+	public boolean isOffensive() {
+		return ability.offensive;
+	}
+	
 	@Override
 	public String toString() {
 		return ability.name;

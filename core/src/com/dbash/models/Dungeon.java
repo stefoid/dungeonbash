@@ -138,13 +138,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 
 		// focus the map on the currently focused character
 		if (focusCharId != TurnProcessor.NO_CURRENT_CREATURE) {
-			currentlyFocussedCharacter = (Character) allCreatures
-					.getCreatureByUniqueId(focusCharId);
-			setMapFocus(currentlyFocussedCharacter.mapPosition,
-					currentlyFocussedCharacter.shadowMap);
-			if (dungeonEventListener != null) {
-				dungeonEventListener
-						.newCharacterFocus(currentlyFocussedCharacter);
+			currentlyFocussedCharacter = (Character) allCreatures.getCreatureByUniqueId(focusCharId);
+			if (currentlyFocussedCharacter != null) {
+				setMapFocus(currentlyFocussedCharacter.mapPosition, currentlyFocussedCharacter.shadowMap);
+				if (dungeonEventListener != null) {
+					dungeonEventListener .newCharacterFocus(currentlyFocussedCharacter);
+				}
 			}
 		} else {
 			// Create a new shadowmap that sees everything in its range

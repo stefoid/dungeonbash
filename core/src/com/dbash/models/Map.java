@@ -777,6 +777,21 @@ public class Map implements IPresenterMap {
 						RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
 			}
 		}
+		
+		// now add a few more rock terrain in one tile areas.
+		int nrock = level + 3;
+		for (int i = 0; i < nrock; i++) {
+			Location l = null;
+			try {
+				l = location(getRandomPoint(true, false, false, border, true));
+			} catch (MapException e) {
+			}
+			
+			if (l != null) {
+				if (LOG) L.log("PLACING SINGLE ROCKS: %s", i);
+				l.setRoughTerrain(RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
+			}
+		}
 	}
 
 	public void refreshLighting() {
@@ -1038,6 +1053,20 @@ public class Map implements IPresenterMap {
 		" rr"};
 	private static String[] rocks4Monsters = {};
 	
+	private static String[] holes2Map = {
+		"    ",
+		"hh  ",
+		" hh ",
+		"    "};
+	private static String[] holes2Monsters = {};
+	
+	private static String[] holes3Map = {
+		"    ",
+		" hh ",
+		"hhh ",
+		"    "};
+	private static String[] holes3Monsters = {};
+	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
 	
 	private static ArrayList<Room> makeHardRooms() {
@@ -1057,6 +1086,8 @@ public class Map implements IPresenterMap {
 		theRooms.add(new Room(rocks2Map, rocks2Monsters, 0));
 		theRooms.add(new Room(rocks3Map, rocks3Monsters, 0));
 		theRooms.add(new Room(rocks4Map, rocks4Monsters, 0));
+		theRooms.add(new Room(holes2Map, holes2Monsters, 0));
+		theRooms.add(new Room(holes3Map, holes3Monsters, 0));
 		
 		return theRooms;
 	}

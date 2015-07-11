@@ -859,9 +859,18 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 					// unfortuantely it is possible to target a dead creature, so check first
 					boolean canHitTarget = true;
 					Creature targetCreature = dungeonQuery.getCreatureAtLocation(position);
-					if (targetCreature != null && targetCreature.isDead()) {
-						canHitTarget = false;
+					if (targetCreature != null) {
+						if (targetCreature.isDead()) {
+							canHitTarget = false;
+						} else {
+							if (targetCreature instanceof Character) {
+								if (currentSelectedAbility.isOffensive()) {
+									canHitTarget = false;
+								}
+							}
+						}
 					}
+					
 					if (canHitTarget) {
 						currentSelectedAbility.targetSelected(position);
 						if (currentSelectedAbility.isCool() == false) {
