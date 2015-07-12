@@ -93,12 +93,10 @@ public class Map implements IPresenterMap {
 				roomPoints = new DungeonPosition[height / 2]; 
 
 				for (int i = 0; i < roomPoints.length; i++) {
-					// calculate where to draw the rooms before starting to draw
-					// them
-					roomPoints[i] = getRandomPoint(true, true, false,
-							2 + border, false);
+					//  isClearRequired,  notInRooms,  forTunnels, int minDistanceToEdge,  noHoles
+					roomPoints[i] = getRandomPoint(true, true, false, 2 + border, false);
 				}
-
+				
 				for (int i = 0; i < roomPoints.length; i++) {
 					// otherwise all the rooms will be most likely drawn
 					// together
@@ -148,7 +146,7 @@ public class Map implements IPresenterMap {
 				addExitLight();
 				dungeonNotCompleted = false;
 
-				if (LOG) dump();
+				if (LOG) dump(null);
 
 			} catch (MapException e) {
 				dungeonNotCompleted = true;
@@ -262,7 +260,7 @@ public class Map implements IPresenterMap {
 
 	public DungeonPosition getRandomPointForTunnels(boolean isFloorRequired)
 			throws MapException {
-		return getRandomPoint(isFloorRequired, true, true, border, false);
+		return getRandomPoint(isFloorRequired, true, true, border, true);
 	}
 
 	public Location getWideSpaceLocationWork(boolean totallyEmpty) {
@@ -303,19 +301,16 @@ public class Map implements IPresenterMap {
 	/**
 	 * Returns a random point, or null if it timed out.
 	 */
-	public DungeonPosition getRandomPoint(boolean isClearRequired,
-			boolean notInRooms, boolean forTunnels, int minDistanceToEdge,
-			boolean noHoles) throws MapException {
+	public DungeonPosition getRandomPoint(boolean isClearRequired, boolean notInRooms, boolean forTunnels, 
+			int minDistanceToEdge, boolean noHoles) throws MapException {
 
 		DungeonPosition posi = new DungeonPosition();
 		int tries = 0;
 		boolean found = false;
 		while (!found && tries < 500) {
 			tries++;
-			posi.x = Randy.getRand(minDistanceToEdge, width - 1
-					- minDistanceToEdge);
-			posi.y = Randy.getRand(minDistanceToEdge, height - 1
-					- minDistanceToEdge);
+			posi.x = Randy.getRand(minDistanceToEdge, width - 1 - minDistanceToEdge);
+			posi.y = Randy.getRand(minDistanceToEdge, height - 1 - minDistanceToEdge);
 
 			if (isClearRequired) {
 				found = !location(posi).isOpaque();
@@ -330,22 +325,19 @@ public class Map implements IPresenterMap {
 			}
 
 			if (found == false) {
-				break;
-			}
+				if (notInRooms) {
+					// cant be inside any hard rooms
+					for (Room room : rooms) {
+						boolean isInside;
+						if (forTunnels) {
+							isInside = room.isInsideForTunnels(posi);
+						} else {
+							isInside = room.isInside(posi);
+						}
 
-			if (notInRooms) {
-				// cant be inside any hard rooms
-				for (Room room : rooms) {
-					boolean isInside;
-					if (forTunnels) {
-						isInside = room.isInsideForTunnels(posi);
-					} else {
-						isInside = room.isInside(posi);
-					}
-
-					if (isInside) {
-						found = false;
-						break;
+						if (isInside) {
+							found = false;
+						}
 					}
 				}
 			}
@@ -450,8 +442,7 @@ public class Map implements IPresenterMap {
 			Rect area = new Rect(position, room.width, room.height);
 
 			if (isRectClearOfRooms(area)) {
-				if (LOG)
-					L.log("useRoom");
+				if (LOG) L.log("useRoom");
 				useBlank = false;
 				Room newRoom = new Room(room);
 				newRoom.setPosition(position, location);
@@ -461,8 +452,7 @@ public class Map implements IPresenterMap {
 		}
 
 		if (useBlank) {
-			if (LOG)
-				L.log("useBlank");
+			if (LOG) L.log("useBlank");
 			drawBlankRoom(position);
 		}
 	}
@@ -807,12 +797,23 @@ public class Map implements IPresenterMap {
 		lightingChanged = true;
 	}
 
-	public void dump() {
+	public void dump(DungeonPosition[] roomPoints) {
 		// debug print
 		if (LOG) {
 			for (int y = height - 1; y >= 0; y--) {
 				for (int x = 0; x < width; x++) {
-					if (location(x, y).tileType == TileType.ISLAND) {
+					boolean roomPoint = false;
+					if (roomPoints != null) {
+						for (int i=0; i<roomPoints.length; i++) {
+							if (x == roomPoints[i].x && y == roomPoints[i].y) {
+								roomPoint = true;
+							}
+						}
+					}
+					
+					if (roomPoint) {
+						System.out.print("++");
+					} else if (location(x, y).tileType == TileType.ISLAND) {
 						System.out.print("<>");
 					} else if (location(x, y).isOpaque()) {
 						if (location(x,y).torch == TorchType.NONE) {
@@ -950,18 +951,18 @@ public class Map implements IPresenterMap {
 	
 	private static String[] boneMap = {
 		" bbb      ",
-		"bbbb      ",
-		"  bbbbbb  ",
-		" bbbbibbbb",
-		"bbbbbbbbb ",
+		"b bb      ",
+		"  bb bbb  ",
+		" bbbb bb b",
+		"bb bbbbbb ",
 		"   bb     "};
 	private static String[] boneMonsters = {};
 	
 	private static String[] rockMap = {
-		"  rr rr r",
-		"rrrrrrrr ",
-		"  rrrrrrr",
-		" rrrrr   ",
+		"  Or rr r",
+		"rrrrOOrr ",
+		"  rOrrOrr",
+		" rrrOr   ",
 		"rr  rrr r"};
 	private static String[] rockMonsters = {};
 	

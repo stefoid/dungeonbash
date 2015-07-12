@@ -142,7 +142,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 			if (currentlyFocussedCharacter != null) {
 				setMapFocus(currentlyFocussedCharacter.mapPosition, currentlyFocussedCharacter.shadowMap);
 				if (dungeonEventListener != null) {
-					dungeonEventListener .newCharacterFocus(currentlyFocussedCharacter);
+					dungeonEventListener.newCharacterFocus(currentlyFocussedCharacter);
 				}
 			}
 		} else {

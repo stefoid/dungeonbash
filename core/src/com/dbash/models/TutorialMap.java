@@ -86,7 +86,7 @@ public class TutorialMap extends Map {
 		
 		room.addRoughTerrain(dungeonEvents, dungeonQuery);
 		
-		if (LOG) dump();
+		if (LOG) dump(null);
 	}
 	
 	protected void setStartAndExitPoints() {
