@@ -106,12 +106,13 @@ public class Map implements IPresenterMap {
 				for (Room room : rooms) {
 					room.setIslands();
 				}
-				setIslands();
-
 				for (Room room : rooms) {
 					room.addRoughTerrain(dungeonEvents, dungeonQuery);
 				}
+				
+				setIslands();
 				addRoughTerrain(dungeonEvents, dungeonQuery);
+				
 				setStartAndExitPoints();
 
 				// Now make a preliminary pass to determine Tile types
@@ -532,8 +533,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 
-	protected void drawSquigglyRoughTerrainLine(DungeonPosition pos,
-			RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents,
+	protected void drawSquigglyRoughTerrainLine(DungeonPosition pos, RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents,
 			IDungeonQuery dungeonQuery) {
 		int x = pos.x;
 		int y = pos.y;
@@ -566,8 +566,7 @@ public class Map implements IPresenterMap {
 			}
 
 			if (isOKForRoughTerrain(roughTerrainType, x, y)) {
-				location(x, y).setRoughTerrain(roughTerrainType, dungeonEvents,
-						dungeonQuery);
+				location(x, y).setRoughTerrain(roughTerrainType, dungeonEvents, dungeonQuery);
 			}
 
 			x = nx;
@@ -590,7 +589,7 @@ public class Map implements IPresenterMap {
 		}
 
 		Location location = location(x, y);
-
+		
 		if (location.isTotallyEmpty() == false) {
 			return false;
 		}
@@ -602,8 +601,8 @@ public class Map implements IPresenterMap {
 		if (roughTerrainType == RoughTerrainType.HOLE && location.isNearWall()) {
 			return false;
 		}
-
-		return true;
+		
+		return isPointClearOfRooms(location.getPosition());
 	}
 
 	public boolean inBounds(DungeonPosition p) {
@@ -748,9 +747,7 @@ public class Map implements IPresenterMap {
 		int numberRoughLines = Randy.getRand(width / 5, width / 3);
 		for (int i = 0; i < numberRoughLines; i++) {
 			try {
-				drawSquigglyRoughTerrainLine(getRandomPointNotInRooms(true),
-						RoughTerrainType.getRandomType(), dungeonEvents,
-						dungeonQuery);
+				drawSquigglyRoughTerrainLine(getRandomPointNotInRooms(true), RoughTerrainType.getRandomType(), dungeonEvents, dungeonQuery);
 			} catch (MapException e) {
 
 			}
@@ -1095,20 +1092,25 @@ public class Map implements IPresenterMap {
 	
 	// mini boss rooms
 	private static String[] level3Map = {
-		"******",
-		"*    *",
-		"* X0 *",
-		"* I  *",
-		"*  O *",
-		"*** **"};
-	private static String[] level3Monsters = {"crazed priest"};
+		"*******",
+		"*IhXhI*",
+		"* h0h *",
+		"* h h *",
+		"*4 5 6*",
+		"* hhh *",
+		"*1 2 3*",
+		"*** ***"};
+	private static String[] level3Monsters = {"crazed priest",
+		"crazed minion", "crazed minion", "crazed minion", "crazed minion", "crazed minion", "crazed minion"};
 	
 	private static String[] level6Map = {
-		"******",
-		"*    *",
-		"* X0 *",
-		"* I  *",
-		"*  O *",
-		"*** **"};
-	private static String[] level6Monsters = {"dwarf king"};
+		"*******",
+		"*   24*",
+		"*  IrO*",
+		"  560X*",
+		"*  IrO*",
+		"*   13*",
+	    "*******"};
+
+	private static String[] level6Monsters = {"dwarf king", "dwarf","dwarf","dwarf","dwarf","dwarf","dwarf"};
 }

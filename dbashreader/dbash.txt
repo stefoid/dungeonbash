@@ -226,7 +226,7 @@
 +"dwarf hammer,aa,4,2,3,-1,1,0,1,7,1,0,8,3,1,10,42,0,7,5,0,0,0,0,9,6,7,-1,0,0,*"// dwarf hammer: ATTACKER,DESELECT,SELECT,
 ****
 +"Nashkur,a, ,1,1,1,0,10,60,6,15,15,1,10,15,0,105,127,171,-3,-3,-3,*"// Nashkur: nahskurs effect , dark orb , wand of smashing , RANDOM MAGIC , RANDOM MAGIC , RANDOM MAGIC , 
-+"crazed priest,a.boss, ,1,1,1,0,16,18,3,12,12,5,1,12,0,12,-3,-3,173,*"// crazed priest: fire slinger , RANDOM MAGIC , RANDOM MAGIC , hand of smiting , 
++"crazed priest,a.boss, ,1,1,1,0,16,18,3,12,12,5,1,12,0,173,-3,-3,59,*"// crazed priest: hand of smiting , RANDOM MAGIC , RANDOM MAGIC , torches , 
 +"dwarf king,a.boss, ,1,1,1,0,24,4,3,14,18,7,1,10,0,225,55,115,206,*"// dwarf king: dwarf hammer , resist knockback , acid bombs , plate mail , 
 +"giant hornet,a, ,1,0,0,1,1,0,6,8,12,3,1,8,0,196,58,*"// giant hornet: sting , flight , 
 +"flying horror,a, ,1,0,0,1,16,1,3,12,10,10,9,1,0,43,58,31,110,*"// flying horror: acid whip , flight , acid cloud , resist chem 90 , 

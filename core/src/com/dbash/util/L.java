@@ -15,7 +15,7 @@ public class L {
 	
 	public static boolean NO_LOAD = false;
 	public static boolean NO_SAVE = false;
-	public static int LEVEL = 20;
+	public static int LEVEL = 6;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;  // run the total XP test for a level.
