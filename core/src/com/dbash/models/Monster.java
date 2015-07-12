@@ -147,6 +147,14 @@ public class Monster extends Creature
 		return random;
 	}
 
+	Boolean isBoss = null;
+	public boolean isBoss() {
+		if (isBoss == null) {
+			isBoss = hasTagFromData(BOSS_TAG, creature.tag);
+		}
+		return isBoss;
+	}
+	
 	public boolean canSkipTurn() {
 		// if a monster is fully fit and has no temporary abilities, then we can skip its
 		// turn if it is far from any character to speed up turn processing in lower levels.
@@ -204,7 +212,6 @@ public class Monster extends Creature
 
 			// Work out the best direction
 			moveDirection = findBestDirection(lastCharacterPos.dungeonPosition, true, canMove);
-			
 			// if you are almost dead, run away!
 			if ((health < calculateMaxHealth() / 5) ||
 					((health < calculateMaxHealth() / 3) && (health < 10)) ||
@@ -226,7 +233,9 @@ public class Monster extends Creature
 		
 		// we have worked out a direction to move, either towards the nearest character or running
 		// away from the nearest character, or maybe not moving at all.
-		
+		if (isBoss()) {
+			moveDirection = DungeonPosition.NO_DIR;
+		} 
 		
 		// 2. Is there a possible ranged attack to make? Only if a character is in LOS...
 		// now determine if we want to use ranged weapons or
@@ -239,7 +248,7 @@ public class Monster extends Creature
 				int chanceRanged = 2; // out of 10
 
 				// if health is lowish, more of a chance to use ranged attacks
-				if ((health < calculateMaxHealth() / 2) || (health < 16) || (myId == 0)) 
+				if ((health < calculateMaxHealth() / 2) || (health < 16) || (isBoss())) 
 					chanceRanged = 6;
 
 				if (health < 3) // only seekers or the almost dead have this

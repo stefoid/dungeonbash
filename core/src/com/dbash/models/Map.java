@@ -137,7 +137,7 @@ public class Map implements IPresenterMap {
 				// map with appropriae tilenames
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						location(x, y).doPostMapGenerationPrcessing();
+						location(x, y).doPostMapGenerationProcessing();
 						if (location(x, y).isDrawable()) {
 							drawableLocations.add(location(x, y));
 						}
@@ -399,7 +399,7 @@ public class Map implements IPresenterMap {
 		int numIslands = level / 4 + Randy.getRand(0, 2);
 		for (int i = 0; i < numIslands; i++) {
 			Location island = getWideSpaceLocation();
-			if (island != null) {
+			if (island != null && isPointClearOfRooms(island.getPosition())) {
 				island.setAsIsland(null); // random island type
 			}
 		}

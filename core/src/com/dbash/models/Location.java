@@ -211,7 +211,7 @@ public class Location {
 	
 	public void setAsIsland(String islandType) {
 		this.islandType = islandType;
-		locationType = LocationType.WALL;
+		locationType = LocationType.FLOOR;
 		tileType = TileType.ISLAND;
 	}
 	
@@ -393,13 +393,9 @@ public class Location {
 		if (tileType != TileType.ISLAND) {
 			if (map.safeLocation(x,y).isClear()) {
 				tileType =  TileType.CLEAR;
-			} else 
-			
-			if (map.safeLocation(x,y-1).isClear()) {
+			} else if (map.safeLocation(x,y-1).isClear()) {
 				tileType =  TileType.FRONT_FACE;
-			} else
-			
-			if (map.safeLocation(x,y+1).isClear()) {
+			} else if (map.safeLocation(x,y+1).isClear()) {
 				tileType = TileType.REAR_FACE;
 			} else {
 				tileType =  TileType.NO_FACE;
@@ -478,10 +474,11 @@ public class Location {
 	 * Once all the tileNames have been identified, we can do things like factor in terrain, torches and 
 	 * whatnot.
 	 */
-	public void doPostMapGenerationPrcessing() {
+	public void doPostMapGenerationProcessing() {
 		if (LOG) L.log("tileName: %s", tileName);
 		// torches
 		if (tileType == TileType.ISLAND) {
+			locationType = LocationType.WALL; // the location of an island needs to be FLOOR for calculating tilenames but WALL in practice.
 			if (islandType.equals(ROCK_ISLAND_TYPE) == false) {
 				addTorch(TorchType.CENTRAL);
 			}
@@ -517,20 +514,6 @@ public class Location {
 		switch(locationType) {
 			case WALL:
 				tileName = null;
-				
-				if (tileType == TileType.ISLAND) {
-					String iType;
-					if (islandType != null) {
-						iType = islandType;
-					} else {
-						iType = randomIslandTileName();
-						islandType = iType;
-					}
-					if (iType.equals(STATUE_ISLAND_TYPE)) {
-						iType = map.getStatueName();
-					}
-					return iType;
-				}
 
 				// if the south of the tile is empty, it definitely a front facing tile
 				boolean eastBlank = map.safeLocation(x + 1,y).isClear();
@@ -560,8 +543,8 @@ public class Location {
 					return tileName;
 				}
 				
-				TileType westSide = map.safeLocation(x-1,y).tileType;
-				TileType eastSide = map.safeLocation(x+1,y).tileType;
+				TileType westSide = getTileTypeForTileNames(x-1,y);
+				TileType eastSide = getTileTypeForTileNames(x+1,y);
 				
 				// rear facing tiles
 				// if the north of the tile is empty it will contain a rear-facing aspect.
@@ -636,6 +619,20 @@ public class Location {
 
 			case FLOOR:
 				
+				if (tileType == TileType.ISLAND) {
+					String iType;
+					if (islandType != null) {
+						iType = islandType;
+					} else {
+						iType = randomIslandTileName();
+						islandType = iType;
+					}
+					if (iType.equals(STATUE_ISLAND_TYPE)) {
+						iType = map.getStatueName();
+					}
+					return iType;
+				}
+				
 				boolean northWall = map.safeLocation(x,y + 1).castsShadow();
 				boolean eastWall = map.safeLocation(x + 1,y).castsShadow();
 				boolean neWall = map.safeLocation(x + 1,y + 1).castsShadow();
@@ -660,6 +657,14 @@ public class Location {
 				break;
 		}
 		return tileName;
+	}
+	
+	private TileType getTileTypeForTileNames(int x, int y) {
+		TileType tileType = map.safeLocation(x,y).tileType;
+		if (tileType == TileType.ISLAND) {
+			tileType = TileType.CLEAR;
+		}
+		return tileType;
 	}
 	
 	public ItemList getItemList(boolean includeRoughTerrain) {
@@ -702,12 +707,6 @@ public class Location {
 	}
 	
 	final static String[] names = {"rock", "rock", "rock", "statue"};
-//			"rocka","rockb","rockc","rockd",
-//			"obeliska",
-//			"obeliskb",
-//			"stalagmitea","stalagmitea",
-//			"stalagmiteb","stalagmiteb"
-//	};
 	
 	public String randomIslandTileName() {
 		return names[Randy.getRand(0,  names.length-1)];
