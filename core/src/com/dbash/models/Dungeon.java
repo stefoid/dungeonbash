@@ -972,7 +972,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 				monster.setIsNearCharacter(false);
 			} else {
 				monster.setIsNearCharacter(true);
-				monster.findClosestCharacter(characters);
+				monster.findAndSetClosestCharacter();
 			}
 		}
 

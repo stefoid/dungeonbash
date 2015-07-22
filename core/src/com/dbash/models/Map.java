@@ -79,12 +79,14 @@ public class Map implements IPresenterMap {
 				}
 
 				// Start with a miniboss room or randomly placed squiggly line.
-				if (addMiniBossRoom() == false) {
-					DungeonPosition start = getRandomPointAnywhere(false);
-					location(start).clearLocation();
-					drawSquigglyLine(start);
+				DungeonPosition start = addMiniBossRoom();
+				if (start == null) {
+					start = getRandomPointAnywhere(false);
 				}
 
+				location(start).clearLocation();
+				drawSquigglyLine(start);
+				
 				for (int i = 0; i < ((height * 2) / 3); i++) {
 					drawSquigglyLine(getRandomPointForTunnels(true));
 				}
@@ -111,6 +113,7 @@ public class Map implements IPresenterMap {
 				}
 				
 				setIslands();
+				
 				addRoughTerrain(dungeonEvents, dungeonQuery);
 				
 				setStartAndExitPoints();
@@ -266,7 +269,7 @@ public class Map implements IPresenterMap {
 
 	public Location getWideSpaceLocationWork(boolean totallyEmpty) {
 		try {
-			for (int i = 0; i < 500; i++) {
+			for (int i = 0; i < 5000; i++) {
 				DungeonPosition pos = getRandomPoint(true, true, false, border + 1, false);
 				boolean good = true;
 				for (int x = -1; x <= 1 && good; x++) {
@@ -308,8 +311,7 @@ public class Map implements IPresenterMap {
 		DungeonPosition posi = new DungeonPosition();
 		int tries = 0;
 		boolean found = false;
-		while (!found && tries < 500) {
-			tries++;
+		while (!found && tries++ < 5000) {
 			posi.x = Randy.getRand(minDistanceToEdge, width - 1 - minDistanceToEdge);
 			posi.y = Randy.getRand(minDistanceToEdge, height - 1 - minDistanceToEdge);
 
@@ -325,7 +327,7 @@ public class Map implements IPresenterMap {
 				}
 			}
 
-			if (found == false) {
+			if (found) {
 				if (notInRooms) {
 					// cant be inside any hard rooms
 					for (Room room : rooms) {
@@ -344,7 +346,7 @@ public class Map implements IPresenterMap {
 			}
 		}
 
-		if (tries < 500) {
+		if (tries < 5000) {
 			return posi;
 		} else {
 			throw new MapException();
@@ -363,26 +365,35 @@ public class Map implements IPresenterMap {
 	// have to be in a wide space.
 	protected void setStartAndExitPoints() throws MapException {
 		exitPoint = null;
+		boolean foundExit = false;
 		for (Room room : rooms) {
 			if (room.getExitPosition() != null) {
 				exitPoint = room.getExitPosition();
 				location(exitPoint).setAsExit();
+				foundExit = true;
 				break;
 			}
 		}
 
-		if (exitPoint == null) {
+		int i = 0;
+		while (i++ < 500 && foundExit == false) {
 			Location exitLocation = findExitLocation();
 			if (exitLocation == null) {
 				throw new MapException();
 			} else {
-				exitPoint = exitLocation.getPosition();
-				exitLocation.setAsExit();
+				if (exitLocation.getRoughTerrain() == null) {
+					exitPoint = exitLocation.getPosition();
+					exitLocation.setAsExit();
+					foundExit = true;
+				}
 			}
+		}
+		if (!foundExit) {
+			throw new MapException();
 		}
 
 		// Now set the start position
-		for (int i = 0; i < 200; i++) {
+		for (i = 0; i < 200; i++) {
 			startPoint = getRandomPointNotInRooms(true);
 			Location loc = location(startPoint);
 			if (loc.isTotallyEmpty()) {
@@ -489,26 +500,26 @@ public class Map implements IPresenterMap {
 		int dir = Randy.getRand(0, 3);
 		int nx;
 		int ny;
-
+		
 		for (int i = 0; i < ((height * 3) / 2); i++) {
 			nx = x;
 			ny = y;
 
 			switch (dir) {
-			case 0:
+			case 0: // South
 				if (y > 1)
 					ny--;
 				break;
-			case 1:
+			case 1: // North
 				if (y < (height - 2))
 					ny++;
 				break;
-			case 2:
+			case 2:  // West
 				if (x > 1)
 					nx--;
 				break;
 
-			case 3:
+			case 3: // EAST
 				if (x < (width - 2))
 					nx++;
 				break;
@@ -573,10 +584,9 @@ public class Map implements IPresenterMap {
 			y = ny;
 
 			// will only change the direction when the direction is legal, i.e.
-			// between 1-4
 			int nDir = Randy.getRand(0, 6);
 
-			if (nDir < 5) {
+			if (nDir < 4) {
 				dir = nDir;
 			}
 		}
@@ -863,7 +873,7 @@ public class Map implements IPresenterMap {
 	public void onCreate() {
 	}
 
-	private boolean addMiniBossRoom() throws MapException {
+	private DungeonPosition addMiniBossRoom() throws MapException {
 		Room room = null;
 
 		switch (level) {
@@ -877,10 +887,10 @@ public class Map implements IPresenterMap {
 			room = new Room(level6Map, level6Monsters, 1);
 			break;
 		case 7:
-			statueName = "statue";
+			statueName = "statue_zombie";
 			break;
 		case 9:
-			// room = new Room(level3Map, level3Monsters, 1);
+			room = new Room(level9Map, level9Monsters, 1);
 			break;
 		case 10:
 			statueName = "statue";
@@ -919,11 +929,11 @@ public class Map implements IPresenterMap {
 					room.setPosition(position, location);
 					rooms.add(room);
 					room.clearSpaces();
-					return true;
+					return room.getEntrance();
 				}
 			}
 		} else {
-			return false;
+			return null;
 		}
 
 		throw new MapException();
@@ -1099,7 +1109,7 @@ public class Map implements IPresenterMap {
 		"*4 5 6*",
 		"* hhh *",
 		"*1 2 3*",
-		"*** ***"};
+		"***@***"};
 	private static String[] level3Monsters = {"crazed priest",
 		"crazed minion", "crazed minion", "crazed minion", "crazed minion", "crazed minion", "crazed minion"};
 	
@@ -1107,10 +1117,24 @@ public class Map implements IPresenterMap {
 		"*******",
 		"*   24*",
 		"*  IrO*",
-		"  560X*",
+		"@ 560X*",
 		"*  IrO*",
 		"*   13*",
 	    "*******"};
-
 	private static String[] level6Monsters = {"dwarf king", "dwarf","dwarf","dwarf","dwarf","dwarf","dwarf"};
+	
+	private static String[] level9Map = {
+		"*************",
+		"*           @",
+		"* ***********",
+		"* *   5     *",
+		"*9* ******* *",
+		"* * * 20 3* *",
+		"* * *1X7t *6*",
+		"* * ***** * *",
+		"* * 4     * *",
+		"* ********* *",
+		"*  8        *",
+		"*************"};
+	private static String[] level9Monsters = {"zombie giant", "zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie","zombie"};
 }

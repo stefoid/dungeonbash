@@ -110,8 +110,8 @@ public class Rect {
 	}
 		
 	public boolean isInside(float xt, float yt) {
-		if ((xt >= this.x) && (xt <= (this.x + this.width)) &&
-		   (yt >= this.y) && (yt <= (this.y + getHeight()))) 
+		if ((xt >= this.x) && (xt < (this.x + this.width)) &&
+		   (yt >= this.y) && (yt < (this.y + getHeight()))) 
 			return true;
 		else	
 			return false;

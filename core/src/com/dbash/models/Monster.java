@@ -16,7 +16,7 @@ import com.dbash.util.SequenceNumber;
 
 public class Monster extends Creature
 {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 
 	private class LastCharacterPosition {
 		public Character character;
@@ -56,9 +56,7 @@ public class Monster extends Creature
 	
 	// this constructor returns a monster that fits a certain level, either of a
 	// type that swarms or a type that doesnt swarm
-	public Monster(int creatureId, int level, DungeonPosition p, IDungeonEvents dungeonEvents, 
-			IDungeonQuery dungeonQuery, TurnProcessor turnProcessor)
-	{
+	public Monster(int creatureId, int level, DungeonPosition p, IDungeonEvents dungeonEvents,  IDungeonQuery dungeonQuery, TurnProcessor turnProcessor) {
 		super(creatureId, p, dungeonEvents, dungeonQuery, turnProcessor); 
 
 		// but now we need to know how much experience to give this creature,
@@ -204,8 +202,7 @@ public class Monster extends Creature
 			validClosestChar = closestCharacter.isAlive();
 		}
 		
-		if (validClosestChar)
-		{
+		if (validClosestChar) {
 			// record this last known siting in case he looses us, we can
 			// still try to get there to pick up the scent again
 			lastCharacterPos = new LastCharacterPosition(closestCharacter.getPosition(), closestCharacter);
@@ -233,9 +230,6 @@ public class Monster extends Creature
 		
 		// we have worked out a direction to move, either towards the nearest character or running
 		// away from the nearest character, or maybe not moving at all.
-		if (isBoss()) {
-			moveDirection = DungeonPosition.NO_DIR;
-		} 
 		
 		// 2. Is there a possible ranged attack to make? Only if a character is in LOS...
 		// now determine if we want to use ranged weapons or
@@ -333,21 +327,23 @@ public class Monster extends Creature
 				break;
 			case FREE:
 			case HOLE:
-				Character releventCharacter = closestCharacter;
-				boolean specialMove = false;
-				// This could be a random move that just happens to end up in a character LOS.
-				if (releventCharacter == null) {
-					releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this, true, false);
-				} else {
-					specialMove = performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter);
-					if (!specialMove) {
-						specialMove = performDash(newPosition, direction, releventCharacter);
+				if (isBoss() == false) {
+					Character releventCharacter = closestCharacter;
+					boolean specialMove = false;
+					// This could be a random move that just happens to end up in a character LOS.
+					if (releventCharacter == null) {
+						releventCharacter = dungeonQuery.findClosestCharacterInSight(newPosition, this, true, false);
+					} else {
+						specialMove = performCharge(newPosition, direction, AtLocation.CHARACTER, releventCharacter);
+						if (!specialMove) {
+							specialMove = performDash(newPosition, direction, releventCharacter);
+						}
 					}
-				}
 
-				if (!specialMove) {
-					dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
-				}
+					if (!specialMove) {
+						dungeonEvents.creatureMove(SequenceNumber.getNext(), releventCharacter, this, mapPosition, newPosition, direction,  Dungeon.MoveType.NORMAL_MOVE, null);
+					}
+				} 
 			break;
 			case MONSTER:
 				break;
@@ -386,8 +382,7 @@ public class Monster extends Creature
 		// Move first or ranged attack?
 		boolean useRanged = false;
 
-		if (rangedAttack != null)
-		{
+		if (rangedAttack != null) {
 			// use ranged attack on target character
 			AbilityCommand command = new AbilityCommand(AbilityCommand.EXECUTE, 0, getCreature().head, getCreature().hands, getCreature().humanoid);
 			// we have already	 verified	 that	 we	 can	 use	 this	 ability
@@ -449,11 +444,9 @@ public class Monster extends Creature
 	}
 	
 	// Determine if a character is visible and/or the closest
-	public void findClosestCharacter(Set<Character> characters) {
-		for (Character character : characters) {
-			ShadowMap shadowMap = character.shadowMap;
-			closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false, true);
-		}
+	public void findAndSetClosestCharacter() {
+		closestCharacter = dungeonQuery.findClosestCharacterInSight(mapPosition, this, false, true);
+		if (LOG) L.log("%s - closestCharacter: %s", this, closestCharacter);
 	}
 	
 	public void persist(ObjectOutputStream out) throws IOException {
@@ -463,6 +456,7 @@ public class Monster extends Creature
 	
 	public void setClosestCharacter(Character val) {
 		closestCharacter = val;
+		if (LOG) L.log("%s", this);
 	}
 	
 	public void setIsNearCharacter(boolean val) {

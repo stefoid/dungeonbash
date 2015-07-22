@@ -58,6 +58,10 @@ public class Room {
 		return getPosiOfChar('X');
 	}
 	
+	public DungeonPosition getEntrance() {
+		return getPosiOfChar('@');
+	}
+	
 	private DungeonPosition getPosiOfChar(char c) {
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {

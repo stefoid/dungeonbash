@@ -26,8 +26,8 @@ public class L {
 	public static int TEST_SKILL_BONUS = 0;
 	
 	public static float PPI = 100;
-	public static int SCREENX = 1280;
-	public static int SCREENY = 720;
+	public static int SCREENX = 1024;
+	public static int SCREENY = 768;
 	
 	public static final int STACK_LEVEL = 3;
 	
