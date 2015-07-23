@@ -381,7 +381,7 @@ public class Map implements IPresenterMap {
 			if (exitLocation == null) {
 				throw new MapException();
 			} else {
-				if (exitLocation.getRoughTerrain() == null) {
+				if (exitLocation.getRoughTerrain() == null && exitLocation.tileType != TileType.ISLAND) {
 					exitPoint = exitLocation.getPosition();
 					exitLocation.setAsExit();
 					foundExit = true;

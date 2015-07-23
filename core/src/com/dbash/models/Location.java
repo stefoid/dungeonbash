@@ -15,7 +15,7 @@ import com.dbash.util.Randy;
 // (Each character has a shadowMap that informs Locations that it can see them)
 public class Location {
 	
-	public static boolean LOG = false && L.DEBUG;
+	public static boolean LOG = true && L.DEBUG;
 	 
 	public static final String SOLID_ROCK = "SolidRock";
 	public static final String STATUE_ISLAND_TYPE = "statue";
@@ -616,9 +616,8 @@ public class Location {
 								return SOLID_ROCK;  // is this case possible?
 						}
 					}
-
-			case FLOOR:
 				
+			case FLOOR:
 				if (tileType == TileType.ISLAND) {
 					String iType;
 					if (islandType != null) {
@@ -630,6 +629,7 @@ public class Location {
 					if (iType.equals(STATUE_ISLAND_TYPE)) {
 						iType = map.getStatueName();
 					}
+					
 					return iType;
 				}
 				
