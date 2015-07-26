@@ -556,13 +556,11 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 		fallingCharacter.fallStarted();
 		shadowMaps.put(fallingCharacter, fallingCharacter.shadowMap);
 		if (dungeonEventListener != null) {
-			dungeonEventListener.fallIntoLevel(sequenceNumber,
-					fallingCharacter, level, new IAnimListener() {
+			dungeonEventListener.fallIntoLevel(sequenceNumber, fallingCharacter, level, new IAnimListener() {
 						public void animEvent() {
 							fallingCharacter.fallComplete();
-							EventBus.getDefault().event(
-									TutorialPresenter.DROPPING_IN_EVENT, null);
 							processCreaturePositions();
+							EventBus.getDefault().event(TutorialPresenter.DROPPING_IN_EVENT, null);
 						}
 					});
 		}

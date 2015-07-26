@@ -1,5 +1,7 @@
 package com.dbash.presenters.root.tutorial;
 
+import java.util.ArrayList;
+
 import com.dbash.models.IEventAction;
 import com.dbash.models.IPresenterTurnState;
 import com.dbash.models.PresenterDepend;
@@ -44,6 +46,7 @@ public class TutorialPresenter {
 	public static final String ABILITY_PRESENTER_SHOWN = "ABILITY_PRESENTER_SHOWN";
 	
 	public static final String TUTORIAL_RESTART = "TUTORIAL_RESTART";
+	public static final String TUTORIAL_RESTART_SECTION = "TUTORIAL_RESTART_SECTION";
 	
 	public static final String ABILITY_USED_EVENT = "ABILITY_USED_EVENT";
 	public static final String ITEM_PICKED_UP_EVENT = "ITEM_PICKED_UP";
@@ -78,6 +81,7 @@ public class TutorialPresenter {
 	int passes = 0;
 	private IPresenterTurnState turnProcessor;
 	private State state = State.INITIAL_STATE;
+	private ArrayList<Thread> threads = new ArrayList<Thread>();
 	
 	public TutorialPresenter(PresenterDepend model, UIDepend gui) {
 		this.eventBus = EventBus.getDefault();
@@ -320,7 +324,7 @@ public class TutorialPresenter {
 	private void newState(State state, Object param) {
 		this.state = state;
 		stateEvent(ON_ENTRY_EVENT, param);
-		turnProcessor.saveGame(state);
+		saveInBackground();
 	}
 	
 	private void popPresenterPar(OverlayPresenter overlayPresenter) {
@@ -335,7 +339,19 @@ public class TutorialPresenter {
 		gui.overlayQueues.removeAll();
 	}
 	
+	private void saveInBackground() {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				turnProcessor.saveGame(state);
+			}
+		});
+		threads.add(thread);
+		thread.start();
+	}
+	
 	public void onDestroy() {
+		threads.clear();
 		EventBus.getDefault().removeAll(this);
 	}
 }
