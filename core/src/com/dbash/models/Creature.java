@@ -917,10 +917,11 @@ public abstract class Creature implements IPresenterCreature
 				dungeonEvents.abilityAdded(SequenceNumber.getCurrent()+1, giver.getReleventCharacter(), ability.getEffectType(), mapPosition);
 			}
 			
-			if (mapPosition != null && dungeonQuery.getTerrainAtLocation(mapPosition) == RoughTerrainType.HOLE) {
-				if (creatureCanFly() == false) {
+			if (ability.hasTag(Ability.STUNNED_TAG) 
+				&& mapPosition != null
+				&& dungeonQuery.getTerrainAtLocation(mapPosition) == RoughTerrainType.HOLE
+				&& creatureCanFly() == false) {
 					death();
-				}
 			}
 		}
 		
