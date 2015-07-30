@@ -71,8 +71,16 @@ public class DesktopLauncher {
 	}
 	
 	private static void packTextures() {
-		TexturePacker.process(new TexturePackerSettings(), "pngs",
-				"bin/res/dbash2/pngs-packed", "pack");
+		String packedDir;
+		String pngDir;
+		if (L.JARFILE) {
+			pngDir = "pngs";
+			packedDir = "pngs-packed";
+		} else {
+			pngDir = "pngs";
+			packedDir = "bin/res/dbash2/pngs-packed";
+		}
+		TexturePacker.process(new TexturePackerSettings(), pngDir, packedDir, "pack");
 	}
 	
 	private static void startGame(LwjglApplicationConfiguration config) {

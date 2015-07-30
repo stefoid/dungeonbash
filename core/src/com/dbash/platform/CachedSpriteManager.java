@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.dbash.util.L;
 
 public class CachedSpriteManager implements SpriteManager {
 
@@ -21,7 +22,13 @@ public class CachedSpriteManager implements SpriteManager {
 
 
 	public CachedSpriteManager() {
-		textureAtlas = new TextureAtlas(Gdx.files.internal("res/dbash2/pngs-packed/pack.atlas"));
+		String packedFile;
+		if (L.JARFILE) {
+			packedFile = "pngs-packed/pack.atlas";
+		} else {
+			packedFile = "res/dbash2/pngs-packed/pack.atlas";
+		}
+		textureAtlas = new TextureAtlas(Gdx.files.internal(packedFile));
 	}
 	
 	// returns a ref to the 'master' sprite.  
