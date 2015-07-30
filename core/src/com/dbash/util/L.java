@@ -4,7 +4,8 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean JARFILE = false;
+	public static boolean JARFILE = true;
+	public static boolean USE_CFG = true;
 	
 	public static boolean TESTCHARS = false;
 	public static String c1 = "greater demon";

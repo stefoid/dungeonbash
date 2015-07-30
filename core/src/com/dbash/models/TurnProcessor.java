@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.dbash.models.Creature.StealthStatus;
 import com.dbash.presenters.root.GameOverOverlayPresenter;
 import com.dbash.presenters.root.GameStatePresenter;
@@ -358,8 +360,7 @@ public class TurnProcessor implements IPresenterTurnState {
 	// turn processing will be turned on again by the callback employed by
 	// waitForAnimsToFinish
 	public void waitForPlayerInput() {
-		if (LOG)
-			L.log("waiting for player input");
+		if (LOG) L.log("waiting for player input");
 		pauseTurnProcessing = true;
 		dungeonEvents.waitingForAnimToComplete(SequenceNumber.getNext(),
 				new IAnimListener() {
@@ -467,9 +468,23 @@ public class TurnProcessor implements IPresenterTurnState {
 
 		// First character must be humanoid
 		boolean foundChar = false;
+		
+		if (L.USE_CFG) {
+			FileHandle fl = Gdx.files.local("config.txt");
+			if (fl.exists() == true) {
+				try {
+					String filestring = fl.readString();
+					String charName = filestring.trim();
+					Character c = new Character(Creature.getIdForName(charName), p, 1, dungeonEvents, dungeonQuery, this);
+					theChars.add(c);
+					foundChar = true;
+				} catch (Exception e) {
+				}
+			}
+		}
+		
 		while (foundChar == false) {
-			Character c = Character.getNewCharacter(p, 1, dungeonEvents,
-					dungeonQuery, this);
+			Character c = Character.getNewCharacter(p, 1, dungeonEvents, dungeonQuery, this);
 			if (c.isHumanid() && noDuplicate(theChars, c)) {
 				theChars.add(c);
 				foundChar = true;
