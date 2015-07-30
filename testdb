@@ -2,5 +2,7 @@
 cp desktop/build/libs/desktop-1.0.jar ~/testdb/.
 rm -rf ~/testdb/pngs
 cp -R desktop/pngs ~/testdb/pngs
+cp desktop/config.txt ~/testdb/.
+
 
 
