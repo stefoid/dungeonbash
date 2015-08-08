@@ -114,10 +114,11 @@ public class ItemListPresenter extends ListPresenter{
 			emptyItem.addToList((elements));
 		}
 		
-		if (characters != null && character != null) {
-			float listPos = characters.get(character);
-			scrollingList.setListElements(elements, listPos);
+		Float listPos = characters.get(character);
+		if (listPos == null) {
+			listPos = 0f;
 		}
+		scrollingList.setListElements(elements, listPos);
 
 	}
 	

@@ -1008,8 +1008,8 @@ public class TurnProcessor implements IPresenterTurnState {
 		DungeonPosition p = new DungeonPosition(0, 0); // will init to level 1.
 
 		theChars.add(new Character(Creature.getIdForName("halfling"), p, 1, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName("web shooter"), p, 2, dungeonEvents, dungeonQuery, this));
-		theChars.add(new Character(Creature.getIdForName("pit viper"), p, 3, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("halfling"), p, 2, dungeonEvents, dungeonQuery, this));
+		theChars.add(new Character(Creature.getIdForName("halfling"), p, 3, dungeonEvents, dungeonQuery, this));
 		Creature c = theChars.get(0);
 //		c.removeAbility("sling");
 //		c.addAbility(new Ability(Ability.getIdForName("extra_magic"), null, 20, dungeonEvents, dungeonQuery), null);

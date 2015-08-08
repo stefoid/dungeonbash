@@ -101,7 +101,10 @@ public class AbilitySelectionListPresenter extends ListPresenter{
 			emptyItem.addToList((elements));
 		}
 		
-		float listPos = characters.get(character);
+		Float listPos = characters.get(character);
+		if (listPos == null) {
+			listPos = 0f;
+		}
 		scrollingList.setListElements(elements, listPos);
 	}
 }
