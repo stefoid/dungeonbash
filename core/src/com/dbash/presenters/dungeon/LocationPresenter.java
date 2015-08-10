@@ -114,7 +114,7 @@ public class LocationPresenter {
 		
 		// Done once at setup.
 		if (tile == null) {
-			String tileName = "sw_";
+			String tileName = "ww_";
 
 			if (locationInfo.isShadowedFloor) {
 				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
