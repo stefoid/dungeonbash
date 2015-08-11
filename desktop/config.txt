@@ -1,2 +1,2 @@
-giant sewer rat
+giant sewer rat,no_monsters
 

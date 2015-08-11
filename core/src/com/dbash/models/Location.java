@@ -530,14 +530,14 @@ public class Location {
 					} else {
 						tileName = "FrontMiddle";
 						
-						// special case - front walls join with vertical walls to its north
-						boolean northBlank = map.safeLocation(x,y+1).isClear();
-						if (northBlank == false) {
-							boolean northEastBlank = map.safeLocation(x+1,y+1).isClear();
-							boolean northWestBlank = map.safeLocation(x-1,y+1).isClear();
-							
-							tileName = northEastBlank && northWestBlank ? "FrontDouble" : northWestBlank ? "FrontWest" : northEastBlank ? "FrontEast" : "FrontMiddle";	
-						}
+//						// special case - front walls join with vertical walls to its north
+//						boolean northBlank = map.safeLocation(x,y+1).isClear();
+//						if (northBlank == false) {
+//							boolean northEastBlank = map.safeLocation(x+1,y+1).isClear();
+//							boolean northWestBlank = map.safeLocation(x-1,y+1).isClear();
+//							
+//							tileName = northEastBlank && northWestBlank ? "FrontDouble" : northWestBlank ? "FrontWest" : northEastBlank ? "FrontEast" : "FrontMiddle";	
+//						}
 					}
 					
 					return tileName;
@@ -548,17 +548,57 @@ public class Location {
 				
 				// rear facing tiles
 				// if the north of the tile is empty it will contain a rear-facing aspect.
-				// For the purposes of rear-facing tiles, 'blank' is either a clear floor tile, or a front-facing tile.  Strange but true.
-				if (westSide == TileType.FRONT_FACE) {
-					westBlank = true;
-				}
-				if (eastSide == TileType.FRONT_FACE) {
-					eastBlank = true;
-				}
 				if (tileType == TileType.REAR_FACE) {
-					tileName = eastBlank && westBlank ? "RearDouble" : westBlank ? "RearWest" : eastBlank ? "RearEast" : "RearMiddle";
-					if (tileName != null) {
-						return tileName;
+					switch (westSide) {
+					case CLEAR:
+						switch (eastSide) {
+							case CLEAR:
+								return "RearDouble";
+							case FRONT_FACE:
+								return "VertWestFrontEastCorner";
+							case REAR_FACE:
+								return "VertWestRearEastCorner";
+							case NO_FACE:
+							default:
+								return "VertWest";
+						}
+					case FRONT_FACE:
+						switch (eastSide) {
+							case CLEAR:
+								return "VertEastFrontWestCorner";
+							case FRONT_FACE:
+								return "FrontDoubleCorner";
+							case REAR_FACE:
+								return "FrontWestCornerRearEastCorner";
+							case NO_FACE:
+							default:
+								return "FrontWestCorner";
+						}
+					case REAR_FACE:
+						switch (eastSide) {
+							case CLEAR:
+								return "VertEastRearWestCorner";
+							case FRONT_FACE:
+								return "FrontEastCornerRearWestCorner";
+							case REAR_FACE:
+								return "RearDoubleCorner";
+							case NO_FACE:
+							default:
+								return "RearWestCorner";
+						}
+					case NO_FACE:
+					default:
+						switch (eastSide) {
+							case CLEAR:
+								return "VertEast";
+							case FRONT_FACE:
+								return "FrontEastCorner";
+							case REAR_FACE:
+								return "RearEastCorner";
+							case NO_FACE:
+							default:
+								return SOLID_ROCK;  // is this case possible?
+						}
 					}
 				}
 				

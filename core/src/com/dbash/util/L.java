@@ -2,10 +2,10 @@ package com.dbash.util;
 
 public class L {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	public static boolean JARFILE = false;
-	public static boolean USE_CFG = false;
+	public static boolean USE_CFG = true;
 	
 	public static boolean TESTCHARS = false;
 	public static String c1 = "greater demon";
@@ -17,8 +17,8 @@ public class L {
 	public static String FIRST_MONSTER = "gnome";
 	
 	public static boolean NO_LOAD = false;
-	public static boolean NO_SAVE = true;
-	public static int LEVEL = 1;
+	public static boolean NO_SAVE = false;
+	public static int LEVEL = 5;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;  // run the total XP test for a level.
