@@ -6,6 +6,7 @@ import org.robovm.apple.uikit.UIDevice;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
@@ -15,7 +16,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
         config.orientationPortrait = false;
         String systemVersion = UIDevice.getCurrentDevice().getSystemVersion();
         int version = Character.getNumericValue(systemVersion.charAt(0));
-        return new IOSApplication(new Dbash(version), config);
+        return new IOSApplication(new Dbash(version, new JsonValue("")), config);
     }
 
 	@Override

@@ -469,18 +469,11 @@ public class TurnProcessor implements IPresenterTurnState {
 		// First character must be humanoid
 		boolean foundChar = false;
 		
-		if (L.USE_CFG) {
-			FileHandle fl = Gdx.files.local("config.txt");
-			if (fl.exists() == true) {
-				try {
-					String filestring = fl.readString();
-					String charName = filestring.trim();
-					Character c = new Character(Creature.getIdForName(charName), p, 1, dungeonEvents, dungeonQuery, this);
-					theChars.add(c);
-					foundChar = true;
-				} catch (Exception e) {
-				}
-			}
+		if (L.json.has("first_character")) {
+			String charName = L.json.getString("first_character");
+			Character c = new Character(Creature.getIdForName(charName), p, 1, dungeonEvents, dungeonQuery, this);
+			theChars.add(c);
+			foundChar = true;
 		}
 		
 		while (foundChar == false) {

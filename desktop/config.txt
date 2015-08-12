@@ -1,2 +1,6 @@
-giant sewer rat,no_monsters
-
+{
+"first_character" : "giant sewer rat",
+"monsters" : false,
+"screen_width" : 1024,
+"screen_height" : 768
+}

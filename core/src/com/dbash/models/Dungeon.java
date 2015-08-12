@@ -67,8 +67,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 	int focusCharId;
 	Character characterHavingTurn;
 	Explosion explosion;
+	boolean hasMonsters = true;
 
 	public Dungeon(boolean newGame) {
+		if (L.json.has("monsters")) {
+			hasMonsters = L.json.getBoolean("monsters");
+		}
 		initLevel();
 		map = new Map(); // empty map to start
 		shadowMaps = new HashMap<Character, ShadowMap>();

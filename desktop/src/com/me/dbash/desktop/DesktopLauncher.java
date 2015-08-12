@@ -1,13 +1,23 @@
 package com.me.dbash.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.dbash.models.Character;
+import com.dbash.models.Creature;
 import com.dbash.util.L;
 import com.me.dbash.Dbash;
+
+import java.io.File;
+import java.lang.*;
+import java.util.Scanner;
 
 @SuppressWarnings("unused")
 
@@ -83,11 +93,36 @@ public class DesktopLauncher {
 		TexturePacker.process(new TexturePackerSettings(), pngDir, packedDir, "pack");
 	}
 	
+	public static String SCREEN_WIDTH = "screen_width";
+	public static String SCREEN_HEIGHT = "screen_height";
+	
+	
 	private static void startGame(LwjglApplicationConfiguration config) {
 		config.width = L.SCREENX;
 		config.height = L.SCREENY;
+
+		File fl = new File("config.txt");
+		String jsonString = null;
+		JsonValue json = null;
+		if (fl.exists() == true) {
+			try {
+				Scanner scanner = new Scanner(fl).useDelimiter("\\Z");
+				jsonString = scanner.next();
+				json = new JsonReader().parse(jsonString);
+				if (json.has(SCREEN_WIDTH)) {
+					config.width = json.getInt(SCREEN_WIDTH);
+				}
+				if (json.has(SCREEN_HEIGHT)) {
+					config.height = json.getInt(SCREEN_HEIGHT);
+				}
+			} catch (Exception e) {
+			}
+		}
 		
-		new LwjglApplication(new Dbash(0), config);
+		if (json == null) {
+			json = new JsonValue("");
+		}
+		new LwjglApplication(new Dbash(0, json), config);
 	}
 	
 	private static boolean isFullScreenArgument(String[] args) {

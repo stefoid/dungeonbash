@@ -1,11 +1,13 @@
 package com.dbash.util;
 
+import com.badlogic.gdx.utils.JsonValue;
+
 public class L {
 
 	public static boolean DEBUG = true;
 	
 	public static boolean JARFILE = false;
-	public static boolean USE_CFG = true;
+	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = false;
 	public static String c1 = "greater demon";

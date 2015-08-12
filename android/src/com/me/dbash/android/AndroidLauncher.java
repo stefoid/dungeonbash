@@ -14,6 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		Crashlytics.start(this);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Dbash(0), config);
+		initialize(new Dbash(0, new com.badlogic.gdx.utils.JsonValue("")), config);
 	}
 }

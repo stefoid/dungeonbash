@@ -12,6 +12,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.JsonValue;
 import com.dbash.models.AllCreatures;
 import com.dbash.models.Dungeon;
 import com.dbash.models.PresenterDepend;
@@ -52,8 +53,10 @@ public class Dbash implements ApplicationListener {
 	Texture splash;
 	Thread.UncaughtExceptionHandler previousHandler;
 	
-	public Dbash(int iosVersion) {
+	public Dbash(int iosVersion, JsonValue json) {
 		SizeCalculator.setIosVersion(iosVersion);
+		L.json = json;
+		
 //		previousHandler = Thread.getDefaultUncaughtExceptionHandler();
 //        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 //            @Override
