@@ -547,76 +547,76 @@ public class Location {
 				TileType eastSide = getTileTypeForTileNames(x+1,y);
 				
 				// For the purposes of rear-facing tiles, 'blank' is either a clear floor tile, or a front-facing tile.  Strange but true.
-				if (westSide == TileType.FRONT_FACE) {
-					westBlank = true;
-				}
-				if (eastSide == TileType.FRONT_FACE) {
-					eastBlank = true;
-				}
-				if (tileType == TileType.REAR_FACE) {
-					tileName = eastBlank && westBlank ? "RearDouble" : westBlank ? "RearWest" : eastBlank ? "RearEast" : "RearMiddle";
-					if (tileName != null) {
-						return tileName;
-					}
-				}
+//				if (westSide == TileType.FRONT_FACE) {
+//					westBlank = true;
+//				}
+//				if (eastSide == TileType.FRONT_FACE) {
+//					eastBlank = true;
+//				}
+//				if (tileType == TileType.REAR_FACE) {
+//					tileName = eastBlank && westBlank ? "RearDouble" : westBlank ? "RearWest" : eastBlank ? "RearEast" : "RearMiddle";
+//					if (tileName != null) {
+//						return tileName;
+//					}
+//				}
 
 				
 				// rear facing tiles
 				// if the north of the tile is empty it will contain a rear-facing aspect.
-//				if (tileType == TileType.REAR_FACE) {
-//					switch (westSide) {
-//					case CLEAR:
-//						switch (eastSide) {
-//							case CLEAR:
-//								return "RearDouble";
-//							case FRONT_FACE:
-//								return "VertWestFrontEastCorner";
-//							case REAR_FACE:
-//								return "VertWestRearEastCorner";
-//							case NO_FACE:
-//							default:
-//								return "VertWest";
-//						}
-//					case FRONT_FACE:
-//						switch (eastSide) {
-//							case CLEAR:
-//								return "VertEastFrontWestCorner";
-//							case FRONT_FACE:
-//								return "FrontDoubleCorner";
-//							case REAR_FACE:
-//								return "FrontWestCornerRearEastCorner";
-//							case NO_FACE:
-//							default:
-//								return "FrontWestCorner";
-//						}
-//					case REAR_FACE:
-//						switch (eastSide) {
-//							case CLEAR:
-//								return "VertEastRearWestCorner";
-//							case FRONT_FACE:
-//								return "FrontEastCornerRearWestCorner";
-//							case REAR_FACE:
-//								return "RearDoubleCorner";
-//							case NO_FACE:
-//							default:
-//								return "RearWestCorner";
-//						}
-//					case NO_FACE:
-//					default:
-//						switch (eastSide) {
-//							case CLEAR:
-//								return "VertEast";
-//							case FRONT_FACE:
-//								return "FrontEastCorner";
-//							case REAR_FACE:
-//								return "RearEastCorner";
-//							case NO_FACE:
-//							default:
-//								return SOLID_ROCK;  // is this case possible?
-//						}
-//					}
-//				}
-//				
+				if (tileType == TileType.REAR_FACE) {
+					switch (westSide) {
+					case CLEAR:
+						switch (eastSide) {
+							case CLEAR:
+								return "RearDouble";
+							case FRONT_FACE:
+								return "RearWestCornerEast";
+							case REAR_FACE:
+								return "RearWest";
+							case NO_FACE:
+							default:
+								return "RearWest";
+						}
+					case FRONT_FACE:
+						switch (eastSide) {
+							case CLEAR:
+								return "RearEastCornerWest";
+							case FRONT_FACE:
+								return "RearCornerDouble";
+							case REAR_FACE:
+								return "RearCornerWest";
+							case NO_FACE:
+							default:
+								return "RearCornerEast";
+						}
+					case REAR_FACE:
+						switch (eastSide) {
+							case CLEAR:
+								return "RearEast";
+							case FRONT_FACE:
+								return "RearCornerEast";
+							case REAR_FACE:
+								return "RearMiddle";
+							case NO_FACE:
+							default:
+								return "RearWestCorner";
+						}
+					case NO_FACE:
+					default:
+						switch (eastSide) {
+							case CLEAR:
+								return "RearEast";
+							case FRONT_FACE:
+								return "RearCornerEast";
+							case REAR_FACE:
+								return "RearEastCorner";
+							case NO_FACE:
+							default:
+								return "RearMiddle";  // is this case possible?
+						}
+					}
+				}
+				
 				// Now we are down to vertical walls, front facing corners or rear facing corners 
 				// possibly a different type on each side of the tile.  
 				// We have to test each side to determine which.
@@ -652,7 +652,7 @@ public class Location {
 							case FRONT_FACE:
 								return "FrontEastCornerRearWestCorner";
 							case REAR_FACE:
-								return "RearDoubleCorner";
+								return "RearCornerDouble";
 							case NO_FACE:
 							default:
 								return "RearWestCorner";
