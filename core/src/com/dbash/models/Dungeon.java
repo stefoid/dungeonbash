@@ -273,10 +273,12 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 	}
 
 	protected void putMonsterOnMap(Monster monster, DungeonPosition dungeonPosition) {
-		if (whatIsAtLocation(dungeonPosition) == AtLocation.FREE) {
-			if (monster.getPosition().distanceTo(map.startPoint) > 2) {
-				mobs.add(monster);
-				map.location(dungeonPosition).creature = monster;
+		if (hasMonsters) {
+			if (whatIsAtLocation(dungeonPosition) == AtLocation.FREE) {
+				if (monster.getPosition().distanceTo(map.startPoint) > 2) {
+					mobs.add(monster);
+					map.location(dungeonPosition).creature = monster;
+				}
 			}
 		}
 	}
@@ -1087,9 +1089,13 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 
 	@Override
 	public Creature addMonsterToMap(String monsterName, DungeonPosition dungeonPosition) {
-		Monster monster = new Monster(Creature.getIdForName(monsterName), currentLevel, dungeonPosition, this, this, turnProcessor);
-		map.location(dungeonPosition).creature = monster;
-		mobs.add(monster);
+		Monster monster = null;
+		if (hasMonsters) {
+			monster = new Monster(Creature.getIdForName(monsterName), currentLevel, dungeonPosition, this, this, turnProcessor);
+			map.location(dungeonPosition).creature = monster;
+			mobs.add(monster);
+		}
+
 		return monster;
 	}
 
