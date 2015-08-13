@@ -114,7 +114,12 @@ public class LocationPresenter {
 		
 		// Done once at setup.
 		if (tile == null) {
-			String tileName = "ww_";
+			String tileName = "sw_";
+			if (L.json.has("walls")) {
+				if (L.json.getString("walls").equals("wood")) {
+					tileName = "ww_";
+				}
+			}
 
 			if (locationInfo.isShadowedFloor) {
 				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
