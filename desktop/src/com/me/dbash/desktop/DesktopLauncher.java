@@ -95,6 +95,9 @@ public class DesktopLauncher {
 	
 	public static String SCREEN_WIDTH = "screen_width";
 	public static String SCREEN_HEIGHT = "screen_height";
+	public static String USE_LIGHTS = "lights";
+	public static String LEVEL = "level";
+	public static String FLOOR_SHADOWS = "floor_shadows";
 	
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
@@ -114,6 +117,15 @@ public class DesktopLauncher {
 				}
 				if (json.has(SCREEN_HEIGHT)) {
 					config.height = json.getInt(SCREEN_HEIGHT);
+				}
+				if (json.has(USE_LIGHTS)) {
+					L.useLights = json.getBoolean(USE_LIGHTS);
+				}
+				if (json.has(LEVEL)) {
+					L.LEVEL = json.getInt(LEVEL);
+				}
+				if (json.has(FLOOR_SHADOWS)) {
+					L.floorShadows = json.getBoolean(FLOOR_SHADOWS);
 				}
 			} catch (Exception e) {
 			}

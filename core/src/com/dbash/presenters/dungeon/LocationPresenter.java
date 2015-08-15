@@ -54,10 +54,14 @@ public class LocationPresenter {
 		boolean drawOverlay = false;
 		float tint = locationInfo.tint;
 		
+		if (!L.useLights) {
+			tint = 100f;
+		}
+		
 		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
 			drawTile(spriteBatch, tint, alpha);
 			
-			if (shadow != null) {
+			if (shadow != null && L.floorShadows) {
 				shadow.drawTinted(spriteBatch, tint, alpha);
 			}
 			

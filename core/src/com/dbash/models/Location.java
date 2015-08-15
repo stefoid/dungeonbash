@@ -582,7 +582,7 @@ public class Location {
 							case CLEAR:
 								return "RearEastCornerWest";
 							case FRONT_FACE:
-								return "RearCornerDouble";
+								return "RearDoubleCorner";
 							case REAR_FACE:
 								return "RearCornerWest";
 							case NO_FACE:
@@ -652,7 +652,7 @@ public class Location {
 							case FRONT_FACE:
 								return "FrontEastCornerRearWestCorner";
 							case REAR_FACE:
-								return "RearCornerDouble";
+								return "RearDoubleCorner";
 							case NO_FACE:
 							default:
 								return "RearWestCorner";
