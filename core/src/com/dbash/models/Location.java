@@ -599,7 +599,7 @@ public class Location {
 								return "RearMiddle";
 							case NO_FACE:
 							default:
-								return "RearWestCorner";
+								return "RearMiddle";
 						}
 					case NO_FACE:
 					default:
@@ -609,7 +609,7 @@ public class Location {
 							case FRONT_FACE:
 								return "RearCornerEast";
 							case REAR_FACE:
-								return "RearEastCorner";
+								return "RearMiddle";
 							case NO_FACE:
 							default:
 								return "RearMiddle";  // is this case possible?

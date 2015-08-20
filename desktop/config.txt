@@ -1,10 +1,11 @@
 {
 "first_character" : "giant sewer rat",
-"monsters" : false,
+"monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
 "walls" : "stone",
-"lights" : false,
-"level" : 19
-"floor_shadows" : false
+"lights" : true,
+"level" : 1
+"floor_shadows" : true,
+"dark_percentage" : 100
 }

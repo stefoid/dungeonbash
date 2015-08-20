@@ -32,6 +32,7 @@ public abstract class Creature implements IPresenterCreature
 	public static final boolean LOG = false && L.DEBUG;
 	
 	public static final String BOSS_TAG = "boss";
+	public static final int AMBUSH_BONUS_DAMAGE = 15;
 	
 	public static enum CreatureSize {
 		SMALL,
@@ -867,7 +868,11 @@ public abstract class Creature implements IPresenterCreature
 	}
 	
 	public int getExpValue() {
-		return 10 * calcLevel(myId) + experience / 20;
+		int xp = 10 * calcLevel(myId) + experience / 20;
+		if (isBoss()) {
+			xp *= 3;
+		}
+		return xp;
 	}
 
 	public int getLevelValue() {
@@ -975,6 +980,14 @@ public abstract class Creature implements IPresenterCreature
 		}
 		
 		return false;
+	}
+	
+	Boolean isBoss = null;
+	public boolean isBoss() {
+		if (isBoss == null) {
+			isBoss = hasTagFromData(BOSS_TAG, creature.tag);
+		}
+		return isBoss;
 	}
 	
 	public boolean hasTag(String theTag) {
@@ -1352,7 +1365,7 @@ public abstract class Creature implements IPresenterCreature
 	
 	public int calculateMeleeDamage() {
 		Ability theAbility = null;
-		
+
 		// First find the set weapon.
 		for (Ability ability : abilities) {
 			if (ability.isUsed()) {
@@ -1365,11 +1378,22 @@ public abstract class Creature implements IPresenterCreature
 		return calculateMeleeDamageForAbility(theAbility);
 	}
 	
+	public int calculateAmbushDamage() {
+		int ambush_damage = 0;
+		// First find the set weapon.
+		for (Ability ability : abilities) {
+			if (ability.hasTag(Ability.AMBUSH_TAG)) {
+				ambush_damage = AMBUSH_BONUS_DAMAGE;
+			}
+		}
+		return ambush_damage;
+	}
+	
 	public int calculateMeleeDamageForAbility(Ability theAbility) {
 		int damage = 0;
 		if (theAbility != null) {
 			damage = theAbility.getAbilityDamage();
-			damage += calculateSizeDamageBonus() + calculateSkillDamageBonus();
+			damage += (calculateSizeDamageBonus() + calculateSkillDamageBonus() + calculateAmbushDamage());
 		}
 		
 		return damage;
@@ -1515,6 +1539,15 @@ public abstract class Creature implements IPresenterCreature
 
 			dataInitialized = true;
 		}
+	}
+
+	public static boolean hasTagFromData(String theTag, String tagString) {
+      for (String tag: tagString.split("\\.")) {
+			if (tag.equals(theTag)) {
+				return true;
+			}
+       }
+		return false;
 	}
 
 	/*

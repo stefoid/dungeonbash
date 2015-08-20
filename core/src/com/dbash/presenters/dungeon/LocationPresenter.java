@@ -2,6 +2,7 @@ package com.dbash.presenters.dungeon;
 
 import java.util.Vector;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
@@ -10,10 +11,13 @@ import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
+import com.dbash.platform.TextBoxView;
+import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
+import com.dbash.util.Rect.HAlignment;
 
 // a LocationPresenter is the partner of a Location in the model.  it handles the presentation of the corresponding Location, duh.
 // it gets updates of presentation-related data in the form of LocationInfo when the visual representation of the Location changes.
@@ -36,6 +40,7 @@ public class LocationPresenter {
 	private boolean drawEye = false;
 	private ImageView shadow = null;
 	private ImageView roughTerrain = null;
+	private TextImageView[] tileInfo = null;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter mapPresenter) {
 		this.area = new Rect(area);
@@ -86,10 +91,12 @@ public class LocationPresenter {
 		if (roughTerrain != null) {
 			roughTerrain.drawTinted(spriteBatch, tint, alpha);
 		}
+//		if (tileInfo != null) {
+//			tileInfo.draw(spriteBatch, 0, 0);
+//		}
 	}
 	
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
-		
 		if (creaturePresenter != null) {
 			creaturePresenter.draw(spriteBatch, alpha);
 		}
@@ -137,6 +144,19 @@ public class LocationPresenter {
 				tileName = tileName.concat(locationInfo.tileName);
 			}
 
+			if (L.DARK_PERCENTAGE != 100 && locationInfo.location.tileType != Location.TileType.CLEAR) {
+//				String text = tileName + " " + locationInfo.location.tileType.toString();
+//				String[] lines = locationInfo.tileName.split("(?=C)");
+//				for (int i=0; i<lines.length; i++) {
+//					
+//				}
+//				
+//				tileInfo = new TextBoxView(gui, null, text, new Rect(area, .1f, .1f, .88f,.1f), HAlignment.LEFT, Color.PINK);
+				
+			} else {
+				tileInfo = null;
+			}
+			
 			this.tile = new ImageView(gui, tileName, area); 
 			
 			Rect torchArea; 

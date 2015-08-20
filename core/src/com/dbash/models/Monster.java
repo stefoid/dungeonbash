@@ -106,15 +106,6 @@ public class Monster extends Creature
 	{
 		super(stream, dungeonEvents, dungeonQuery, turnProcessor); 
 	}
-
-	public static boolean hasTagFromData(String theTag, String tagString) {
-      for (String tag: tagString.split("\\.")) {
-			if (tag.equals(theTag)) {
-				return true;
-			}
-       }
-		return false;
-	}
 	
 	// this must be called after at least one creature (character or monster)
 	// has been created.
@@ -126,7 +117,7 @@ public class Monster extends Creature
 			random = Randy.getRand(1, creatureData.size() - 1);
 
 			Data cd = (Data) creatureData.elementAt(random);
-			boolean isBoss = hasTagFromData(BOSS_TAG, cd.tag);
+			boolean isBoss = Creature.hasTagFromData(BOSS_TAG, cd.tag);
 			if (!isBoss && cd.value < 1000) {
 				if ((swarm && cd.swarm == 1) || !swarm) {
 					int creatureLevel = calcLevel(random);
@@ -143,14 +134,6 @@ public class Monster extends Creature
 		}
 
 		return random;
-	}
-
-	Boolean isBoss = null;
-	public boolean isBoss() {
-		if (isBoss == null) {
-			isBoss = hasTagFromData(BOSS_TAG, creature.tag);
-		}
-		return isBoss;
 	}
 	
 	public boolean canSkipTurn() {
