@@ -1,11 +1,11 @@
 {
-"first_character" : "giant sewer rat",
+"first_character" : "dark faery",
 "monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
 "walls" : "stone",
 "lights" : true,
-"level" : 1
+"level" : 3
 "floor_shadows" : true,
 "dark_percentage" : 100
 }
