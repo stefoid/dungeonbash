@@ -192,14 +192,14 @@ ABILITY_EQUIPPED_IMAGE
   orig: 128, 128
   offset: 0, 0
   index: -1
-MAGIC_ITEM_IMAGE
+ABILITY_IMAGE
   rotate: false
   xy: 195, 567
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-ABILITY_IMAGE
+MAGIC_ITEM_IMAGE
   rotate: false
   xy: 195, 567
   size: 128, 128
@@ -359,14 +359,14 @@ DEATH
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 5
+  index: 4
 DEATH
   rotate: false
   xy: 741, 1431
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 4
+  index: 5
 DEATH
   rotate: false
   xy: 871, 1431
@@ -591,42 +591,7 @@ Nashkur
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_Nashkur_walk_rear
-  rotate: false
-  xy: 579, 361
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_Nashkur_attack_front
-  rotate: false
-  xy: 579, 361
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_Nashkur_walk_east
-  rotate: false
-  xy: 579, 361
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_Nashkur_attack_rear
-  rotate: false
-  xy: 579, 361
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_Nashkur_walk_west
-  rotate: false
-  xy: 579, 361
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_Nashkur_walk_front
   rotate: false
   xy: 579, 361
   size: 128, 128
@@ -640,7 +605,42 @@ m_Nashkur_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_Nashkur_walk_front
+  rotate: false
+  xy: 579, 361
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_Nashkur_attack_rear
+  rotate: false
+  xy: 579, 361
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_Nashkur_walk_east
+  rotate: false
+  xy: 579, 361
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_Nashkur_attack_east
+  rotate: false
+  xy: 579, 361
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_Nashkur_walk_rear
+  rotate: false
+  xy: 579, 361
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_Nashkur_walk_west
   rotate: false
   xy: 579, 361
   size: 128, 128
@@ -1024,14 +1024,7 @@ acid_blob
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_acid_blob_attack_rear
-  rotate: false
-  xy: 261, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_acid_blob_attack_east
+m_acid_blob_walk_west
   rotate: false
   xy: 261, 1691
   size: 128, 128
@@ -1045,13 +1038,6 @@ m_acid_blob_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_acid_blob_attack_front
-  rotate: false
-  xy: 261, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_acid_blob_walk_east
   rotate: false
   xy: 261, 1691
@@ -1059,7 +1045,7 @@ m_acid_blob_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_acid_blob_attack_west
+m_acid_blob_attack_east
   rotate: false
   xy: 261, 1691
   size: 128, 128
@@ -1073,7 +1059,21 @@ m_acid_blob_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_acid_blob_walk_west
+m_acid_blob_attack_front
+  rotate: false
+  xy: 261, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_acid_blob_attack_west
+  rotate: false
+  xy: 261, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_acid_blob_attack_rear
   rotate: false
   xy: 261, 1691
   size: 128, 128
@@ -1087,42 +1087,7 @@ bat
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_bat_attack_west
-  rotate: false
-  xy: 391, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_bat_walk_rear
-  rotate: false
-  xy: 391, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_bat_attack_east
-  rotate: false
-  xy: 391, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_bat_walk_east
-  rotate: false
-  xy: 391, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_bat_attack_front
-  rotate: false
-  xy: 391, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_bat_walk_west
   rotate: false
   xy: 391, 1821
   size: 128, 128
@@ -1136,7 +1101,42 @@ m_bat_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_bat_attack_east
+  rotate: false
+  xy: 391, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_bat_walk_west
+  rotate: false
+  xy: 391, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_bat_walk_east
+  rotate: false
+  xy: 391, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_bat_attack_rear
+  rotate: false
+  xy: 391, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_bat_attack_front
+  rotate: false
+  xy: 391, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_bat_attack_west
   rotate: false
   xy: 391, 1821
   size: 128, 128
@@ -1150,28 +1150,7 @@ blob_demon
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_blob_demon_walk_rear
-  rotate: false
-  xy: 1, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_blob_demon_attack_front
-  rotate: false
-  xy: 1, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_blob_demon_attack_west
-  rotate: false
-  xy: 1, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_blob_demon_attack_rear
   rotate: false
   xy: 1, 1301
   size: 128, 128
@@ -1185,7 +1164,7 @@ m_blob_demon_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_blob_demon_walk_front
+m_blob_demon_attack_front
   rotate: false
   xy: 1, 1301
   size: 128, 128
@@ -1206,6 +1185,27 @@ m_blob_demon_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_blob_demon_walk_rear
+  rotate: false
+  xy: 1, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_blob_demon_attack_rear
+  rotate: false
+  xy: 1, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_blob_demon_walk_front
+  rotate: false
+  xy: 1, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 blodger
   rotate: false
   xy: 131, 1431
@@ -1213,27 +1213,6 @@ blodger
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_blodger_walk_rear
-  rotate: false
-  xy: 131, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_blodger_walk_east
-  rotate: false
-  xy: 131, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_blodger_walk_west
-  rotate: false
-  xy: 131, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_blodger_attack_east
   rotate: false
   xy: 131, 1431
@@ -1255,7 +1234,21 @@ m_blodger_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_blodger_walk_west
+  rotate: false
+  xy: 131, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_blodger_attack_rear
+  rotate: false
+  xy: 131, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_blodger_walk_east
   rotate: false
   xy: 131, 1431
   size: 128, 128
@@ -1269,6 +1262,13 @@ m_blodger_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_blodger_walk_rear
+  rotate: false
+  xy: 131, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 borer
   rotate: false
   xy: 261, 1561
@@ -1276,14 +1276,14 @@ borer
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_borer_walk_rear
+m_borer_walk_east
   rotate: false
   xy: 261, 1561
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_borer_attack_east
+m_borer_attack_rear
   rotate: false
   xy: 261, 1561
   size: 128, 128
@@ -1297,7 +1297,7 @@ m_borer_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_borer_attack_rear
+m_borer_attack_west
   rotate: false
   xy: 261, 1561
   size: 128, 128
@@ -1318,14 +1318,14 @@ m_borer_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_borer_walk_east
+m_borer_walk_rear
   rotate: false
   xy: 261, 1561
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_borer_attack_west
+m_borer_attack_east
   rotate: false
   xy: 261, 1561
   size: 128, 128
@@ -1339,14 +1339,7 @@ burning_seeker
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_burning_seeker_attack_rear
-  rotate: false
-  xy: 391, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_burning_seeker_attack_west
+m_burning_seeker_walk_east
   rotate: false
   xy: 391, 1691
   size: 128, 128
@@ -1360,20 +1353,6 @@ m_burning_seeker_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_burning_seeker_attack_east
-  rotate: false
-  xy: 391, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_burning_seeker_walk_front
-  rotate: false
-  xy: 391, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_burning_seeker_walk_rear
   rotate: false
   xy: 391, 1691
@@ -1381,7 +1360,7 @@ m_burning_seeker_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_burning_seeker_walk_east
+m_burning_seeker_attack_west
   rotate: false
   xy: 391, 1691
   size: 128, 128
@@ -1395,6 +1374,27 @@ m_burning_seeker_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_burning_seeker_attack_east
+  rotate: false
+  xy: 391, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_burning_seeker_attack_rear
+  rotate: false
+  xy: 391, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_burning_seeker_walk_front
+  rotate: false
+  xy: 391, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 cave_bear
   rotate: false
   xy: 521, 1821
@@ -1402,35 +1402,7 @@ cave_bear
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_cave_bear_attack_east
-  rotate: false
-  xy: 521, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_cave_bear_attack_front
-  rotate: false
-  xy: 521, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_cave_bear_walk_west
-  rotate: false
-  xy: 521, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_cave_bear_walk_front
-  rotate: false
-  xy: 521, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_cave_bear_walk_rear
   rotate: false
   xy: 521, 1821
   size: 128, 128
@@ -1451,7 +1423,35 @@ m_cave_bear_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_cave_bear_attack_front
+  rotate: false
+  xy: 521, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_cave_bear_walk_rear
+  rotate: false
+  xy: 521, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_cave_bear_attack_rear
+  rotate: false
+  xy: 521, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_cave_bear_walk_west
+  rotate: false
+  xy: 521, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_cave_bear_attack_east
   rotate: false
   xy: 521, 1821
   size: 128, 128
@@ -1465,14 +1465,7 @@ cave_lion
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_cave_lion_attack_east
-  rotate: false
-  xy: 1, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_cave_lion_walk_front
+m_cave_lion_attack_west
   rotate: false
   xy: 1, 1171
   size: 128, 128
@@ -1486,14 +1479,14 @@ m_cave_lion_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_cave_lion_attack_west
+m_cave_lion_attack_east
   rotate: false
   xy: 1, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_cave_lion_walk_rear
+m_cave_lion_attack_front
   rotate: false
   xy: 1, 1171
   size: 128, 128
@@ -1507,14 +1500,21 @@ m_cave_lion_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_cave_lion_walk_east
+m_cave_lion_walk_rear
   rotate: false
   xy: 1, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_cave_lion_attack_front
+m_cave_lion_walk_front
+  rotate: false
+  xy: 1, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_cave_lion_walk_east
   rotate: false
   xy: 1, 1171
   size: 128, 128
@@ -1535,42 +1535,7 @@ m_claw_demon_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_claw_demon_walk_rear
-  rotate: false
-  xy: 131, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_claw_demon_walk_front
-  rotate: false
-  xy: 131, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_claw_demon_attack_east
-  rotate: false
-  xy: 131, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_claw_demon_attack_rear
-  rotate: false
-  xy: 131, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_claw_demon_walk_west
-  rotate: false
-  xy: 131, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_claw_demon_attack_front
   rotate: false
   xy: 131, 1301
   size: 128, 128
@@ -1584,6 +1549,41 @@ m_claw_demon_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_claw_demon_attack_east
+  rotate: false
+  xy: 131, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_claw_demon_walk_front
+  rotate: false
+  xy: 131, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_claw_demon_walk_rear
+  rotate: false
+  xy: 131, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_claw_demon_attack_front
+  rotate: false
+  xy: 131, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_claw_demon_attack_rear
+  rotate: false
+  xy: 131, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 crazed_minion
   rotate: false
   xy: 261, 1431
@@ -1591,7 +1591,7 @@ crazed_minion
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_crazed_minion_walk_rear
+m_crazed_minion_walk_east
   rotate: false
   xy: 261, 1431
   size: 128, 128
@@ -1605,7 +1605,7 @@ m_crazed_minion_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_crazed_minion_attack_front
+m_crazed_minion_walk_west
   rotate: false
   xy: 261, 1431
   size: 128, 128
@@ -1619,7 +1619,7 @@ m_crazed_minion_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_crazed_minion_walk_west
+m_crazed_minion_walk_rear
   rotate: false
   xy: 261, 1431
   size: 128, 128
@@ -1640,7 +1640,7 @@ m_crazed_minion_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_crazed_minion_walk_east
+m_crazed_minion_attack_front
   rotate: false
   xy: 261, 1431
   size: 128, 128
@@ -1661,21 +1661,7 @@ m_crazed_priest_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_crazed_priest_walk_front
-  rotate: false
-  xy: 391, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_crazed_priest_attack_rear
-  rotate: false
-  xy: 391, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_crazed_priest_walk_rear
   rotate: false
   xy: 391, 1561
   size: 128, 128
@@ -1696,6 +1682,13 @@ m_crazed_priest_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_crazed_priest_walk_front
+  rotate: false
+  xy: 391, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_crazed_priest_attack_west
   rotate: false
   xy: 391, 1561
@@ -1710,6 +1703,13 @@ m_crazed_priest_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_crazed_priest_walk_rear
+  rotate: false
+  xy: 391, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 creeping_death
   rotate: false
   xy: 521, 1691
@@ -1717,21 +1717,14 @@ creeping_death
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_creeping_death_walk_west
+  rotate: false
+  xy: 521, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_creeping_death_attack_rear
-  rotate: false
-  xy: 521, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_creeping_death_attack_west
-  rotate: false
-  xy: 521, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_creeping_death_walk_rear
   rotate: false
   xy: 521, 1691
   size: 128, 128
@@ -1745,14 +1738,14 @@ m_creeping_death_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_creeping_death_walk_west
+m_creeping_death_attack_east
   rotate: false
   xy: 521, 1691
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_creeping_death_walk_front
+m_creeping_death_walk_rear
   rotate: false
   xy: 521, 1691
   size: 128, 128
@@ -1766,7 +1759,14 @@ m_creeping_death_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_creeping_death_attack_east
+m_creeping_death_attack_west
+  rotate: false
+  xy: 521, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_creeping_death_walk_front
   rotate: false
   xy: 521, 1691
   size: 128, 128
@@ -1787,35 +1787,7 @@ m_dark_faery_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_dark_faery_walk_rear
-  rotate: false
-  xy: 651, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_faery_attack_west
-  rotate: false
-  xy: 651, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_faery_walk_west
-  rotate: false
-  xy: 651, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_faery_walk_front
-  rotate: false
-  xy: 651, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_faery_walk_east
+m_dark_faery_attack_front
   rotate: false
   xy: 651, 1821
   size: 128, 128
@@ -1829,7 +1801,35 @@ m_dark_faery_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_dark_faery_attack_front
+m_dark_faery_walk_east
+  rotate: false
+  xy: 651, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_faery_walk_rear
+  rotate: false
+  xy: 651, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_faery_walk_west
+  rotate: false
+  xy: 651, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_faery_attack_west
+  rotate: false
+  xy: 651, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_faery_walk_front
   rotate: false
   xy: 651, 1821
   size: 128, 128
@@ -1843,42 +1843,7 @@ dark_knight
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_dark_knight_attack_front
-  rotate: false
-  xy: 1, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_knight_walk_east
-  rotate: false
-  xy: 1, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_knight_walk_rear
-  rotate: false
-  xy: 1, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_knight_attack_rear
-  rotate: false
-  xy: 1, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_dark_knight_attack_west
-  rotate: false
-  xy: 1, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dark_knight_walk_front
   rotate: false
   xy: 1, 1041
   size: 128, 128
@@ -1892,7 +1857,42 @@ m_dark_knight_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_dark_knight_walk_front
+  rotate: false
+  xy: 1, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_knight_walk_rear
+  rotate: false
+  xy: 1, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_knight_walk_east
+  rotate: false
+  xy: 1, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_knight_attack_front
+  rotate: false
+  xy: 1, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_dark_knight_walk_west
+  rotate: false
+  xy: 1, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dark_knight_attack_rear
   rotate: false
   xy: 1, 1041
   size: 128, 128
@@ -1906,35 +1906,7 @@ defender
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_defender_walk_rear
-  rotate: false
-  xy: 131, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_defender_walk_front
-  rotate: false
-  xy: 131, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_defender_attack_east
-  rotate: false
-  xy: 131, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_defender_attack_west
-  rotate: false
-  xy: 131, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_defender_walk_east
+m_defender_attack_front
   rotate: false
   xy: 131, 1171
   size: 128, 128
@@ -1948,6 +1920,13 @@ m_defender_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_defender_walk_front
+  rotate: false
+  xy: 131, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_defender_walk_west
   rotate: false
   xy: 131, 1171
@@ -1955,7 +1934,28 @@ m_defender_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_defender_attack_front
+m_defender_walk_east
+  rotate: false
+  xy: 131, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_defender_attack_west
+  rotate: false
+  xy: 131, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_defender_attack_east
+  rotate: false
+  xy: 131, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_defender_walk_rear
   rotate: false
   xy: 131, 1171
   size: 128, 128
@@ -1969,6 +1969,41 @@ demon
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_demon_walk_east
+  rotate: false
+  xy: 261, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_demon_attack_east
+  rotate: false
+  xy: 261, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_demon_walk_front
+  rotate: false
+  xy: 261, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_demon_attack_rear
+  rotate: false
+  xy: 261, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_demon_attack_west
+  rotate: false
+  xy: 261, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_demon_attack_front
   rotate: false
   xy: 261, 1301
@@ -1983,42 +2018,7 @@ m_demon_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_demon_attack_west
-  rotate: false
-  xy: 261, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_demon_walk_front
-  rotate: false
-  xy: 261, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_demon_walk_west
-  rotate: false
-  xy: 261, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_demon_walk_east
-  rotate: false
-  xy: 261, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_demon_attack_rear
-  rotate: false
-  xy: 261, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_demon_attack_east
   rotate: false
   xy: 261, 1301
   size: 128, 128
@@ -2032,48 +2032,6 @@ dinosaur
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_dinosaur_attack_rear
-  rotate: false
-  xy: 391, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dinosaur_walk_rear
-  rotate: false
-  xy: 391, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dinosaur_walk_front
-  rotate: false
-  xy: 391, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dinosaur_attack_west
-  rotate: false
-  xy: 391, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dinosaur_attack_front
-  rotate: false
-  xy: 391, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dinosaur_walk_west
-  rotate: false
-  xy: 391, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_dinosaur_walk_east
   rotate: false
   xy: 391, 1431
@@ -2088,6 +2046,48 @@ m_dinosaur_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_dinosaur_attack_front
+  rotate: false
+  xy: 391, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dinosaur_walk_front
+  rotate: false
+  xy: 391, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dinosaur_attack_rear
+  rotate: false
+  xy: 391, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dinosaur_walk_west
+  rotate: false
+  xy: 391, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dinosaur_attack_west
+  rotate: false
+  xy: 391, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dinosaur_walk_rear
+  rotate: false
+  xy: 391, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 disruptor
   rotate: false
   xy: 521, 1561
@@ -2095,6 +2095,20 @@ disruptor
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_disruptor_walk_front
+  rotate: false
+  xy: 521, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_disruptor_attack_front
+  rotate: false
+  xy: 521, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_disruptor_walk_rear
   rotate: false
   xy: 521, 1561
@@ -2103,6 +2117,20 @@ m_disruptor_walk_rear
   offset: 0, 0
   index: 1
 m_disruptor_walk_west
+  rotate: false
+  xy: 521, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_disruptor_walk_east
+  rotate: false
+  xy: 521, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_disruptor_attack_west
   rotate: false
   xy: 521, 1561
   size: 128, 128
@@ -2123,34 +2151,6 @@ m_disruptor_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_disruptor_attack_west
-  rotate: false
-  xy: 521, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_disruptor_attack_front
-  rotate: false
-  xy: 521, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_disruptor_walk_front
-  rotate: false
-  xy: 521, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_disruptor_walk_east
-  rotate: false
-  xy: 521, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 dummy
   rotate: false
   xy: 651, 1691
@@ -2159,6 +2159,27 @@ dummy
   offset: 0, 0
   index: -1
 m_dummy_attack_front
+  rotate: false
+  xy: 651, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+vat_creature
+  rotate: false
+  xy: 651, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_dummy_attack_west
+  rotate: false
+  xy: 651, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dummy_walk_west
   rotate: false
   xy: 651, 1691
   size: 128, 128
@@ -2179,13 +2200,6 @@ m_vat_creature_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-vat_creature
-  rotate: false
-  xy: 651, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 m_vat_creature_attack_rear
   rotate: false
   xy: 651, 1691
@@ -2193,21 +2207,7 @@ m_vat_creature_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_dummy_walk_east
-  rotate: false
-  xy: 651, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_vat_creature_walk_west
-  rotate: false
-  xy: 651, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dummy_walk_west
   rotate: false
   xy: 651, 1691
   size: 128, 128
@@ -2222,6 +2222,13 @@ m_vat_creature_attack_west
   offset: 0, 0
   index: 1
 m_vat_creature_walk_front
+  rotate: false
+  xy: 651, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dummy_walk_rear
   rotate: false
   xy: 651, 1691
   size: 128, 128
@@ -2249,21 +2256,14 @@ m_dummy_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_dummy_walk_east
+  rotate: false
+  xy: 651, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_vat_creature_attack_front
-  rotate: false
-  xy: 651, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dummy_attack_west
-  rotate: false
-  xy: 651, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dummy_walk_rear
   rotate: false
   xy: 651, 1691
   size: 128, 128
@@ -2284,49 +2284,7 @@ dwarf
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_dwarf_walk_west
-  rotate: false
-  xy: 781, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dwarf_walk_rear
-  rotate: false
-  xy: 781, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dwarf_attack_front
-  rotate: false
-  xy: 781, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dwarf_walk_east
-  rotate: false
-  xy: 781, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_dwarf_attack_west
-  rotate: false
-  xy: 781, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dwarf_attack_rear
-  rotate: false
-  xy: 781, 1821
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_dwarf_attack_east
   rotate: false
   xy: 781, 1821
   size: 128, 128
@@ -2340,6 +2298,48 @@ m_dwarf_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_dwarf_attack_rear
+  rotate: false
+  xy: 781, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dwarf_walk_west
+  rotate: false
+  xy: 781, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dwarf_walk_east
+  rotate: false
+  xy: 781, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dwarf_attack_front
+  rotate: false
+  xy: 781, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dwarf_walk_rear
+  rotate: false
+  xy: 781, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dwarf_attack_east
+  rotate: false
+  xy: 781, 1821
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 dwarf_king
   rotate: false
   xy: 1, 911
@@ -2347,7 +2347,14 @@ dwarf_king
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_dwarf_king_attack_west
+m_dwarf_king_walk_rear
+  rotate: false
+  xy: 1, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_dwarf_king_attack_rear
   rotate: false
   xy: 1, 911
   size: 128, 128
@@ -2361,13 +2368,6 @@ m_dwarf_king_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_dwarf_king_walk_rear
-  rotate: false
-  xy: 1, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_dwarf_king_walk_front
   rotate: false
   xy: 1, 911
@@ -2375,7 +2375,7 @@ m_dwarf_king_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_dwarf_king_walk_west
+m_dwarf_king_attack_west
   rotate: false
   xy: 1, 911
   size: 128, 128
@@ -2396,7 +2396,7 @@ m_dwarf_king_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_dwarf_king_attack_rear
+m_dwarf_king_walk_west
   rotate: false
   xy: 1, 911
   size: 128, 128
@@ -2431,7 +2431,7 @@ flying_horror
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_flying_horror_walk_front
+m_flying_horror_attack_west
   rotate: false
   xy: 261, 1171
   size: 128, 128
@@ -2445,14 +2445,28 @@ m_flying_horror_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_flying_horror_walk_west
+m_flying_horror_walk_rear
   rotate: false
   xy: 261, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_flying_horror_walk_rear
+m_flying_horror_walk_front
+  rotate: false
+  xy: 261, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_flying_horror_walk_east
+  rotate: false
+  xy: 261, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_flying_horror_walk_west
   rotate: false
   xy: 261, 1171
   size: 128, 128
@@ -2473,20 +2487,6 @@ m_flying_horror_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_flying_horror_walk_east
-  rotate: false
-  xy: 261, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_flying_horror_attack_west
-  rotate: false
-  xy: 261, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 giant
   rotate: false
   xy: 391, 1301
@@ -2494,28 +2494,7 @@ giant
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_giant_walk_rear
-  rotate: false
-  xy: 391, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_attack_east
-  rotate: false
-  xy: 391, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_attack_front
-  rotate: false
-  xy: 391, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_walk_west
+m_giant_attack_rear
   rotate: false
   xy: 391, 1301
   size: 128, 128
@@ -2529,7 +2508,14 @@ m_giant_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_attack_rear
+m_giant_walk_front
+  rotate: false
+  xy: 391, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_walk_west
   rotate: false
   xy: 391, 1301
   size: 128, 128
@@ -2543,7 +2529,21 @@ m_giant_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_walk_front
+m_giant_attack_east
+  rotate: false
+  xy: 391, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_walk_rear
+  rotate: false
+  xy: 391, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_attack_front
   rotate: false
   xy: 391, 1301
   size: 128, 128
@@ -2564,20 +2564,6 @@ m_giant_hornet_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_hornet_attack_west
-  rotate: false
-  xy: 521, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_hornet_walk_west
-  rotate: false
-  xy: 521, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_giant_hornet_walk_front
   rotate: false
   xy: 521, 1431
@@ -2585,7 +2571,7 @@ m_giant_hornet_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_hornet_walk_rear
+m_giant_hornet_attack_west
   rotate: false
   xy: 521, 1431
   size: 128, 128
@@ -2613,6 +2599,20 @@ m_giant_hornet_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_giant_hornet_walk_west
+  rotate: false
+  xy: 521, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_hornet_walk_rear
+  rotate: false
+  xy: 521, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 giant_python
   rotate: false
   xy: 651, 1561
@@ -2620,20 +2620,6 @@ giant_python
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_giant_python_walk_rear
-  rotate: false
-  xy: 651, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_python_attack_east
-  rotate: false
-  xy: 651, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_giant_python_walk_east
   rotate: false
   xy: 651, 1561
@@ -2641,7 +2627,7 @@ m_giant_python_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_python_walk_front
+m_giant_python_attack_rear
   rotate: false
   xy: 651, 1561
   size: 128, 128
@@ -2662,7 +2648,7 @@ m_giant_python_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_python_attack_rear
+m_giant_python_walk_front
   rotate: false
   xy: 651, 1561
   size: 128, 128
@@ -2676,6 +2662,20 @@ m_giant_python_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_giant_python_attack_east
+  rotate: false
+  xy: 651, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_python_walk_rear
+  rotate: false
+  xy: 651, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 giant_scorpion
   rotate: false
   xy: 781, 1691
@@ -2683,14 +2683,14 @@ giant_scorpion
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_giant_scorpion_walk_west
+m_giant_scorpion_walk_rear
   rotate: false
   xy: 781, 1691
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_scorpion_walk_rear
+m_giant_scorpion_walk_east
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -2704,14 +2704,14 @@ m_giant_scorpion_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_scorpion_attack_rear
+m_giant_scorpion_attack_east
   rotate: false
   xy: 781, 1691
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_scorpion_attack_east
+m_giant_scorpion_walk_west
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -2725,7 +2725,7 @@ m_giant_scorpion_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_scorpion_walk_east
+m_giant_scorpion_attack_rear
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -2746,13 +2746,6 @@ giant_sewer_rat
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_giant_sewer_rat_walk_front
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_giant_sewer_rat_attack_rear
   rotate: false
   xy: 1, 781
@@ -2760,28 +2753,7 @@ m_giant_sewer_rat_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_giant_sewer_rat_walk_rear
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_sewer_rat_attack_front
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_sewer_rat_walk_west
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_giant_sewer_rat_walk_east
+m_giant_sewer_rat_walk_front
   rotate: false
   xy: 1, 781
   size: 128, 128
@@ -2795,7 +2767,35 @@ m_giant_sewer_rat_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_giant_sewer_rat_walk_rear
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_sewer_rat_walk_east
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_giant_sewer_rat_attack_west
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_sewer_rat_walk_west
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_giant_sewer_rat_attack_front
   rotate: false
   xy: 1, 781
   size: 128, 128
@@ -2809,28 +2809,7 @@ glue_slime
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_glue_slime_walk_east
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_glue_slime_walk_rear
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_glue_slime_attack_front
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_glue_slime_attack_east
+m_glue_slime_walk_front
   rotate: false
   xy: 131, 911
   size: 128, 128
@@ -2844,6 +2823,20 @@ m_glue_slime_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_glue_slime_attack_west
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_glue_slime_attack_east
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_glue_slime_walk_west
   rotate: false
   xy: 131, 911
@@ -2851,14 +2844,21 @@ m_glue_slime_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_glue_slime_walk_front
+m_glue_slime_walk_rear
   rotate: false
   xy: 131, 911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_glue_slime_attack_west
+m_glue_slime_walk_east
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_glue_slime_attack_front
   rotate: false
   xy: 131, 911
   size: 128, 128
@@ -2879,21 +2879,7 @@ m_gnome_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_gnome_walk_east
-  rotate: false
-  xy: 261, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_gnome_walk_front
-  rotate: false
-  xy: 261, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_gnome_attack_front
+m_gnome_attack_west
   rotate: false
   xy: 261, 1041
   size: 128, 128
@@ -2907,7 +2893,21 @@ m_gnome_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_gnome_attack_west
+m_gnome_walk_front
+  rotate: false
+  xy: 261, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_gnome_walk_east
+  rotate: false
+  xy: 261, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_gnome_attack_front
   rotate: false
   xy: 261, 1041
   size: 128, 128
@@ -2935,49 +2935,7 @@ golem
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_golem_walk_east
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_golem_walk_front
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_golem_walk_west
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_golem_walk_rear
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_golem_attack_rear
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_golem_attack_east
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_golem_attack_west
   rotate: false
   xy: 391, 1171
   size: 128, 128
@@ -2991,6 +2949,48 @@ m_golem_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_golem_walk_west
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_golem_attack_east
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_golem_walk_rear
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_golem_attack_west
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_golem_attack_rear
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_golem_walk_east
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 gorgon
   rotate: false
   xy: 521, 1301
@@ -2998,14 +2998,7 @@ gorgon
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_gorgon_walk_front
-  rotate: false
-  xy: 521, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_gorgon_walk_east
+m_gorgon_walk_rear
   rotate: false
   xy: 521, 1301
   size: 128, 128
@@ -3019,14 +3012,14 @@ m_gorgon_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_gorgon_walk_rear
+m_gorgon_attack_east
   rotate: false
   xy: 521, 1301
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_gorgon_attack_east
+m_gorgon_attack_front
   rotate: false
   xy: 521, 1301
   size: 128, 128
@@ -3047,7 +3040,14 @@ m_gorgon_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_gorgon_attack_front
+m_gorgon_walk_front
+  rotate: false
+  xy: 521, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_gorgon_walk_east
   rotate: false
   xy: 521, 1301
   size: 128, 128
@@ -3067,13 +3067,6 @@ m_greater_demon_walk_front
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 6
-m_greater_demon_walk_front
-  rotate: false
-  xy: 651, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
   index: 1
 m_greater_demon_walk_front
   rotate: false
@@ -3082,6 +3075,13 @@ m_greater_demon_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 4
+m_greater_demon_walk_front
+  rotate: false
+  xy: 651, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 6
 green_dragon
   rotate: false
   xy: 781, 1561
@@ -3089,7 +3089,7 @@ green_dragon
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_green_dragon_walk_front
+m_green_dragon_walk_east
   rotate: false
   xy: 781, 1561
   size: 128, 128
@@ -3103,14 +3103,14 @@ m_green_dragon_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_green_dragon_attack_front
+m_green_dragon_walk_rear
   rotate: false
   xy: 781, 1561
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_green_dragon_attack_west
+m_green_dragon_walk_front
   rotate: false
   xy: 781, 1561
   size: 128, 128
@@ -3124,6 +3124,13 @@ m_green_dragon_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_green_dragon_attack_front
+  rotate: false
+  xy: 781, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_green_dragon_attack_east
   rotate: false
   xy: 781, 1561
@@ -3131,14 +3138,7 @@ m_green_dragon_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_green_dragon_walk_rear
-  rotate: false
-  xy: 781, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_green_dragon_walk_east
+m_green_dragon_attack_west
   rotate: false
   xy: 781, 1561
   size: 128, 128
@@ -3152,7 +3152,14 @@ halfling
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_halfling_attack_rear
+m_halfling_attack_west
+  rotate: false
+  xy: 1, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_halfling_attack_front
   rotate: false
   xy: 1, 651
   size: 128, 128
@@ -3173,21 +3180,7 @@ m_halfling_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_halfling_attack_front
-  rotate: false
-  xy: 1, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_halfling_walk_east
-  rotate: false
-  xy: 1, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_halfling_walk_west
   rotate: false
   xy: 1, 651
   size: 128, 128
@@ -3201,7 +3194,14 @@ m_halfling_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_halfling_attack_west
+m_halfling_walk_west
+  rotate: false
+  xy: 1, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_halfling_attack_rear
   rotate: false
   xy: 1, 651
   size: 128, 128
@@ -3215,7 +3215,7 @@ hell_giant
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_hell_giant_walk_east
+m_hell_giant_walk_front
   rotate: false
   xy: 131, 781
   size: 128, 128
@@ -3229,14 +3229,14 @@ m_hell_giant_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_hell_giant_attack_rear
+m_hell_giant_attack_west
   rotate: false
   xy: 131, 781
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_hell_giant_attack_east
+m_hell_giant_walk_east
   rotate: false
   xy: 131, 781
   size: 128, 128
@@ -3250,6 +3250,13 @@ m_hell_giant_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_hell_giant_attack_rear
+  rotate: false
+  xy: 131, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_hell_giant_walk_west
   rotate: false
   xy: 131, 781
@@ -3257,14 +3264,7 @@ m_hell_giant_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_hell_giant_walk_front
-  rotate: false
-  xy: 131, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_giant_attack_west
+m_hell_giant_attack_east
   rotate: false
   xy: 131, 781
   size: 128, 128
@@ -3278,28 +3278,7 @@ hell_hound
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_hell_hound_walk_front
-  rotate: false
-  xy: 261, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_hound_walk_east
-  rotate: false
-  xy: 261, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_hound_attack_east
-  rotate: false
-  xy: 261, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_hound_attack_west
+m_hell_hound_walk_west
   rotate: false
   xy: 261, 911
   size: 128, 128
@@ -3313,6 +3292,27 @@ m_hell_hound_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_hell_hound_attack_rear
+  rotate: false
+  xy: 261, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_hell_hound_walk_east
+  rotate: false
+  xy: 261, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_hell_hound_walk_front
+  rotate: false
+  xy: 261, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_hell_hound_walk_rear
   rotate: false
   xy: 261, 911
@@ -3320,14 +3320,14 @@ m_hell_hound_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_hell_hound_walk_west
+m_hell_hound_attack_west
   rotate: false
   xy: 261, 911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_hell_hound_attack_rear
+m_hell_hound_attack_east
   rotate: false
   xy: 261, 911
   size: 128, 128
@@ -3341,35 +3341,7 @@ hell_slime
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_hell_slime_walk_front
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_hell_slime_walk_east
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_slime_attack_front
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_slime_walk_rear
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_hell_slime_attack_east
   rotate: false
   xy: 391, 1041
   size: 128, 128
@@ -3383,7 +3355,7 @@ m_hell_slime_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_hell_slime_walk_west
+m_hell_slime_attack_east
   rotate: false
   xy: 391, 1041
   size: 128, 128
@@ -3397,6 +3369,34 @@ m_hell_slime_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_hell_slime_walk_west
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_hell_slime_walk_front
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_hell_slime_walk_rear
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_hell_slime_attack_front
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 imp
   rotate: false
   xy: 521, 1171
@@ -3404,6 +3404,41 @@ imp
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_imp_attack_east
+  rotate: false
+  xy: 521, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_imp_attack_west
+  rotate: false
+  xy: 521, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_imp_attack_front
+  rotate: false
+  xy: 521, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_imp_walk_front
+  rotate: false
+  xy: 521, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_imp_walk_rear
+  rotate: false
+  xy: 521, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_imp_walk_west
   rotate: false
   xy: 521, 1171
@@ -3418,42 +3453,7 @@ m_imp_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_imp_walk_front
-  rotate: false
-  xy: 521, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_imp_attack_west
-  rotate: false
-  xy: 521, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_imp_attack_east
-  rotate: false
-  xy: 521, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_imp_walk_east
-  rotate: false
-  xy: 521, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_imp_walk_rear
-  rotate: false
-  xy: 521, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_imp_attack_front
   rotate: false
   xy: 521, 1171
   size: 128, 128
@@ -3467,42 +3467,7 @@ ironhide
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_ironhide_walk_front
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_ironhide_attack_front
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_ironhide_walk_east
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_ironhide_walk_west
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_ironhide_walk_rear
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_ironhide_attack_west
+m_ironhide_attack_east
   rotate: false
   xy: 651, 1301
   size: 128, 128
@@ -3516,7 +3481,42 @@ m_ironhide_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_ironhide_attack_east
+m_ironhide_attack_west
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_ironhide_attack_front
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_ironhide_walk_west
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_ironhide_walk_front
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_ironhide_walk_rear
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_ironhide_walk_east
   rotate: false
   xy: 651, 1301
   size: 128, 128
@@ -3530,14 +3530,14 @@ lava_man
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_lava_man_attack_west
+m_lava_man_attack_front
   rotate: false
   xy: 781, 1431
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lava_man_walk_east
+m_lava_man_walk_west
   rotate: false
   xy: 781, 1431
   size: 128, 128
@@ -3551,7 +3551,7 @@ m_lava_man_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lava_man_attack_front
+m_lava_man_attack_east
   rotate: false
   xy: 781, 1431
   size: 128, 128
@@ -3572,14 +3572,14 @@ m_lava_man_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lava_man_attack_east
+m_lava_man_attack_west
   rotate: false
   xy: 781, 1431
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lava_man_walk_west
+m_lava_man_walk_east
   rotate: false
   xy: 781, 1431
   size: 128, 128
@@ -3593,28 +3593,7 @@ lesser_demon
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_lesser_demon_attack_rear
-  rotate: false
-  xy: 1, 521
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_lesser_demon_attack_front
-  rotate: false
-  xy: 1, 521
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_lesser_demon_walk_east
-  rotate: false
-  xy: 1, 521
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_lesser_demon_walk_west
   rotate: false
   xy: 1, 521
   size: 128, 128
@@ -3628,14 +3607,14 @@ m_lesser_demon_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lesser_demon_attack_east
+m_lesser_demon_walk_east
   rotate: false
   xy: 1, 521
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lesser_demon_walk_rear
+m_lesser_demon_attack_rear
   rotate: false
   xy: 1, 521
   size: 128, 128
@@ -3649,6 +3628,27 @@ m_lesser_demon_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_lesser_demon_walk_west
+  rotate: false
+  xy: 1, 521
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_lesser_demon_walk_rear
+  rotate: false
+  xy: 1, 521
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_lesser_demon_attack_east
+  rotate: false
+  xy: 1, 521
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 lich
   rotate: false
   xy: 131, 651
@@ -3656,13 +3656,6 @@ lich
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_lich_attack_east
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_lich_walk_east
   rotate: false
   xy: 131, 651
@@ -3670,7 +3663,7 @@ m_lich_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lich_walk_rear
+m_lich_attack_rear
   rotate: false
   xy: 131, 651
   size: 128, 128
@@ -3691,13 +3684,6 @@ m_lich_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lich_walk_front
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_lich_attack_front
   rotate: false
   xy: 131, 651
@@ -3705,7 +3691,21 @@ m_lich_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_lich_attack_rear
+m_lich_walk_rear
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_lich_walk_front
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_lich_attack_east
   rotate: false
   xy: 131, 651
   size: 128, 128
@@ -3719,42 +3719,7 @@ living_eye
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_living_eye_walk_east
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_living_eye_walk_front
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_eye_attack_east
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_eye_attack_front
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_eye_attack_west
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_eye_attack_rear
   rotate: false
   xy: 261, 781
   size: 128, 128
@@ -3768,7 +3733,42 @@ m_living_eye_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_living_eye_attack_front
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_living_eye_walk_west
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_eye_walk_east
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_eye_attack_west
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_eye_attack_east
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_eye_attack_rear
   rotate: false
   xy: 261, 781
   size: 128, 128
@@ -3782,21 +3782,7 @@ living_flame
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_living_flame_attack_east
-  rotate: false
-  xy: 391, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_flame_walk_west
-  rotate: false
-  xy: 391, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_flame_walk_rear
+m_living_flame_attack_front
   rotate: false
   xy: 391, 911
   size: 128, 128
@@ -3810,14 +3796,7 @@ m_living_flame_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_living_flame_attack_rear
-  rotate: false
-  xy: 391, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_living_flame_walk_east
+m_living_flame_walk_rear
   rotate: false
   xy: 391, 911
   size: 128, 128
@@ -3831,7 +3810,28 @@ m_living_flame_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_living_flame_attack_front
+m_living_flame_attack_rear
+  rotate: false
+  xy: 391, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_flame_attack_east
+  rotate: false
+  xy: 391, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_flame_walk_east
+  rotate: false
+  xy: 391, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_living_flame_walk_west
   rotate: false
   xy: 391, 911
   size: 128, 128
@@ -4453,7 +4453,7 @@ m_magic_seeker_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_magic_seeker_walk_rear
+m_magic_seeker_walk_front
   rotate: false
   xy: 651, 1561
   size: 128, 128
@@ -4474,7 +4474,14 @@ m_magic_seeker_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_magic_seeker_walk_east
+m_magic_seeker_walk_west
+  rotate: false
+  xy: 651, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_magic_seeker_attack_west
   rotate: false
   xy: 651, 1561
   size: 128, 128
@@ -4488,21 +4495,14 @@ magic_seeker
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_magic_seeker_attack_west
+m_magic_seeker_walk_rear
   rotate: false
   xy: 651, 1561
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_magic_seeker_walk_west
-  rotate: false
-  xy: 651, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_magic_seeker_walk_front
+m_magic_seeker_walk_east
   rotate: false
   xy: 651, 1561
   size: 128, 128
@@ -4516,7 +4516,7 @@ m_manticore_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_manticore_attack_rear
+m_manticore_walk_east
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -4530,7 +4530,7 @@ m_manticore_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_manticore_attack_west
+m_manticore_walk_rear
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -4544,14 +4544,7 @@ manticore
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_manticore_walk_rear
-  rotate: false
-  xy: 781, 1691
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_manticore_walk_east
+m_manticore_attack_west
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -4559,6 +4552,13 @@ m_manticore_walk_east
   offset: 0, 0
   index: 1
 m_manticore_walk_west
+  rotate: false
+  xy: 781, 1691
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_manticore_attack_rear
   rotate: false
   xy: 781, 1691
   size: 128, 128
@@ -4579,63 +4579,7 @@ m_massive_hulk_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_massive_hulk_walk_east
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_shambler_attack_west
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_shambler_walk_rear
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_shambler_walk_front
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_massive_hulk_walk_rear
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_massive_hulk_walk_west
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_massive_hulk_walk_front
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_shambler_attack_front
-  rotate: false
-  xy: 1, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_massive_hulk_attack_west
   rotate: false
   xy: 1, 781
   size: 128, 128
@@ -4656,6 +4600,55 @@ m_massive_hulk_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_shambler_walk_front
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_massive_hulk_walk_east
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_shambler_attack_west
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_massive_hulk_walk_rear
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_massive_hulk_walk_front
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_shambler_walk_rear
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_shambler_attack_rear
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_massive_hulk_attack_rear
   rotate: false
   xy: 1, 781
@@ -4670,7 +4663,7 @@ m_shambler_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_shambler_attack_rear
+m_massive_hulk_attack_west
   rotate: false
   xy: 1, 781
   size: 128, 128
@@ -4691,6 +4684,13 @@ shambler
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_massive_hulk_walk_west
+  rotate: false
+  xy: 1, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_minotaur_attack_east
   rotate: false
   xy: 131, 911
@@ -4698,42 +4698,7 @@ m_minotaur_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_minotaur_walk_front
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_minotaur_walk_east
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-minotaur
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 m_minotaur_attack_rear
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_minotaur_walk_west
-  rotate: false
-  xy: 131, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_minotaur_walk_rear
   rotate: false
   xy: 131, 911
   size: 128, 128
@@ -4747,7 +4712,42 @@ m_minotaur_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_minotaur_walk_west
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_minotaur_attack_front
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_minotaur_walk_rear
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_minotaur_walk_front
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+minotaur
+  rotate: false
+  xy: 131, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_minotaur_walk_east
   rotate: false
   xy: 131, 911
   size: 128, 128
@@ -4761,6 +4761,13 @@ m_orc_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_orc_walk_west
+  rotate: false
+  xy: 261, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_orc_walk_east
   rotate: false
   xy: 261, 1041
@@ -4768,6 +4775,20 @@ m_orc_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_orc_attack_front
+  rotate: false
+  xy: 261, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+orc
+  rotate: false
+  xy: 261, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 m_orc_walk_front
   rotate: false
   xy: 261, 1041
@@ -4789,28 +4810,7 @@ m_orc_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-orc
-  rotate: false
-  xy: 261, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_orc_walk_west
-  rotate: false
-  xy: 261, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_orc_attack_rear
-  rotate: false
-  xy: 261, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_orc_attack_front
   rotate: false
   xy: 261, 1041
   size: 128, 128
@@ -4824,49 +4824,7 @@ m_phoenix_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_phoenix_attack_front
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_phoenix_walk_east
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-phoenix
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_phoenix_attack_rear
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_phoenix_walk_rear
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_phoenix_attack_west
-  rotate: false
-  xy: 391, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_phoenix_walk_front
   rotate: false
   xy: 391, 1171
   size: 128, 128
@@ -4880,14 +4838,49 @@ m_phoenix_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_snake_attack_east
+m_phoenix_attack_rear
   rotate: false
-  xy: 521, 1301
+  xy: 391, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_snake_attack_rear
+phoenix
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_phoenix_attack_west
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_phoenix_attack_front
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_phoenix_walk_rear
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_phoenix_walk_front
+  rotate: false
+  xy: 391, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_pit_snake_attack_east
   rotate: false
   xy: 521, 1301
   size: 128, 128
@@ -4901,6 +4894,13 @@ pit_snake
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_pit_snake_walk_east
+  rotate: false
+  xy: 521, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_pit_snake_attack_west
   rotate: false
   xy: 521, 1301
@@ -4908,14 +4908,14 @@ m_pit_snake_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_snake_walk_west
+m_pit_snake_attack_front
   rotate: false
   xy: 521, 1301
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_snake_attack_front
+m_pit_snake_walk_west
   rotate: false
   xy: 521, 1301
   size: 128, 128
@@ -4936,7 +4936,7 @@ m_pit_snake_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_snake_walk_east
+m_pit_snake_attack_rear
   rotate: false
   xy: 521, 1301
   size: 128, 128
@@ -4950,7 +4950,21 @@ m_pit_viper_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_pit_viper_attack_rear
+  rotate: false
+  xy: 651, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_pit_viper_walk_east
+  rotate: false
+  xy: 651, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_pit_viper_walk_west
   rotate: false
   xy: 651, 1431
   size: 128, 128
@@ -4971,13 +4985,6 @@ m_pit_viper_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_viper_walk_rear
-  rotate: false
-  xy: 651, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 pit_viper
   rotate: false
   xy: 651, 1431
@@ -4992,14 +4999,7 @@ m_pit_viper_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_pit_viper_attack_rear
-  rotate: false
-  xy: 651, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_pit_viper_walk_west
+m_pit_viper_walk_rear
   rotate: false
   xy: 651, 1431
   size: 128, 128
@@ -5013,28 +5013,7 @@ m_plate_beatle_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_plate_beatle_attack_west
-  rotate: false
-  xy: 781, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_plate_beatle_attack_rear
-  rotate: false
-  xy: 781, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_plate_beatle_walk_front
-  rotate: false
-  xy: 781, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_plate_beatle_walk_west
+m_plate_beatle_walk_rear
   rotate: false
   xy: 781, 1561
   size: 128, 128
@@ -5048,7 +5027,35 @@ m_plate_beatle_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_plate_beatle_attack_rear
+  rotate: false
+  xy: 781, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_plate_beatle_attack_west
+  rotate: false
+  xy: 781, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_plate_beatle_attack_front
+  rotate: false
+  xy: 781, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_plate_beatle_walk_west
+  rotate: false
+  xy: 781, 1561
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_plate_beatle_walk_front
   rotate: false
   xy: 781, 1561
   size: 128, 128
@@ -5062,28 +5069,7 @@ plate_beatle
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_plate_beatle_walk_rear
-  rotate: false
-  xy: 781, 1561
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_poison_seeker_attack_east
-  rotate: false
-  xy: 1, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_poison_seeker_walk_front
-  rotate: false
-  xy: 1, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_poison_seeker_attack_rear
   rotate: false
   xy: 1, 651
   size: 128, 128
@@ -5097,21 +5083,14 @@ m_poison_seeker_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_poison_seeker_walk_west
+poison_seeker
   rotate: false
   xy: 1, 651
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 1
-m_poison_seeker_walk_east
-  rotate: false
-  xy: 1, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_poison_seeker_attack_west
+  index: -1
+m_poison_seeker_walk_front
   rotate: false
   xy: 1, 651
   size: 128, 128
@@ -5125,35 +5104,35 @@ m_poison_seeker_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-poison_seeker
+m_poison_seeker_attack_west
   rotate: false
   xy: 1, 651
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: -1
+  index: 1
+m_poison_seeker_attack_rear
+  rotate: false
+  xy: 1, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_poison_seeker_walk_east
+  rotate: false
+  xy: 1, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_poison_seeker_walk_west
+  rotate: false
+  xy: 1, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_priest_attack_east
-  rotate: false
-  xy: 131, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_priest_walk_west
-  rotate: false
-  xy: 131, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_priest_attack_front
-  rotate: false
-  xy: 131, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_priest_walk_east
   rotate: false
   xy: 131, 781
   size: 128, 128
@@ -5167,7 +5146,28 @@ m_priest_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+priest
+  rotate: false
+  xy: 131, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 m_priest_attack_rear
+  rotate: false
+  xy: 131, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_priest_walk_east
+  rotate: false
+  xy: 131, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_priest_walk_west
   rotate: false
   xy: 131, 781
   size: 128, 128
@@ -5181,13 +5181,13 @@ m_priest_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-priest
+m_priest_attack_front
   rotate: false
   xy: 131, 781
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: -1
+  index: 1
 m_priest_attack_west
   rotate: false
   xy: 131, 781
@@ -5202,28 +5202,14 @@ m_red_dragon_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_red_dragon_walk_west
+m_red_dragon_attack_front
   rotate: false
   xy: 261, 911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_red_dragon_attack_west
-  rotate: false
-  xy: 261, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-red_dragon
-  rotate: false
-  xy: 261, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_red_dragon_walk_east
+m_red_dragon_attack_rear
   rotate: false
   xy: 261, 911
   size: 128, 128
@@ -5244,14 +5230,28 @@ m_red_dragon_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_red_dragon_attack_rear
+red_dragon
+  rotate: false
+  xy: 261, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_red_dragon_walk_east
   rotate: false
   xy: 261, 911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_red_dragon_attack_front
+m_red_dragon_walk_west
+  rotate: false
+  xy: 261, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_red_dragon_attack_west
   rotate: false
   xy: 261, 911
   size: 128, 128
@@ -5272,13 +5272,6 @@ m_rot_worm_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_rot_worm_attack_west
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_rot_worm_attack_front
   rotate: false
   xy: 391, 1041
@@ -5287,20 +5280,6 @@ m_rot_worm_attack_front
   offset: 0, 0
   index: 1
 m_rot_worm_walk_west
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-rot_worm
-  rotate: false
-  xy: 391, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_rot_worm_walk_front
   rotate: false
   xy: 391, 1041
   size: 128, 128
@@ -5321,7 +5300,35 @@ m_rot_worm_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_rot_worm_walk_front
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+rot_worm
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_rot_worm_attack_west
+  rotate: false
+  xy: 391, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_scorpion_man_attack_east
+  rotate: false
+  xy: 521, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_scorpion_man_walk_east
   rotate: false
   xy: 521, 1171
   size: 128, 128
@@ -5335,13 +5342,13 @@ m_scorpion_man_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-scorpion_man
+m_scorpion_man_attack_front
   rotate: false
   xy: 521, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: -1
+  index: 1
 m_scorpion_man_walk_front
   rotate: false
   xy: 521, 1171
@@ -5349,13 +5356,13 @@ m_scorpion_man_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_scorpion_man_attack_rear
+scorpion_man
   rotate: false
   xy: 521, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 1
+  index: -1
 m_scorpion_man_walk_west
   rotate: false
   xy: 521, 1171
@@ -5370,14 +5377,7 @@ m_scorpion_man_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_scorpion_man_attack_front
-  rotate: false
-  xy: 521, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_scorpion_man_walk_east
+m_scorpion_man_attack_rear
   rotate: false
   xy: 521, 1171
   size: 128, 128
@@ -5391,7 +5391,42 @@ m_slime_demon_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_slime_demon_walk_west
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_slime_demon_attack_front
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_slime_demon_walk_rear
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_slime_demon_attack_west
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_slime_demon_walk_front
+  rotate: false
+  xy: 651, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_slime_demon_attack_rear
   rotate: false
   xy: 651, 1301
   size: 128, 128
@@ -5412,49 +5447,7 @@ slime_demon
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_slime_demon_attack_front
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_slime_demon_walk_front
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_slime_demon_walk_west
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_slime_demon_walk_rear
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_slime_demon_attack_rear
-  rotate: false
-  xy: 651, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_soldier_ant_attack_east
-  rotate: false
-  xy: 781, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_soldier_ant_attack_front
   rotate: false
   xy: 781, 1431
   size: 128, 128
@@ -5468,21 +5461,7 @@ m_soldier_ant_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_soldier_ant_attack_west
-  rotate: false
-  xy: 781, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_soldier_ant_attack_rear
-  rotate: false
-  xy: 781, 1431
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_soldier_ant_walk_rear
   rotate: false
   xy: 781, 1431
   size: 128, 128
@@ -5496,6 +5475,20 @@ soldier_ant
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_soldier_ant_walk_front
+  rotate: false
+  xy: 781, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_soldier_ant_walk_rear
+  rotate: false
+  xy: 781, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_soldier_ant_walk_east
   rotate: false
   xy: 781, 1431
@@ -5503,7 +5496,14 @@ m_soldier_ant_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_soldier_ant_walk_front
+m_soldier_ant_attack_west
+  rotate: false
+  xy: 781, 1431
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_soldier_ant_attack_front
   rotate: false
   xy: 781, 1431
   size: 128, 128
@@ -5517,27 +5517,6 @@ m_spawn_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_spawn_attack_west
-  rotate: false
-  xy: 1, 521
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_spawn_attack_front
-  rotate: false
-  xy: 1, 521
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_spawn_walk_east
-  rotate: false
-  xy: 1, 521
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 spawn
   rotate: false
   xy: 1, 521
@@ -5545,7 +5524,7 @@ spawn
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_spawn_walk_rear
+m_spawn_attack_front
   rotate: false
   xy: 1, 521
   size: 128, 128
@@ -5573,42 +5552,28 @@ m_spawn_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_spawn_walk_rear
+  rotate: false
+  xy: 1, 521
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_spawn_walk_east
+  rotate: false
+  xy: 1, 521
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_spawn_attack_west
+  rotate: false
+  xy: 1, 521
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_splinter_seeker_attack_east
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_splinter_seeker_walk_front
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-splinter_seeker
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_splinter_seeker_walk_west
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_splinter_seeker_attack_rear
-  rotate: false
-  xy: 131, 651
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_splinter_seeker_attack_front
   rotate: false
   xy: 131, 651
   size: 128, 128
@@ -5622,7 +5587,28 @@ m_splinter_seeker_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_splinter_seeker_attack_west
+splinter_seeker
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_splinter_seeker_walk_front
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_splinter_seeker_walk_west
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_splinter_seeker_attack_front
   rotate: false
   xy: 131, 651
   size: 128, 128
@@ -5636,28 +5622,21 @@ m_splinter_seeker_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_splinter_seeker_attack_west
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_splinter_seeker_attack_rear
+  rotate: false
+  xy: 131, 651
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_stoneshell_attack_east
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_stoneshell_walk_front
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_stoneshell_attack_west
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_stoneshell_walk_west
   rotate: false
   xy: 261, 781
   size: 128, 128
@@ -5671,21 +5650,7 @@ m_stoneshell_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_stoneshell_attack_front
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_stoneshell_walk_rear
-  rotate: false
-  xy: 261, 781
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_stoneshell_walk_east
+m_stoneshell_walk_west
   rotate: false
   xy: 261, 781
   size: 128, 128
@@ -5699,14 +5664,42 @@ stoneshell
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_strangler_vine_attack_east
+m_stoneshell_walk_front
   rotate: false
-  xy: 391, 911
+  xy: 261, 781
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_strangler_vine_walk_rear
+m_stoneshell_walk_east
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_stoneshell_walk_rear
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_stoneshell_attack_front
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_stoneshell_attack_west
+  rotate: false
+  xy: 261, 781
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_strangler_vine_attack_east
   rotate: false
   xy: 391, 911
   size: 128, 128
@@ -5720,14 +5713,7 @@ strangler_vine
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_strangler_vine_walk_east
-  rotate: false
-  xy: 391, 911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_strangler_vine_attack_rear
+m_strangler_vine_walk_rear
   rotate: false
   xy: 391, 911
   size: 128, 128
@@ -5762,6 +5748,20 @@ m_strangler_vine_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_strangler_vine_walk_east
+  rotate: false
+  xy: 391, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_strangler_vine_attack_rear
+  rotate: false
+  xy: 391, 911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_tarantuloid_attack_east
   rotate: false
   xy: 521, 1041
@@ -5776,21 +5776,7 @@ m_tarantuloid_attack_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_tarantuloid_attack_rear
-  rotate: false
-  xy: 521, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_tarantuloid_walk_rear
-  rotate: false
-  xy: 521, 1041
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_tarantuloid_walk_front
+m_tarantuloid_walk_west
   rotate: false
   xy: 521, 1041
   size: 128, 128
@@ -5804,14 +5790,14 @@ tarantuloid
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_tarantuloid_walk_west
+m_tarantuloid_walk_rear
   rotate: false
   xy: 521, 1041
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_tarantuloid_walk_east
+m_tarantuloid_attack_rear
   rotate: false
   xy: 521, 1041
   size: 128, 128
@@ -5825,6 +5811,20 @@ m_tarantuloid_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_tarantuloid_walk_front
+  rotate: false
+  xy: 521, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_tarantuloid_walk_east
+  rotate: false
+  xy: 521, 1041
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_thorn_tree_attack_east
   rotate: false
   xy: 651, 1171
@@ -5832,14 +5832,7 @@ m_thorn_tree_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_thorn_tree_walk_west
-  rotate: false
-  xy: 651, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_thorn_tree_attack_front
+m_thorn_tree_walk_front
   rotate: false
   xy: 651, 1171
   size: 128, 128
@@ -5853,13 +5846,27 @@ m_thorn_tree_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-thorn_tree
+m_thorn_tree_walk_west
   rotate: false
   xy: 651, 1171
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: -1
+  index: 1
+m_thorn_tree_attack_west
+  rotate: false
+  xy: 651, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_thorn_tree_attack_front
+  rotate: false
+  xy: 651, 1171
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_thorn_tree_attack_rear
   rotate: false
   xy: 651, 1171
@@ -5874,42 +5881,14 @@ m_thorn_tree_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_thorn_tree_walk_front
+thorn_tree
   rotate: false
   xy: 651, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_thorn_tree_attack_west
-  rotate: false
-  xy: 651, 1171
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_titan_attack_east
-  rotate: false
-  xy: 781, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_titan_walk_west
-  rotate: false
-  xy: 781, 1301
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-titan
-  rotate: false
-  xy: 781, 1301
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_titan_attack_west
+m_titan_attack_east
   rotate: false
   xy: 781, 1301
   size: 128, 128
@@ -5930,14 +5909,35 @@ m_titan_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_titan_walk_east
+titan
+  rotate: false
+  xy: 781, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_titan_walk_front
   rotate: false
   xy: 781, 1301
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_titan_walk_front
+m_titan_attack_west
+  rotate: false
+  xy: 781, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_titan_walk_west
+  rotate: false
+  xy: 781, 1301
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_titan_walk_east
   rotate: false
   xy: 781, 1301
   size: 128, 128
@@ -5965,20 +5965,6 @@ triffid
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_triffid_walk_rear
-  rotate: false
-  xy: 1, 391
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_triffid_attack_rear
-  rotate: false
-  xy: 1, 391
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_triffid_walk_east
   rotate: false
   xy: 1, 391
@@ -5993,7 +5979,7 @@ m_triffid_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_triffid_attack_front
+m_triffid_attack_west
   rotate: false
   xy: 1, 391
   size: 128, 128
@@ -6007,7 +5993,21 @@ m_triffid_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_triffid_attack_west
+m_triffid_walk_rear
+  rotate: false
+  xy: 1, 391
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_triffid_attack_rear
+  rotate: false
+  xy: 1, 391
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_triffid_attack_front
   rotate: false
   xy: 1, 391
   size: 128, 128
@@ -6378,13 +6378,6 @@ m_vampire_bat_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-vampire_bat
-  rotate: false
-  xy: 781, 391
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 m_vampire_bat_walk_west
   rotate: false
   xy: 781, 391
@@ -6420,6 +6413,13 @@ m_vampire_bat_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+vampire_bat
+  rotate: false
+  xy: 781, 391
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 m_warrior_attack_east
   rotate: false
   xy: 521, 1
@@ -6427,28 +6427,7 @@ m_warrior_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_warrior_walk_east
-  rotate: false
-  xy: 521, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_warrior_attack_front
-  rotate: false
-  xy: 521, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_warrior_attack_rear
-  rotate: false
-  xy: 521, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_warrior_walk_west
   rotate: false
   xy: 521, 1
   size: 128, 128
@@ -6469,13 +6448,6 @@ m_warrior_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_warrior_attack_west
-  rotate: false
-  xy: 521, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 warrior
   rotate: false
   xy: 521, 1
@@ -6483,28 +6455,35 @@ warrior
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_warrior_attack_rear
+  rotate: false
+  xy: 521, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_warrior_walk_west
+  rotate: false
+  xy: 521, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_warrior_walk_east
+  rotate: false
+  xy: 521, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_warrior_attack_west
+  rotate: false
+  xy: 521, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_warrior_monk_attack_east
-  rotate: false
-  xy: 651, 131
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_warrior_monk_attack_west
-  rotate: false
-  xy: 651, 131
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_warrior_monk_walk_front
-  rotate: false
-  xy: 651, 131
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_warrior_monk_attack_front
   rotate: false
   xy: 651, 131
   size: 128, 128
@@ -6518,6 +6497,13 @@ m_warrior_monk_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_warrior_monk_walk_east
+  rotate: false
+  xy: 651, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_warrior_monk_walk_west
   rotate: false
   xy: 651, 131
@@ -6525,7 +6511,7 @@ m_warrior_monk_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_warrior_monk_walk_east
+m_warrior_monk_attack_west
   rotate: false
   xy: 651, 131
   size: 128, 128
@@ -6539,6 +6525,20 @@ warrior_monk
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_warrior_monk_attack_front
+  rotate: false
+  xy: 651, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_warrior_monk_walk_front
+  rotate: false
+  xy: 651, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_warrior_monk_attack_rear
   rotate: false
   xy: 651, 131
@@ -6553,7 +6553,28 @@ m_web_shooter_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_web_shooter_attack_west
+  rotate: false
+  xy: 781, 261
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_web_shooter_walk_rear
+  rotate: false
+  xy: 781, 261
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_web_shooter_walk_east
+  rotate: false
+  xy: 781, 261
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_web_shooter_attack_front
   rotate: false
   xy: 781, 261
   size: 128, 128
@@ -6574,14 +6595,7 @@ m_web_shooter_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_web_shooter_attack_front
-  rotate: false
-  xy: 781, 261
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_web_shooter_walk_east
+m_web_shooter_walk_front
   rotate: false
   xy: 781, 261
   size: 128, 128
@@ -6595,28 +6609,7 @@ web_shooter
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_web_shooter_walk_front
-  rotate: false
-  xy: 781, 261
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_web_shooter_attack_west
-  rotate: false
-  xy: 781, 261
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_wild_dog_attack_east
-  rotate: false
-  xy: 651, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_wild_dog_walk_front
   rotate: false
   xy: 651, 1
   size: 128, 128
@@ -6630,28 +6623,7 @@ m_wild_dog_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_wild_dog_attack_front
-  rotate: false
-  xy: 651, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-wild_dog
-  rotate: false
-  xy: 651, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 m_wild_dog_walk_west
-  rotate: false
-  xy: 651, 1
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_wild_dog_walk_east
   rotate: false
   xy: 651, 1
   size: 128, 128
@@ -6665,7 +6637,35 @@ m_wild_dog_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+wild_dog
+  rotate: false
+  xy: 651, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_wild_dog_attack_front
+  rotate: false
+  xy: 651, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wild_dog_walk_front
+  rotate: false
+  xy: 651, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_wild_dog_attack_west
+  rotate: false
+  xy: 651, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wild_dog_walk_east
   rotate: false
   xy: 651, 1
   size: 128, 128
@@ -6679,14 +6679,14 @@ m_wizard_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_wizard_attack_west
+m_wizard_attack_rear
   rotate: false
   xy: 781, 131
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_wizard_attack_rear
+m_wizard_walk_front
   rotate: false
   xy: 781, 131
   size: 128, 128
@@ -6714,21 +6714,21 @@ wizard
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_wizard_attack_front
-  rotate: false
-  xy: 781, 131
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_wizard_walk_front
-  rotate: false
-  xy: 781, 131
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_wizard_walk_west
+  rotate: false
+  xy: 781, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wizard_attack_west
+  rotate: false
+  xy: 781, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wizard_attack_front
   rotate: false
   xy: 781, 131
   size: 128, 128
@@ -6803,14 +6803,14 @@ ABILITY_TAB_OFF_IMAGE
   orig: 96, 96
   offset: 0, 0
   index: -1
-INVENTORY_TAB_OFF_IMAGE
+EYE_TAB_OFF_IMAGE
   rotate: false
   xy: 123, 1
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-EFFECT_TAB_OFF_IMAGE
+INVENTORY_TAB_OFF_IMAGE
   rotate: false
   xy: 123, 1
   size: 96, 96
@@ -6824,7 +6824,7 @@ POWERUP_TAB_OFF_IMAGE
   orig: 96, 96
   offset: 0, 0
   index: -1
-EYE_TAB_OFF_IMAGE
+EFFECT_TAB_OFF_IMAGE
   rotate: false
   xy: 123, 1
   size: 96, 96
@@ -7244,20 +7244,6 @@ m_worker_ant_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_worker_ant_walk_rear
-  rotate: false
-  xy: 1, 879
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_worker_ant_attack_west
-  rotate: false
-  xy: 1, 879
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_worker_ant_attack_front
   rotate: false
   xy: 1, 879
@@ -7265,7 +7251,7 @@ m_worker_ant_attack_front
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_worker_ant_walk_front
+m_worker_ant_walk_rear
   rotate: false
   xy: 1, 879
   size: 128, 128
@@ -7293,6 +7279,13 @@ m_worker_ant_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_worker_ant_walk_front
+  rotate: false
+  xy: 1, 879
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 worker_ant
   rotate: false
   xy: 1, 879
@@ -7300,6 +7293,13 @@ worker_ant
   orig: 128, 128
   offset: 0, 0
   index: -1
+m_worker_ant_attack_west
+  rotate: false
+  xy: 1, 879
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_wraith_attack_east
   rotate: false
   xy: 131, 1009
@@ -7314,21 +7314,7 @@ m_wraith_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_wraith_walk_rear
-  rotate: false
-  xy: 131, 1009
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_wraith_attack_front
-  rotate: false
-  xy: 131, 1009
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_wraith_attack_rear
+m_wraith_attack_west
   rotate: false
   xy: 131, 1009
   size: 128, 128
@@ -7342,6 +7328,20 @@ m_wraith_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_wraith_attack_rear
+  rotate: false
+  xy: 131, 1009
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wraith_attack_front
+  rotate: false
+  xy: 131, 1009
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 wraith
   rotate: false
   xy: 131, 1009
@@ -7349,7 +7349,7 @@ wraith
   orig: 128, 128
   offset: 0, 0
   index: -1
-m_wraith_attack_west
+m_wraith_walk_rear
   rotate: false
   xy: 131, 1009
   size: 128, 128
@@ -7377,35 +7377,7 @@ m_wyvern_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_wyvern_attack_front
-  rotate: false
-  xy: 261, 1139
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_wyvern_attack_west
-  rotate: false
-  xy: 261, 1139
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-wyvern
-  rotate: false
-  xy: 261, 1139
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_wyvern_attack_rear
-  rotate: false
-  xy: 261, 1139
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_wyvern_walk_front
   rotate: false
   xy: 261, 1139
   size: 128, 128
@@ -7419,7 +7391,35 @@ m_wyvern_walk_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+wyvern
+  rotate: false
+  xy: 261, 1139
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+m_wyvern_walk_front
+  rotate: false
+  xy: 261, 1139
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_wyvern_walk_west
+  rotate: false
+  xy: 261, 1139
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wyvern_attack_front
+  rotate: false
+  xy: 261, 1139
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_wyvern_attack_rear
   rotate: false
   xy: 261, 1139
   size: 128, 128
@@ -7433,6 +7433,27 @@ m_zombie_attack_east
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_zombie_attack_west
+  rotate: false
+  xy: 391, 1269
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_zombie_attack_front
+  rotate: false
+  xy: 391, 1269
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_zombie_walk_west
+  rotate: false
+  xy: 391, 1269
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 m_zombie_walk_front
   rotate: false
   xy: 391, 1269
@@ -7440,6 +7461,20 @@ m_zombie_walk_front
   orig: 128, 128
   offset: 0, 0
   index: 1
+m_zombie_walk_east
+  rotate: false
+  xy: 391, 1269
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+zombie
+  rotate: false
+  xy: 391, 1269
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 m_zombie_walk_rear
   rotate: false
   xy: 391, 1269
@@ -7454,42 +7489,21 @@ m_zombie_attack_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_zombie_walk_west
-  rotate: false
-  xy: 391, 1269
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-zombie
-  rotate: false
-  xy: 391, 1269
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-m_zombie_walk_east
-  rotate: false
-  xy: 391, 1269
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_zombie_attack_front
-  rotate: false
-  xy: 391, 1269
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_zombie_attack_west
-  rotate: false
-  xy: 391, 1269
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
 m_zombie_giant_attack_east
+  rotate: false
+  xy: 521, 1399
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_zombie_giant_attack_rear
+  rotate: false
+  xy: 521, 1399
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+m_zombie_giant_attack_front
   rotate: false
   xy: 521, 1399
   size: 128, 128
@@ -7510,21 +7524,7 @@ m_zombie_giant_walk_west
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_zombie_giant_attack_west
-  rotate: false
-  xy: 521, 1399
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_zombie_giant_walk_east
-  rotate: false
-  xy: 521, 1399
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-m_zombie_giant_attack_front
+m_zombie_giant_walk_front
   rotate: false
   xy: 521, 1399
   size: 128, 128
@@ -7538,14 +7538,14 @@ m_zombie_giant_walk_rear
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_zombie_giant_walk_front
+m_zombie_giant_attack_west
   rotate: false
   xy: 521, 1399
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
-m_zombie_giant_attack_rear
+m_zombie_giant_walk_east
   rotate: false
   xy: 521, 1399
   size: 128, 128
