@@ -127,9 +127,7 @@ public class LocationPresenter {
 		if (tile == null) {
 			String tileName = "sw_";
 			if (L.json.has("walls")) {
-				if (L.json.getString("walls").equals("wood")) {
-					tileName = "ww_";
-				}
+				tileName = L.json.getString("walls");
 			}
 
 			if (locationInfo.isShadowedFloor) {

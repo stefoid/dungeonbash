@@ -99,6 +99,7 @@ public class DesktopLauncher {
 	public static String LEVEL = "level";
 	public static String FLOOR_SHADOWS = "floor_shadows";
 	public static String DARK_PERCENTAGE = "dark_percentage";
+	public static String NEW_TILES = "new_tiles";
 	
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
@@ -130,6 +131,9 @@ public class DesktopLauncher {
 				}
 				if (json.has(DARK_PERCENTAGE)) {
 					L.DARK_PERCENTAGE = json.getInt(DARK_PERCENTAGE);
+				}
+				if (json.has(NEW_TILES)) {
+					L.NEW_TILES = json.getBoolean(NEW_TILES);
 				}
 			} catch (Exception e) {
 			}

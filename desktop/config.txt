@@ -3,7 +3,8 @@
 "monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
-"walls" : "stone",
+"walls" : "ow_",
+"new_tiles" : false,
 "lights" : true,
 "level" : 3
 "floor_shadows" : true,

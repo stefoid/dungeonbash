@@ -25,6 +25,7 @@ public class L {
 	public static boolean useLights = true;
 	public static boolean floorShadows = true;
 	public static int DARK_PERCENTAGE = 100;
+	public static boolean NEW_TILES = true;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;  // run the total XP test for a level.
