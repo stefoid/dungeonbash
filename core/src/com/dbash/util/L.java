@@ -4,9 +4,9 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
-	public static boolean JARFILE = true;
+	public static boolean JARFILE = false;
 	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = false;
@@ -25,7 +25,7 @@ public class L {
 	public static boolean useLights = true;
 	public static boolean floorShadows = true;
 	public static int DARK_PERCENTAGE = 100;
-	public static boolean NEW_TILES = true;
+	public static boolean NEW_TILES = false;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;  // run the total XP test for a level.
