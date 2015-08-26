@@ -196,8 +196,12 @@ public class CreaturePresenter {
 				final float percent = complete/100f;
 				animView.onPercentComplete(complete, new IAnimListener() {
 					public void animEvent() {
-						light.setAlpha(1f-percent*.6f);
-						toLight.setAlpha(percent+.1f);
+						if (light != null) {
+							light.setAlpha(1f-percent*.6f);
+						}
+						if (toLight != null) {
+							toLight.setAlpha(percent+.1f);
+						}
 						//if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
 					}
 				});

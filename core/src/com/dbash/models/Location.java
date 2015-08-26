@@ -587,7 +587,7 @@ public class Location {
 									return "RearCornerWest";
 								case NO_FACE:
 								default:
-									return "RearCornerEast";
+									return "RearCornerWest";  // LAtest prob?
 							}
 						case REAR_FACE:
 							switch (eastSide) {

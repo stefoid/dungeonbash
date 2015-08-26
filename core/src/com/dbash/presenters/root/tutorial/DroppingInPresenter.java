@@ -35,12 +35,16 @@ public class DroppingInPresenter extends TutorialPopupPresenter implements Touch
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		addFadeBoxSeq(fb2);
 	
-		FadeBoxPresenter fb3 = new FadeBoxPresenter("The animated highlight shows which character is having a turn.\n\nYou can swipe in a direction to move.", 
+		FadeBoxPresenter fb3 = new FadeBoxPresenter("The animated highlight shows which character is having a turn.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		addFadeBoxSeq(fb3);
 		
+		FadeBoxPresenter fb32 = new FadeBoxPresenter("You can swipe in a direction to move.\n\nA swipe does not have to start on the character tile.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		addFadeBoxSeq(fb32);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb4 = new FadeBoxPresenter("A swipe does not have to start on the character tile.  Move 4 times by swiping right now.", 
+		FadeBoxPresenter fb4 = new FadeBoxPresenter("Move 4 times by swiping right now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();
@@ -48,7 +52,7 @@ public class DroppingInPresenter extends TutorialPopupPresenter implements Touch
 		});
 		addFadeBoxSeq(fb4);
 	}
-	
+
 	@Override
 	public void draw(SpriteBatch spriteBatch, float x, float y) {
 	}

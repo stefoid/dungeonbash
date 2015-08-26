@@ -56,12 +56,16 @@ public class StealthPresenter extends TutorialPopupPresenter implements TouchEve
 	}
 	
 	private void addMoreFaderBoxes() {
-		FadeBoxPresenter fb1 = new FadeBoxPresenter("A hiding character becomes transparent.  Hiding characters can scout or ambush enemies.  If a character is discovered, it stops being transparent.", 
+		FadeBoxPresenter fb1 = new FadeBoxPresenter("A hiding character becomes transparent.\n\nIf a character is discovered, it stops being transparent.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		addFadeBoxSeq(fb1);
+		
+		FadeBoxPresenter fb12 = new FadeBoxPresenter("Hide to ambush enemies - get a skill bonus for any attack, plus a huge damage bonus for melee.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		addFadeBoxSeq(fb12);
 
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("The monster in the next room has poor detection skill.  Hide each character, and ambush it.  Ambush melee attacks do extra damage!", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("Now hide your team and ambush the creature in the next room.  It has poor detection skill.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

@@ -47,8 +47,12 @@ public class CoverPresenter extends TutorialPopupPresenter implements TouchEvent
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		addFadeBoxSeq(fb4);
 		
+		FadeBoxPresenter fb42 = new FadeBoxPresenter("Rocks give great cover for stealth, particularly for small characters.  Bones and mud dont help Stealth.", 
+				HAlignment.CENTER, VAlignment.BOTTOM, null);
+		addFadeBoxSeq(fb42);
+		
 		final OverlayPresenter me = this;
-		FadeBoxPresenter fb2 = new FadeBoxPresenter("Rocks give great cover for stealth, particularly for small characters.  Use cover to try to ambush the creature in the next room.", 
+		FadeBoxPresenter fb2 = new FadeBoxPresenter("Use rocks to try to ambush the creature in the next room.  It has better perception.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, new IDismissListener() {
 			public void dismiss() {
 				me.dismiss();

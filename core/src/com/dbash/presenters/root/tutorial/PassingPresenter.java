@@ -44,7 +44,7 @@ public class PassingPresenter extends TutorialPopupPresenter implements TouchEve
 			}
 		});
 		
-		this.fadeBox = new FadeBoxPresenter("Use the pass button to delay. Gives a slow penalty and defensive bonus.\n\nTest the pass turn button 4 times now.", 
+		this.fadeBox = new FadeBoxPresenter("The pass button gives a slow penalty but a big defensive bonus.\n\nTest the pass turn button 4 times now.", 
 				HAlignment.CENTER, VAlignment.BOTTOM, null);
 		fadeBox.setNoTouch();
 		addFadeBoxPar(fadeBox);
