@@ -7,6 +7,7 @@ import com.dbash.models.Location.RoughTerrainType;
 public class LocationInfo {
 
 	public String tileName;
+	public boolean addPrefix;
 	public IPresenterCreature creature;
 	public boolean isDiscovered;
 	public ItemList itemList;
@@ -24,6 +25,9 @@ public class LocationInfo {
 	
 	public void update(Location location) {
 		tileName = location.tileName;
+		if (location.hardcodeTilename == null) {
+			addPrefix = true;
+		}
 		creature = location.creature;
 		isDiscovered = location.isDiscovered;
 		itemList = location.getItemList(true);

@@ -17,13 +17,15 @@ public class Room {
 	private Rect insideArea;
 	public int width;
 	public int height;
+	public String hardcodeName;
 	
-	public Room(String[] charMap, String[] monsters, int edgeLimit) {
+	public Room(String[] charMap, String[] monsters, String hardcodeName, int edgeLimit) {
 		this.charMap = charMap;
 		this.monsters = monsters;
 		width = charMap[0].length();
 		height = charMap.length;
 		this.edgeLimit = edgeLimit;
+		this.hardcodeName = hardcodeName;
 	}
 	
 	public Room(Room room) {
@@ -32,6 +34,7 @@ public class Room {
 		this.edgeLimit = room.edgeLimit;
 		this.width = room.width;
 		this.height = room.height;
+		this.hardcodeName = room.hardcodeName;
 	}
 	
 	public void setPosition(DungeonPosition position, Location[][] location) {
@@ -40,6 +43,18 @@ public class Room {
 		this.mx = (int) area.x;
 		this.my = (int) area.y;
 		insideArea = new Rect(mx+edgeLimit, my+edgeLimit, width-edgeLimit*2, height-edgeLimit*2);
+		if (hardcodeName != null) {
+			setHardcodeTilenames();
+		}
+	}
+	
+	//calls the Location.setHardcodedTilename on each of its locations with the appropriate String and extensions.
+	private void setHardcodeTilenames() {
+		for (int x=0;x<width;x++) {
+			for (int y=0;y<width;y++) {
+				location[x][y].setHardcodeTilename(hardcodeName+"-"+x+"-"+y);
+			}
+		}
 	}
 	
 	public boolean isInside(DungeonPosition position) {

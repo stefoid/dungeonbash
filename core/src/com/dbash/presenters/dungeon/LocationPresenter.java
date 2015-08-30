@@ -139,7 +139,11 @@ public class LocationPresenter {
 				islandArea.y = area.y;
 				islandImage = new ImageView(gui, locationInfo.tileName, islandArea); 
 			} else {
-				tileName = tileName.concat(locationInfo.tileName);
+				if (locationInfo.addPrefix) {
+					tileName = tileName.concat(locationInfo.tileName);
+				} else {
+					tileName = locationInfo.tileName;
+				}
 			}
 
 			if (L.DARK_PERCENTAGE != 100 && locationInfo.location.tileType != Location.TileType.CLEAR) {

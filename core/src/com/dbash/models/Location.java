@@ -116,6 +116,7 @@ public class Location {
 	public ItemList itemInfoNoRough;
 	public ItemList itemInfoWithRough;
 	public String islandType;
+	public String hardcodeTilename;
 	 
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
@@ -467,7 +468,15 @@ public class Location {
 	// then iterate across the entire map and setTileType
 	// then iterate across it again to setTileName which can be used to work out the sprite to draw this location with.
 	public void setTileName() {
-		tileName = calculateTileName();
+		if (hardcodeTilename == null) {
+			tileName = calculateTileName();
+		} else {
+			tileName = hardcodeTilename;
+		}
+	}
+	
+	public void setHardcodeTilename(String hardcodeTilename) {
+		this.hardcodeTilename = hardcodeTilename;
 	}
 	
 	/**

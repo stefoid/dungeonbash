@@ -6,7 +6,7 @@
 "walls" : "ow_",
 "new_tiles" : false,
 "lights" : true,
-"level" : 3,
+"level" : 14,
 "floor_shadows" : true,
 "dark_percentage" : 100
 }

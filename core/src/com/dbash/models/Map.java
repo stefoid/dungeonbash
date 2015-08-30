@@ -878,19 +878,19 @@ public class Map implements IPresenterMap {
 
 		switch (level) {
 		case 3:
-			room = new Room(level3Map, level3Monsters, 1);
+			room = new Room(level3Map, level3Monsters, null, 1);
 			break;
 		case 4:
 			statueName = "statue_dwarf";
 			break;
 		case 6:
-			room = new Room(level6Map, level6Monsters, 1);
+			room = new Room(level6Map, level6Monsters, null, 1);
 			break;
 		case 7:
 			statueName = "statue_zombie";
 			break;
 		case 9:
-			room = new Room(level9Map, level9Monsters, 1);
+			room = new Room(level9Map, level9Monsters, null, 1);
 			break;
 		case 10:
 			statueName = "statue";
@@ -1080,22 +1080,22 @@ public class Map implements IPresenterMap {
 	private static ArrayList<Room> makeHardRooms() {
 		ArrayList<Room> theRooms = new ArrayList<Room>();
 		
-		theRooms.add(new Room(holeMap, holeMonsters, 0));
-		theRooms.add(new Room(mudMap, mudMonsters, 0));
-		theRooms.add(new Room(ravVertMap, ravVertMonsters, 0));
-		theRooms.add(new Room(ravHorMap, ravHorMonsters, 0));
-		theRooms.add(new Room(gridMap, gridMonsters, 0));
-		theRooms.add(new Room(boneMap, boneMonsters, 0));
-		theRooms.add(new Room(rockMap, rockMonsters, 0));
-		theRooms.add(new Room(holegridMap, holegridMonsters, 0));
-		theRooms.add(new Room(bridgeMap, bridgeMonsters, 0));
-		theRooms.add(new Room(crossMap, crossMonsters, 0));
-		theRooms.add(new Room(rocks1Map, rocks1Monsters, 0));
-		theRooms.add(new Room(rocks2Map, rocks2Monsters, 0));
-		theRooms.add(new Room(rocks3Map, rocks3Monsters, 0));
-		theRooms.add(new Room(rocks4Map, rocks4Monsters, 0));
-		theRooms.add(new Room(holes2Map, holes2Monsters, 0));
-		theRooms.add(new Room(holes3Map, holes3Monsters, 0));
+		theRooms.add(new Room(holeMap, holeMonsters, "holemap", 0));
+//		theRooms.add(new Room(mudMap, mudMonsters, null, 0));
+//		theRooms.add(new Room(ravVertMap, ravVertMonsters, null, 0));
+//		theRooms.add(new Room(ravHorMap, ravHorMonsters, null, 0));
+//		theRooms.add(new Room(gridMap, gridMonsters,null, 0));
+//		theRooms.add(new Room(boneMap, boneMonsters, null, 0));
+//		theRooms.add(new Room(rockMap, rockMonsters, null, 0));
+//		theRooms.add(new Room(holegridMap, holegridMonsters, null, 0));
+//		theRooms.add(new Room(bridgeMap, bridgeMonsters, null, 0));
+//		theRooms.add(new Room(crossMap, crossMonsters, null, 0));
+//		theRooms.add(new Room(rocks1Map, rocks1Monsters, null, 0));
+//		theRooms.add(new Room(rocks2Map, rocks2Monsters, null, 0));
+//		theRooms.add(new Room(rocks3Map, rocks3Monsters, null, 0));
+//		theRooms.add(new Room(rocks4Map, rocks4Monsters, null, 0));
+//		theRooms.add(new Room(holes2Map, holes2Monsters, null, 0));
+//		theRooms.add(new Room(holes3Map, holes3Monsters, null, 0));
 		
 		return theRooms;
 	}

@@ -49,7 +49,7 @@ public class TutorialMap extends Map {
 			}
 		}
 		
-		room = new Room(tutorialMap, tutorialMonsters, 0);
+		room = new Room(tutorialMap, tutorialMonsters, null, 0);
 		room.setPosition(new DungeonPosition(width/2,height/2), location);
 		room.clearSpaces();
 		room.setIslands();
