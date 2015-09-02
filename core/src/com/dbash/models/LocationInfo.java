@@ -27,6 +27,8 @@ public class LocationInfo {
 		tileName = location.tileName;
 		if (location.hardcodeTilename == null) {
 			addPrefix = true;
+		} else {
+			creature = location.creature;
 		}
 		creature = location.creature;
 		isDiscovered = location.isDiscovered;
@@ -44,6 +46,7 @@ public class LocationInfo {
 		if (location.tileType == Location.TileType.ISLAND) {
 			isIsland = true;
 		}
+		
 	}
 	
 	public String toString() {

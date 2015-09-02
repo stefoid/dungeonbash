@@ -944,9 +944,9 @@ public class Map implements IPresenterMap {
 		"  hh  ",
 		" hhhh ",
 		" hhhh ",
-		" hhhh ",
 		"  hh  ",
 		"      "};
+	
 	private static String[] holeMonsters = {};
 	
 	private static String[] mudMap = {

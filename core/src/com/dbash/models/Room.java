@@ -51,8 +51,8 @@ public class Room {
 	//calls the Location.setHardcodedTilename on each of its locations with the appropriate String and extensions.
 	private void setHardcodeTilenames() {
 		for (int x=0;x<width;x++) {
-			for (int y=0;y<width;y++) {
-				location[x][y].setHardcodeTilename(hardcodeName+"-"+x+"-"+y);
+			for (int y=0;y<height;y++) {
+				location[mx+x][my+height-1-y].setHardcodeTilename(hardcodeName+"-"+x+"-"+y);
 			}
 		}
 	}
