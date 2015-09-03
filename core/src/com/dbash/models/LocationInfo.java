@@ -17,6 +17,7 @@ public class LocationInfo {
 	public RoughTerrainType roughTerrainType;
 	public Location location;
 	public boolean isIsland;
+	public boolean isHardcoded;
 	
 	public LocationInfo(Location location) {
 		this.location = location;
@@ -25,17 +26,21 @@ public class LocationInfo {
 	
 	public void update(Location location) {
 		tileName = location.tileName;
-		if (location.hardcodeTilename == null) {
-			addPrefix = true;
+		if (location.isHardcoded) {
+			isHardcoded = true;
+			roughTerrainType = null;
 		} else {
-			creature = location.creature;
+			addPrefix = true;
+			isHardcoded = false;
+			roughTerrainType = location.getRoughTerrain();
 		}
+		
 		creature = location.creature;
 		isDiscovered = location.isDiscovered;
 		itemList = location.getItemList(true);
 		tint = location.tint;
 		torch = location.torch;
-		roughTerrainType = location.getRoughTerrain();
+		
 		if (location.locationType == Location.LocationType.FLOOR) {
 			if (location.tileName.equals("CLEAR_FLOOR_IMAGE") == false) {
 				isShadowedFloor = true;
@@ -46,7 +51,6 @@ public class LocationInfo {
 		if (location.tileType == Location.TileType.ISLAND) {
 			isIsland = true;
 		}
-		
 	}
 	
 	public String toString() {

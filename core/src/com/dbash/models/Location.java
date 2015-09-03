@@ -117,6 +117,7 @@ public class Location {
 	public ItemList itemInfoWithRough;
 	public String islandType;
 	public String hardcodeTilename;
+	public boolean isHardcoded;
 	 
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
@@ -153,6 +154,7 @@ public class Location {
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
+		isHardcoded = in.readBoolean();
 		permTint = minVisibleTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		updateLocationInfo();
 		clearTint();
@@ -472,11 +474,13 @@ public class Location {
 			tileName = calculateTileName();
 		} else {
 			tileName = hardcodeTilename;
+			isHardcoded = true;
 		}
 	}
 	
 	public void setHardcodeTilename(String hardcodeTilename) {
 		this.hardcodeTilename = hardcodeTilename;
+		isHardcoded = true; 
 	}
 	
 	/**
@@ -761,6 +765,7 @@ public class Location {
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
+		out.writeBoolean(isHardcoded);
 	}
 	
 	public boolean castsShadow() {

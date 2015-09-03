@@ -63,6 +63,10 @@ public class LocationPresenter {
 			tint = 100f;
 		}
 		
+		if (locationInfo.isHardcoded) {
+			locationInfo.isHardcoded = true;
+		}
+		
 		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
 			drawTile(spriteBatch, tint, alpha);
 			

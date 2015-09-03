@@ -4,9 +4,9 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
-	public static boolean JARFILE = false;
+	public static boolean JARFILE = true;
 	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = false;
