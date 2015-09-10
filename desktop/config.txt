@@ -8,5 +8,6 @@
 "lights" : true,
 "level" : 2,
 "floor_shadows" : true,
-"dark_percentage" : 100
+"dark_percentage" : 100,
+"anim_speed" : 1
 }

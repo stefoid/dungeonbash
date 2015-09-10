@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
+import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.util.L;
 import com.me.dbash.Dbash;
 
@@ -100,6 +101,7 @@ public class DesktopLauncher {
 	public static String FLOOR_SHADOWS = "floor_shadows";
 	public static String DARK_PERCENTAGE = "dark_percentage";
 	public static String NEW_TILES = "new_tiles";
+	public static String ANIM_SPEED = "anim_speed";
 	
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
@@ -134,6 +136,10 @@ public class DesktopLauncher {
 				}
 				if (json.has(NEW_TILES)) {
 					L.NEW_TILES = json.getBoolean(NEW_TILES);
+				}
+				if (json.has(ANIM_SPEED)) {
+					DungeonAreaPresenter.multiplier = json.getFloat(ANIM_SPEED);
+					DungeonAreaPresenter.calcPeriods();
 				}
 			} catch (Exception e) {
 			}

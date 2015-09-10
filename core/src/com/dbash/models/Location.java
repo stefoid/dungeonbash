@@ -15,7 +15,7 @@ import com.dbash.util.Randy;
 // (Each character has a shadowMap that informs Locations that it can see them)
 public class Location {
 	
-	public static boolean LOG = true && L.DEBUG;
+	public static boolean LOG = false && L.DEBUG;
 	 
 	public static final String SOLID_ROCK = "SolidRock";
 	public static final String STATUE_ISLAND_TYPE = "statue";
@@ -118,6 +118,8 @@ public class Location {
 	public String islandType;
 	public String hardcodeTilename;
 	public boolean isHardcoded;
+	public boolean isShadowed;
+	public String shadowName;
 	 
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
@@ -476,6 +478,11 @@ public class Location {
 			tileName = hardcodeTilename;
 			isHardcoded = true;
 		}
+		
+		shadowName = getShadowName();
+		if (shadowName != null) {
+			isShadowed = true;
+		}
 	}
 	
 	public void setHardcodeTilename(String hardcodeTilename) {
@@ -687,6 +694,8 @@ public class Location {
 					}
 				
 			case FLOOR:
+				tileName = "CLEAR_FLOOR_IMAGE";
+				
 				if (tileType == TileType.ISLAND) {
 					String iType;
 					if (islandType != null) {
@@ -699,22 +708,9 @@ public class Location {
 						iType = map.getStatueName();
 					}
 					
-					return iType;
+					tileName = iType;
 				}
 				
-				boolean northWall = map.safeLocation(x,y + 1).castsShadow();
-				boolean eastWall = map.safeLocation(x + 1,y).castsShadow();
-				boolean neWall = map.safeLocation(x + 1,y + 1).castsShadow();
-
-				if (northWall) {
-					tileName = eastWall ? "TOP_AND_SIDE_SHADOW_FLOOR_IMAGE" : neWall ? "TOP_SHADOW_FLOOR_IMAGE" : "ANGLE_TOP_SHADOW_FLOOR_IMAGE";
-				} else {
-					if (eastWall)
-						tileName = neWall ? "SIDE_SHADOW_FLOOR_IMAGE" : "ANGLE_SIDE_SHADOW_FLOOR_IMAGE";
-					else if (neWall) {
-						tileName = "CORNER_SHADOW_FLOOR_IMAGE";
-					}
-				}
 				break;
 				
 			case EXIT:
@@ -726,6 +722,27 @@ public class Location {
 				break;
 		}
 		return tileName;
+	}
+	
+	private String getShadowName() {
+		
+		String shadowName = null;
+		
+		boolean northWall = map.safeLocation(x,y + 1).castsShadow();
+		boolean eastWall = map.safeLocation(x + 1,y).castsShadow();
+		boolean neWall = map.safeLocation(x + 1,y + 1).castsShadow();
+
+		if (northWall) {
+			shadowName = eastWall ? "TOP_AND_SIDE_SHADOW_FLOOR_IMAGE" : neWall ? "TOP_SHADOW_FLOOR_IMAGE" : "ANGLE_TOP_SHADOW_FLOOR_IMAGE";
+		} else {
+			if (eastWall)
+				shadowName = neWall ? "SIDE_SHADOW_FLOOR_IMAGE" : "ANGLE_SIDE_SHADOW_FLOOR_IMAGE";
+			else if (neWall) {
+				shadowName = "CORNER_SHADOW_FLOOR_IMAGE";
+			}
+		}
+		
+		return shadowName;
 	}
 	
 	private TileType getTileTypeForTileNames(int x, int y) {

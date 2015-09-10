@@ -41,16 +41,19 @@ public class LocationInfo {
 		tint = location.tint;
 		torch = location.torch;
 		
-		if (location.locationType == Location.LocationType.FLOOR) {
-			if (location.tileName.equals("CLEAR_FLOOR_IMAGE") == false) {
-				isShadowedFloor = true;
-			} else {
-				isShadowedFloor = false;
-			}
-		}
+		isShadowedFloor = location.isShadowed;
+		
 		if (location.tileType == Location.TileType.ISLAND) {
 			isIsland = true;
 		}
+	}
+	
+	public String getShadowName() {
+		return location.shadowName;
+	}
+	
+	public boolean requiresFloor() {
+		return (isHardcoded || isIsland);
 	}
 	
 	public String toString() {

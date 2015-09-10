@@ -23,11 +23,11 @@ import com.dbash.util.Rect.HAlignment;
 // it gets updates of presentation-related data in the form of LocationInfo when the visual representation of the Location changes.
 public class LocationPresenter {
 	
-	public static boolean LOG = false && L.DEBUG;
+	public static boolean LOG = true && L.DEBUG;
 	
 	public LocationInfo locationInfo;
 	private ImageView tile;
-	private ImageView islandImage;
+	private ImageView floorImage;
 	public CreaturePresenter creaturePresenter;
 	
 	private Rect area;
@@ -54,8 +54,16 @@ public class LocationPresenter {
 		return locationInfo.isIsland;
 	}
 	
+	public boolean isVisibile(ShadowMap shadowMap) {
+		if (shadowMap != null) {
+			return shadowMap.locationIsVisible(locationInfo.location);
+		}
+		
+		return false;
+	}
+	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
-	public boolean drawTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
+	public boolean drawTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
 		boolean drawOverlay = false;
 		float tint = locationInfo.tint;
 		
@@ -63,16 +71,8 @@ public class LocationPresenter {
 			tint = 100f;
 		}
 		
-		if (locationInfo.isHardcoded) {
-			locationInfo.isHardcoded = true;
-		}
-		
-		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
+		if (isVisibile) {
 			drawTile(spriteBatch, tint, alpha);
-			
-			if (shadow != null && L.floorShadows) {
-				shadow.drawTinted(spriteBatch, tint, alpha);
-			}
 			
 			for (ImageView image : items) {
 				image.draw(spriteBatch);
@@ -89,15 +89,56 @@ public class LocationPresenter {
 		return drawOverlay;
 	}
 	
-	
 	private void drawTile(SpriteBatch spriteBatch, float tint, float alpha) {
-		tile.drawTinted(spriteBatch, tint, alpha);
+		
+		if (locationInfo.isIsland == false) {
+			tile.drawTinted(spriteBatch, tint, alpha);
+		}
+
+		if (shadow != null && L.floorShadows) {
+			shadow.drawTinted(spriteBatch, tint, alpha);
+		}
+		
 		if (roughTerrain != null) {
 			roughTerrain.drawTinted(spriteBatch, tint, alpha);
 		}
 //		if (tileInfo != null) {
 //			tileInfo.draw(spriteBatch, 0, 0);
 //		}
+	}
+	
+	public void drawFloor(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
+
+		float tint = locationInfo.tint;
+		
+		if (!L.useLights) {
+			tint = 100f;
+		}
+		
+		if (floorImage != null) {
+			if (isVisibile) {
+				floorImage.drawTinted(spriteBatch, tint, alpha);
+			} else if (locationInfo.isDiscovered) {
+				floorImage.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
+			} 
+		}
+	}
+	
+	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
+
+		float tint = locationInfo.tint;
+		
+		if (!L.useLights) {
+			tint = 100f;
+		}
+		
+		if (locationInfo.isIsland) {
+			if (isVisibile) {
+				tile.drawTinted(spriteBatch, tint, alpha);
+			} else if (locationInfo.isDiscovered) {
+				tile.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
+			} 
+		}
 	}
 	
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
@@ -109,47 +150,62 @@ public class LocationPresenter {
 		}
 	}
 	
-	public void drawIslandAndTorches(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
+	public void drawTorches(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
 		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
-			if (islandImage != null) {
-				islandImage.drawTinted(spriteBatch, locationInfo.tint, alpha);
-			}
 			if (torchAnimation != null) {
 				torchAnimation.draw(spriteBatch);
 			}
-		} else if (locationInfo.isDiscovered) {
-			if (islandImage != null) {
-				islandImage.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
-			}
 		} 
+		
+		if (torchAnimation != null) {
+			torchAnimation.draw(spriteBatch);
+		}
 	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
 		this.locationInfo = locationInfo;
 		
+		if (locationInfo.isHardcoded) {
+			if (LOG) L.log("");
+		}
+		
 		// Done once at setup.
 		if (tile == null) {
-			String tileName = "sw_";
+
+			String tileName;
+			String prefix = "sw_";
+			
 			if (L.json.has("walls")) {
-				tileName = L.json.getString("walls");
+				prefix = L.json.getString("walls");
 			}
 
+			// set the floor tile to use, if required;
+			if (locationInfo.requiresFloor()) {
+				floorImage = new ImageView(gui, prefix.concat("CLEAR_FLOOR_IMAGE"), area);
+			}
+			
+			// add correct prefix to tilename, if required.
+			if (locationInfo.addPrefix) {
+				tileName = prefix.concat(locationInfo.tileName);
+			} else {
+				tileName = locationInfo.tileName;
+			}
+			
+			// create shadow image overlay
 			if (locationInfo.isShadowedFloor) {
-				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
-				shadow = new ImageView(gui, locationInfo.tileName, area); 
-			} else if (locationInfo.isIsland) {
-				tileName = tileName.concat("CLEAR_FLOOR_IMAGE");
+				shadow = new ImageView(gui, locationInfo.getShadowName(), area);
+			} 
+			
+			// island image is bigger than normal.
+			if (locationInfo.isIsland) {
 				Rect islandArea = new Rect(area, 1.25f);
 				islandArea.y = area.y;
-				islandImage = new ImageView(gui, locationInfo.tileName, islandArea); 
+				tileName = locationInfo.tileName;  // island tilenames dont require a prefix because they are the same for any theme
+				this.tile = new ImageView(gui, tileName, islandArea);
 			} else {
-				if (locationInfo.addPrefix) {
-					tileName = tileName.concat(locationInfo.tileName);
-				} else {
-					tileName = locationInfo.tileName;
-				}
+				this.tile = new ImageView(gui, tileName, area);
 			}
-
+			 
 			if (L.DARK_PERCENTAGE != 100 && locationInfo.location.tileType != Location.TileType.CLEAR) {
 //				String text = tileName + " " + locationInfo.location.tileType.toString();
 //				String[] lines = locationInfo.tileName.split("(?=C)");
@@ -163,11 +219,9 @@ public class LocationPresenter {
 				tileInfo = null;
 			}
 			
-			this.tile = new ImageView(gui, tileName, area); 
-			
 			Rect torchArea; 
 			
-			if (LOG) L.log("location info: %s, location * %s", locationInfo, locationInfo.location);
+			if (LOG) L.log("tilename: %s, location info: %s, location * %s", tileName, locationInfo, locationInfo.location);
 			
 			switch (locationInfo.torch) {
 				case FRONT:

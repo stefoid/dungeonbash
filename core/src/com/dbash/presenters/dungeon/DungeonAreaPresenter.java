@@ -48,30 +48,50 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 
 	public static final boolean LOG = false && L.DEBUG;
 	
-	private static final float multiplier = 1f;
-	public final static float scrollPeriod = 0.5f * multiplier;
-	public final static float walkPeriod = 0.7f * multiplier;
-	public final static float leaderModeWalkPeriod = 0.7f * multiplier;
-	public final static float attackPeriod = 0.4f * multiplier;
-	public final static float chargePeriod = 0.4f * multiplier;
-	public final static float fallPeriod = 0.3f * multiplier;
-	public final static float damagePeriod = 0.7f * multiplier;
-	public final static float burstPeriod = 0.3f * multiplier;
-	public final static float abilityPeriod = 0.8f * multiplier;
-	public final static float passPeriod = 0.4f * multiplier;
-	public final static float missedPeriod = 0.4f * multiplier;
-	public final static float highlightPeriod = 1.2f * multiplier;
-	public final static float deathPeriod = 1.0f * multiplier;
-	public final static float skullPeriod = 0.7f * multiplier;
-	public final static float knockbackPeriod = 0.55f * multiplier;
-	public final static float shudderPeriod = 0.34f * multiplier;
-	public final static float effectMsgPeriod = 1f * multiplier;
+	public static float multiplier = 1f;
+	public  static float scrollPeriod = 0.5f * multiplier;
+	public  static float walkPeriod = 0.7f * multiplier;
+	public  static float leaderModeWalkPeriod = 0.7f * multiplier;
+	public  static float attackPeriod = 0.4f * multiplier;
+	public  static float chargePeriod = 0.4f * multiplier;
+	public  static float fallPeriod = 0.3f * multiplier;
+	public  static float damagePeriod = 0.7f * multiplier;
+	public  static float burstPeriod = 0.3f * multiplier;
+	public  static float abilityPeriod = 0.8f * multiplier;
+	public  static float passPeriod = 0.4f * multiplier;
+	public  static float missedPeriod = 0.4f * multiplier;
+	public  static float highlightPeriod = 1.2f * multiplier;
+	public  static float deathPeriod = 1.0f * multiplier;
+	public  static float skullPeriod = 0.7f * multiplier;
+	public  static float knockbackPeriod = 0.55f * multiplier;
+	public  static float shudderPeriod = 0.34f * multiplier;
+	public  static float effectMsgPeriod = 1f * multiplier;
 	
 	private UIDepend				gui;
 	private PresenterDepend 		model;
 	private MapPresenter			mapPresenter;
 	private AnimQueue				animQueue;
 
+	public static void calcPeriods() {
+		 scrollPeriod = 0.5f * multiplier;
+		 walkPeriod = 0.7f * multiplier;
+		 leaderModeWalkPeriod = 0.7f * multiplier;
+		 attackPeriod = 0.4f * multiplier;
+		 chargePeriod = 0.4f * multiplier;
+		 fallPeriod = 0.3f * multiplier;
+		 damagePeriod = 0.7f * multiplier;
+		 burstPeriod = 0.3f * multiplier;
+		 abilityPeriod = 0.8f * multiplier;
+		 passPeriod = 0.4f * multiplier;
+		 missedPeriod = 0.4f * multiplier;
+		 highlightPeriod = 1.2f * multiplier;
+		 deathPeriod = 1.0f * multiplier;
+		 skullPeriod = 0.7f * multiplier;
+		 knockbackPeriod = 0.55f * multiplier;
+		 shudderPeriod = 0.34f * multiplier;
+		 effectMsgPeriod = 1f * multiplier;
+	}
+	
 	// The area passed to this presenter, like any presenter, is where it is suppsoed to draw in 'world' coordinates.
 	// the cameraViewport passed in the gui dependencies is the the one used to draw this presenter and its children.
 	public DungeonAreaPresenter(UIDepend gui, final PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {

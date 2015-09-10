@@ -96,8 +96,19 @@ public class MapPresenter implements IMapPresentationEventListener{
 				// draw the current shadowmap details
 				CreatureDraw creatureDraw = creaturesToDraw[x][y];
 				LocationPresenter loc = locationPresenter(x,y);
-				boolean drawPrevCreature = loc.drawTile(spriteBatch, previousShadowMap, 1f);
-				boolean drawOnTopOfTile = loc.drawTile(spriteBatch, currentShadowMap, curAlpha);
+				
+				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+				
+				loc.drawFloor(spriteBatch, previousShadowMap, 1f, prevLocVisibile);
+				loc.drawFloor(spriteBatch, currentShadowMap, curAlpha, curLocVisibile);
+				
+				boolean drawPrevCreature = loc.drawTile(spriteBatch, previousShadowMap, 1f, prevLocVisibile);
+				boolean drawOnTopOfTile = loc.drawTile(spriteBatch, currentShadowMap, curAlpha, curLocVisibile);
+				
+				loc.drawIsland(spriteBatch, previousShadowMap, 1f, prevLocVisibile);
+				loc.drawIsland(spriteBatch, currentShadowMap, curAlpha, curLocVisibile);
+				
 				creatureDraw.drawMe = false;
 				// determine if we need to draw a creature and what alpha to draw it
 				if (drawPrevCreature && drawOnTopOfTile) {
@@ -123,8 +134,8 @@ public class MapPresenter implements IMapPresentationEventListener{
 			for (int y=maxTileY; y>=minTileY;y--) {
 				// draw the current shadowmap details
 				LocationPresenter loc = locationPresenter(x,y);
-				loc.drawIslandAndTorches(spriteBatch, previousShadowMap, 1f);
-				loc.drawIslandAndTorches(spriteBatch, currentShadowMap, curAlpha);
+				loc.drawTorches(spriteBatch, previousShadowMap, 1f);
+				loc.drawTorches(spriteBatch, currentShadowMap, curAlpha);
 				if (creaturesToDraw[x][y].drawMe) {
 					creaturesToDraw[x][y].loc.drawOverlayOnTile(spriteBatch, currentShadowMap, creaturesToDraw[x][y].alpha);
 				}
