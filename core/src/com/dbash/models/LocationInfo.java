@@ -53,7 +53,7 @@ public class LocationInfo {
 	}
 	
 	public boolean requiresFloor() {
-		return (isHardcoded || isIsland);
+		return (isHardcoded || isIsland || (location.tileType == Location.TileType.CLEAR));
 	}
 	
 	public String toString() {

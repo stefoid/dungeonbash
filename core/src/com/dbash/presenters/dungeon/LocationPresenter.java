@@ -58,13 +58,12 @@ public class LocationPresenter {
 		if (shadowMap != null) {
 			return shadowMap.locationIsVisible(locationInfo.location);
 		}
-		
 		return false;
 	}
 	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
-	public boolean drawTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
-		boolean drawOverlay = false;
+	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
+		
 		float tint = locationInfo.tint;
 		
 		if (!L.useLights) {
@@ -73,28 +72,17 @@ public class LocationPresenter {
 		
 		if (isVisibile) {
 			drawTile(spriteBatch, tint, alpha);
-			
-			for (ImageView image : items) {
-				image.draw(spriteBatch);
-			}
-			
-			// does this tile need to draw a creature or eye overlay?.
-			if (creaturePresenter != null || drawEye) {
-				drawOverlay = true;
-			}
 		} else if (locationInfo.isDiscovered) {
 			drawTile(spriteBatch, Location.minNotVisibleTint, alpha);
 		} 
-
-		return drawOverlay;
 	}
 	
 	private void drawTile(SpriteBatch spriteBatch, float tint, float alpha) {
-		
-		if (locationInfo.isIsland == false) {
-			tile.drawTinted(spriteBatch, tint, alpha);
-		}
 
+		if (tile != null) {
+			tile.drawTinted(spriteBatch, tint, alpha);;
+		}
+		
 		if (shadow != null && L.floorShadows) {
 			shadow.drawTinted(spriteBatch, tint, alpha);
 		}
@@ -102,12 +90,17 @@ public class LocationPresenter {
 		if (roughTerrain != null) {
 			roughTerrain.drawTinted(spriteBatch, tint, alpha);
 		}
+		
+		for (ImageView image : items) {
+			image.draw(spriteBatch);
+		}
+		
 //		if (tileInfo != null) {
 //			tileInfo.draw(spriteBatch, 0, 0);
 //		}
 	}
 	
-	public void drawFloor(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
+	public void drawFloor(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
 
 		float tint = locationInfo.tint;
 		
@@ -124,7 +117,31 @@ public class LocationPresenter {
 		}
 	}
 	
-	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
+//	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
+//
+//		float tint = locationInfo.tint;
+//		
+//		if (!L.useLights) {
+//			tint = 100f;
+//		}
+//		
+//		if (isVisibile) {
+//			tile.drawTinted(spriteBatch, tint, alpha);
+//		} else if (locationInfo.isDiscovered) {
+//			tile.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
+//		}
+//	}
+	
+	public void drawCreature(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
+
+		if (creaturePresenter != null) {
+			if (isVisibile) {
+				creaturePresenter.draw(spriteBatch, alpha);
+			}
+		}
+	}
+	
+	public void drawTorches(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
 
 		float tint = locationInfo.tint;
 		
@@ -132,42 +149,54 @@ public class LocationPresenter {
 			tint = 100f;
 		}
 		
-		if (locationInfo.isIsland) {
+		if (torchAnimation != null) {
 			if (isVisibile) {
-				tile.drawTinted(spriteBatch, tint, alpha);
-			} else if (locationInfo.isDiscovered) {
-				tile.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
+				torchAnimation.draw(spriteBatch);
 			} 
 		}
 	}
 	
-	public void drawOverlayOnTile(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha) {
-		if (creaturePresenter != null) {
-			creaturePresenter.draw(spriteBatch, alpha);
-		}
+//	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
+//
+//		float tint = locationInfo.tint;
+//		
+//		if (!L.useLights) {
+//			tint = 100f;
+//		}
+//		
+//		if (locationInfo.isIsland) {
+//			if (isVisibile) {
+//				tile.drawTinted(spriteBatch, tint, alpha);
+//			} else if (locationInfo.isDiscovered) {
+//				tile.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
+//			} 
+//		}
+//	}
+	
+	public void drawOverlayOnTile(SpriteBatch spriteBatch) {
 		if (drawEye) {
 			eyeAnimation.draw(spriteBatch);
 		}
 	}
 	
-	public void drawTorches(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
-		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
-			if (torchAnimation != null) {
-				torchAnimation.draw(spriteBatch);
-			}
-		} 
-		
-		if (torchAnimation != null) {
-			torchAnimation.draw(spriteBatch);
-		}
-	}
+//	public void drawTorches(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
+//		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
+//			if (torchAnimation != null) {
+//				torchAnimation.draw(spriteBatch);
+//			}
+//		} 
+//		
+//		if (torchAnimation != null) {
+//			if (isVisibile) {
+//				torchAnimation.draw(spriteBatch);
+//			} else if (locationInfo.isDiscovered) {
+//				torchAnimation.draw(spriteBatch);
+//			} 
+//		}
+//	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
 		this.locationInfo = locationInfo;
-		
-		if (locationInfo.isHardcoded) {
-			if (LOG) L.log("");
-		}
 		
 		// Done once at setup.
 		if (tile == null) {
@@ -203,7 +232,17 @@ public class LocationPresenter {
 				tileName = locationInfo.tileName;  // island tilenames dont require a prefix because they are the same for any theme
 				this.tile = new ImageView(gui, tileName, islandArea);
 			} else {
-				this.tile = new ImageView(gui, tileName, area);
+				// Dont draw the floor tile if its just clear floor and not an island or hardcoded, because it makes it fade funny and its
+				// also redundant becuse the floor gets drawn anyway.
+				if (locationInfo.requiresFloor()) {
+					if (locationInfo.isHardcoded) {
+						this.tile = new ImageView(gui, tileName, area);
+					} else {
+						this.tile = null;
+					}
+				} else {
+					this.tile = new ImageView(gui, tileName, area);
+				}
 			}
 			 
 			if (L.DARK_PERCENTAGE != 100 && locationInfo.location.tileType != Location.TileType.CLEAR) {
@@ -221,7 +260,7 @@ public class LocationPresenter {
 			
 			Rect torchArea; 
 			
-			if (LOG) L.log("tilename: %s, location info: %s, location * %s", tileName, locationInfo, locationInfo.location);
+			//if (LOG) L.log("tilename: %s, location info: %s, location * %s", tileName, locationInfo, locationInfo.location);
 			
 			switch (locationInfo.torch) {
 				case FRONT:

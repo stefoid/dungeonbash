@@ -73,9 +73,16 @@ public class MapPresenter implements IMapPresentationEventListener{
 		model.presenterDungeon.onMapEvent(this);
 	}
 	
-	
-	// viewPos is where the dungeon camera is at any given time, so we have to draw enough tiles around that point to show the map
-	// LocationPresenters are just squares of tilesize, starting from 0,0 in the bottom left corner, its no probs.
+	//	1) work out prev and cur visibility
+	//	2) draw floors
+	//	3) if its not an island, drawTiles
+	//
+	//	4) in reverse order (because of overlays and torches), 
+	//	
+	//	5) if its an island, draw the tile
+	//	6) draw the creatures with the appropriate calcualted alpha.
+	//	7) draw the torches
+	//	8) draw overlay like the highlight focus
 	public void draw(SpriteBatch spriteBatch) {
 		if (map == null) {
 			return;
@@ -100,45 +107,54 @@ public class MapPresenter implements IMapPresentationEventListener{
 				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
 				
-				loc.drawFloor(spriteBatch, previousShadowMap, 1f, prevLocVisibile);
-				loc.drawFloor(spriteBatch, currentShadowMap, curAlpha, curLocVisibile);
+				loc.drawFloor(spriteBatch, 1f, prevLocVisibile);
+				loc.drawFloor(spriteBatch, curAlpha, curLocVisibile);
 				
-				boolean drawPrevCreature = loc.drawTile(spriteBatch, previousShadowMap, 1f, prevLocVisibile);
-				boolean drawOnTopOfTile = loc.drawTile(spriteBatch, currentShadowMap, curAlpha, curLocVisibile);
-				
-				loc.drawIsland(spriteBatch, previousShadowMap, 1f, prevLocVisibile);
-				loc.drawIsland(spriteBatch, currentShadowMap, curAlpha, curLocVisibile);
-				
-				creatureDraw.drawMe = false;
-				// determine if we need to draw a creature and what alpha to draw it
-				if (drawPrevCreature && drawOnTopOfTile) {
-					creatureDraw.drawMe = true;
-					creatureDraw.alpha = 1f;
-					creatureDraw.loc = loc;
-				} else if (!drawPrevCreature && drawOnTopOfTile) {
-					creatureDraw.drawMe = true;
-					creatureDraw.alpha = curAlpha;
-					creatureDraw.loc = loc;
-				} else if (drawPrevCreature && !drawOnTopOfTile) {
-					creatureDraw.drawMe = true;
-					creatureDraw.alpha = fadeOutAlpha;
-					creatureDraw.loc = loc;
+				if (loc.isIsland() == false) {
+					loc.drawTile(spriteBatch, 1f, prevLocVisibile);
+					loc.drawTile(spriteBatch, curAlpha, curLocVisibile);
 				}
+				
+//				creatureDraw.drawMe = false;
+//				// determine if we need to draw a creature and what alpha to draw it
+//				if (drawPrevCreature && drawOnTopOfTile) {
+//					creatureDraw.drawMe = true;
+//					creatureDraw.alpha = 1f;
+//					creatureDraw.loc = loc;
+//				} else if (!drawPrevCreature && drawOnTopOfTile) {
+//					creatureDraw.drawMe = true;
+//					creatureDraw.alpha = curAlpha;
+//					creatureDraw.loc = loc;
+//				} else if (drawPrevCreature && !drawOnTopOfTile) {
+//					creatureDraw.drawMe = true;
+//					creatureDraw.alpha = fadeOutAlpha;
+//					creatureDraw.loc = loc;
+//				}
 			}
 		}
 		
 		// draw the creatures that we have recorded need to be drawn, at the appropriate alphas
 		// draw in reverse order so the bottom creatures appear on top
-		
 		for (int x=minTileX; x<=maxTileX; x++) {
 			for (int y=maxTileY; y>=minTileY;y--) {
-				// draw the current shadowmap details
+
 				LocationPresenter loc = locationPresenter(x,y);
-				loc.drawTorches(spriteBatch, previousShadowMap, 1f);
-				loc.drawTorches(spriteBatch, currentShadowMap, curAlpha);
-				if (creaturesToDraw[x][y].drawMe) {
-					creaturesToDraw[x][y].loc.drawOverlayOnTile(spriteBatch, currentShadowMap, creaturesToDraw[x][y].alpha);
+				
+				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+				
+				if (loc.isIsland()) {
+					loc.drawTile(spriteBatch, 1f, prevLocVisibile);
+					loc.drawTile(spriteBatch, curAlpha, curLocVisibile);
 				}
+				
+				loc.drawCreature(spriteBatch, 1f, prevLocVisibile);
+				loc.drawCreature(spriteBatch, curAlpha, curLocVisibile);
+				
+				loc.drawTorches(spriteBatch, 1f, prevLocVisibile);
+				loc.drawTorches(spriteBatch, curAlpha, curLocVisibile);
+				
+				loc.drawOverlayOnTile(spriteBatch);
 			}
 		}
 	}
