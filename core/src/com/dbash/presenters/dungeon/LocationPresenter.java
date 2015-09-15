@@ -91,8 +91,8 @@ public class LocationPresenter {
 			roughTerrain.drawTinted(spriteBatch, tint, alpha);
 		}
 		
-		for (ImageView image : items) {
-			image.draw(spriteBatch);
+		for (ImageView item : items) {
+			item.drawTinted(spriteBatch, tint, alpha);
 		}
 		
 //		if (tileInfo != null) {
