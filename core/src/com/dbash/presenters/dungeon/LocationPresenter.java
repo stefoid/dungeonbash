@@ -61,139 +61,94 @@ public class LocationPresenter {
 		return false;
 	}
 	
-	// draw a tile according to its visibility in the passed in shadowmap and alpha
-	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
+	private float calcTint(float cur_tint, float alpha, boolean prev, boolean current) {
+		float tint;
 		
-		float tint = locationInfo.tint;
+		if (prev && !current) {       // fade out
+			tint = cur_tint + (Location.minNotVisibleTint - cur_tint) * alpha;
+		} else if (!prev && current) {// fade in;
+			tint = Location.minNotVisibleTint + (cur_tint - Location.minNotVisibleTint) * alpha;
+		} else if (prev && current) { // still visible
+			tint = cur_tint;
+		} else {                      //  still not visible
+			tint = Location.minNotVisibleTint;
+		}	
+		
+		return tint;
+	}
+	
+	private float calcAlpha(float theAlpha, boolean prev, boolean current) {
+		float alpha;
+		
+		if (prev && !current) {       // fade out
+			alpha = 1f - theAlpha;
+		} else if (!prev && current) {// fade in;
+			alpha = theAlpha;
+		} else if (prev && current) { // still visible
+			alpha = 1f;
+		} else {                      //  still not visible
+			alpha = 0f;
+		}	
+		
+		return alpha;
+	}
+	
+	// draw a tile according to its visibility in the passed in shadowmap and alpha
+	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
+		
+		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
 		
 		if (!L.useLights) {
 			tint = 100f;
-		}
-		
-		if (isVisibile) {
-			drawTile(spriteBatch, tint, alpha);
-		} else if (locationInfo.isDiscovered) {
-			drawTile(spriteBatch, Location.minNotVisibleTint, alpha);
 		} 
-	}
-	
-	private void drawTile(SpriteBatch spriteBatch, float tint, float alpha) {
-
-		if (tile != null) {
-			tile.drawTinted(spriteBatch, tint, alpha);;
+		
+		if (floorImage != null) {
+			floorImage.drawTinted(spriteBatch, tint, 1f);
 		}
 		
-		if (shadow != null && L.floorShadows) {
-			shadow.drawTinted(spriteBatch, tint, alpha);
+		if (tile != null && isIsland() == false) {
+			tile.drawTinted(spriteBatch, tint, 1f);
+		} 
+		
+		if (L.floorShadows && shadow != null) {
+			shadow.drawTinted(spriteBatch, tint, 1f);
 		}
 		
 		if (roughTerrain != null) {
-			roughTerrain.drawTinted(spriteBatch, tint, alpha);
+			roughTerrain.drawTinted(spriteBatch, tint, 1f);
 		}
 		
 		for (ImageView item : items) {
-			item.drawTinted(spriteBatch, tint, alpha);
+			item.drawTinted(spriteBatch, tint, 1f);
 		}
 		
-//		if (tileInfo != null) {
-//			tileInfo.draw(spriteBatch, 0, 0);
-//		}
+		//	if (tileInfo != null) {
+		//		tileInfo.draw(spriteBatch, 0, 0);
+		//	}
 	}
 	
-	public void drawFloor(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
-
-		float tint = locationInfo.tint;
+	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
 		
-		if (!L.useLights) {
-			tint = 100f;
-		}
+		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
 		
-		if (floorImage != null) {
-			if (isVisibile) {
-				floorImage.drawTinted(spriteBatch, tint, alpha);
-			} else if (locationInfo.isDiscovered) {
-				floorImage.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
-			} 
-		}
-	}
-	
-//	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
-//
-//		float tint = locationInfo.tint;
-//		
-//		if (!L.useLights) {
-//			tint = 100f;
-//		}
-//		
-//		if (isVisibile) {
-//			tile.drawTinted(spriteBatch, tint, alpha);
-//		} else if (locationInfo.isDiscovered) {
-//			tile.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
-//		}
-//	}
-	
-	public void drawCreature(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
-
 		if (creaturePresenter != null) {
-			if (isVisibile) {
-				creaturePresenter.draw(spriteBatch, alpha);
+			if (prevVisible || curVisible) {
+				creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
 			}
 		}
-	}
-	
-	public void drawTorches(SpriteBatch spriteBatch, float alpha, boolean isVisibile) {
-
-		float tint = locationInfo.tint;
 		
-		if (!L.useLights) {
-			tint = 100f;
+		if (locationInfo.isIsland) {
+			tile.drawTinted(spriteBatch, tint, 1f);
 		}
 		
-		if (torchAnimation != null) {
-			if (isVisibile) {
-				torchAnimation.draw(spriteBatch);
-			} 
+		if (curVisible && torchAnimation != null) {
+			torchAnimation.draw(spriteBatch);
 		}
-	}
-	
-//	public void drawIsland(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
-//
-//		float tint = locationInfo.tint;
-//		
-//		if (!L.useLights) {
-//			tint = 100f;
-//		}
-//		
-//		if (locationInfo.isIsland) {
-//			if (isVisibile) {
-//				tile.drawTinted(spriteBatch, tint, alpha);
-//			} else if (locationInfo.isDiscovered) {
-//				tile.drawTinted(spriteBatch, Location.minNotVisibleTint, alpha);
-//			} 
-//		}
-//	}
-	
-	public void drawOverlayOnTile(SpriteBatch spriteBatch) {
+		
 		if (drawEye) {
 			eyeAnimation.draw(spriteBatch);
 		}
 	}
-	
-//	public void drawTorches(SpriteBatch spriteBatch, ShadowMap shadowMap, float alpha, boolean isVisibile) {
-//		if (shadowMap != null && shadowMap.locationIsVisible(locationInfo.location)) {
-//			if (torchAnimation != null) {
-//				torchAnimation.draw(spriteBatch);
-//			}
-//		} 
-//		
-//		if (torchAnimation != null) {
-//			if (isVisibile) {
-//				torchAnimation.draw(spriteBatch);
-//			} else if (locationInfo.isDiscovered) {
-//				torchAnimation.draw(spriteBatch);
-//			} 
-//		}
-//	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
 		this.locationInfo = locationInfo;

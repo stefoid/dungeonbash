@@ -37,12 +37,6 @@ import com.dbash.util.Tween;
 public class MapPresenter implements IMapPresentationEventListener{
 	public static final boolean LOG = false && L.DEBUG;
 	
-	public static class CreatureDraw {
-		LocationPresenter loc;
-		float alpha;
-		boolean drawMe;
-	}
-	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
 	protected DungeonPosition focusPosition;
@@ -57,7 +51,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected float tileSize;
 	protected ShadowMap currentShadowMap;
 	protected ShadowMap previousShadowMap;
-	CreatureDraw[][] creaturesToDraw;
 	protected Tween currentShadowMapTween;
 	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
@@ -101,35 +94,13 @@ public class MapPresenter implements IMapPresentationEventListener{
 		for (int x=minTileX; x<=maxTileX; x++) {
 			for (int y=minTileY; y<=maxTileY;y++) {
 				// draw the current shadowmap details
-				CreatureDraw creatureDraw = creaturesToDraw[x][y];
 				LocationPresenter loc = locationPresenter(x,y);
 				
-				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
-				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-				
-				loc.drawFloor(spriteBatch, 1f, prevLocVisibile);
-				loc.drawFloor(spriteBatch, curAlpha, curLocVisibile);
-				
-				if (loc.isIsland() == false) {
-					loc.drawTile(spriteBatch, 1f, prevLocVisibile);
-					loc.drawTile(spriteBatch, curAlpha, curLocVisibile);
+				if (loc.locationInfo.isDiscovered) {
+					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+						loc.drawTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile);
 				}
-				
-//				creatureDraw.drawMe = false;
-//				// determine if we need to draw a creature and what alpha to draw it
-//				if (drawPrevCreature && drawOnTopOfTile) {
-//					creatureDraw.drawMe = true;
-//					creatureDraw.alpha = 1f;
-//					creatureDraw.loc = loc;
-//				} else if (!drawPrevCreature && drawOnTopOfTile) {
-//					creatureDraw.drawMe = true;
-//					creatureDraw.alpha = curAlpha;
-//					creatureDraw.loc = loc;
-//				} else if (drawPrevCreature && !drawOnTopOfTile) {
-//					creatureDraw.drawMe = true;
-//					creatureDraw.alpha = fadeOutAlpha;
-//					creatureDraw.loc = loc;
-//				}
 			}
 		}
 		
@@ -140,21 +111,11 @@ public class MapPresenter implements IMapPresentationEventListener{
 
 				LocationPresenter loc = locationPresenter(x,y);
 				
-				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
-				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-				
-				if (loc.isIsland()) {
-					loc.drawTile(spriteBatch, 1f, prevLocVisibile);
-					loc.drawTile(spriteBatch, curAlpha, curLocVisibile);
+				if (loc.locationInfo.isDiscovered) {
+					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+					loc.drawOverlayOnTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile);
 				}
-				
-				loc.drawCreature(spriteBatch, 1f, prevLocVisibile);
-				loc.drawCreature(spriteBatch, curAlpha, curLocVisibile);
-				
-				loc.drawTorches(spriteBatch, 1f, prevLocVisibile);
-				loc.drawTorches(spriteBatch, curAlpha, curLocVisibile);
-				
-				loc.drawOverlayOnTile(spriteBatch);
 			}
 		}
 	}
@@ -193,12 +154,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 	public void setMap(Map map)
 	{
 		this.map = map;
-		creaturesToDraw = new CreatureDraw[map.width][map.height];
-		for (int x=0;x<map.width;x++) {
-			for (int y=0;y<map.height;y++) {
-				creaturesToDraw[x][y] = new CreatureDraw();
-			}
-		}
+
 		map.onChangeToLocationInfo(new UILocationInfoListener() {
 			public void locationInfoChanged(Location location) {
 				LocationPresenter locationPresenter = locationPresenter(location.position);

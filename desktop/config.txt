@@ -1,6 +1,6 @@
 {
 "first_character" : "greater demon",
-"monsters" : false,
+"monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
 "walls" : "ow_",
