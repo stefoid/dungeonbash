@@ -2,7 +2,6 @@ package com.dbash.presenters.dungeon;
 
 import java.util.Vector;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
@@ -11,13 +10,11 @@ import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
-import com.dbash.platform.TextBoxView;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
-import com.dbash.util.Rect.HAlignment;
 
 // a LocationPresenter is the partner of a Location in the model.  it handles the presentation of the corresponding Location, duh.
 // it gets updates of presentation-related data in the form of LocationInfo when the visual representation of the Location changes.
@@ -98,6 +95,11 @@ public class LocationPresenter {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
 		
+		float lightTint = tint+ (1.1f-tint)/5;
+		if (lightTint > 1f) {
+			lightTint = 1f;
+		}
+		
 		if (!L.useLights) {
 			tint = 100f;
 		} 
@@ -107,7 +109,7 @@ public class LocationPresenter {
 		}
 		
 		if (tile != null && isIsland() == false) {
-			tile.drawTinted(spriteBatch, tint, 1f);
+			tile.drawTinted(spriteBatch, lightTint, 1f);
 		} 
 		
 		if (L.floorShadows && shadow != null) {
@@ -115,11 +117,11 @@ public class LocationPresenter {
 		}
 		
 		if (roughTerrain != null) {
-			roughTerrain.drawTinted(spriteBatch, tint, 1f);
+			roughTerrain.drawTinted(spriteBatch, lightTint, 1f);
 		}
 		
 		for (ImageView item : items) {
-			item.drawTinted(spriteBatch, tint, 1f);
+			item.drawTinted(spriteBatch, lightTint, 1f);
 		}
 		
 		//	if (tileInfo != null) {
@@ -130,6 +132,10 @@ public class LocationPresenter {
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
+		float lightTint = tint + (1.1f-tint)/5;
+		if (lightTint > 1f) {
+			lightTint = 1f;
+		}
 		
 		if (creaturePresenter != null) {
 			if (prevVisible || curVisible) {
@@ -138,7 +144,7 @@ public class LocationPresenter {
 		}
 		
 		if (locationInfo.isIsland) {
-			tile.drawTinted(spriteBatch, tint, 1f);
+			tile.drawTinted(spriteBatch, lightTint, 1f);
 		}
 		
 		if (curVisible && torchAnimation != null) {

@@ -1,6 +1,7 @@
 package com.dbash.models;
 
 import com.dbash.models.Location.RoughTerrainType;
+import com.dbash.util.L;
 
 // LocationInfo is information created by a Location model object for Presenter consumption.
 // It contains everything the Presenter needs to know to visually represent that location.
@@ -53,7 +54,13 @@ public class LocationInfo {
 	}
 	
 	public boolean requiresFloor() {
-		return (isHardcoded || isIsland || (location.tileType == Location.TileType.CLEAR));
+		boolean result =  (isHardcoded || isIsland || location.locationType == Location.LocationType.FLOOR);
+		if (L.NEW_TILES) {
+			if (location.locationType == Location.LocationType.WALL) {
+				result = true;
+			}
+		}
+		return result;
 	}
 	
 	public String toString() {

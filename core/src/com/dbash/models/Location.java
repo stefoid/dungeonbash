@@ -152,6 +152,7 @@ public class Location {
 		this.y = position.y;
 		locationType = (LocationType) in.readObject();
 		tileType = (TileType) in.readObject();
+		shadowName = (String) in.readObject();
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
@@ -205,6 +206,10 @@ public class Location {
 		
 		if (torch != TorchType.NONE) {
 			addTorch(torch);
+		}
+		
+		if (shadowName != null) {
+			isShadowed = true;
 		}
 		
 		updatePresenter(); 
@@ -778,6 +783,7 @@ public class Location {
 		out.writeObject(position);
 		out.writeObject(locationType);
 		out.writeObject(tileType);
+		out.writeObject(shadowName);
 		out.writeInt(creatureFacingDir); 
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(isDiscovered);
