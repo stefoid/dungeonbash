@@ -153,6 +153,9 @@ public class Location {
 		locationType = (LocationType) in.readObject();
 		tileType = (TileType) in.readObject();
 		shadowName = (String) in.readObject();
+		if (shadowName != null) {
+			isShadowed = true;
+		}
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
@@ -206,10 +209,6 @@ public class Location {
 		
 		if (torch != TorchType.NONE) {
 			addTorch(torch);
-		}
-		
-		if (shadowName != null) {
-			isShadowed = true;
 		}
 		
 		updatePresenter(); 
@@ -733,17 +732,19 @@ public class Location {
 		
 		String shadowName = null;
 		
-		boolean northWall = map.safeLocation(x,y + 1).castsShadow();
-		boolean eastWall = map.safeLocation(x + 1,y).castsShadow();
-		boolean neWall = map.safeLocation(x + 1,y + 1).castsShadow();
+		if (locationType == LocationType.FLOOR) {
+			boolean northWall = map.safeLocation(x,y + 1).castsShadow();
+			boolean eastWall = map.safeLocation(x + 1,y).castsShadow();
+			boolean neWall = map.safeLocation(x + 1,y + 1).castsShadow();
 
-		if (northWall) {
-			shadowName = eastWall ? "TOP_AND_SIDE_SHADOW_FLOOR_IMAGE" : neWall ? "TOP_SHADOW_FLOOR_IMAGE" : "ANGLE_TOP_SHADOW_FLOOR_IMAGE";
-		} else {
-			if (eastWall)
-				shadowName = neWall ? "SIDE_SHADOW_FLOOR_IMAGE" : "ANGLE_SIDE_SHADOW_FLOOR_IMAGE";
-			else if (neWall) {
-				shadowName = "CORNER_SHADOW_FLOOR_IMAGE";
+			if (northWall) {
+				shadowName = eastWall ? "TOP_AND_SIDE_SHADOW_FLOOR_IMAGE" : neWall ? "TOP_SHADOW_FLOOR_IMAGE" : "ANGLE_TOP_SHADOW_FLOOR_IMAGE";
+			} else {
+				if (eastWall)
+					shadowName = neWall ? "SIDE_SHADOW_FLOOR_IMAGE" : "ANGLE_SIDE_SHADOW_FLOOR_IMAGE";
+				else if (neWall) {
+					shadowName = "CORNER_SHADOW_FLOOR_IMAGE";
+				}
 			}
 		}
 		

@@ -1,13 +1,13 @@
 {
 "first_character" : "greater demon",
-"monsters" : true,
+"monsters" : false,
 "screen_width" : 1280,
 "screen_height" : 800,
-"walls" : "ow_",
-"new_tiles" : false,
+"walls" : "sw_",
+"new_tiles" : true,
 "lights" : true,
 "level" : 2,
-"floor_shadows" : true,
-"dark_percentage" : 100,
+"floor_shadows" : false,
+"dark_factor" : 5,
 "anim_speed" : 1
 }

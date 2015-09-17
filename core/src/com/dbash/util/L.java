@@ -6,7 +6,7 @@ public class L {
 
 	public static boolean DEBUG = true;
 	
-	public static boolean JARFILE = false;
+	public static boolean JARFILE = true;
 	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = false;
@@ -24,7 +24,7 @@ public class L {
 	
 	public static boolean useLights = true;
 	public static boolean floorShadows = true;
-	public static int DARK_PERCENTAGE = 100;
+	public static int DARK_FACTOR = 5;
 	public static boolean NEW_TILES = false;
 	
 	public static int EXTRA_XP = 0;

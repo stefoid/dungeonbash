@@ -95,7 +95,7 @@ public class LocationPresenter {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
 		
-		float lightTint = tint+ (1.1f-tint)/5;
+		float lightTint = tint+ (1.1f-tint)/L.DARK_FACTOR;
 		if (lightTint > 1f) {
 			lightTint = 1f;
 		}
@@ -132,7 +132,7 @@ public class LocationPresenter {
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
-		float lightTint = tint + (1.1f-tint)/5;
+		float lightTint = tint + (1.1f-tint)/L.DARK_FACTOR;
 		if (lightTint > 1f) {
 			lightTint = 1f;
 		}
@@ -182,7 +182,7 @@ public class LocationPresenter {
 			}
 			
 			// create shadow image overlay
-			if (locationInfo.isShadowedFloor) {
+			if (L.floorShadows && locationInfo.isShadowedFloor) {
 				shadow = new ImageView(gui, locationInfo.getShadowName(), area);
 			} 
 			
@@ -193,9 +193,7 @@ public class LocationPresenter {
 				tileName = locationInfo.tileName;  // island tilenames dont require a prefix because they are the same for any theme
 				this.tile = new ImageView(gui, tileName, islandArea);
 			} else {
-				// Dont draw the floor tile if its just clear floor and not an island or hardcoded, because it makes it fade funny and its
-				// also redundant becuse the floor gets drawn anyway.
-				if (locationInfo.requiresFloor()) {
+				if (L.NEW_TILES == false && locationInfo.requiresFloor()) {
 					if (locationInfo.isHardcoded) {
 						this.tile = new ImageView(gui, tileName, area);
 					} else {
@@ -206,7 +204,7 @@ public class LocationPresenter {
 				}
 			}
 			 
-			if (L.DARK_PERCENTAGE != 100 && locationInfo.location.tileType != Location.TileType.CLEAR) {
+			if (locationInfo.location.tileType != Location.TileType.CLEAR) {
 //				String text = tileName + " " + locationInfo.location.tileType.toString();
 //				String[] lines = locationInfo.tileName.split("(?=C)");
 //				for (int i=0; i<lines.length; i++) {
