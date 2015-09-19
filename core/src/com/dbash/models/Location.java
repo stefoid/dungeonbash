@@ -181,14 +181,20 @@ public class Location {
 			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
 			torchPosition.x +=2;
 			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
-		} else {
-			// Front facing torches cast their light in front of them
-			if (torch == TorchType.FRONT ) {
-				torchPosition.y--;
+		} else if (torch == TorchType.FRONT ) {
+			torchPosition.y--;
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
+		} else if (torch == TorchType.WEST ) {
+			if (L.NEW_TILES) {
+				torchPosition.x--;
 			} 
 			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
-		}
-
+ 		} else if (torch == TorchType.EAST ) {
+			if (L.NEW_TILES) {
+				torchPosition.x++;
+			} 
+			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
+ 		} 
 		updateLocationInfo();
 	}
 	
@@ -513,13 +519,21 @@ public class Location {
 	}
 	
 	public void createTorchAt() {
+		
 		if (tileType == TileType.FRONT_FACE) {
 			addTorch(TorchType.FRONT);
 		} else if (tileName.startsWith("VertWest")) {
-			if (LOG) L.log("x: %s, y: %s, WEST TORCH CREATED", x-1, y);
-			map.location[x-1][y].addTorch(TorchType.WEST);
+			if (L.NEW_TILES) {
+				map.location[x][y].addTorch(TorchType.WEST);
+			} else {
+				map.location[x-1][y].addTorch(TorchType.WEST);
+			}
 		} else if (tileName.startsWith("VertEast")) {
-			map.location[x+1][y].addTorch(TorchType.EAST);
+			if (L.NEW_TILES) {
+				map.location[x][y].addTorch(TorchType.EAST);
+			} else {
+				map.location[x+1][y].addTorch(TorchType.EAST);
+			}
 		}
 	}
 	
@@ -606,7 +620,7 @@ public class Location {
 								case CLEAR:
 									return "RearEastCornerWest";
 								case FRONT_FACE:
-									return "RearDoubleCorner";
+									return "FrontDoubleCorner";
 								case REAR_FACE:
 									return "RearCornerWest";
 								case NO_FACE:

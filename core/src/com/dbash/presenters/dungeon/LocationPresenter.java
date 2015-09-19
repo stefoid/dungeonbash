@@ -5,6 +5,7 @@ import java.util.Vector;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
+import com.dbash.models.Location.LocationType;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
@@ -108,7 +109,7 @@ public class LocationPresenter {
 			floorImage.drawTinted(spriteBatch, tint, 1f);
 		}
 		
-		if (tile != null && isIsland() == false) {
+		if (tile != null && locationInfo.shouldDrawTile()) {
 			tile.drawTinted(spriteBatch, lightTint, 1f);
 		} 
 		
@@ -221,7 +222,7 @@ public class LocationPresenter {
 			
 			//if (LOG) L.log("tilename: %s, location info: %s, location * %s", tileName, locationInfo, locationInfo.location);
 			
-			switch (locationInfo.torch) {
+		switch (locationInfo.torch) {
 				case FRONT:
 					torchArea = new Rect(area, 0.8f);
 					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
@@ -236,11 +237,17 @@ public class LocationPresenter {
 					break;
 				case WEST:
 					torchArea = new Rect(area, .2f, 0f, 0.0f, .3f);
+					if (L.NEW_TILES) {
+						torchArea.x -= area.width/3.3f;
+					}
 					torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					torchAnimation.startPlaying();
 					break;
 				case EAST:
 					torchArea = new Rect(area, 0f, 0.2f, .0f, .3f);
+					if (L.NEW_TILES) {
+						torchArea.x += area.width/3.3f;	
+					}
 					torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					torchAnimation.startPlaying();
 					break;

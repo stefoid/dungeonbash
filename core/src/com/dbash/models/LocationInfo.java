@@ -63,6 +63,14 @@ public class LocationInfo {
 		return result;
 	}
 	
+	public boolean shouldDrawTile() {
+		if (!isHardcoded && !isIsland && location.locationType == Location.LocationType.FLOOR) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	public String toString() {
 		return "TORCH: "+torch;
 	}
