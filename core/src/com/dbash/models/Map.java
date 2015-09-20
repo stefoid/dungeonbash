@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 import com.dbash.models.Location.LocationType;
@@ -449,8 +450,8 @@ public class Map implements IPresenterMap {
 		boolean useBlank = true;
 
 		if (Randy.getRand(1, 1) == 1) {
-			int roomNumber = Randy.getRand(0, hardRooms.size() - 1);
-			Room room = hardRooms.get(roomNumber);
+
+			Room room = getRandomRoom();
 			Rect area = new Rect(position, room.width, room.height);
 
 			if (isRectClearOfRooms(area)) {
@@ -469,6 +470,20 @@ public class Map implements IPresenterMap {
 		}
 	}
 
+	private Room getRandomRoom() {
+		int roomNumber = Randy.getRand(0, hardRooms.size() - 1);
+		
+		if (L.HARD_ROOM_NAME != null) {
+			for (int i=0; i<hardRooms.size(); i++) {
+				if (L.HARD_ROOM_NAME.equals(hardRooms.get(i).hardcodeName)) {
+					roomNumber = i;
+				}
+			}
+		}
+		Room room = hardRooms.get(roomNumber);
+		return room;
+	}
+	
 	// check if the rect supplied is inside the map area and also clear of any
 	// overlapping rooms.
 	private boolean isRectClearOfRooms(Rect rect) {
@@ -1078,24 +1093,26 @@ public class Map implements IPresenterMap {
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
 	
 	private static ArrayList<Room> makeHardRooms() {
+		
 		ArrayList<Room> theRooms = new ArrayList<Room>();
 		
 		theRooms.add(new Room(holeMap, holeMonsters, "holemap", 0));
-//		theRooms.add(new Room(mudMap, mudMonsters, null, 0));
-//		theRooms.add(new Room(ravVertMap, ravVertMonsters, null, 0));
-//		theRooms.add(new Room(ravHorMap, ravHorMonsters, null, 0));
-//		theRooms.add(new Room(gridMap, gridMonsters,null, 0));
-//		theRooms.add(new Room(boneMap, boneMonsters, null, 0));
-//		theRooms.add(new Room(rockMap, rockMonsters, null, 0));
-//		theRooms.add(new Room(holegridMap, holegridMonsters, null, 0));
-//		theRooms.add(new Room(bridgeMap, bridgeMonsters, null, 0));
-//		theRooms.add(new Room(crossMap, crossMonsters, null, 0));
-//		theRooms.add(new Room(rocks1Map, rocks1Monsters, null, 0));
-//		theRooms.add(new Room(rocks2Map, rocks2Monsters, null, 0));
-//		theRooms.add(new Room(rocks3Map, rocks3Monsters, null, 0));
-//		theRooms.add(new Room(rocks4Map, rocks4Monsters, null, 0));
-//		theRooms.add(new Room(holes2Map, holes2Monsters, null, 0));
-//		theRooms.add(new Room(holes3Map, holes3Monsters, null, 0));
+		theRooms.add(new Room(mudMap, mudMonsters, "mud", 0));
+		theRooms.add(new Room(ravVertMap, ravVertMonsters, "ravVert", 0));
+		theRooms.add(new Room(ravHorMap, ravHorMonsters, "ravHor", 0));
+		theRooms.add(new Room(gridMap, gridMonsters,"grid", 0));
+		theRooms.add(new Room(boneMap, boneMonsters, "bone", 0));
+		theRooms.add(new Room(rockMap, rockMonsters, "rock", 0));
+		theRooms.add(new Room(holegridMap, holegridMonsters, "holegrid", 0));
+		theRooms.add(new Room(bridgeMap, bridgeMonsters, "bridge", 0));
+		theRooms.add(new Room(rocks1Map, rocks1Monsters, "rocks1", 0));
+		theRooms.add(new Room(rocks2Map, rocks2Monsters, "rocks2", 0));
+		theRooms.add(new Room(rocks3Map, rocks3Monsters, "rocks3", 0));
+		theRooms.add(new Room(rocks4Map, rocks4Monsters, "rocks4", 0));
+		theRooms.add(new Room(holes2Map, holes2Monsters, "holes2", 0));
+		theRooms.add(new Room(holes3Map, holes3Monsters, "holes3", 0));
+		
+		theRooms.add(new Room(crossMap, crossMonsters, null, 0));
 		
 		return theRooms;
 	}

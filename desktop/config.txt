@@ -6,8 +6,9 @@
 "walls" : "sw_",
 "new_tiles" : true,
 "lights" : true,
-"level" : 2,
+"level" : 8,
 "floor_shadows" : false,
 "dark_factor" : 5,
-"anim_speed" : 1
+"anim_speed" : 1,
+"hard_area_name" : "holemap"
 }

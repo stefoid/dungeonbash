@@ -102,7 +102,7 @@ public class DesktopLauncher {
 	public static String DARK_FACTOR = "dark_factor";
 	public static String NEW_TILES = "new_tiles";
 	public static String ANIM_SPEED = "anim_speed";
-	
+	public static String HARD_ROOM_NAME = "hard_area_name";
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
 		config.width = L.SCREENX;
@@ -140,6 +140,9 @@ public class DesktopLauncher {
 				if (json.has(ANIM_SPEED)) {
 					DungeonAreaPresenter.multiplier = json.getFloat(ANIM_SPEED);
 					DungeonAreaPresenter.calcPeriods();
+				}
+				if (json.has(HARD_ROOM_NAME)) {
+					L.HARD_ROOM_NAME = json.getString(HARD_ROOM_NAME);
 				}
 			} catch (Exception e) {
 			}
