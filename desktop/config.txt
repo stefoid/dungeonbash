@@ -1,14 +1,13 @@
 {
-"first_character" : "greater demon",
-"monsters" : false,
+"monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
-"walls" : "sw_",
-"new_tiles" : true,
+"walls" : "ow_",
+"new_tiles" : false,
 "lights" : true,
-"level" : 8,
-"floor_shadows" : false,
+"level" : 1,
+"floor_shadows" : true,
 "dark_factor" : 5,
 "anim_speed" : 1,
-"hard_area_name" : "holemap"
+"hard_area_name" : null
 }
