@@ -6,7 +6,7 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean JARFILE = true;
+	public static boolean JARFILE = false;
 	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = false;
