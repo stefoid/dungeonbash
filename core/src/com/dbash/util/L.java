@@ -22,6 +22,7 @@ public class L {
 	public static boolean NO_SAVE = false;
 	public static int LEVEL = 1;
 	
+	public static String STRING_PREFIX = "ow_";
 	public static boolean useLights = true;
 	public static boolean floorShadows = true;
 	public static int DARK_FACTOR = 5;

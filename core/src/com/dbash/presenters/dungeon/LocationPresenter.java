@@ -96,9 +96,13 @@ public class LocationPresenter {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
 		
-		float lightTint = tint+ (1.1f-tint)/L.DARK_FACTOR;
-		if (lightTint > 1f) {
-			lightTint = 1f;
+		float lightTint = tint;
+		
+		if (curVisible) {
+			lightTint = tint+ (1.1f-tint)/L.DARK_FACTOR;
+			if (lightTint > 1f) {
+				lightTint = 1f;
+			}
 		}
 		
 		if (!L.useLights) {
@@ -164,7 +168,7 @@ public class LocationPresenter {
 		if (tile == null) {
 
 			String tileName;
-			String prefix = "sw_";
+			String prefix = L.STRING_PREFIX;
 			
 			if (L.json.has("walls")) {
 				prefix = L.json.getString("walls");

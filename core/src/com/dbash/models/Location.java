@@ -309,6 +309,10 @@ public class Location {
 			result = false;
 		}
 		
+		if (tileType == TileType.ISLAND) {
+			result = false;
+		}
+		
 		if (getRoughTerrain() != null) {
 			result = false;
 		}
