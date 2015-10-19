@@ -1,12 +1,12 @@
 {
-"monsters" : true,
+"monsters" : false,
 "screen_width" : 1280,
 "screen_height" : 800,
-"walls" : "ow_",
-"new_tiles" : false,
+"walls" : "sw_",
+"new_tiles" : true,
 "lights" : true,
 "level" : 1,
-"floor_shadows" : true,
+"floor_shadows" : false,
 "dark_factor" : 5,
 "anim_speed" : 1,
 "hard_area_name" : null

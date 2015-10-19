@@ -44,9 +44,7 @@ public class LocationInfo {
 		
 		isShadowedFloor = location.isShadowed;
 		
-		if (location.tileType == Location.TileType.ISLAND) {
-			isIsland = true;
-		}
+		isIsland = location.hasIsland();
 	}
 	
 	public String getShadowName() {

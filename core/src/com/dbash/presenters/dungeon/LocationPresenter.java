@@ -1,7 +1,10 @@
 package com.dbash.presenters.dungeon;
 
+import java.util.HashMap;
 import java.util.Vector;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
@@ -15,6 +18,7 @@ import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.L;
+import com.dbash.util.Randy;
 import com.dbash.util.Rect;
 
 // a LocationPresenter is the partner of a Location in the model.  it handles the presentation of the corresponding Location, duh.
@@ -176,7 +180,8 @@ public class LocationPresenter {
 
 			// set the floor tile to use, if required;
 			if (locationInfo.requiresFloor()) {
-				floorImage = new ImageView(gui, prefix.concat("CLEAR_FLOOR_IMAGE"), area);
+				String floorName = prefix.concat("CLEAR_FLOOR_IMAGE");
+				floorImage = new ImageView(gui, floorName, area);
 			}
 			
 			// add correct prefix to tilename, if required.
@@ -273,6 +278,8 @@ public class LocationPresenter {
 		
 		setItemImages();
 	}
+	
+
 	
 	protected void setItemImages() {
 		final float x[] = {.38f, .25f, .50f, .30f, .45f, .38f, .00f, .70f, .15f, .63f, .38f};

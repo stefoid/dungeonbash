@@ -43,6 +43,8 @@ public class Dbash implements ApplicationListener {
 		PLAYING
 	};
 	
+	public static CachedSpriteManager theSpriteManager = null; 
+	
 	Dungeon dungeon;
 	TurnProcessor turnProcessor;
 	private SpriteBatch spriteBatch;
@@ -88,6 +90,7 @@ public class Dbash implements ApplicationListener {
 		}
 		
 		gui.spriteManager = spriteManager;
+		theSpriteManager = spriteManager;
 		gui.numberFont = new FatOutlineFont();
 		gui.sizeCalculator = new SizeCalculator();
 		gui.audio = new Audio();

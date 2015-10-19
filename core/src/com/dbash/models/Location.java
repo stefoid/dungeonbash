@@ -3,13 +3,16 @@ package com.dbash.models;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Vector;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dbash.models.IDungeonQuery.AtLocation;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.util.EventBus;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
+import com.me.dbash.Dbash;
 
 // A Location embodies everything about a particular tile in the dungeon, including which characters can currently see it
 // (Each character has a shadowMap that informs Locations that it can see them)
@@ -121,6 +124,8 @@ public class Location {
 	public boolean isShadowed;
 	public String shadowName;
 	 
+	private static HashMap<String, Integer> tileVariants = new HashMap<String, Integer>();
+	
 	// will create itself and add itself to the map.
 	public Location(Map map, int x, int y)
 	{
@@ -392,6 +397,14 @@ public class Location {
 		}
 	}
 	
+	public boolean hasIsland() {
+		if (tileType == Location.TileType.ISLAND) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public void setAsExit() {
 		locationType = LocationType.EXIT;
 	}
@@ -497,11 +510,67 @@ public class Location {
 		if (shadowName != null) {
 			isShadowed = true;
 		}
+		
+		tileName = calcVariantToUse(tileName); 
 	}
 	
 	public void setHardcodeTilename(String hardcodeTilename) {
 		this.hardcodeTilename = hardcodeTilename;
 		isHardcoded = true; 
+	}
+	
+	private Integer getVariantCount(String filename) {
+		Integer count = tileVariants.get(filename);
+		if (count == null) {
+			count = 1;
+			Sprite sprite = null;
+			
+			do {
+				Integer postfix = count+1;
+				sprite = Dbash.theSpriteManager.fetchSprite(filename.concat(postfix.toString()));  // oh dear
+				if (sprite != null) {
+					count++;
+				}
+			} while (sprite != null);
+			
+			tileVariants.put(filename, count);
+		}
+		
+		return count;
+	}
+	
+	public static final double firstTileProbability = 70.0;
+	
+	private String calcVariantToUse(String tilename) {
+		String tilenameToUse = tilename;
+		Integer count = getVariantCount(tilename);
+		int random = Randy.getRand(1, 100);
+		boolean shouldUseVariant = true;
+		
+		if (hasRoughTerrain() || hasIsland()) {
+			shouldUseVariant = false;
+		}
+		
+		if (shouldUseVariant && (count > 1) && (random > firstTileProbability)) {
+			double gap = (100.0 - firstTileProbability) / (double) (count - 1);
+			double index = 2.0 + (random - firstTileProbability) / gap;
+			Integer tileNum = (int) index;
+			if (tileNum > count) {
+				tileNum = count;
+			}
+			
+			tilenameToUse = tilename.concat(tileNum.toString());
+		} 
+		
+//		for (Integer i=count; i > 1; i--) {
+//		    int threashold = 100/(i*2);
+//			if (random <= threashold) {
+//				tilenameToUse = tilename.concat(i.toString());
+//				break;
+//			}
+//		}
+		
+		return tilenameToUse;
 	}
 	
 	/**
