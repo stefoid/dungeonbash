@@ -107,6 +107,7 @@ public class Location {
 	public int	creatureFacingDir; // Dungeon.EAST for example
 	public Vector<Ability> itemList;
 	public String tileName;  // the type of tile which will be used to work out the Sprite to display it.
+	public String floorName;
 	public boolean isDiscovered;
 	public DungeonPosition position;
 	int x;
@@ -123,15 +124,17 @@ public class Location {
 	public boolean isHardcoded;
 	public boolean isShadowed;
 	public String shadowName;
+	public String prefix;
 	 
 	private static HashMap<String, Integer> tileVariants = new HashMap<String, Integer>();
 	
 	// will create itself and add itself to the map.
-	public Location(Map map, int x, int y)
+	public Location(Map map, int x, int y, String prefix)
 	{
 		this.map = map;
 		this.x = x;
 		this.y = y;
+		this.prefix = prefix;
 		position = new DungeonPosition(x,y);
 		locationType = LocationType.WALL;  // defaults to wall
 		itemList = new Vector<Ability>();  // no items
@@ -163,6 +166,7 @@ public class Location {
 		}
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
+		floorName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
 		isHardcoded = in.readBoolean();
@@ -501,6 +505,9 @@ public class Location {
 	public void setTileName() {
 		if (hardcodeTilename == null) {
 			tileName = calculateTileName();
+			if (hasIsland() == false) {
+				tileName = prefix.concat(tileName);
+			}
 		} else {
 			tileName = hardcodeTilename;
 			isHardcoded = true;
@@ -511,7 +518,10 @@ public class Location {
 			isShadowed = true;
 		}
 		
-		tileName = calcVariantToUse(tileName); 
+		tileName = calcVariantToUse(tileName);
+		if (requiresFloor()) {
+			floorName = calcVariantToUse(prefix.concat("CLEAR_FLOOR_IMAGE"));
+		}
 	}
 	
 	public void setHardcodeTilename(String hardcodeTilename) {
@@ -874,6 +884,7 @@ public class Location {
 		out.writeObject(shadowName);
 		out.writeInt(creatureFacingDir); 
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
+		out.writeObject(floorName);
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
 		out.writeBoolean(isHardcoded);
@@ -883,6 +894,16 @@ public class Location {
 		boolean result = isOpaque();
 		if (result && tileType == TileType.ISLAND) {
 			result = false;
+		}
+		return result;
+	}
+	
+	public boolean requiresFloor() {
+		boolean result =  (isHardcoded || hasIsland() || locationType == Location.LocationType.FLOOR);
+		if (L.NEW_TILES) {
+			if (locationType == Location.LocationType.WALL) {
+				result = true;
+			}
 		}
 		return result;
 	}

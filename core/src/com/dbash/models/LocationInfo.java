@@ -8,7 +8,7 @@ import com.dbash.util.L;
 public class LocationInfo {
 
 	public String tileName;
-	public boolean addPrefix;
+	public String floorName;
 	public IPresenterCreature creature;
 	public boolean isDiscovered;
 	public ItemList itemList;
@@ -31,11 +31,11 @@ public class LocationInfo {
 			isHardcoded = true;
 			roughTerrainType = null;
 		} else {
-			addPrefix = true;
 			isHardcoded = false;
 			roughTerrainType = location.getRoughTerrain();
 		}
 		
+		floorName = location.floorName;
 		creature = location.creature;
 		isDiscovered = location.isDiscovered;
 		itemList = location.getItemList(true);
@@ -52,13 +52,7 @@ public class LocationInfo {
 	}
 	
 	public boolean requiresFloor() {
-		boolean result =  (isHardcoded || isIsland || location.locationType == Location.LocationType.FLOOR);
-		if (L.NEW_TILES) {
-			if (location.locationType == Location.LocationType.WALL) {
-				result = true;
-			}
-		}
-		return result;
+		return location.requiresFloor();
 	}
 	
 	public boolean shouldDrawTile() {

@@ -170,25 +170,9 @@ public class LocationPresenter {
 		
 		// Done once at setup.
 		if (tile == null) {
-
-			String tileName;
-			String prefix = L.STRING_PREFIX;
-			
-			if (L.json.has("walls")) {
-				prefix = L.json.getString("walls");
-			}
-
 			// set the floor tile to use, if required;
 			if (locationInfo.requiresFloor()) {
-				String floorName = prefix.concat("CLEAR_FLOOR_IMAGE");
-				floorImage = new ImageView(gui, floorName, area);
-			}
-			
-			// add correct prefix to tilename, if required.
-			if (locationInfo.addPrefix) {
-				tileName = prefix.concat(locationInfo.tileName);
-			} else {
-				tileName = locationInfo.tileName;
+				floorImage = new ImageView(gui, locationInfo.floorName, area);
 			}
 			
 			// create shadow image overlay
@@ -196,11 +180,12 @@ public class LocationPresenter {
 				shadow = new ImageView(gui, locationInfo.getShadowName(), area);
 			} 
 			
+			String tileName = locationInfo.tileName;
+			
 			// island image is bigger than normal.
 			if (locationInfo.isIsland) {
 				Rect islandArea = new Rect(area, 1.25f);
 				islandArea.y = area.y;
-				tileName = locationInfo.tileName;  // island tilenames dont require a prefix because they are the same for any theme
 				this.tile = new ImageView(gui, tileName, islandArea);
 			} else {
 				if (L.NEW_TILES == false && locationInfo.requiresFloor()) {

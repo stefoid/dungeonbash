@@ -3,6 +3,7 @@ package com.dbash.models;
 import java.util.Vector;
 
 import com.dbash.models.Location.RoughTerrainType;
+import com.dbash.util.L;
 
 
 public class TutorialMap extends Map {
@@ -34,6 +35,12 @@ public class TutorialMap extends Map {
 		this.dungeonQuery = dungeonQuery;
 		this.dungeonEvents = dungeonEvents;
 		
+		String prefix = L.STRING_PREFIX;
+		
+		if (L.json.has("walls")) {
+			prefix = L.json.getString("walls");
+		}
+		
 		retainFocusBag = new UIInfoListenerBag();
 		locationInfoListeners = new Vector<UILocationInfoListener>();
 		width = tutorialMap[0].length();
@@ -45,7 +52,7 @@ public class TutorialMap extends Map {
 		// initialize array of locations - by default will be WALLS.
 		for (int x=0; x<width; x++) {
 			for (int y=0; y< height; y++) {
-				location[x][y] = new Location(this, x, y);
+				location[x][y] = new Location(this, x, y, prefix);
 			}
 		}
 		

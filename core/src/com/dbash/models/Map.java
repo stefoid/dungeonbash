@@ -57,8 +57,14 @@ public class Map implements IPresenterMap {
 	public class MapException extends Exception {
 	}
 
-	public Map(int level, IDungeonEvents dungeonEvents,
-			IDungeonQuery dungeonQuery) {
+	public Map(int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
+		
+		String prefix = L.STRING_PREFIX;
+		
+		if (L.json.has("walls")) {
+			prefix = L.json.getString("walls");
+		}
+		
 		boolean dungeonNotCompleted = true;
 		width = 13 + level + border * 2 - 2;
 		height = width;
@@ -75,7 +81,7 @@ public class Map implements IPresenterMap {
 				// initialize array of locations - by default will be WALLS.
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						location[x][y] = new Location(this, x, y);
+						location[x][y] = new Location(this, x, y, prefix);
 					}
 				}
 
@@ -246,7 +252,7 @@ public class Map implements IPresenterMap {
 
 	public Map() {
 		location = new Location[1][1];
-		location[0][0] = new Location(this, 0, 0);
+		location[0][0] = new Location(this, 0, 0, null);
 	}
 
 	public DungeonPosition getRandomPointForMonsterPlacement() throws MapException {
