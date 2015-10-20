@@ -103,7 +103,7 @@ public class LocationPresenter {
 		float lightTint = tint;
 		
 		if (curVisible) {
-			lightTint = tint+ (1.1f-tint)/L.DARK_FACTOR;
+			lightTint = tint + (1.1f-tint)/L.DARK_FACTOR;
 			if (lightTint > 1f) {
 				lightTint = 1f;
 			}

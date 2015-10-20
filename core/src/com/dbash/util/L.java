@@ -28,6 +28,7 @@ public class L {
 	public static int DARK_FACTOR = 5;
 	public static boolean NEW_TILES = false;
 	public static String HARD_ROOM_NAME = null;
+	public static double NORMAL_TILE_PROB = 50.0;
 	
 	public static int EXTRA_XP = 0;
 	public static boolean TEST_EXP = false;  // run the total XP test for a level.

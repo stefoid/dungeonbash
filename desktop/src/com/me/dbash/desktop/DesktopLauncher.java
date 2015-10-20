@@ -103,6 +103,8 @@ public class DesktopLauncher {
 	public static String NEW_TILES = "new_tiles";
 	public static String ANIM_SPEED = "anim_speed";
 	public static String HARD_ROOM_NAME = "hard_area_name";
+	public static String NORMAL_TILE_PROB = "normal_tile_probability";
+	
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
 		config.width = L.SCREENX;
@@ -144,6 +146,10 @@ public class DesktopLauncher {
 				if (json.has(HARD_ROOM_NAME)) {
 					L.HARD_ROOM_NAME = json.getString(HARD_ROOM_NAME);
 				}
+				if (json.has(NORMAL_TILE_PROB)) {
+					L.NORMAL_TILE_PROB = json.getDouble(NORMAL_TILE_PROB);
+				}
+				
 			} catch (Exception e) {
 			}
 		}

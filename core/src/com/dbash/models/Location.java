@@ -549,7 +549,7 @@ public class Location {
 		return count;
 	}
 	
-	public static final double firstTileProbability = 70.0;
+	//public static final double firstTileProbability = 70.0;
 	
 	private String calcVariantToUse(String tilename) {
 		String tilenameToUse = tilename;
@@ -561,9 +561,9 @@ public class Location {
 			shouldUseVariant = false;
 		}
 		
-		if (shouldUseVariant && (count > 1) && (random > firstTileProbability)) {
-			double gap = (100.0 - firstTileProbability) / (double) (count - 1);
-			double index = 2.0 + (random - firstTileProbability) / gap;
+		if (shouldUseVariant && (count > 1) && (random > L.NORMAL_TILE_PROB)) {
+			double gap = (100.0 - L.NORMAL_TILE_PROB) / (double) (count - 1);
+			double index = 2.0 + (random - L.NORMAL_TILE_PROB) / gap;
 			Integer tileNum = (int) index;
 			if (tileNum > count) {
 				tileNum = count;
