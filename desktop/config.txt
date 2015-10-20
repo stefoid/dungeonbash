@@ -1,5 +1,5 @@
 {
-"monsters" : false,
+"monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
 "walls" : "sw_",
@@ -8,7 +8,7 @@
 "level" : 1,
 "floor_shadows" : false,
 "dark_factor" : .17f,
-"anim_speed" : 5,
+"anim_speed" : 1,
 "hard_area_name" : null
-"normal_tile_probability" : 90
+"normal_tile_probability" : 30
 }
