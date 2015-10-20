@@ -99,15 +99,19 @@ public class LocationPresenter {
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
-		
 		float lightTint = tint;
 		
-		if (curVisible) {
-			lightTint = tint + (1.1f-tint)/L.DARK_FACTOR;
-			if (lightTint > 1f) {
-				lightTint = 1f;
+		float tileTint = locationInfo.tint;
+		if (curVisible || prevVisible) {
+			tileTint = tileTint + L.DARK_FACTOR;
+			if (tileTint > 1f) {
+				tileTint = 1f;
 			}
+			
+			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible);
 		}
+		
+		
 		
 		if (!L.useLights) {
 			tint = 100f;

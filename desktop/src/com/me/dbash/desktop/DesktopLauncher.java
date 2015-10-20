@@ -134,7 +134,7 @@ public class DesktopLauncher {
 					L.floorShadows = json.getBoolean(FLOOR_SHADOWS);
 				}
 				if (json.has(DARK_FACTOR)) {
-					L.DARK_FACTOR = json.getInt(DARK_FACTOR);
+					L.DARK_FACTOR = json.getFloat(DARK_FACTOR);
 				}
 				if (json.has(NEW_TILES)) {
 					L.NEW_TILES = json.getBoolean(NEW_TILES);

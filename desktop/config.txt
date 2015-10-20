@@ -7,8 +7,8 @@
 "lights" : true,
 "level" : 1,
 "floor_shadows" : false,
-"dark_factor" : 5,
+"dark_factor" : .17f,
 "anim_speed" : 5,
 "hard_area_name" : null
-"normal_tile_probability" : 30
+"normal_tile_probability" : 90
 }

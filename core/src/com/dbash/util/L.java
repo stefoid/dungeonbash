@@ -6,7 +6,7 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean JARFILE = false;
+	public static boolean JARFILE = true;
 	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = false;
@@ -25,7 +25,7 @@ public class L {
 	public static String STRING_PREFIX = "ow_";
 	public static boolean useLights = true;
 	public static boolean floorShadows = true;
-	public static int DARK_FACTOR = 5;
+	public static float DARK_FACTOR = 0.17f;
 	public static boolean NEW_TILES = false;
 	public static String HARD_ROOM_NAME = null;
 	public static double NORMAL_TILE_PROB = 50.0;
