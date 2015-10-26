@@ -43,6 +43,7 @@ public class LocationPresenter {
 	private ImageView shadow = null;
 	private ImageView roughTerrain = null;
 	private TextImageView[] tileInfo = null;
+	private ImageView fog = null;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter mapPresenter) {
 		this.area = new Rect(area);
@@ -137,10 +138,13 @@ public class LocationPresenter {
 			item.drawTinted(spriteBatch, lightTint, 1f);
 		}
 		
-		//	if (tileInfo != null) {
-		//		tileInfo.draw(spriteBatch, 0, 0);
-		//	}
+		fog = null;
 	}
+	
+	// draw a tile according to its visibility in the passed in shadowmap and alpha
+		public void drawFog(SpriteBatch spriteBatch) {
+			fog.draw(spriteBatch, 1f);
+		}
 	
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
 		
@@ -203,6 +207,10 @@ public class LocationPresenter {
 				}
 			}
 			 
+			if (locationInfo.isDiscovered == false) {
+				fog = new ImageView(gui, "fogtile", area);
+			}
+			
 			if (locationInfo.location.tileType != Location.TileType.CLEAR) {
 //				String text = tileName + " " + locationInfo.location.tileType.toString();
 //				String[] lines = locationInfo.tileName.split("(?=C)");
@@ -220,7 +228,7 @@ public class LocationPresenter {
 			
 			//if (LOG) L.log("tilename: %s, location info: %s, location * %s", tileName, locationInfo, locationInfo.location);
 			
-		switch (locationInfo.torch) {
+			switch (locationInfo.torch) {
 				case FRONT:
 					torchArea = new Rect(area, 0.8f);
 					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
