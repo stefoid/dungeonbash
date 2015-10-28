@@ -68,3 +68,6 @@ desktop/gamedata.dat
 desktop/out
 desktop/out_00.png
 desktop/popups
+desktop/bin/
+desktop/pngs-packed/
+
