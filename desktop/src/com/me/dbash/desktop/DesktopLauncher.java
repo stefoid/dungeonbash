@@ -76,7 +76,6 @@ public class DesktopLauncher {
 	}
 	
 	public static void main(String[] args) {
-		packTextures();
 		startGame(isFullScreenArgument(args) ? new MaximumApplicationConfiguration()
 				: new MyApplicationConfiguration());
 	}
@@ -104,7 +103,7 @@ public class DesktopLauncher {
 	public static String ANIM_SPEED = "anim_speed";
 	public static String HARD_ROOM_NAME = "hard_area_name";
 	public static String NORMAL_TILE_PROB = "normal_tile_probability";
-	
+	public static String STANDALONE = "stand_alone";
 	
 	private static void startGame(LwjglApplicationConfiguration config) {
 		config.width = L.SCREENX;
@@ -114,6 +113,8 @@ public class DesktopLauncher {
 		String jsonString = null;
 		JsonValue json = null;
 		if (fl.exists() == true) {
+			System.out.printf("file exists\n");
+			
 			try {
 				Scanner scanner = new Scanner(fl).useDelimiter("\\Z");
 				jsonString = scanner.next();
@@ -149,14 +150,22 @@ public class DesktopLauncher {
 				if (json.has(NORMAL_TILE_PROB)) {
 					L.NORMAL_TILE_PROB = json.getDouble(NORMAL_TILE_PROB);
 				}
-				
+				if (json.has(STANDALONE)) {
+					L.JARFILE = json.getBoolean(STANDALONE);
+				}
 			} catch (Exception e) {
+				System.out.printf("Exception %s", e.toString());
 			}
+		} else {
+			System.out.printf("no config\n");
 		}
 		
 		if (json == null) {
 			json = new JsonValue("");
 		}
+		
+		packTextures();
+		
 		new LwjglApplication(new Dbash(0, json), config);
 	}
 	
