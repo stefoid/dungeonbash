@@ -21,8 +21,6 @@ public class Location {
 	public static boolean LOG = false && L.DEBUG;
 	 
 	public static final String SOLID_ROCK = "SolidRock";
-	public static final String STATUE_ISLAND_TYPE = "statue";
-	public static final String ROCK_ISLAND_TYPE = "rock";
 	public static final float minNotVisibleTint = 0.22f;
 	public static final float minVisibleTint = 0.3f;
 	public static final float maxVisibileTint = 1f;
@@ -47,6 +45,41 @@ public class Location {
 		CENTRAL,
 		EAST,
 		WEST
+	};
+	
+	public enum IslandType {
+		TORCH_ISLAND ("torch_island", 1),
+		GLOW_ISLAND ("glow_island", 2),
+		DARK_ISLAND ("dark_island", 3);
+		
+		private final String islandName;
+		private final int num;
+
+	    private IslandType(String islandName, int num) {
+	        this.islandName = islandName;
+	        this.num = num;
+	    }
+
+	    public int getNum() {
+	        return num;
+	    }
+	    
+	    public String getIslandName() {
+	        return islandName;
+	    }
+	    
+	    public static IslandType fromInt(int n) {
+	          for (IslandType b : IslandType.values()) {
+	            if (n == b.getNum()) {
+	              return b;
+	            }
+	          }
+	        return null;
+	     }
+	    
+	    public static IslandType getRandomType() {
+	    	return IslandType.fromInt(Randy.getRand(1,  DARK_ISLAND.getNum()));
+	    }
 	}
 	
 	public enum RoughTerrainType {
@@ -116,10 +149,12 @@ public class Location {
 	public float permTint;
 	public TorchType torch = TorchType.NONE;
 	public RoughTerrainType roughTerrainType;
+	public String roughTerrainName;
 	public LocationInfo locationInfo;
 	public ItemList itemInfoNoRough;
 	public ItemList itemInfoWithRough;
-	public String islandType;
+	public IslandType islandType;
+	public String islandName;
 	public String hardcodeTilename;
 	public boolean isHardcoded;
 	public boolean isShadowed;
@@ -167,6 +202,7 @@ public class Location {
 		creatureFacingDir = in.readInt();
 		tileName = (String) in.readObject();
 		floorName = (String) in.readObject();
+		roughTerrainName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
 		isHardcoded = in.readBoolean();
@@ -175,21 +211,25 @@ public class Location {
 		clearTint();
 	}
 	
+	public void addCentralLight(DungeonPosition torchPosition) {
+		map.addLight(new Light(torchPosition, 1, Light.CENTRAL_TORCH_STRENGTH, true));
+		torchPosition.y--;
+		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+		torchPosition.y += 2;
+		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+		torchPosition.y--;
+		torchPosition.x--;
+		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+		torchPosition.x +=2;
+		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+	}
+	
 	public void addTorch(TorchType torch) {
 		DungeonPosition torchPosition = new DungeonPosition(position);
 		this.torch = torch;
 		
 		if (torch == TorchType.CENTRAL) {
-			map.addLight(new Light(torchPosition, 1, Light.CENTRAL_TORCH_STRENGTH, true));
-			torchPosition.y--;
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
-			torchPosition.y += 2;
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
-			torchPosition.y--;
-			torchPosition.x--;
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
-			torchPosition.x +=2;
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
+			addCentralLight(torchPosition);
 		} else if (torch == TorchType.FRONT ) {
 			torchPosition.y--;
 			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
@@ -233,10 +273,16 @@ public class Location {
 		return new DungeonPosition(x,y);
 	}
 	
-	public void setAsIsland(String islandType) {
-		this.islandType = islandType;
+	public void setAsIsland(IslandType islandType) {
 		locationType = LocationType.FLOOR;
 		tileType = TileType.ISLAND;
+		
+		if (islandType == null) {
+			islandType = IslandType.getRandomType();
+		} 
+		
+		this.islandType = islandType;
+		islandName = calcVariantToUse(islandType.islandName);
 	}
 	
 	public void setCreature(Creature creature) {
@@ -376,6 +422,7 @@ public class Location {
 		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 
 		itemList.add(ability);
 		roughTerrainType = getRoughTerrain();
+		roughTerrainName = calcVariantToUse(roughTerrainType.getValue());
 		updateLocationInfo();
 	}
 	
@@ -557,9 +604,9 @@ public class Location {
 		int random = Randy.getRand(1, 100);
 		boolean shouldUseVariant = true;
 		
-		if (hasRoughTerrain() || hasIsland()) {
-			shouldUseVariant = false;
-		}
+//		if (hasRoughTerrain() || hasIsland()) {
+//			shouldUseVariant = false;
+//		}
 		
 		if (shouldUseVariant && (count > 1) && (random > L.NORMAL_TILE_PROB)) {
 			double gap = (100.0 - L.NORMAL_TILE_PROB) / (double) (count - 1);
@@ -592,8 +639,10 @@ public class Location {
 		// torches
 		if (tileType == TileType.ISLAND) {
 			locationType = LocationType.WALL; // the location of an island needs to be FLOOR for calculating tilenames but WALL in practice.
-			if (islandType.equals(ROCK_ISLAND_TYPE) == false) {
+			if (islandType == IslandType.TORCH_ISLAND) {
 				addTorch(TorchType.CENTRAL);
+			} else if (islandType == IslandType.GLOW_ISLAND) {
+				addCentralLight(position);
 			}
 		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.okToPlaceTorch(this)) {
 			createTorchAt();
@@ -796,20 +845,8 @@ public class Location {
 				
 			case FLOOR:
 				tileName = "CLEAR_FLOOR_IMAGE";
-				
 				if (tileType == TileType.ISLAND) {
-					String iType;
-					if (islandType != null) {
-						iType = islandType;
-					} else {
-						iType = randomIslandTileName();
-						islandType = iType;
-					}
-					if (iType.equals(STATUE_ISLAND_TYPE)) {
-						iType = map.getStatueName();
-					}
-					
-					tileName = iType;
+					tileName = islandName;
 				}
 				
 				break;
@@ -885,6 +922,7 @@ public class Location {
 		out.writeInt(creatureFacingDir); 
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(floorName);
+		out.writeObject(roughTerrainName);
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
 		out.writeBoolean(isHardcoded);
@@ -906,12 +944,6 @@ public class Location {
 			}
 		}
 		return result;
-	}
-	
-	final static String[] names = {"rock", "rock", "rock", "statue"};
-	
-	public String randomIslandTileName() {
-		return names[Randy.getRand(0,  names.length-1)];
 	}
 	
 	private void setItemInfos() {

@@ -9,6 +9,7 @@ public class LocationInfo {
 
 	public String tileName;
 	public String floorName;
+	public String roughTerrainName;
 	public IPresenterCreature creature;
 	public boolean isDiscovered;
 	public ItemList itemList;
@@ -33,6 +34,7 @@ public class LocationInfo {
 		} else {
 			isHardcoded = false;
 			roughTerrainType = location.getRoughTerrain();
+			roughTerrainName = location.roughTerrainName;
 		}
 		
 		floorName = location.floorName;

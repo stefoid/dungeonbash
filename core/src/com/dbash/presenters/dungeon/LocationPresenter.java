@@ -111,8 +111,6 @@ public class LocationPresenter {
 			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible);
 		}
 		
-		
-		
 		if (!L.useLights) {
 			tint = 100f;
 		} 
@@ -145,9 +143,16 @@ public class LocationPresenter {
 	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
-		float lightTint = tint + (1.1f-tint)/L.DARK_FACTOR;
-		if (lightTint > 1f) {
-			lightTint = 1f;
+		float lightTint = tint;
+		
+		float tileTint = locationInfo.tint;
+		if (curVisible || prevVisible) {
+			tileTint = tileTint + L.DARK_FACTOR;
+			if (tileTint > 1f) {
+				tileTint = 1f;
+			}
+			
+			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible);
 		}
 		
 		if (creaturePresenter != null) {
@@ -255,7 +260,7 @@ public class LocationPresenter {
 		}
 		
 		if (locationInfo.roughTerrainType != null) {
-			this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainType.getValue(), area);
+			this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainName, area);
 		}
 		
 		// set a creature presenter if there is a creature at this location.
