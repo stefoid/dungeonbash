@@ -3,6 +3,8 @@ package com.dbash.models;
 import com.dbash.models.Location.IslandType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.util.Rect;
+import com.me.dbash.Dbash;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Room {
 
@@ -44,8 +46,11 @@ public class Room {
 		this.mx = (int) area.x;
 		this.my = (int) area.y;
 		insideArea = new Rect(mx+edgeLimit, my+edgeLimit, width-edgeLimit*2, height-edgeLimit*2);
-		if (hardcodeName != null) {
+		Sprite sprite = Dbash.theSpriteManager.fetchSprite(hardcodeName+"-0-0"); 
+		if (sprite != null) {
 			setHardcodeTilenames();
+		} else {
+			hardcodeName = null;
 		}
 	}
 	

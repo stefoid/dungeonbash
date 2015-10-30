@@ -1102,22 +1102,22 @@ public class Map implements IPresenterMap {
 		
 		ArrayList<Room> theRooms = new ArrayList<Room>();
 		
-		theRooms.add(new Room(holeMap, holeMonsters, "holemap", 0));
-		theRooms.add(new Room(mudMap, mudMonsters, null, 0)); //"mud", 0));
-		theRooms.add(new Room(ravVertMap, ravVertMonsters, null, 0)); //"ravVert", 0));
-		theRooms.add(new Room(ravHorMap, ravHorMonsters, null, 0)); //"ravHor", 0));
-		theRooms.add(new Room(gridMap, gridMonsters,null, 0)); //"grid", 0));
-		theRooms.add(new Room(boneMap, boneMonsters, null, 0)); //"bone", 0));
-		theRooms.add(new Room(rockMap, rockMonsters, null, 0)); //"rock", 0));
-		theRooms.add(new Room(holegridMap, holegridMonsters, null, 0)); //"holegrid", 0));
-		theRooms.add(new Room(bridgeMap, bridgeMonsters, null, 0)); //"bridge", 0));
-		theRooms.add(new Room(rocks1Map, rocks1Monsters, null, 0)); //"rocks1", 0));
-		theRooms.add(new Room(rocks2Map, rocks2Monsters, null, 0)); //"rocks2", 0));
-		theRooms.add(new Room(rocks3Map, rocks3Monsters, null, 0)); //"rocks3", 0));
-		theRooms.add(new Room(rocks4Map, rocks4Monsters, null, 0)); //"rocks4", 0));
-		theRooms.add(new Room(holes2Map, holes2Monsters, null, 0)); //"holes2", 0));
-		theRooms.add(new Room(holes3Map, holes3Monsters, null, 0)); //"holes3", 0));
-		theRooms.add(new Room(crossMap, crossMonsters, null, 0));
+		theRooms.add(new Room(holeMap, holeMonsters, "holeMap", 0));
+		theRooms.add(new Room(mudMap, mudMonsters, "mudMap", 0));
+		theRooms.add(new Room(ravVertMap, ravVertMonsters, "ravVertMap", 0));
+		theRooms.add(new Room(ravHorMap, ravHorMonsters, "ravHorMap", 0));
+		theRooms.add(new Room(gridMap, gridMonsters, "gridMap", 0));
+		theRooms.add(new Room(boneMap, boneMonsters,  "boneMap", 0));
+		theRooms.add(new Room(rockMap, rockMonsters,  "rockMap", 0));
+		theRooms.add(new Room(holegridMap, holegridMonsters,  "holegridMap", 0));
+		theRooms.add(new Room(bridgeMap, bridgeMonsters, "bridgeMap", 0)); 
+		theRooms.add(new Room(rocks1Map, rocks1Monsters,  "rocks1Map", 0));
+		theRooms.add(new Room(rocks2Map, rocks2Monsters,  "rocks2Map", 0));
+		theRooms.add(new Room(rocks3Map, rocks3Monsters,  "rocks3Map", 0));
+		theRooms.add(new Room(rocks4Map, rocks4Monsters,  "rocks4Map", 0));
+		theRooms.add(new Room(holes2Map, holes2Monsters, "holes2Map", 0));
+		theRooms.add(new Room(holes3Map, holes3Monsters, "holes3Map", 0));
+		theRooms.add(new Room(crossMap, crossMonsters, "crossMap", 0));
 		
 		return theRooms;
 	}

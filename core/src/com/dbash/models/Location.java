@@ -354,6 +354,14 @@ public class Location {
 		}
 	}
 	
+	public boolean isFrontFacing() {
+		if (tileType == TileType.FRONT_FACE) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public boolean isClear() {
 		return !isOpaque();
 	}

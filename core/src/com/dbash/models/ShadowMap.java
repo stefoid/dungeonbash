@@ -143,7 +143,11 @@ public class ShadowMap {
     			
     			// work out the actual location by adding the centerPos to to the ray offset
     			Location loc = map.safeLocation(rayPos.x + centerPos.x, rayPos.y + centerPos.y);
-				newLocations.add(loc);
+    			
+    			//if ((loc.isOpaque() && loc.isFrontFacing() && (centerPos.y > loc.position.y)) == false) {
+    				newLocations.add(loc);
+    			//}
+
 				// if this is a character-ownned shadowmap, tell this location it is visible from this shadow map
 				if (owner != null) {
 					loc.setDiscovered();

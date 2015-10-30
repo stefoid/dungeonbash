@@ -5,11 +5,11 @@
 "walls" : "sw_",
 "new_tiles" : true,
 "lights" : true,
-"level" : 1,
+"level" : 10,
 "floor_shadows" : false,
 "dark_factor" : .17f,
 "anim_speed" : 1,
-"hard_area_name" : null
+"hard_area_name" : "holeMap",
 "normal_tile_probability" : 30,
 "stand_alone" : true
 }
