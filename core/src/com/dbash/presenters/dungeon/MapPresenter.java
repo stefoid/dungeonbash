@@ -100,6 +100,8 @@ public class MapPresenter implements IMapPresentationEventListener{
 					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
 						loc.drawTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile);
+				} else {
+					loc.drawFog(spriteBatch);
 				}
 			}
 		}
