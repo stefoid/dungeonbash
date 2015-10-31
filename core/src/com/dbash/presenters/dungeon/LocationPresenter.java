@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
 import com.dbash.models.Location.LocationType;
+import com.dbash.models.Location.TileType;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
@@ -64,8 +65,12 @@ public class LocationPresenter {
 		return false;
 	}
 	
-	private float calcTint(float cur_tint, float alpha, boolean prev, boolean current) {
+	private float calcTint(float cur_tint, float alpha, boolean prev, boolean current, boolean isBelowCentre) {
 		float tint;
+		
+		if (isBelowCentre && locationInfo.location.tileType == TileType.FRONT_FACE) {
+			cur_tint = Location.minNotVisibleTint;
+		}
 		
 		if (prev && !current) {       // fade out
 			tint = cur_tint + (Location.minNotVisibleTint - cur_tint) * alpha;
@@ -97,9 +102,9 @@ public class LocationPresenter {
 	}
 	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
-	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
+	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
-		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
+		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 		float lightTint = tint;
 		
 		float tileTint = locationInfo.tint;
@@ -109,7 +114,7 @@ public class LocationPresenter {
 				tileTint = 1f;
 			}
 			
-			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible);
+			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
 		}
 		
 		if (!L.useLights) {
@@ -140,13 +145,13 @@ public class LocationPresenter {
 	}
 	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
-		public void drawFog(SpriteBatch spriteBatch) {
-			fog.draw(spriteBatch, 1f);
-		}
+	public void drawFog(SpriteBatch spriteBatch) {
+		fog.draw(spriteBatch, 1f);
+	}
 	
-	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible) {
+	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
-		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible);
+		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 		float lightTint = tint;
 		
 		float tileTint = locationInfo.tint;
@@ -156,7 +161,7 @@ public class LocationPresenter {
 				tileTint = 1f;
 			}
 			
-			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible);
+			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
 		}
 		
 		if (creaturePresenter != null) {
