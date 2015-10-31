@@ -33,7 +33,7 @@ public class ShadowMap {
 		}	
 	}
 	
-	DungeonPosition centerPos;
+	public DungeonPosition centerPos;
 	public Character owner;
 	HashSet<Location> locations;
 	int range;

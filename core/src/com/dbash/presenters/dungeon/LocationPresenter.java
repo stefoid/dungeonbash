@@ -113,7 +113,7 @@ public class LocationPresenter {
 		}
 		
 		if (!L.useLights) {
-			tint = 100f;
+			tint = 1f;
 		} 
 		
 		if (floorImage != null) {

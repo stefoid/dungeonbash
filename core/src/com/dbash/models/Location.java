@@ -575,7 +575,7 @@ public class Location {
 		
 		tileName = calcVariantToUse(tileName);
 		if (requiresFloor()) {
-			floorName = calcVariantToUse(prefix.concat("CLEAR_FLOOR_IMAGE"));
+			floorName = calcFloorVariantToUse(prefix.concat("CLEAR_FLOOR_IMAGE"));
 		}
 	}
 	
@@ -606,17 +606,20 @@ public class Location {
 	
 	//public static final double firstTileProbability = 70.0;
 	
+	private String calcFloorVariantToUse(String tilename) {
+		if (hasRoughTerrain()) {
+			return tilename;
+		} else {
+			return calcVariantToUse(tilename);
+		}
+	}
+	
 	private String calcVariantToUse(String tilename) {
 		String tilenameToUse = tilename;
 		Integer count = getVariantCount(tilename);
 		int random = Randy.getRand(1, 100);
-		boolean shouldUseVariant = true;
 		
-//		if (hasRoughTerrain() || hasIsland()) {
-//			shouldUseVariant = false;
-//		}
-		
-		if (shouldUseVariant && (count > 1) && (random > L.NORMAL_TILE_PROB)) {
+		if ((count > 1) && (random > L.NORMAL_TILE_PROB)) {
 			double gap = (100.0 - L.NORMAL_TILE_PROB) / (double) (count - 1);
 			double index = 2.0 + (random - L.NORMAL_TILE_PROB) / gap;
 			Integer tileNum = (int) index;
