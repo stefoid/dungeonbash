@@ -78,7 +78,8 @@ public class Location {
 	     }
 	    
 	    public static IslandType getRandomType() {
-	    	return IslandType.fromInt(Randy.getRand(1,  DARK_ISLAND.getNum()));
+	    	return IslandType.GLOW_ISLAND;
+	    	//return IslandType.fromInt(Randy.getRand(1,  DARK_ISLAND.getNum()));
 	    }
 	}
 	

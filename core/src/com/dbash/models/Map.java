@@ -233,7 +233,7 @@ public class Map implements IPresenterMap {
 	}
 
 	protected void addExitLight() {
-		Light exitLight = new Light(exitPoint, 0, 1f, true); // low level light
+		Light exitLight = new Light(exitPoint, 0, .4f, true); // low level light
 																// - permanent
 		addLight(exitLight);
 	}
