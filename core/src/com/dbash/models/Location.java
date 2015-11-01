@@ -44,7 +44,8 @@ public class Location {
 		FRONT,
 		CENTRAL,
 		EAST,
-		WEST
+		WEST,
+		INVISIBLE
 	};
 	
 	public enum IslandType {
@@ -78,8 +79,7 @@ public class Location {
 	     }
 	    
 	    public static IslandType getRandomType() {
-	    	return IslandType.GLOW_ISLAND;
-	    	//return IslandType.fromInt(Randy.getRand(1,  DARK_ISLAND.getNum()));
+	    	return IslandType.fromInt(Randy.getRand(1,  DARK_ISLAND.getNum()));
 	    }
 	}
 	
@@ -212,7 +212,9 @@ public class Location {
 		clearTint();
 	}
 	
-	public void addCentralLight(DungeonPosition torchPosition) {
+	public void addCentralLight(DungeonPosition thePosition) {
+		DungeonPosition torchPosition = new DungeonPosition(thePosition);
+		
 		map.addLight(new Light(torchPosition, 1, Light.CENTRAL_TORCH_STRENGTH, true));
 		torchPosition.y--;
 		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true));
@@ -229,7 +231,7 @@ public class Location {
 		DungeonPosition torchPosition = new DungeonPosition(position);
 		this.torch = torch;
 		
-		if (torch == TorchType.CENTRAL) {
+		if (torch == TorchType.CENTRAL || (torch == TorchType.INVISIBLE)) {
 			addCentralLight(torchPosition);
 		} else if (torch == TorchType.FRONT ) {
 			torchPosition.y--;
@@ -654,7 +656,7 @@ public class Location {
 			if (islandType == IslandType.TORCH_ISLAND) {
 				addTorch(TorchType.CENTRAL);
 			} else if (islandType == IslandType.GLOW_ISLAND) {
-				addCentralLight(position);
+				addTorch(TorchType.INVISIBLE);
 			}
 		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.okToPlaceTorch(this)) {
 			createTorchAt();
