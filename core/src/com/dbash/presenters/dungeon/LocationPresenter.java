@@ -1,14 +1,10 @@
 package com.dbash.presenters.dungeon;
 
-import java.util.HashMap;
 import java.util.Vector;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
-import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.TileType;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
@@ -19,7 +15,6 @@ import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.L;
-import com.dbash.util.Randy;
 import com.dbash.util.Rect;
 
 // a LocationPresenter is the partner of a Location in the model.  it handles the presentation of the corresponding Location, duh.
@@ -68,9 +63,9 @@ public class LocationPresenter {
 	private float calcTint(float cur_tint, float alpha, boolean prev, boolean current, boolean isBelowCentre) {
 		float tint;
 		
-		if (isBelowCentre && locationInfo.location.tileType == TileType.FRONT_FACE) {
-			cur_tint = Location.minNotVisibleTint;
-		}
+//		if (isBelowCentre && locationInfo.location.tileType == TileType.FRONT_FACE) {
+//			cur_tint = Location.minNotVisibleTint;
+//		}
 		
 		if (prev && !current) {       // fade out
 			tint = cur_tint + (Location.minNotVisibleTint - cur_tint) * alpha;
@@ -175,7 +170,9 @@ public class LocationPresenter {
 		}
 		
 		if (curVisible && torchAnimation != null) {
-			torchAnimation.draw(spriteBatch);
+			if (!(isBelowCentre && locationInfo.isStraighFrontWall)) {
+				torchAnimation.draw(spriteBatch);
+			}
 		}
 		
 		if (drawEye) {

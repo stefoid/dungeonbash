@@ -1,6 +1,7 @@
 package com.dbash.models;
 
 import com.dbash.models.Location.RoughTerrainType;
+import com.dbash.models.Location.TileType;
 import com.dbash.util.L;
 
 // LocationInfo is information created by a Location model object for Presenter consumption.
@@ -20,6 +21,7 @@ public class LocationInfo {
 	public Location location;
 	public boolean isIsland;
 	public boolean isHardcoded;
+	public boolean isStraighFrontWall;
 	
 	public LocationInfo(Location location) {
 		this.location = location;
@@ -45,6 +47,12 @@ public class LocationInfo {
 		torch = location.torch;
 		
 		isShadowedFloor = location.isShadowed;
+		
+		if (location.tileType == TileType.FRONT_FACE) {
+			if (tileName.contains("FrontMiddle")) {
+				isStraighFrontWall = true;
+			}
+		}
 		
 		isIsland = location.hasIsland();
 	}

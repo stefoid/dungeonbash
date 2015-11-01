@@ -90,16 +90,26 @@ public class MapPresenter implements IMapPresentationEventListener{
 			curAlpha = currentShadowMapTween.getValue();
 		}
 		
+		boolean isBelowCenter;
+		
 		// draw the tiles that could be visible (pre-calculated when moveView is called)
-		for (int x=minTileX; x<=maxTileX; x++) {
-			for (int y=minTileY; y<=maxTileY;y++) {
+		for (int y=minTileY; y<=maxTileY;y++) {
+			
+			if (y < currentShadowMap.centerPos.y) {
+				isBelowCenter = true;
+			} else {
+				isBelowCenter = false;
+			}
+			
+			for (int x=minTileX; x<=maxTileX; x++) {
+	
 				// draw the current shadowmap details
 				LocationPresenter loc = locationPresenter(x,y);
 				
 				if (loc.locationInfo.isDiscovered) {
 					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-						loc.drawTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile);
+						loc.drawTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
 				} else {
 					loc.drawFog(spriteBatch);
 				}
@@ -108,15 +118,22 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		// draw the creatures that we have recorded need to be drawn, at the appropriate alphas
 		// draw in reverse order so the bottom creatures appear on top
-		for (int x=minTileX; x<=maxTileX; x++) {
-			for (int y=maxTileY; y>=minTileY;y--) {
+		for (int y=maxTileY; y>=minTileY;y--) {
+			
+			if (y < currentShadowMap.centerPos.y) {
+				isBelowCenter = true;
+			} else {
+				isBelowCenter = false;
+			}
+			
+			for (int x=minTileX; x<=maxTileX; x++) {
 
 				LocationPresenter loc = locationPresenter(x,y);
 				
 				if (loc.locationInfo.isDiscovered) {
 					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-					loc.drawOverlayOnTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile);
+					loc.drawOverlayOnTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
 				}
 			}
 		}
