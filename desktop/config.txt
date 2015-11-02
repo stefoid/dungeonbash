@@ -5,7 +5,7 @@
 "walls" : "sw_",
 "new_tiles" : true,
 "lights" : true,
-"level" : 10,
+"level" : 18,
 "floor_shadows" : false,
 "dark_factor" : .17f,
 "anim_speed" : 1,

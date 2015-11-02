@@ -563,56 +563,55 @@ public class Map implements IPresenterMap {
 		}
 	}
 
-	protected void drawSquigglyRoughTerrainLine(DungeonPosition pos, RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents,
-			IDungeonQuery dungeonQuery) {
-		int x = pos.x;
-		int y = pos.y;
-		int dir = Randy.getRand(0, 4);
-		int nx;
-		int ny;
+//	protected void drawSquigglyRoughTerrainLine(DungeonPosition pos, RoughTerrainType roughTerrainType, IDungeonEvents dungeonEvents,
+//			IDungeonQuery dungeonQuery) {
+//		int x = pos.x;
+//		int y = pos.y;
+//		int dir = Randy.getRand(0, 4);
+//		int nx;
+//		int ny;
+//
+//		for (int i = 0; i < (Randy.getRand(1, height)); i++) {
+//			nx = x;
+//			ny = y;
+//
+//			switch (dir) {
+//			case 0:
+//				if (y > 1)
+//					ny--;
+//				break;
+//			case 1:
+//				if (y < (height - 2))
+//					ny++;
+//				break;
+//			case 2:
+//				if (x > 1)
+//					nx--;
+//				break;
+//
+//			case 3:
+//				if (x < (width - 2))
+//					nx++;
+//				break;
+//			}
+//
+//			if (isOKForRoughTerrain(roughTerrainType, x, y)) {
+//				location(x, y).setRoughTerrain(roughTerrainType, dungeonEvents, dungeonQuery);
+//			}
+//
+//			x = nx;
+//			y = ny;
+//
+//			// will only change the direction when the direction is legal, i.e.
+//			int nDir = Randy.getRand(0, 6);
+//
+//			if (nDir < 4) {
+//				dir = nDir;
+//			}
+//		}
+//	}
 
-		for (int i = 0; i < (Randy.getRand(1, height)); i++) {
-			nx = x;
-			ny = y;
-
-			switch (dir) {
-			case 0:
-				if (y > 1)
-					ny--;
-				break;
-			case 1:
-				if (y < (height - 2))
-					ny++;
-				break;
-			case 2:
-				if (x > 1)
-					nx--;
-				break;
-
-			case 3:
-				if (x < (width - 2))
-					nx++;
-				break;
-			}
-
-			if (isOKForRoughTerrain(roughTerrainType, x, y)) {
-				location(x, y).setRoughTerrain(roughTerrainType, dungeonEvents, dungeonQuery);
-			}
-
-			x = nx;
-			y = ny;
-
-			// will only change the direction when the direction is legal, i.e.
-			int nDir = Randy.getRand(0, 6);
-
-			if (nDir < 4) {
-				dir = nDir;
-			}
-		}
-	}
-
-	protected boolean isOKForRoughTerrain(RoughTerrainType roughTerrainType,
-			int x, int y) {
+	protected boolean isOKForRoughTerrain(RoughTerrainType roughTerrainType, int x, int y) {
 		if (isLegal(x, y) == false) {
 			return false;
 		}
@@ -771,41 +770,26 @@ public class Map implements IPresenterMap {
 
 	}
 
-	protected void addRoughTerrain(IDungeonEvents dungeonEvents,
-			IDungeonQuery dungeonQuery) {
-		int numberRoughLines = Randy.getRand(width / 5, width / 3);
-		for (int i = 0; i < numberRoughLines; i++) {
+	protected void addRoughTerrain(IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
+		int numberRoughTerrains = width;
+		for (int i = 0; i < numberRoughTerrains; i++) {
 			try {
-				drawSquigglyRoughTerrainLine(getRandomPointNotInRooms(true), RoughTerrainType.getRandomType(), dungeonEvents, dungeonQuery);
+				RoughTerrainType roughTerrainType = RoughTerrainType.getRandomType();
+				DungeonPosition pos = getRandomPointNotInRooms(true);
+				if (isOKForRoughTerrain(roughTerrainType, pos.x, pos.y)) {
+					location(pos.x, pos.y).setRoughTerrain(roughTerrainType, dungeonEvents, dungeonQuery);
+			}
 			} catch (MapException e) {
-
 			}
 		}
 
-		// now add a few more rock terrain for stealth in wide open spaces.
-		int numberRockTerrain = level - 1;
-		for (int i = 0; i < numberRockTerrain; i++) {
-			Location l = getWideSpaceLocation();
-			if (l != null) {
-				if (LOG)
-					L.log("PLACING EXTRA ROCKS: %s", i);
-				drawSquigglyRoughTerrainLine(l.position,
-						RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
-			}
-		}
-		
-		// now add a few more rock terrain in one tile areas.
-		int nrock = level + 3;
-		for (int i = 0; i < nrock; i++) {
-			Location l = null;
+		for (int i = 0; i < numberRoughTerrains/3; i++) {
 			try {
-				l = location(getRandomPoint(true, false, false, border, true));
-			} catch (MapException e) {
+				DungeonPosition pos = getRandomPointNotInRooms(true);
+				if (isOKForRoughTerrain(RoughTerrainType.ROCKS, pos.x, pos.y)) {
+					location(pos.x, pos.y).setRoughTerrain(RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
 			}
-			
-			if (l != null) {
-				if (LOG) L.log("PLACING SINGLE ROCKS: %s", i);
-				l.setRoughTerrain(RoughTerrainType.ROCKS, dungeonEvents, dungeonQuery);
+			} catch (MapException e) {
 			}
 		}
 	}
