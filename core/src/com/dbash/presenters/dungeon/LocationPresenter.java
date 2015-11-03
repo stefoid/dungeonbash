@@ -144,7 +144,7 @@ public class LocationPresenter {
 		fog.draw(spriteBatch, 1f);
 	}
 	
-	public void drawOverlayOnTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+	public void drawStaticCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 		float lightTint = tint;
@@ -163,6 +163,22 @@ public class LocationPresenter {
 			if (prevVisible || curVisible) {
 				creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
 			}
+		}
+	}
+	
+	public void drawOverlay(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+		
+		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+		float lightTint = tint;
+		
+		float tileTint = locationInfo.tint;
+		if (curVisible || prevVisible) {
+			tileTint = tileTint + L.DARK_FACTOR;
+			if (tileTint > 1f) {
+				tileTint = 1f;
+			}
+			
+			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
 		}
 		
 		if (locationInfo.isIsland) {

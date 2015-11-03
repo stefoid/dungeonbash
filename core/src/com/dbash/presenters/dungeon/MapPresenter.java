@@ -109,7 +109,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 				if (loc.locationInfo.isDiscovered) {
 					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-						loc.drawTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+					loc.drawTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
 				} else {
 					loc.drawFog(spriteBatch);
 				}
@@ -133,7 +133,46 @@ public class MapPresenter implements IMapPresentationEventListener{
 				if (loc.locationInfo.isDiscovered) {
 					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-					loc.drawOverlayOnTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+					loc.drawStaticCreature(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+				}
+			}
+		}
+	}
+	
+	public void drawOverlay(SpriteBatch spriteBatch) {
+		if (map == null) {
+			return;
+		}
+		
+		int creatureCount = 0;
+		int islandCount = 0;
+		float curAlpha = 1.0f;
+		float fadeOutAlpha = 1 - curAlpha;
+		
+		if (previousShadowMap != null) {
+			curAlpha = currentShadowMapTween.getValue();
+		}
+		
+		boolean isBelowCenter;
+		
+		// draw the tiles that could be visible (pre-calculated when moveView is called)
+		for (int y=minTileY; y<=maxTileY;y++) {
+			
+			if (y < currentShadowMap.centerPos.y) {
+				isBelowCenter = true;
+			} else {
+				isBelowCenter = false;
+			}
+			
+			for (int x=minTileX; x<=maxTileX; x++) {
+	
+				// draw the current shadowmap details
+				LocationPresenter loc = locationPresenter(x,y);
+				
+				if (loc.locationInfo.isDiscovered) {
+					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+					loc.drawOverlay(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
 				}
 			}
 		}

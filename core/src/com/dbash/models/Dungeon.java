@@ -361,22 +361,17 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 			final IAnimListener moveListener = new IAnimListener() {
 				@Override
 				public void animEvent() {
-					fromLocation.updatePresenter(); // we dont update the
-													// presenters until the
-													// animation has finished
-													// playing.
+					fromLocation.updatePresenter(); // we dont update the presenters until the animation has finished playing.
 					toLocation.updatePresenter();
-
-					// Now is the time to check that any hiding character has
-					// not been discovered by this move
+					
+					// Now is the time to check that any hiding character has not been discovered by this move
 					processCreaturePositions();
 
 					if (completeListener != null) {
 						completeListener.animEvent();
 					}
 
-					EventBus.getDefault().event(TutorialPresenter.MOVE_EVENT,
-							toLocation.position);
+					EventBus.getDefault().event(TutorialPresenter.MOVE_EVENT, toLocation.position);
 				}
 			};
 

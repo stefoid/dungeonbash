@@ -55,6 +55,8 @@ public class CreaturePresenter {
 	
 	public static final float HIDING_ALPHA = 0.4f;
 	
+	public static boolean creatureMoving = false;
+	
 	public enum VisualState {
 		SHOW_STATIC,
 		SHOW_NOTHING,
@@ -181,6 +183,7 @@ public class CreaturePresenter {
 		animView.onStart(new IAnimListener() {
 			public void animEvent() {
 				visualState = VisualState.SHOW_ANIMATION;
+				creatureMoving = true;
 				if (light != null) {
 					if (LOG) L.log("onstart move");
 					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
@@ -217,6 +220,7 @@ public class CreaturePresenter {
 					adjustHighlightLocation = true;
 				}
 				visualState = VisualState.SHOW_STATIC;
+				creatureMoving = false;
 				currentVisualPosition = animEndPosition;
 				if (dir != null) {
 					setStaticImage(dir);
