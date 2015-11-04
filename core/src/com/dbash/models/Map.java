@@ -1039,44 +1039,163 @@ public class Map implements IPresenterMap {
 	private static String[] crossMonsters = {};
 	
 	private static String[] rocks1Map = {
-		"rrr   ",
-		" rrhrr",
-		" rrr  "};
+		"rr",
+		"r "};
 	private static String[] rocks1Monsters = {};
 	
 	private static String[] rocks2Map = {
-		" rr",
-		"r r",
-		" r "};
+		"rr",
+		" r"};
 	private static String[] rocks2Monsters = {};
 	
 	private static String[] rocks3Map = {
-		"rr ",
-		"rrr",
-		" r ",
-		"rrr",
-		"r  "};
+		"r  ",
+		"rr"};
 	private static String[] rocks3Monsters = {};
 	
 	private static String[] rocks4Map = {
-		"rrr",
-		"rr ",
-		" rr"};
+		" r",
+		"rr"};
 	private static String[] rocks4Monsters = {};
+	
+	private static String[] rocks5Map = {
+		"rr"};
+	private static String[] rocks5Monsters = {};
+	
+	private static String[] rocks6Map = {
+		"r",
+		"r"};
+	private static String[] rocks6Monsters = {};
+	
+	private static String[] rocks7Map = {
+		"rr",
+		"rr"};
+	private static String[] rocks7Monsters = {};
+	
+	
+	
+	private static String[] holes1Map = {
+		"    ",
+		" hh ",
+		" h  ",
+		"    "};
+	private static String[] holes1Monsters = {};
 	
 	private static String[] holes2Map = {
 		"    ",
-		"hh  ",
 		" hh ",
+		"  h ",
 		"    "};
 	private static String[] holes2Monsters = {};
 	
 	private static String[] holes3Map = {
 		"    ",
+		" h  ",
 		" hh ",
-		"hhh ",
 		"    "};
 	private static String[] holes3Monsters = {};
+	
+	private static String[] holes4Map = {
+		"    ",
+		"  h ",
+		" hh ",
+		"    "};
+	private static String[] holes4Monsters = {};
+	
+	private static String[] holes5Map = {
+		"    ",
+		" hh ",
+		"    "};
+	private static String[] holes5Monsters = {};
+	
+	private static String[] holes6Map = {
+		"   ",
+		" h ",
+		" h ",
+		"   "};
+	private static String[] holes6Monsters = {};
+	
+	private static String[] holes7Map = {
+		"    ",
+		" hh ",
+		" hh ",
+		"    "};
+	private static String[] holes7Monsters = {};
+
+
+	
+	private static String[] mud1Map = {
+		"mm",
+		"m "};
+	private static String[] mud1Monsters = {};
+	
+	private static String[] mud2Map = {
+		"mm",
+		" m"};
+	private static String[] mud2Monsters = {};
+	
+	private static String[] mud3Map = {
+		"m ",
+		"mm"};
+	private static String[] mud3Monsters = {};
+	
+	private static String[] mud4Map = {
+		" m",
+		"mm"};
+	private static String[] mud4Monsters = {};
+	
+	private static String[] mud5Map = {
+		"mm"};
+	private static String[] mud5Monsters = {};
+	
+	private static String[] mud6Map = {
+		"m",
+		"m"};
+	private static String[] mud6Monsters = {};
+	
+	private static String[] mud7Map = {
+		"mm",
+		"mm"};
+	private static String[] mud7Monsters = {};
+
+
+	
+	
+	private static String[] bones1Map = {
+		"bb",
+		"b "};
+	private static String[] bones1Monsters = {};
+	
+	private static String[] bones2Map = {
+		"bb",
+		" b"};
+	private static String[] bones2Monsters = {};
+	
+	private static String[] bones3Map = {
+		"b ",
+		"bb"};
+	private static String[] bones3Monsters = {};
+	
+	private static String[] bones4Map = {
+		" b",
+		"bb"};
+	private static String[] bones4Monsters = {};
+	
+	private static String[] bones5Map = {
+		"bb"};
+	private static String[] bones5Monsters = {};
+	
+	private static String[] bones6Map = {
+		"b",
+		"b"};
+	private static String[] bones6Monsters = {};
+	
+	private static String[] bones7Map = {
+		"bb",
+		"bb"};
+	private static String[] bones7Monsters = {};
+	
+	
 	
 	private static ArrayList<Room> hardRooms = Map.makeHardRooms();
 	
@@ -1092,14 +1211,41 @@ public class Map implements IPresenterMap {
 		theRooms.add(new Room(boneMap, boneMonsters,  "boneMap", 0));
 		theRooms.add(new Room(rockMap, rockMonsters,  "rockMap", 0));
 		theRooms.add(new Room(holegridMap, holegridMonsters,  "holegridMap", 0));
-		theRooms.add(new Room(bridgeMap, bridgeMonsters, "bridgeMap", 0)); 
+		theRooms.add(new Room(bridgeMap, bridgeMonsters, "bridgeMap", 0));
+		theRooms.add(new Room(crossMap, crossMonsters, "crossMap", 0)); 
+		
 		theRooms.add(new Room(rocks1Map, rocks1Monsters,  "rocks1Map", 0));
 		theRooms.add(new Room(rocks2Map, rocks2Monsters,  "rocks2Map", 0));
 		theRooms.add(new Room(rocks3Map, rocks3Monsters,  "rocks3Map", 0));
 		theRooms.add(new Room(rocks4Map, rocks4Monsters,  "rocks4Map", 0));
-		theRooms.add(new Room(holes2Map, holes2Monsters, "holes2Map", 0));
-		theRooms.add(new Room(holes3Map, holes3Monsters, "holes3Map", 0));
-		theRooms.add(new Room(crossMap, crossMonsters, "crossMap", 0));
+		theRooms.add(new Room(rocks5Map, rocks5Monsters,  "rocks5Map", 0));
+		theRooms.add(new Room(rocks6Map, rocks6Monsters,  "rocks6Map", 0));
+		theRooms.add(new Room(rocks7Map, rocks7Monsters,  "rocks7Map", 0));
+		
+		theRooms.add(new Room(bones1Map, bones1Monsters,  "bones1Map", 0));
+		theRooms.add(new Room(bones2Map, bones2Monsters,  "bones2Map", 0));
+		theRooms.add(new Room(bones3Map, bones3Monsters,  "bones3Map", 0));
+		theRooms.add(new Room(bones4Map, bones4Monsters,  "bones4Map", 0));
+		theRooms.add(new Room(bones5Map, bones5Monsters,  "bones5Map", 0));
+		theRooms.add(new Room(bones6Map, bones6Monsters,  "bones6Map", 0));
+		theRooms.add(new Room(bones7Map, bones7Monsters,  "bones7Map", 0));
+		
+		theRooms.add(new Room(mud1Map, mud1Monsters,  "mud1Map", 0));
+		theRooms.add(new Room(mud2Map, mud2Monsters,  "mud2Map", 0));
+		theRooms.add(new Room(mud3Map, mud3Monsters,  "mud3Map", 0));
+		theRooms.add(new Room(mud4Map, mud4Monsters,  "mud4Map", 0));
+		theRooms.add(new Room(mud5Map, mud5Monsters,  "mud5Map", 0));
+		theRooms.add(new Room(mud6Map, mud6Monsters,  "mud6Map", 0));
+		theRooms.add(new Room(mud7Map, mud7Monsters,  "mud7Map", 0));
+		
+		theRooms.add(new Room(holes1Map, holes1Monsters,  "holes1Map", 0));
+		theRooms.add(new Room(holes2Map, holes2Monsters,  "holes2Map", 0));
+		theRooms.add(new Room(holes3Map, holes3Monsters,  "holes3Map", 0));
+		theRooms.add(new Room(holes4Map, holes4Monsters,  "holes4Map", 0));
+		theRooms.add(new Room(holes5Map, holes5Monsters,  "holes5Map", 0));
+		theRooms.add(new Room(holes6Map, holes6Monsters,  "holes6Map", 0));
+		theRooms.add(new Room(holes7Map, holes7Monsters,  "holes7Map", 0));
+
 		
 		return theRooms;
 	}

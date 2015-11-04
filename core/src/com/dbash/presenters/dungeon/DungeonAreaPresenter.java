@@ -116,7 +116,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 		mapPresenter.draw(spriteBatch);  // will draw the map, and creatures on the map 
 		
 		if (CreaturePresenter.creatureMoving) {
-			animQueue.draw(spriteBatch); // will draw island ontop of creature moving
+			animQueue.draw(spriteBatch); // will draw island on top of creature moving
 			mapPresenter.drawOverlay(spriteBatch);
 		} else {
 			mapPresenter.drawOverlay(spriteBatch);
