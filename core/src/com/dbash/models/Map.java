@@ -1049,7 +1049,7 @@ public class Map implements IPresenterMap {
 	private static String[] rocks2Monsters = {};
 	
 	private static String[] rocks3Map = {
-		"r  ",
+		"r ",
 		"rr"};
 	private static String[] rocks3Monsters = {};
 	
