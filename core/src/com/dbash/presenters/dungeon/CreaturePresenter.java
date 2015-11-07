@@ -295,7 +295,7 @@ public class CreaturePresenter {
 				break;
 		}
 		
-		final AnimationView moveAnim;
+		AnimationView moveAnim = null;
 		creatureAlpha = getCreatureAlpha();
 		Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
@@ -312,9 +312,10 @@ public class CreaturePresenter {
 			});
 			
 			// On 50 percent duty cycle, move back the other way.
+			final AnimationView shadowAnim = moveAnim;
 			moveAnim.onPercentComplete(50f, new IAnimListener() {
 				public void animEvent() {
-					moveAnim.setRects(moveAnim.currentArea, fromRect, moveTime/2);
+					shadowAnim.setRects(shadowAnim.currentArea, fromRect, moveTime/2);
 				}
 			});
 		} else {
