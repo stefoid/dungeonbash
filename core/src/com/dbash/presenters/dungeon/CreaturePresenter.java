@@ -1,5 +1,8 @@
 package com.dbash.presenters.dungeon;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
@@ -80,6 +83,8 @@ public class CreaturePresenter {
 	private Light toLight;
 	private float creatureAlpha;
 	
+	private ArrayList<AnimationView> moveAnims;
+	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
 		this.creature = creature;
@@ -87,6 +92,8 @@ public class CreaturePresenter {
 		this.model = model;
 		
 		this.mapPresenter = mapPresenter;
+		
+		moveAnims = new ArrayList<AnimationView>();
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.SHOW_NOTHING;
@@ -163,7 +170,17 @@ public class CreaturePresenter {
 			}
 			shadowImage.draw(spriteBatch, alpha);
 			staticImage.draw(spriteBatch, alpha);
-		}
+		} 
+		
+		for (Iterator<AnimationView> it = moveAnims.iterator(); it.hasNext(); ) {  
+		    AnimOp animOp = it.next(); 
+		    
+		    if (animOp.hasCompleted) {
+		    	it.remove();  // safely ask the iterator to remove this because its done.
+		    } else {  // only call draw on unowned animOps.
+		    	animOp.draw(spriteBatch);
+		    }
+		}  
 	}
 
 	private void configureAnimation(AnimationView animView) {
@@ -234,7 +251,7 @@ public class CreaturePresenter {
 					mapPresenter.removeLight(toLight);
 					light.alpha = 1f;
 					mapPresenter.moveLight(light, animEndPosition);
-				}		
+				}	
 			}
 		});
 	}
@@ -278,7 +295,7 @@ public class CreaturePresenter {
 				break;
 		}
 		
-		AnimationView moveAnim = null;
+		final AnimationView moveAnim;
 		creatureAlpha = getCreatureAlpha();
 		Rect toRect = makeDrawingRectFromPosition(toPosition);
 		final Rect fromRect = makeDrawingRectFromPosition(fromPosition);
@@ -295,10 +312,9 @@ public class CreaturePresenter {
 			});
 			
 			// On 50 percent duty cycle, move back the other way.
-			final AnimationView shudderAnim = moveAnim;
 			moveAnim.onPercentComplete(50f, new IAnimListener() {
 				public void animEvent() {
-					shudderAnim.setRects(shudderAnim.currentArea, fromRect, moveTime/2);
+					moveAnim.setRects(moveAnim.currentArea, fromRect, moveTime/2);
 				}
 			});
 		} else {
@@ -326,9 +342,9 @@ public class CreaturePresenter {
 				AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this, null);
 				moveAnim.animType = AnimOp.AnimType.FOLLOWER_MOVE;
 				if (myPreviousAnim != null) {
-					model.animQueue.chainSequntialToOp(moveAnim, myPreviousAnim);
+					model.animQueue.chainSequntialToOp(moveAnim, myPreviousAnim, true);
 				} else {
-					model.animQueue.chainConcurrentWithLast(moveAnim, 20f, false); // slight delay in following for asthetic reasons
+					model.animQueue.chainConcurrentWithLast(moveAnim, 20f, true); // slight delay in following for asthetic reasons
 				}
 				break;
 			case KNOCKBACK_MOVE:
@@ -336,32 +352,35 @@ public class CreaturePresenter {
 				moveAnim.animType = AnimOp.AnimType.KNOCKBACK_MOVE;
 				moveAnim.staticFrameOnly();
 				if (model.animQueue.getLastType() == AnimOp.AnimType.EXPLOSION) {
-					model.animQueue.chainConcurrentWithLast(moveAnim, 50f, false);
+					model.animQueue.chainConcurrentWithLast(moveAnim, 50f, true);
 				} else {
-					model.animQueue.chainConcurrentWithSn(moveAnim, false);
+					model.animQueue.chainConcurrentWithSn(moveAnim, true);
 				}
 				model.animQueue.drawBeneath(moveAnim);  // so it gets drawn beneath the damage animation
 				break;
 			case LEADER_MOVE:
 				moveAnim.animType = AnimOp.AnimType.LEADER_MOVE;
-				model.animQueue.add(moveAnim, false);
+				model.animQueue.add(moveAnim, true);
 				moveAnim.startPlaying();
 				break;
 			case CHARGE_MOVE:
 				moveAnim.animType = AnimOp.AnimType.CHARGE_MOVE;
-				model.animQueue.chainSequentialWithMyLast(moveAnim, this, false);
+				model.animQueue.chainSequentialWithMyLast(moveAnim, this, true);
 				break;
 			default:
 				moveAnim.animType = AnimOp.AnimType.MOVE;
-				model.animQueue.chainSequentialWithMyLast(moveAnim, this, false);
+				model.animQueue.chainSequentialWithMyLast(moveAnim, this, true);
 				break;
 		}
+		
+		moveAnims.add(moveAnim);
 		
 		// Moving shadow animation
 		if (moveType != MoveType.SHUDDER_MOVE) {
 			final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, null);
 			shadowAnim.staticFrameOnly();
-			model.animQueue.add(shadowAnim, false);
+			moveAnims.add(shadowAnim);
+			model.animQueue.add(shadowAnim, true);
 			shadowAnim.animType = AnimOp.AnimType.SHADOW;
 			
 			// cued to start and run when the creature moves
@@ -404,7 +423,8 @@ public class CreaturePresenter {
 		
 		fallAnim.sequenceNumber = sequenceNumber;
 		fallAnim.animType = AnimOp.AnimType.FALL_IN;
-		model.animQueue.chainSequential(fallAnim, false);
+		model.animQueue.chainSequential(fallAnim, true);
+		moveAnims.add(fallAnim);
 		
 		if (level > 0) {
 			Rect fromNumRect = new Rect(toRect, .25f, .25f, 0f, 0f);
@@ -531,7 +551,7 @@ public class CreaturePresenter {
 		// chain concurrently with other animations with the same SN
 		AnimationView myPreviousAnim = (AnimationView) model.animQueue.getLastByCreator(this, null);
 		if (myPreviousAnim != null) {
-			model.animQueue.chainSequntialToOp(deathAnim, myPreviousAnim); // the creature sinking into the ground or spiral.
+			model.animQueue.chainSequntialToOp(deathAnim, myPreviousAnim, false); // the creature sinking into the ground or spiral.
 			model.animQueue.chainConcurrentWithMyLast(skullAnim, this, 0f, false); // the  skull
 		} else {
 			model.animQueue.chainConcurrentWithSn(deathAnim, false); // the creature sinking into the ground or spiral.
@@ -563,7 +583,7 @@ public class CreaturePresenter {
 			}
 		});
 		
-		model.animQueue.chainPlayImmediate(hideOp);
+		model.animQueue.chainPlayImmediate(hideOp, false);
 	}
 	
 	public void creatureHides(int sequenceNumber, Creature hidingCreature, DungeonPosition hidingPosition) {
@@ -581,7 +601,7 @@ public class CreaturePresenter {
 			}
 		});
 		
-		model.animQueue.chainPlayImmediate(foundOp);
+		model.animQueue.chainPlayImmediate(foundOp, false);
 	}
 	
 	// this is the area of a creature which is slightly larger than the tile it is on.

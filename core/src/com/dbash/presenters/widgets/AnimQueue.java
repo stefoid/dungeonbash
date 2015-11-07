@@ -173,8 +173,8 @@ public class AnimQueue {
 		}
 	}
 	
-	public void chainSequntialToOp(final AnimOp thisOp, AnimOp afterThisOp) {
-		add(thisOp, false);
+	public void chainSequntialToOp(final AnimOp thisOp, AnimOp afterThisOp, boolean owner) {
+		add(thisOp, owner);
 		afterThisOp.onComplete(new IAnimListener() {
 			public void animEvent() {
 				thisOp.startPlaying();
@@ -182,8 +182,8 @@ public class AnimQueue {
 		});
 	}
 	
-	public void chainPlayImmediate(final AnimOp thisOp) {
-		add(thisOp, false);
+	public void chainPlayImmediate(final AnimOp thisOp, boolean owner) {
+		add(thisOp, owner);
 		thisOp.startPlaying();
 	}
 	
