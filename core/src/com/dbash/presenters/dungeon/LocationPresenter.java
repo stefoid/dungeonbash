@@ -99,44 +99,49 @@ public class LocationPresenter {
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
-		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-		float lightTint = tint;
-		
-		float tileTint = locationInfo.tint;
-		if (curVisible || prevVisible) {
-			tileTint = tileTint + L.DARK_FACTOR;
-			if (tileTint > 1f) {
-				tileTint = 1f;
+		if (locationInfo.isDiscovered) {
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			float lightTint = tint;
+			
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
 			}
 			
-			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			if (!L.useLights) {
+				tint = 1f;
+			} 
+			
+			if (floorImage != null) {
+				floorImage.drawTinted(spriteBatch, tint, 1f);
+			}
+			
+			if (tile != null && locationInfo.shouldDrawTile()) {
+				tile.drawTinted(spriteBatch, lightTint, 1f);
+			} 
+			
+			if (L.floorShadows && shadow != null) {
+				shadow.drawTinted(spriteBatch, tint, 1f);
+			}
+			
+			if (roughTerrain != null) {
+				roughTerrain.drawTinted(spriteBatch, lightTint, 1f);
+			}
+			
+			for (ImageView item : items) {
+				item.drawTinted(spriteBatch, lightTint, 1f);
+			}
+			
+			fog = null;
+		} else {
+			drawFog(spriteBatch);
+			drawCreature(spriteBatch, alpha, prevVisible, curVisible, isBelowCentre);
 		}
-		
-		if (!L.useLights) {
-			tint = 1f;
-		} 
-		
-		if (floorImage != null) {
-			floorImage.drawTinted(spriteBatch, tint, 1f);
-		}
-		
-		if (tile != null && locationInfo.shouldDrawTile()) {
-			tile.drawTinted(spriteBatch, lightTint, 1f);
-		} 
-		
-		if (L.floorShadows && shadow != null) {
-			shadow.drawTinted(spriteBatch, tint, 1f);
-		}
-		
-		if (roughTerrain != null) {
-			roughTerrain.drawTinted(spriteBatch, lightTint, 1f);
-		}
-		
-		for (ImageView item : items) {
-			item.drawTinted(spriteBatch, lightTint, 1f);
-		}
-		
-		fog = null;
 	}
 	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
@@ -144,7 +149,62 @@ public class LocationPresenter {
 		fog.draw(spriteBatch, 1f);
 	}
 	
-	public void drawStaticCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+//	public void drawStaticCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+//		
+//		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+//		float lightTint = tint;
+//		
+//		float tileTint = locationInfo.tint;
+//		if (curVisible || prevVisible) {
+//			tileTint = tileTint + L.DARK_FACTOR;
+//			if (tileTint > 1f) {
+//				tileTint = 1f;
+//			}
+//			
+//			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+//		}
+//	}
+	
+	// Draw the creature either statically, or animated, and the island.  In the appropriate order.
+	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+		
+		if (locationInfo.isDiscovered) {
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			float lightTint = tint;
+			
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			}
+			
+			if (creaturePresenter != null) {
+				if (prevVisible || curVisible) {
+					creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
+				}
+			}
+			
+			if (locationInfo.isIsland) {
+				tile.drawTinted(spriteBatch, lightTint, 1f);
+			}
+			
+			if (curVisible && torchAnimation != null) {
+				if (!(isBelowCentre && locationInfo.isStraighFrontWall)) {
+					torchAnimation.draw(spriteBatch);
+				}
+			}
+			
+			if (drawEye) {
+				eyeAnimation.draw(spriteBatch);
+			}
+		} 
+	}
+	
+	public void drawCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 		float lightTint = tint;
@@ -163,36 +223,6 @@ public class LocationPresenter {
 			if (prevVisible || curVisible) {
 				creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
 			}
-		}
-	}
-	
-	public void drawOverlay(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
-		
-		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-		float lightTint = tint;
-		
-		float tileTint = locationInfo.tint;
-		if (curVisible || prevVisible) {
-			tileTint = tileTint + L.DARK_FACTOR;
-			if (tileTint > 1f) {
-				tileTint = 1f;
-			}
-			
-			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-		}
-		
-		if (locationInfo.isIsland) {
-			tile.drawTinted(spriteBatch, lightTint, 1f);
-		}
-		
-		if (curVisible && torchAnimation != null) {
-			if (!(isBelowCentre && locationInfo.isStraighFrontWall)) {
-				torchAnimation.draw(spriteBatch);
-			}
-		}
-		
-		if (drawEye) {
-			eyeAnimation.draw(spriteBatch);
 		}
 	}
 	

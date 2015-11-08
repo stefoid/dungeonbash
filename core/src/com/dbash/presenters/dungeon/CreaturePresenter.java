@@ -202,7 +202,6 @@ public class CreaturePresenter {
 				visualState = VisualState.SHOW_ANIMATION;
 				creatureMoving = true;
 				if (light != null) {
-					if (LOG) L.log("onstart move");
 					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
 					toLight.setPositionOnly(toPosition);
 					mapPresenter.addLight(toLight);
@@ -232,7 +231,7 @@ public class CreaturePresenter {
 	private void updateToStaticWhenStopped(final AnimationView animView, final DungeonPosition animEndPosition, final Integer dir) {
 		animView.onComplete(new IAnimListener() {
 			public void animEvent() {
-				if (LOG) L.log("onComplete move");
+				if (LOG) L.log("%s : onComplete move", creature);
 				Boolean adjustHighlightLocation = false;
 				if (currentVisualPosition != animEndPosition) {
 					adjustHighlightLocation = true;
@@ -275,7 +274,7 @@ public class CreaturePresenter {
 	public void creatureMove(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, 
 			MoveType moveType, final float moveTime, IAnimListener animCompleteListener) {
 		
-		if (LOG) L.log("sequenceNumber: %s, fromPosition: %s, toPosition: %s, moveType:%s", sequenceNumber, fromPosition, toPosition, moveType);
+		if (LOG) L.log("%s : sequenceNumber: %s, fromPosition: %s, toPosition: %s, moveType:%s", creature, sequenceNumber, fromPosition, toPosition, moveType);
 		
 		// Work out what animation to play for the movement.
 		String animToUse = "walk";
@@ -307,16 +306,17 @@ public class CreaturePresenter {
 			moveAnim = new AnimationView(gui, getFullName(name, animToUse, imageDirection), fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, new IAnimListener() {
 				public void animEvent() {
 					if (tpListen != null) {
+						
 						tpListen.animEvent(); // tell anyone who cares
 					}
 				}
 			});
 			
 			// On 50 percent duty cycle, move back the other way.
-			final AnimationView shadowAnim = moveAnim;
+			final AnimationView shudderAnim = moveAnim;
 			moveAnim.onPercentComplete(50f, new IAnimListener() {
 				public void animEvent() {
-					shadowAnim.setRects(shadowAnim.currentArea, fromRect, moveTime/2);
+					shudderAnim.setRects(shudderAnim.currentArea, fromRect, moveTime/2);
 				}
 			});
 		} else {
@@ -324,6 +324,7 @@ public class CreaturePresenter {
 			moveAnim = new AnimationView(gui, getFullName(name, animToUse, direction), fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, new IAnimListener() {
 				public void animEvent() {
 					if (tpListen != null) {
+						if (LOG) L.log("%s : stopped tell anyone who cares", creature);
 						tpListen.animEvent(); // tell anyone who cares
 					}
 				}
