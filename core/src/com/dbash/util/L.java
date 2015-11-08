@@ -4,14 +4,14 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class L {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	public static boolean JARFILE = true;
 	public static JsonValue json = null;
 	
-	public static boolean TESTCHARS = false;
-	public static String c1 = "greater demon";
-	public static String c2 = "greater demon";
+	public static boolean TESTCHARS = true;
+	public static String c1 = "giant";
+	public static String c2 = "red dragon";
 	public static String c3 = "greater demon";
 	
 	public static boolean TUTORIAL_MODE = false;

@@ -54,7 +54,7 @@ import com.dbash.util.Tween;
 // type they are, to help it deicde how to schedule the current one, if it needs to.
 
 public class CreaturePresenter {
-	public static final boolean LOG = false && L.DEBUG;
+	public static final boolean LOG = true && L.DEBUG;
 	
 	public static final float HIDING_ALPHA = 0.4f;
 	
@@ -232,6 +232,7 @@ public class CreaturePresenter {
 	private void updateToStaticWhenStopped(final AnimationView animView, final DungeonPosition animEndPosition, final Integer dir) {
 		animView.onComplete(new IAnimListener() {
 			public void animEvent() {
+				if (LOG) L.log("onComplete move");
 				Boolean adjustHighlightLocation = false;
 				if (currentVisualPosition != animEndPosition) {
 					adjustHighlightLocation = true;

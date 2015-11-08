@@ -156,7 +156,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		boolean isBelowCenter;
 		
 		// draw the tiles that could be visible (pre-calculated when moveView is called)
-		for (int y=minTileY; y<=maxTileY;y++) {
+		for (int y=maxTileY; y>=minTileY;y--) {
 			
 			if (y < currentShadowMap.centerPos.y) {
 				isBelowCenter = true;
