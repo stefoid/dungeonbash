@@ -1,11 +1,14 @@
 package com.dbash.presenters.dungeon;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
 import com.dbash.models.Location.TileType;
+import com.dbash.models.DungeonPosition;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
@@ -40,6 +43,7 @@ public class LocationPresenter {
 	private ImageView roughTerrain = null;
 	private TextImageView[] tileInfo = null;
 	private ImageView fog = null;
+	private ArrayList<AnimationView> moveAnims;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter mapPresenter) {
 		this.area = new Rect(area);
@@ -47,6 +51,7 @@ public class LocationPresenter {
 		this.model = model;
 		this.mapPresenter = mapPresenter;
 		this.items = new Vector<ImageView>();
+		moveAnims = new ArrayList<AnimationView>();
 	}
 	
 	public boolean isIsland() {
@@ -58,6 +63,10 @@ public class LocationPresenter {
 			return shadowMap.locationIsVisible(locationInfo.location);
 		}
 		return false;
+	}
+	
+	public void addCreatureAnim(AnimationView anim) {
+		moveAnims.add(anim);
 	}
 	
 	private float calcTint(float cur_tint, float alpha, boolean prev, boolean current, boolean isBelowCentre) {
@@ -180,13 +189,7 @@ public class LocationPresenter {
 				}
 				
 				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-			}
-			
-			if (creaturePresenter != null) {
-				if (prevVisible || curVisible) {
-					creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
-				}
-			}
+			} 
 			
 			if (locationInfo.isIsland) {
 				tile.drawTinted(spriteBatch, lightTint, 1f);
@@ -197,6 +200,22 @@ public class LocationPresenter {
 					torchAnimation.draw(spriteBatch);
 				}
 			}
+			
+			if (creaturePresenter != null) {
+				if (prevVisible || curVisible) {
+					creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
+				}
+			}
+			
+			for (Iterator<AnimationView> it = moveAnims.iterator(); it.hasNext(); ) {  
+			    AnimOp animOp = it.next(); 
+			    
+			    if (animOp.hasCompleted) {
+			    	it.remove();  // safely ask the iterator to remove this because its done.
+			    } else {  // only call draw on unowned animOps.
+			    	animOp.draw(spriteBatch);
+			    }
+			} 
 			
 			if (drawEye) {
 				eyeAnimation.draw(spriteBatch);

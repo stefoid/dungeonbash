@@ -58,8 +58,6 @@ public class CreaturePresenter {
 	
 	public static final float HIDING_ALPHA = 0.4f;
 	
-	public static boolean creatureMoving = false;
-	
 	public enum VisualState {
 		SHOW_STATIC,
 		SHOW_NOTHING,
@@ -83,8 +81,6 @@ public class CreaturePresenter {
 	private Light toLight;
 	private float creatureAlpha;
 	
-	private ArrayList<AnimationView> moveAnims;
-	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
 		this.gui = gui;
 		this.creature = creature;
@@ -92,8 +88,6 @@ public class CreaturePresenter {
 		this.model = model;
 		
 		this.mapPresenter = mapPresenter;
-		
-		moveAnims = new ArrayList<AnimationView>();
 		
 		if (creature instanceof Character) {
 			this.visualState = VisualState.SHOW_NOTHING;
@@ -171,16 +165,6 @@ public class CreaturePresenter {
 			shadowImage.draw(spriteBatch, alpha);
 			staticImage.draw(spriteBatch, alpha);
 		} 
-		
-		for (Iterator<AnimationView> it = moveAnims.iterator(); it.hasNext(); ) {  
-		    AnimOp animOp = it.next(); 
-		    
-		    if (animOp.hasCompleted) {
-		    	it.remove();  // safely ask the iterator to remove this because its done.
-		    } else {  // only call draw on unowned animOps.
-		    	animOp.draw(spriteBatch);
-		    }
-		}  
 	}
 
 	private void configureAnimation(AnimationView animView) {
@@ -200,7 +184,6 @@ public class CreaturePresenter {
 		animView.onStart(new IAnimListener() {
 			public void animEvent() {
 				visualState = VisualState.SHOW_ANIMATION;
-				creatureMoving = true;
 				if (light != null) {
 					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
 					toLight.setPositionOnly(toPosition);
@@ -237,7 +220,6 @@ public class CreaturePresenter {
 					adjustHighlightLocation = true;
 				}
 				visualState = VisualState.SHOW_STATIC;
-				creatureMoving = false;
 				currentVisualPosition = animEndPosition;
 				if (dir != null) {
 					setStaticImage(dir);
@@ -376,13 +358,13 @@ public class CreaturePresenter {
 				break;
 		}
 		
-		moveAnims.add(moveAnim);
+		mapPresenter.addCreatureAnim(moveAnim, toPosition);
 		
 		// Moving shadow animation
 		if (moveType != MoveType.SHUDDER_MOVE) {
 			final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, null);
 			shadowAnim.staticFrameOnly();
-			moveAnims.add(shadowAnim);
+			mapPresenter.addCreatureAnim(shadowAnim, toPosition);
 			model.animQueue.add(shadowAnim, true);
 			shadowAnim.animType = AnimOp.AnimType.SHADOW;
 			
@@ -426,8 +408,7 @@ public class CreaturePresenter {
 		
 		fallAnim.sequenceNumber = sequenceNumber;
 		fallAnim.animType = AnimOp.AnimType.FALL_IN;
-		model.animQueue.chainSequential(fallAnim, true);
-		moveAnims.add(fallAnim);
+		model.animQueue.chainSequential(fallAnim, false);
 		
 		if (level > 0) {
 			Rect fromNumRect = new Rect(toRect, .25f, .25f, 0f, 0f);

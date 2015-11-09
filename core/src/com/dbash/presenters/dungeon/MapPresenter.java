@@ -133,6 +133,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		}
 	}
 	
+	public void addCreatureAnim(AnimationView anim, DungeonPosition posi) {
+		locationPresenter(posi.x,posi.y).addCreatureAnim(anim);
+	}
+	
 //	public void drawOverlay(SpriteBatch spriteBatch) {
 //		if (map == null) {
 //			return;
