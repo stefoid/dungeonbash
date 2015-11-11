@@ -28,6 +28,7 @@ public class LocationPresenter {
 	
 	public LocationInfo locationInfo;
 	private ImageView tile;
+	private ImageView overlay;
 	private ImageView floorImage;
 	public CreaturePresenter creaturePresenter;
 	
@@ -158,21 +159,26 @@ public class LocationPresenter {
 		fog.draw(spriteBatch, 1f);
 	}
 	
-//	public void drawStaticCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
-//		
-//		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-//		float lightTint = tint;
-//		
-//		float tileTint = locationInfo.tint;
-//		if (curVisible || prevVisible) {
-//			tileTint = tileTint + L.DARK_FACTOR;
-//			if (tileTint > 1f) {
-//				tileTint = 1f;
-//			}
-//			
-//			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-//		}
-//	}
+	public void drawCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+		
+		if (locationInfo.isDiscovered) {
+			if (creaturePresenter != null) {
+				if (prevVisible || curVisible) {
+					creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
+				}
+			}
+		}
+		
+		for (Iterator<AnimationView> it = moveAnims.iterator(); it.hasNext(); ) {  
+		    AnimOp animOp = it.next(); 
+		    
+		    if (animOp.hasCompleted) {
+		    	it.remove();  // safely ask the iterator to remove this because its done.
+		    } else {  // only call draw on unowned animOps.
+		    	animOp.draw(spriteBatch);
+		    }
+		} 
+	}
 	
 	// Draw the creature either statically, or animated, and the island.  In the appropriate order.
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
@@ -191,8 +197,12 @@ public class LocationPresenter {
 				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
 			} 
 			
-			if (locationInfo.isIsland) {
+			if (locationInfo.isIsland && !locationInfo.hasHardcodedImage) {
 				tile.drawTinted(spriteBatch, lightTint, 1f);
+			} else {
+				if (overlay != null) {
+					overlay.drawTinted(spriteBatch, lightTint, 1f);
+				}
 			}
 			
 			if (curVisible && torchAnimation != null) {
@@ -201,48 +211,10 @@ public class LocationPresenter {
 				}
 			}
 			
-			if (creaturePresenter != null) {
-				if (prevVisible || curVisible) {
-					creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
-				}
-			}
-			
-			for (Iterator<AnimationView> it = moveAnims.iterator(); it.hasNext(); ) {  
-			    AnimOp animOp = it.next(); 
-			    
-			    if (animOp.hasCompleted) {
-			    	it.remove();  // safely ask the iterator to remove this because its done.
-			    } else {  // only call draw on unowned animOps.
-			    	animOp.draw(spriteBatch);
-			    }
-			} 
-			
 			if (drawEye) {
 				eyeAnimation.draw(spriteBatch);
 			}
 		} 
-	}
-	
-	public void drawCreature(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
-		
-		float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-		float lightTint = tint;
-		
-		float tileTint = locationInfo.tint;
-		if (curVisible || prevVisible) {
-			tileTint = tileTint + L.DARK_FACTOR;
-			if (tileTint > 1f) {
-				tileTint = 1f;
-			}
-			
-			lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-		}
-		
-		if (creaturePresenter != null) {
-			if (prevVisible || curVisible) {
-				creaturePresenter.draw(spriteBatch, calcAlpha(alpha, prevVisible, curVisible));
-			}
-		}
 	}
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
@@ -263,7 +235,7 @@ public class LocationPresenter {
 			String tileName = locationInfo.tileName;
 			
 			// island image is bigger than normal.
-			if (locationInfo.isIsland) {
+			if (locationInfo.isIsland && !locationInfo.hasHardcodedImage) {
 				Rect islandArea = new Rect(area, 1.25f);
 				islandArea.y = area.y;
 				this.tile = new ImageView(gui, tileName, islandArea);
@@ -277,6 +249,10 @@ public class LocationPresenter {
 				} else {
 					this.tile = new ImageView(gui, tileName, area);
 				}
+			}
+			
+			if (locationInfo.hardcodeOverlayName != null) {
+				overlay = new ImageView(gui, locationInfo.hardcodeOverlayName, area);
 			}
 			 
 			if (locationInfo.isDiscovered == false) {

@@ -157,7 +157,9 @@ public class Location {
 	public IslandType islandType;
 	public String islandName;
 	public String hardcodeTilename;
+	public String hardcodeOverlayName;
 	public boolean isHardcoded;
+	public boolean hasHardcodeImages;
 	public boolean isShadowed;
 	public String shadowName;
 	public String prefix;
@@ -204,6 +206,7 @@ public class Location {
 		tileName = (String) in.readObject();
 		floorName = (String) in.readObject();
 		roughTerrainName = (String) in.readObject();
+		hardcodeOverlayName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
 		isHardcoded = in.readBoolean();
@@ -587,6 +590,10 @@ public class Location {
 		isHardcoded = true; 
 	}
 	
+	public void setOverlayTilename(String hardcodeOverlayName) {
+		this.hardcodeOverlayName = hardcodeOverlayName;
+	}
+	
 	private Integer getVariantCount(String filename) {
 		Integer count = tileVariants.get(filename);
 		if (count == null) {
@@ -937,6 +944,7 @@ public class Location {
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(floorName);
 		out.writeObject(roughTerrainName);
+		out.writeObject(hardcodeOverlayName);
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
 		out.writeBoolean(isHardcoded);

@@ -128,6 +128,15 @@ public class MapPresenter implements IMapPresentationEventListener{
 				
 				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
 				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+				loc.drawCreature(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+			}
+			
+			for (int x=minTileX; x<=maxTileX; x++) {
+
+				LocationPresenter loc = locationPresenter(x,y);
+				
+				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
 				loc.drawOverlays(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
 			}
 		}
@@ -136,45 +145,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 	public void addCreatureAnim(AnimationView anim, DungeonPosition posi) {
 		locationPresenter(posi.x,posi.y).addCreatureAnim(anim);
 	}
-	
-//	public void drawOverlay(SpriteBatch spriteBatch) {
-//		if (map == null) {
-//			return;
-//		}
-//		
-//		int creatureCount = 0;
-//		int islandCount = 0;
-//		float curAlpha = 1.0f;
-//		float fadeOutAlpha = 1 - curAlpha;
-//		
-//		if (previousShadowMap != null) {
-//			curAlpha = currentShadowMapTween.getValue();
-//		}
-//		
-//		boolean isBelowCenter;
-//		
-//		// draw the tiles that could be visible (pre-calculated when moveView is called)
-//		for (int y=maxTileY; y>=minTileY;y--) {
-//			
-//			if (y < currentShadowMap.centerPos.y) {
-//				isBelowCenter = true;
-//			} else {
-//				isBelowCenter = false;
-//			}
-//			
-//			for (int x=minTileX; x<=maxTileX; x++) {
-//	
-//				// draw the current shadowmap details
-//				LocationPresenter loc = locationPresenter(x,y);
-//				
-//				if (loc.locationInfo.isDiscovered) {
-//					boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
-//					boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-//					loc.drawOverlay(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
-//				}
-//			}
-//		}
-//	}
 	
 	public void moveView(float x, float y) {
 		// work out top left legal dungeon position and bottom right.  Since we could be scrolling, its just safest to draw an 

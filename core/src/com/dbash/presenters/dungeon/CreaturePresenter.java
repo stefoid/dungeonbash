@@ -1,15 +1,9 @@
 package com.dbash.presenters.dungeon;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dbash.models.AbilityCommand;
 import com.dbash.models.Character;
 import com.dbash.models.Creature;
 import com.dbash.models.Data;
-import com.dbash.models.Map;
-import com.dbash.models.Ability.AbilityEffectType;
 import com.dbash.models.Dungeon.MoveType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
@@ -18,7 +12,6 @@ import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.IPresenterCreature;
 import com.dbash.models.IPresenterCreature.HighlightStatus;
 import com.dbash.models.Light;
-import com.dbash.models.Monster;
 import com.dbash.models.PresenterDepend;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.Audio;
@@ -28,7 +21,6 @@ import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
-import com.dbash.util.Tween;
 
 @SuppressWarnings("unused")
 
@@ -358,13 +350,19 @@ public class CreaturePresenter {
 				break;
 		}
 		
-		mapPresenter.addCreatureAnim(moveAnim, toPosition);
+		DungeonPosition animPosition = fromPosition;
+		
+		if (toPosition.y < fromPosition.y) {
+			animPosition = toPosition;
+		}
+		
+		mapPresenter.addCreatureAnim(moveAnim, animPosition);
 		
 		// Moving shadow animation
 		if (moveType != MoveType.SHUDDER_MOVE) {
 			final AnimationView shadowAnim = new AnimationView(gui, "shadow", fromRect, toRect, creatureAlpha, creatureAlpha, moveTime, 1, null);
 			shadowAnim.staticFrameOnly();
-			mapPresenter.addCreatureAnim(shadowAnim, toPosition);
+			mapPresenter.addCreatureAnim(shadowAnim, animPosition);
 			model.animQueue.add(shadowAnim, true);
 			shadowAnim.animType = AnimOp.AnimType.SHADOW;
 			

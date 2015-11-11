@@ -21,7 +21,9 @@ public class LocationInfo {
 	public Location location;
 	public boolean isIsland;
 	public boolean isHardcoded;
+	public boolean hasHardcodedImage;
 	public boolean isStraighFrontWall;
+	public String hardcodeOverlayName;
 	
 	public LocationInfo(Location location) {
 		this.location = location;
@@ -31,8 +33,12 @@ public class LocationInfo {
 	public void update(Location location) {
 		tileName = location.tileName;
 		if (location.isHardcoded) {
+			if (location.hardcodeTilename != null) {
+				hasHardcodedImage = true;
+			}
 			isHardcoded = true;
 			roughTerrainType = null;
+			hardcodeOverlayName = location.hardcodeOverlayName;
 		} else {
 			isHardcoded = false;
 			roughTerrainType = location.getRoughTerrain();

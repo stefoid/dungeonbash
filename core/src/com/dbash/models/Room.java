@@ -48,17 +48,26 @@ public class Room {
 		insideArea = new Rect(mx+edgeLimit, my+edgeLimit, width-edgeLimit*2, height-edgeLimit*2);
 		Sprite sprite = Dbash.theSpriteManager.fetchSprite(hardcodeName+"-0-0"); 
 		if (sprite != null) {
-			setHardcodeTilenames();
+			Boolean useOverlay = false;
+			sprite = Dbash.theSpriteManager.fetchSprite(hardcodeName+"Overlay-0-0");
+			if (sprite != null) {
+				useOverlay = true;
+			}
+			setHardcodeTilenames(useOverlay);
 		} else {
 			hardcodeName = null;
 		}
 	}
 	
 	//calls the Location.setHardcodedTilename on each of its locations with the appropriate String and extensions.
-	private void setHardcodeTilenames() {
+	private void setHardcodeTilenames(boolean useOverlay) {
+		
 		for (int x=0;x<width;x++) {
 			for (int y=0;y<height;y++) {
 				location[mx+x][my+height-1-y].setHardcodeTilename(hardcodeName+"-"+x+"-"+y);
+				if (useOverlay) {
+					location[mx+x][my+height-1-y].setOverlayTilename(hardcodeName+"Overlay-"+x+"-"+y);
+				}
 			}
 		}
 	}
