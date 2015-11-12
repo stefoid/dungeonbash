@@ -154,19 +154,19 @@ public class MapPresenter implements IMapPresentationEventListener{
 		int centerTileX = (int) (x / tileSize);
 		int centerTileY = (int) (y / tileSize);
 		
-		minTileX = centerTileX - (Map.RANGE+1);
+		minTileX = centerTileX - (Map.RANGE+2);
 		if (minTileX < 0) {
 			minTileX = 0;
 		}
-		maxTileX = centerTileX + (Map.RANGE+1);
+		maxTileX = centerTileX + (Map.RANGE+2);
 		if (maxTileX >= map.width) {
 			maxTileX = map.width - 1;
 		}
-		minTileY = centerTileY - (Map.RANGE+1);
+		minTileY = centerTileY - (Map.RANGE+2);
 		if (minTileY < 0) {
 			minTileY = 0;
 		}
-		maxTileY = centerTileY + (Map.RANGE+1);	
+		maxTileY = centerTileY + (Map.RANGE+2);	
 		if (maxTileY >= map.height) {
 			maxTileY = map.height - 1;
 		}
