@@ -135,7 +135,7 @@ public class Map implements IPresenterMap {
 				// Then make secondary pass to determine tile names
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						location(x, y).setTileName();
+						location(x, y).setLocationNames();
 					}
 				}
 

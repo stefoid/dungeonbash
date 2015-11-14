@@ -20,7 +20,6 @@ public class Location {
 	
 	public static boolean LOG = false && L.DEBUG;
 	 
-	public static final String SOLID_ROCK = "SolidRock";
 	public static final float minNotVisibleTint = 0.22f;
 	public static final float minVisibleTint = 0.3f;
 	public static final float maxVisibileTint = 1f;
@@ -140,8 +139,6 @@ public class Location {
 	public Creature creature;
 	public int	creatureFacingDir; // Dungeon.EAST for example
 	public Vector<Ability> itemList;
-	public String tileName;  // the type of tile which will be used to work out the Sprite to display it.
-	public String floorName;
 	public boolean isDiscovered;
 	public DungeonPosition position;
 	int x;
@@ -149,20 +146,22 @@ public class Location {
 	public float tint;
 	public float permTint;
 	public TorchType torch = TorchType.NONE;
+	public TorchType sideWallType = TorchType.NONE;
 	public RoughTerrainType roughTerrainType;
-	public String roughTerrainName;
 	public LocationInfo locationInfo;
 	public ItemList itemInfoNoRough;
 	public ItemList itemInfoWithRough;
 	public IslandType islandType;
 	public String islandName;
-	public String hardcodeTilename;
-	public String hardcodeOverlayName;
 	public boolean isHardcoded;
-	public boolean hasHardcodeImages;
 	public boolean isShadowed;
 	public String shadowName;
 	public String prefix;
+	
+	public String tileName; 
+	public String floorName;
+	public String roughTerrainName;
+	public String overlayName;
 	 
 	private static HashMap<String, Integer> tileVariants = new HashMap<String, Integer>();
 	
@@ -206,7 +205,7 @@ public class Location {
 		tileName = (String) in.readObject();
 		floorName = (String) in.readObject();
 		roughTerrainName = (String) in.readObject();
-		hardcodeOverlayName = (String) in.readObject();
+		overlayName = (String) in.readObject();
 		isDiscovered = (Boolean) in.readObject();
 		torch = (TorchType) in.readObject();
 		isHardcoded = in.readBoolean();
@@ -563,14 +562,19 @@ public class Location {
 	// the procedure for fully calulating the map is to first draw the basic map with squigley lines and so on
 	// then iterate across the entire map and setTileType
 	// then iterate across it again to setTileName which can be used to work out the sprite to draw this location with.
-	public void setTileName() {
-		if (hardcodeTilename == null) {
+	public void setLocationNames() {
+
+		floorName = calcFloorVariantToUse(prefix.concat("CLEAR_FLOOR_IMAGE"));
+
+		if (!isHardcoded) {
 			tileName = calculateTileName();
-			if (hasIsland() == false) {
-				tileName = prefix.concat(tileName);
+			if (tileName != null) {
+				tileName = calcVariantToUse(prefix.concat(tileName));
+			}
+			if (hasIsland()) {
+				overlayName = islandName;
 			}
 		} else {
-			tileName = hardcodeTilename;
 			isHardcoded = true;
 		}
 		
@@ -578,20 +582,15 @@ public class Location {
 		if (shadowName != null) {
 			isShadowed = true;
 		}
-		
-		tileName = calcVariantToUse(tileName);
-		if (requiresFloor()) {
-			floorName = calcFloorVariantToUse(prefix.concat("CLEAR_FLOOR_IMAGE"));
-		}
 	}
 	
 	public void setHardcodeTilename(String hardcodeTilename) {
-		this.hardcodeTilename = hardcodeTilename;
+		this.tileName = hardcodeTilename;
 		isHardcoded = true; 
 	}
 	
 	public void setOverlayTilename(String hardcodeOverlayName) {
-		this.hardcodeOverlayName = hardcodeOverlayName;
+		this.overlayName = hardcodeOverlayName;
 	}
 	
 	private Integer getVariantCount(String filename) {
@@ -666,7 +665,9 @@ public class Location {
 				addTorch(TorchType.INVISIBLE);
 			}
 		} else if (Randy.getRand(1, L.TORCH_DENSITY) == 1 && map.okToPlaceTorch(this)) {
-			createTorchAt();
+			if (tileName != null) {
+				createTorchAt();
+			}
 		}
 		updateLocationInfo();
 	}
@@ -675,13 +676,13 @@ public class Location {
 		
 		if (tileType == TileType.FRONT_FACE) {
 			addTorch(TorchType.FRONT);
-		} else if (tileName.startsWith("VertWest")) {
+		} else if (sideWallType == TorchType.WEST) {
 			if (L.NEW_TILES) {
 				map.location[x][y].addTorch(TorchType.WEST);
 			} else {
 				map.location[x-1][y].addTorch(TorchType.WEST);
 			}
-		} else if (tileName.startsWith("VertEast")) {
+		} else if (sideWallType == TorchType.EAST) {
 			if (L.NEW_TILES) {
 				map.location[x][y].addTorch(TorchType.EAST);
 			} else {
@@ -700,7 +701,7 @@ public class Location {
 	
 	private String calculateTileName() {
 
-		String tileName = "CLEAR_FLOOR_IMAGE";
+		String tileName = null;
 		
 		switch(locationType) {
 			case WALL:
@@ -816,12 +817,18 @@ public class Location {
 					case CLEAR:
 						switch (eastSide) {
 							case CLEAR:
+								if (Randy.getRand(1, 2) == 1) {
+									sideWallType = TorchType.WEST;
+								} else {
+									sideWallType = TorchType.EAST;
+								}
 								return "VertDouble";
 							case FRONT_FACE:
 								return "VertWestFrontEastCorner";
 							case REAR_FACE:
 								return "VertWestRearEastCorner";
 							case NO_FACE:
+								sideWallType = TorchType.WEST;
 							default:
 								return "VertWest";
 						}
@@ -853,6 +860,7 @@ public class Location {
 					default:
 						switch (eastSide) {
 							case CLEAR:
+								sideWallType = TorchType.EAST;
 								return "VertEast";
 							case FRONT_FACE:
 								return "FrontEastCorner";
@@ -860,26 +868,19 @@ public class Location {
 								return "RearEastCorner";
 							case NO_FACE:
 							default:
-								return SOLID_ROCK;  // is this case possible?
+								return null;
 						}
 					}
-				
-			case FLOOR:
-				tileName = "CLEAR_FLOOR_IMAGE";
-				if (tileType == TileType.ISLAND) {
-					tileName = islandName;
-				}
-				
-				break;
 				
 			case EXIT:
 				tileName = "STAIRS_DOWN_IMAGE";
 				break;
 				
+			case FLOOR:
 			default:
-				tileName = "CLEAR_FLOOR_IMAGE";
 				break;
 		}
+		
 		return tileName;
 	}
 	
@@ -927,7 +928,7 @@ public class Location {
 	}
 	
 	public boolean isDrawable() {
-		if (tileName.equals(SOLID_ROCK)) {
+		if (tileType == TileType.NO_FACE && tileName == null) {
 			return false;
 		} else {
 			return true;
@@ -944,7 +945,7 @@ public class Location {
 		out.writeObject(tileName);  // the type of tile which will be used to work out the Sprite to display it.
 		out.writeObject(floorName);
 		out.writeObject(roughTerrainName);
-		out.writeObject(hardcodeOverlayName);
+		out.writeObject(overlayName);
 		out.writeObject(isDiscovered);
 		out.writeObject(torch);
 		out.writeBoolean(isHardcoded);
@@ -954,16 +955,6 @@ public class Location {
 		boolean result = isOpaque();
 		if (result && tileType == TileType.ISLAND) {
 			result = false;
-		}
-		return result;
-	}
-	
-	public boolean requiresFloor() {
-		boolean result =  (isHardcoded || hasIsland() || locationType == Location.LocationType.FLOOR);
-		if (L.NEW_TILES) {
-			if (locationType == Location.LocationType.WALL) {
-				result = true;
-			}
 		}
 		return result;
 	}

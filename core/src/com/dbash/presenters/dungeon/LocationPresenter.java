@@ -55,9 +55,9 @@ public class LocationPresenter {
 		moveAnims = new ArrayList<AnimationView>();
 	}
 	
-	public boolean isIsland() {
-		return locationInfo.isIsland;
-	}
+//	public boolean isIsland() {
+//		return locationInfo.isIsland;
+//	}
 	
 	public boolean isVisibile(ShadowMap shadowMap) {
 		if (shadowMap != null) {
@@ -131,7 +131,7 @@ public class LocationPresenter {
 				floorImage.drawTinted(spriteBatch, tint, 1f);
 			}
 			
-			if (tile != null && locationInfo.shouldDrawTile()) {
+			if (tile != null) {
 				tile.drawTinted(spriteBatch, lightTint, 1f);
 			} 
 			
@@ -197,12 +197,8 @@ public class LocationPresenter {
 				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
 			} 
 			
-			if (locationInfo.isIsland && !locationInfo.hasHardcodedImage) {
-				tile.drawTinted(spriteBatch, lightTint, 1f);
-			} else {
-				if (overlay != null) {
-					overlay.drawTinted(spriteBatch, lightTint, 1f);
-				}
+			if (overlay != null) {
+				overlay.drawTinted(spriteBatch, lightTint, 1f);
 			}
 			
 			if (curVisible && torchAnimation != null) {
@@ -223,7 +219,7 @@ public class LocationPresenter {
 		// Done once at setup.
 		if (tile == null) {
 			// set the floor tile to use, if required;
-			if (locationInfo.requiresFloor()) {
+			if (locationInfo.floorName!= null) {
 				floorImage = new ImageView(gui, locationInfo.floorName, area);
 			}
 			
@@ -232,31 +228,27 @@ public class LocationPresenter {
 				shadow = new ImageView(gui, locationInfo.getShadowName(), area);
 			} 
 			
-			String tileName = locationInfo.tileName;
-			
-			// island image is bigger than normal.
-			if (locationInfo.isIsland && !locationInfo.hasHardcodedImage) {
-				Rect islandArea = new Rect(area, 1.25f);
-				islandArea.y = area.y;
-				this.tile = new ImageView(gui, tileName, islandArea);
-			} else {
-				if (L.NEW_TILES == false && locationInfo.requiresFloor()) {
-					if (locationInfo.isHardcoded) {
-						this.tile = new ImageView(gui, tileName, area);
-					} else {
-						this.tile = null;
-					}
-				} else {
-					this.tile = new ImageView(gui, tileName, area);
-				}
+			if (locationInfo.tileName != null) {
+				tile = new ImageView(gui, locationInfo.tileName, area);
 			}
 			
-			if (locationInfo.hardcodeOverlayName != null) {
-				overlay = new ImageView(gui, locationInfo.hardcodeOverlayName, area);
+			// island image is bigger than normal.
+			Rect overlayArea = area;
+			if (locationInfo.drawEnlarged) {
+				overlayArea = new Rect(area, 1.25f);
+				overlayArea.y = area.y;
+			}
+			
+			if (locationInfo.overlayName != null) {
+				overlay = new ImageView(gui, locationInfo.overlayName, overlayArea);
 			}
 			 
 			if (locationInfo.isDiscovered == false) {
 				fog = new ImageView(gui, "fogtile", area);
+			}
+			
+			if (locationInfo.roughTerrainName != null) {
+				this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainName, area);
 			}
 			
 			if (locationInfo.location.tileType != Location.TileType.CLEAR) {
@@ -308,10 +300,6 @@ public class LocationPresenter {
 				default:
 					break;
 			}
-		}
-		
-		if (locationInfo.roughTerrainType != null) {
-			this.roughTerrain = new ImageView(gui, locationInfo.roughTerrainName, area);
 		}
 		
 		// set a creature presenter if there is a creature at this location.

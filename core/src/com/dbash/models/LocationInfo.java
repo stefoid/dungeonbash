@@ -11,40 +11,27 @@ public class LocationInfo {
 	public String tileName;
 	public String floorName;
 	public String roughTerrainName;
+	public String overlayName;
+	
 	public IPresenterCreature creature;
 	public boolean isDiscovered;
 	public ItemList itemList;
 	public float tint; // how dark should this tile be?
 	public Location.TorchType torch;
 	public boolean isShadowedFloor;
-	public RoughTerrainType roughTerrainType;
 	public Location location;
-	public boolean isIsland;
-	public boolean isHardcoded;
-	public boolean hasHardcodedImage;
 	public boolean isStraighFrontWall;
-	public String hardcodeOverlayName;
+	public boolean drawEnlarged;
 	
 	public LocationInfo(Location location) {
 		this.location = location;
 		update(location);
 	}
 	
-	public void update(Location location) {
+	public void update(Location location) {		
+		roughTerrainName = location.roughTerrainName;
 		tileName = location.tileName;
-		if (location.isHardcoded) {
-			if (location.hardcodeTilename != null) {
-				hasHardcodedImage = true;
-			}
-			isHardcoded = true;
-			roughTerrainType = null;
-			hardcodeOverlayName = location.hardcodeOverlayName;
-		} else {
-			isHardcoded = false;
-			roughTerrainType = location.getRoughTerrain();
-			roughTerrainName = location.roughTerrainName;
-		}
-		
+		overlayName = location.overlayName;
 		floorName = location.floorName;
 		creature = location.creature;
 		isDiscovered = location.isDiscovered;
@@ -60,23 +47,14 @@ public class LocationInfo {
 			}
 		}
 		
-		isIsland = location.hasIsland();
+		if (location.hasIsland() && location.tileName == null) {
+			drawEnlarged = true;
+		}
+		
 	}
 	
 	public String getShadowName() {
 		return location.shadowName;
-	}
-	
-	public boolean requiresFloor() {
-		return location.requiresFloor();
-	}
-	
-	public boolean shouldDrawTile() {
-		if (!isHardcoded && !isIsland && location.locationType == Location.LocationType.FLOOR) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 	
 	public String toString() {
