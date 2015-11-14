@@ -44,6 +44,8 @@ public class Location {
 		CENTRAL,
 		EAST,
 		WEST,
+		EAST_DOUBLE,
+		WEST_DOUBLE,
 		INVISIBLE
 	};
 	
@@ -230,6 +232,7 @@ public class Location {
 	}
 	
 	public void addTorch(TorchType torch) {
+		calculateTorchSideWall();
 		DungeonPosition torchPosition = new DungeonPosition(position);
 		this.torch = torch;
 		
@@ -238,12 +241,12 @@ public class Location {
 		} else if (torch == TorchType.FRONT ) {
 			torchPosition.y--;
 			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
-		} else if (torch == TorchType.WEST ) {
+		} else if (torch == TorchType.WEST || torch == TorchType.WEST_DOUBLE) {
 			if (L.NEW_TILES) {
 				torchPosition.x--;
 			} 
 			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true));
- 		} else if (torch == TorchType.EAST ) {
+ 		} else if (torch == TorchType.EAST || torch == TorchType.EAST_DOUBLE) {
 			if (L.NEW_TILES) {
 				torchPosition.x++;
 			} 
@@ -674,6 +677,8 @@ public class Location {
 	
 	public void createTorchAt() {
 		
+		calculateTorchSideWall();
+		
 		if (tileType == TileType.FRONT_FACE) {
 			addTorch(TorchType.FRONT);
 		} else if (sideWallType == TorchType.WEST) {
@@ -688,6 +693,10 @@ public class Location {
 			} else {
 				map.location[x+1][y].addTorch(TorchType.EAST);
 			}
+		} else if (sideWallType == TorchType.WEST_DOUBLE) {
+			map.location[x][y].addTorch(TorchType.WEST_DOUBLE);
+		} else if (sideWallType == TorchType.EAST_DOUBLE) {
+			map.location[x][y].addTorch(TorchType.EAST_DOUBLE);
 		}
 	}
 	
@@ -696,6 +705,42 @@ public class Location {
 			return false;
 		} else {
 			return true;
+		}
+	}
+	
+	private void calculateTorchSideWall() {
+		if (locationType == LocationType.WALL && tileType == TileType.NO_FACE) {
+			
+			TileType westSide = getTileTypeForTileNames(x-1,y);
+			TileType eastSide = getTileTypeForTileNames(x+1,y);
+			
+			switch (westSide) {
+				case CLEAR:
+					switch (eastSide) {
+						case CLEAR:
+							if (Randy.getRand(1, 2) == 1) {
+								sideWallType = TorchType.WEST_DOUBLE;
+							} else {
+								sideWallType = TorchType.EAST_DOUBLE;
+							}
+							break;
+						case NO_FACE:
+							sideWallType = TorchType.WEST;
+							break;
+						default:
+							break;
+					}
+				case NO_FACE:
+					switch (eastSide) {
+						case CLEAR:
+							sideWallType = TorchType.EAST;
+							break;
+						default:
+							break;
+					}
+				default:
+					break;
+			}
 		}
 	}
 	
@@ -817,18 +862,12 @@ public class Location {
 					case CLEAR:
 						switch (eastSide) {
 							case CLEAR:
-								if (Randy.getRand(1, 2) == 1) {
-									sideWallType = TorchType.WEST;
-								} else {
-									sideWallType = TorchType.EAST;
-								}
 								return "VertDouble";
 							case FRONT_FACE:
 								return "VertWestFrontEastCorner";
 							case REAR_FACE:
 								return "VertWestRearEastCorner";
 							case NO_FACE:
-								sideWallType = TorchType.WEST;
 							default:
 								return "VertWest";
 						}
@@ -860,7 +899,6 @@ public class Location {
 					default:
 						switch (eastSide) {
 							case CLEAR:
-								sideWallType = TorchType.EAST;
 								return "VertEast";
 							case FRONT_FACE:
 								return "FrontEastCorner";

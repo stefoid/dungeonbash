@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
 import com.dbash.models.Location.TileType;
+import com.dbash.models.Location.TorchType;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
@@ -264,22 +265,22 @@ public class LocationPresenter {
 				tileInfo = null;
 			}
 			
-			Rect torchArea; 
-			
 			//if (LOG) L.log("tilename: %s, location info: %s, location * %s", tileName, locationInfo, locationInfo.location);
 			
-			switch (locationInfo.torch) {
+			if (locationInfo.torch != TorchType.NONE && locationInfo.torch != TorchType.INVISIBLE) {
+				
+				Rect torchArea = null; 
+				
+				switch (locationInfo.torch) {
 				case FRONT:
 					torchArea = new Rect(area, 0.8f);
-					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-					torchAnimation.startPlaying();
+                    torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					break;
 				case CENTRAL:
 					torchArea = new Rect(area, 0.8f);
 					torchArea.x -= area.width/4f;
 					torchArea.y += area.height/9f;
 					torchAnimation = new AnimationView(gui, "torch", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-					torchAnimation.startPlaying();
 					break;
 				case WEST:
 					torchArea = new Rect(area, .2f, 0f, 0.0f, .3f);
@@ -287,7 +288,13 @@ public class LocationPresenter {
 						torchArea.x -= area.width/3.3f;
 					}
 					torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-					torchAnimation.startPlaying();
+					break;
+				case WEST_DOUBLE:
+					torchArea = new Rect(area, .2f, 0f, 0.0f, .3f);
+					if (L.NEW_TILES) {
+						torchArea.x -= area.width/3.3f;
+					}
+					torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					break;
 				case EAST:
 					torchArea = new Rect(area, 0f, 0.2f, .0f, .3f);
@@ -295,10 +302,19 @@ public class LocationPresenter {
 						torchArea.x += area.width/3.3f;	
 					}
 					torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
-					torchAnimation.startPlaying();
+					break;
+				case EAST_DOUBLE:
+					torchArea = new Rect(area, 0f, 0.2f, .0f, .3f);
+					if (L.NEW_TILES) {
+						torchArea.x += area.width/3.3f;	
+					}
+					torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					break;
 				default:
 					break;
+				}
+				
+				torchAnimation.startPlaying();
 			}
 		}
 		
