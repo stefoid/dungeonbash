@@ -292,7 +292,7 @@ public class LocationPresenter {
 				case WEST_DOUBLE:
 					torchArea = new Rect(area, .2f, 0f, 0.0f, .3f);
 					if (L.NEW_TILES) {
-						torchArea.x -= area.width/3.3f;
+						torchArea.x -= area.width/4f;
 					}
 					torchAnimation = new AnimationView(gui, "torche", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					break;
@@ -306,7 +306,7 @@ public class LocationPresenter {
 				case EAST_DOUBLE:
 					torchArea = new Rect(area, 0f, 0.2f, .0f, .3f);
 					if (L.NEW_TILES) {
-						torchArea.x += area.width/3.3f;	
+						torchArea.x += area.width/4f;	
 					}
 					torchAnimation = new AnimationView(gui, "torchw", torchArea, torchArea, 1f, 1f, 1f, AnimationView.LOOP_FOREVER, null);
 					break;
