@@ -438,7 +438,9 @@ public class Location {
 		Ability ability = new Ability(id, null, 1, dungeonEvents, dungeonQuery); 
 		itemList.add(ability);
 		roughTerrainType = getRoughTerrain();
-		roughTerrainName = calcVariantToUse(roughTerrainType.getValue());
+		if (!isHardcoded) {
+			roughTerrainName = calcVariantToUse(roughTerrainType.getValue());
+		}
 		updateLocationInfo();
 	}
 	
