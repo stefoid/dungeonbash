@@ -3,7 +3,10 @@ package com.dbash.presenters.dungeon;
 import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.dbash.models.Character;
 import com.dbash.models.DungeonPosition;
 import com.dbash.models.IAnimListener;
@@ -19,6 +22,7 @@ import com.dbash.models.UIInfoListener;
 import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.AnimationView;
+import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.MapAnim;
@@ -53,6 +57,11 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected ShadowMap previousShadowMap;
 	protected Tween currentShadowMapTween;
 	
+	protected ImageView light;
+	protected Rect lightArea;
+	
+	FrameBuffer fbo; 
+	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		super();  // AnimOp allows to place itself on the Anim queue when scrolling.
 		this.gui = gui;
@@ -64,6 +73,9 @@ public class MapPresenter implements IMapPresentationEventListener{
 		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
 		model.presenterDungeon.onMapEvent(this);
+		lightArea = new Rect(area, .9f);
+		light = new ImageView(gui, "ILLUMINATION", lightArea);
+		fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
 	}
 	
 	//	1) work out prev and cur visibility
@@ -140,6 +152,58 @@ public class MapPresenter implements IMapPresentationEventListener{
 				loc.drawOverlays(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
 			}
 		}
+		
+
+		spriteBatch.end();
+		
+		//make the FBO the current buffer
+		//FrameBuffer fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
+		fbo.begin();
+		
+		//... clear the FBO color with transparent black ...
+		Gdx.gl20.glClearColor(0f, 0f, 0f, 1f); //transparent black
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		//since the FBO may not be the same size as the display, 
+		//we need to give the SpriteBatch our new screen dimensions
+	//spriteBatch.resize(fbo.getWidth(), fbo.getHeight());
+
+		//render some sprites 
+		spriteBatch.begin();
+
+		//draw our track and thumb button
+		light.draw(spriteBatch);
+		fbo.end();
+
+		spriteBatch.end(); //flushes data to GL
+
+		//now we can unbind the FBO, returning rendering back to the default back buffer (the Display)
+		fbo.end();
+
+		//reset the batch back to the Display width/height
+	//spriteBatch.resize(Display.getWidth(), Display.getHeight());
+
+		//now we are rendering to the back buffer (Display) again
+		spriteBatch.begin();
+
+		//draw our offscreen FBO texture to the screen with the given alpha
+		spriteBatch.setColor(1f, 1f, 1f, .4f);
+		spriteBatch.draw(fbo.getColorBufferTexture(), 0,0);
+		//spriteBatch.draw(fbo.getColorBufferTexture(), viewPos.x-area.width, viewPos.y-area.height);
+
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+//		spriteBatch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
+//		light.draw(spriteBatch);
+//		spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
 	public void addCreatureAnim(AnimationView anim, DungeonPosition posi) {
@@ -151,6 +215,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		// extra ring of tiles around the center point to show partial tiles in any direction without thinking about it too much.
 		viewPos.x = x;
 		viewPos.y = y;
+		light.setPos(x-lightArea.width/2, y-lightArea.width/2);
 		int centerTileX = (int) (x / tileSize);
 		int centerTileY = (int) (y / tileSize);
 		

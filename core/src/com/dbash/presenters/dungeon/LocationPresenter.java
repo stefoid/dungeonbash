@@ -27,6 +27,9 @@ public class LocationPresenter {
 	
 	public static boolean LOG = true && L.DEBUG;
 	
+	public static float LIGHT_TINT = 1f;
+	public static float TINT = .7f;
+	
 	public LocationInfo locationInfo;
 	private ImageView tile;
 	private ImageView overlay;
@@ -111,18 +114,21 @@ public class LocationPresenter {
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-			float lightTint = tint;
+//			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+//			float lightTint = tint;
+//			
+//			float tileTint = locationInfo.tint;
+//			if (curVisible || prevVisible) {
+//				tileTint = tileTint + L.DARK_FACTOR;
+//				if (tileTint > 1f) {
+//					tileTint = 1f;
+//				}
+//				
+//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+//			}
 			
-			float tileTint = locationInfo.tint;
-			if (curVisible || prevVisible) {
-				tileTint = tileTint + L.DARK_FACTOR;
-				if (tileTint > 1f) {
-					tileTint = 1f;
-				}
-				
-				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-			}
+			float tint = TINT;
+			float lightTint = LIGHT_TINT;
 			
 			if (!L.useLights) {
 				tint = 1f;
@@ -185,18 +191,21 @@ public class LocationPresenter {
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-			float lightTint = tint;
+//			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+//			float lightTint = tint;
+//			
+//			float tileTint = locationInfo.tint;
+//			if (curVisible || prevVisible) {
+//				tileTint = tileTint + L.DARK_FACTOR;
+//				if (tileTint > 1f) {
+//					tileTint = 1f;
+//				}
+//				
+//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+//			} 
 			
-			float tileTint = locationInfo.tint;
-			if (curVisible || prevVisible) {
-				tileTint = tileTint + L.DARK_FACTOR;
-				if (tileTint > 1f) {
-					tileTint = 1f;
-				}
-				
-				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-			} 
+			float tint = TINT;
+			float lightTint = LIGHT_TINT;
 			
 			if (overlay != null) {
 				overlay.drawTinted(spriteBatch, lightTint, 1f);
