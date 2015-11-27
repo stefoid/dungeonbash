@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.dbash.models.Character;
 import com.dbash.models.DungeonPosition;
@@ -75,6 +76,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		model.presenterDungeon.onMapEvent(this);
 		lightArea = new Rect(area, .9f);
 		light = new ImageView(gui, "ILLUMINATION", lightArea);
+		//fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
 	}
 	
@@ -153,57 +155,38 @@ public class MapPresenter implements IMapPresentationEventListener{
 			}
 		}
 		
-
+		drawLighting(spriteBatch);
+	}
+	
+	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are
+	 * then render that texture on top of the map
+	 */
+	protected void drawLighting(SpriteBatch spriteBatch) {
+		
+		// flush the map drawing to the screen
 		spriteBatch.end();
 		
-		//make the FBO the current buffer
-		//FrameBuffer fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
+		// start drawing to the frame buffer.  (this also sets the viewport to the framebuffer size 1:1)
 		fbo.begin();
 		
 		//... clear the FBO color with transparent black ...
-		Gdx.gl20.glClearColor(0f, 0f, 0f, 1f); //transparent black
+		Gdx.gl20.glClearColor(0f, 0f, 0f, .5f); //transparent black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		//since the FBO may not be the same size as the display, 
-		//we need to give the SpriteBatch our new screen dimensions
-	//spriteBatch.resize(fbo.getWidth(), fbo.getHeight());
-
-		//render some sprites 
+		
+		// draw the lights to the framebuffer
 		spriteBatch.begin();
-
-		//draw our track and thumb button
 		light.draw(spriteBatch);
+		spriteBatch.end(); //flushes lights to the texture
+
+		//now we can unbind the FBO, returning rendering back to the default back buffer (the screen)
 		fbo.end();
 
-		spriteBatch.end(); //flushes data to GL
-
-		//now we can unbind the FBO, returning rendering back to the default back buffer (the Display)
-		fbo.end();
-
-		//reset the batch back to the Display width/height
-	//spriteBatch.resize(Display.getWidth(), Display.getHeight());
-
-		//now we are rendering to the back buffer (Display) again
+		// set the viewport back to the dungeon map area.
+		gui.cameraViewPort.use(spriteBatch);
 		spriteBatch.begin();
-
+		
 		//draw our offscreen FBO texture to the screen with the given alpha
-		spriteBatch.setColor(1f, 1f, 1f, .4f);
-		spriteBatch.draw(fbo.getColorBufferTexture(), 0,0);
-		//spriteBatch.draw(fbo.getColorBufferTexture(), viewPos.x-area.width, viewPos.y-area.height);
-
-		
-		
-		
-		
-		
-		
-		
-
-		
-
-//		spriteBatch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
-//		light.draw(spriteBatch);
-//		spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
+		spriteBatch.draw(fbo.getColorBufferTexture(), viewPos.x-area.width/2, viewPos.y-area.height/2);
 	}
 	
 	public void addCreatureAnim(AnimationView anim, DungeonPosition posi) {
