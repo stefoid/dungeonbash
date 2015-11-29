@@ -79,6 +79,8 @@ public class LocationPresenter {
 //			cur_tint = Location.minNotVisibleTint;
 //		}
 		
+		cur_tint = Location.maxVisibileTint;
+		
 		if (prev && !current) {       // fade out
 			tint = cur_tint + (Location.minNotVisibleTint - cur_tint) * alpha;
 		} else if (!prev && current) {// fade in;
@@ -115,15 +117,15 @@ public class LocationPresenter {
 			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 			float lightTint = tint;
 			
-			float tileTint = locationInfo.tint;
-			if (curVisible || prevVisible) {
-				tileTint = tileTint + L.DARK_FACTOR;
-				if (tileTint > 1f) {
-					tileTint = 1f;
-				}
-				
-				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-			}
+//			float tileTint = locationInfo.tint;
+//			if (curVisible || prevVisible) {
+//				tileTint = tileTint + L.DARK_FACTOR;
+//				if (tileTint > 1f) {
+//					tileTint = 1f;
+//				}
+//				
+//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+//			}
 			
 //			float tint = TINT;
 //			float lightTint = LIGHT_TINT;
@@ -192,15 +194,15 @@ public class LocationPresenter {
 			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 			float lightTint = tint;
 			
-			float tileTint = locationInfo.tint;
-			if (curVisible || prevVisible) {
-				tileTint = tileTint + L.DARK_FACTOR;
-				if (tileTint > 1f) {
-					tileTint = 1f;
-				}
-				
-				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-			} 
+//			float tileTint = locationInfo.tint;
+//			if (curVisible || prevVisible) {
+//				tileTint = tileTint + L.DARK_FACTOR;
+//				if (tileTint > 1f) {
+//					tileTint = 1f;
+//				}
+//				
+//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+//			} 
 			
 //			float tint = TINT;
 //			float lightTint = LIGHT_TINT;

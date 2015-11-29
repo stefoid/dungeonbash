@@ -155,7 +155,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 			}
 		}
 		
-		//drawLightMap(spriteBatch);
+		drawLightMap(spriteBatch);
 	}
 	
 	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are

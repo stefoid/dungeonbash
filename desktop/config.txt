@@ -8,7 +8,7 @@
 "level" : 18,
 "floor_shadows" : false,
 "dark_factor" : .17f,
-"anim_speed" : 1,
+"anim_speed" : 3,
 "hard_area_name" : bridgeMap,
 "normal_tile_probability" : 30,
 "stand_alone" : true
