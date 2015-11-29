@@ -1,12 +1,9 @@
 package com.dbash.presenters.dungeon;
 
-import java.util.Vector;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.dbash.models.Character;
 import com.dbash.models.DungeonPosition;
@@ -19,13 +16,10 @@ import com.dbash.models.Map;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
 import com.dbash.models.TouchEventProvider;
-import com.dbash.models.UIInfoListener;
-import com.dbash.models.UIInfoListenerBag;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
-import com.dbash.presenters.widgets.AnimOp;
 import com.dbash.presenters.widgets.MapAnim;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
@@ -76,7 +70,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 		model.presenterDungeon.onMapEvent(this);
 		lightArea = new Rect(area, .6f);
 		light = new ImageView(gui, "ILLUMINATION", lightArea);
-		//fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
 	}
 	
@@ -174,8 +167,19 @@ public class MapPresenter implements IMapPresentationEventListener{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// draw the lights to the framebuffer
+		gui.cameraViewPort.use(spriteBatch);
 		spriteBatch.begin();
-		light.draw(spriteBatch);
+		for (Light l : map.permLights) {
+			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
+			light.setPos(r.x + r.width/2 - viewPos.x + area.width/2, r.y + r.height/2 + viewPos.y - area.height/2);
+			light.draw(spriteBatch);
+		}
+		for (Light l : map.tempLights) {
+			Rect r = locationPresenter(l.position.x, l.position.x).getScreenArea();
+			light.setPos(r.x + r.width/2, r.y + r.height/2);
+			light.draw(spriteBatch);
+		}
+		
 		spriteBatch.end(); //flushes lights to the texture
 
 		//now we can unbind the FBO, returning rendering back to the default back buffer (the screen)

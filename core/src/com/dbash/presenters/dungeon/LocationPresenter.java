@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
+import com.dbash.models.Light;
 import com.dbash.models.Location;
 import com.dbash.models.Location.TorchType;
 import com.dbash.models.LocationInfo;

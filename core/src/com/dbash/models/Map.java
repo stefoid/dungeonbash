@@ -38,8 +38,8 @@ public class Map implements IPresenterMap {
 	public DungeonPosition exitPoint;
 	public DungeonPosition[] roomPoints;
 	protected UIInfoListenerBag retainFocusBag;
-	protected ArrayList<Light> tempLights;
-	protected ArrayList<Light> permLights;
+	public ArrayList<Light> tempLights;
+	public ArrayList<Light> permLights;
 
 	protected IDungeonQuery dungeonQuery;
 
