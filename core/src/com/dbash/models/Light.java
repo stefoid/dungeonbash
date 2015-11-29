@@ -84,11 +84,6 @@ public class Light {
 		this.position = position;
 	}
 	
-	public void setAlpha(float alpha) {
-		this.alpha = alpha;
-		map.lightingChanged();
-	}
-	
 	protected float getLightDivisor(float distance) {
 //		if (distance > 1f) {
 //			return distance*.8f; 

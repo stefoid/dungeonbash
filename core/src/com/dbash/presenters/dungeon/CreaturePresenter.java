@@ -70,7 +70,7 @@ public class CreaturePresenter {
 	private String name;
 	private ImageView highlightImage;
 	private Light light;
-	private Light toLight;
+	//private Light toLight;
 	private float creatureAlpha;
 	
 	public CreaturePresenter(UIDepend gui, PresenterDepend model, IPresenterCreature creature, MapPresenter mapPresenter) {
@@ -176,31 +176,31 @@ public class CreaturePresenter {
 		animView.onStart(new IAnimListener() {
 			public void animEvent() {
 				visualState = VisualState.SHOW_ANIMATION;
-				if (light != null) {
-					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
-					toLight.setPositionOnly(toPosition);
-					mapPresenter.addLight(toLight);
-				}
+//				if (light != null) {
+//					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
+//					toLight.setPositionOnly(toPosition);
+//					mapPresenter.addLight(toLight);
+//				}
 			}
 		});
 		
-		if (light != null) {
-			// draw both lights at the correct alpha 
-			for (float complete = 0f; complete < 100f; complete += 10f) {
-				final float percent = complete/100f;
-				animView.onPercentComplete(complete, new IAnimListener() {
-					public void animEvent() {
-						if (light != null) {
-							light.setAlpha(1f-percent*.6f);
-						}
-						if (toLight != null) {
-							toLight.setAlpha(percent+.1f);
-						}
-						//if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
-					}
-				});
-			}
-		}
+//		if (light != null) {
+//			// draw both lights at the correct alpha 
+//			for (float complete = 0f; complete < 100f; complete += 10f) {
+//				final float percent = complete/100f;
+//				animView.onPercentComplete(complete, new IAnimListener() {
+//					public void animEvent() {
+//						if (light != null) {
+//							light.setAlpha(1f-percent*.6f);
+//						}
+//						if (toLight != null) {
+//							toLight.setAlpha(percent+.1f);
+//						}
+//						//if (LOG) L.log("percent: %s, lightalpha: %s, toLightAllpha: %s", percent*100f, light.alpha, toLight.alpha);
+//					}
+//				});
+//			}
+//		}
 	}
 	
 	private void updateToStaticWhenStopped(final AnimationView animView, final DungeonPosition animEndPosition, final Integer dir) {
@@ -222,8 +222,8 @@ public class CreaturePresenter {
 					updateHighlightAnimation(currentVisualPosition);
 				}
 				if (light != null) {
-					mapPresenter.removeLight(toLight);
-					light.alpha = 1f;
+//					mapPresenter.removeLight(toLight);
+//					light.alpha = 1f;
 					mapPresenter.moveLight(light, animEndPosition);
 				}	
 			}

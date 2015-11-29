@@ -74,7 +74,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
 		model.presenterDungeon.onMapEvent(this);
-		lightArea = new Rect(area, .9f);
+		lightArea = new Rect(area, .6f);
 		light = new ImageView(gui, "ILLUMINATION", lightArea);
 		//fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
@@ -155,13 +155,13 @@ public class MapPresenter implements IMapPresentationEventListener{
 			}
 		}
 		
-		drawLighting(spriteBatch);
+		//drawLightMap(spriteBatch);
 	}
 	
 	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are
 	 * then render that texture on top of the map
 	 */
-	protected void drawLighting(SpriteBatch spriteBatch) {
+	protected void drawLightMap(SpriteBatch spriteBatch) {
 		
 		// flush the map drawing to the screen
 		spriteBatch.end();
@@ -170,7 +170,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		fbo.begin();
 		
 		//... clear the FBO color with transparent black ...
-		Gdx.gl20.glClearColor(0f, 0f, 0f, .5f); //transparent black
+		Gdx.gl20.glClearColor(0f, 0f, 0f, .67f); //transparent black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// draw the lights to the framebuffer
@@ -186,7 +186,12 @@ public class MapPresenter implements IMapPresentationEventListener{
 		spriteBatch.begin();
 		
 		//draw our offscreen FBO texture to the screen with the given alpha
+		
+		int src = spriteBatch.getBlendSrcFunc();
+		int dest = spriteBatch.getBlendDstFunc();
+		spriteBatch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		spriteBatch.draw(fbo.getColorBufferTexture(), viewPos.x-area.width/2, viewPos.y-area.height/2);
+		spriteBatch.setBlendFunction(src, dest);
 	}
 	
 	public void addCreatureAnim(AnimationView anim, DungeonPosition posi) {

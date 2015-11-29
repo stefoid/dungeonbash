@@ -7,9 +7,7 @@ import java.util.Vector;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
 import com.dbash.models.Location;
-import com.dbash.models.Location.TileType;
 import com.dbash.models.Location.TorchType;
-import com.dbash.models.DungeonPosition;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
@@ -114,21 +112,21 @@ public class LocationPresenter {
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-//			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-//			float lightTint = tint;
-//			
-//			float tileTint = locationInfo.tint;
-//			if (curVisible || prevVisible) {
-//				tileTint = tileTint + L.DARK_FACTOR;
-//				if (tileTint > 1f) {
-//					tileTint = 1f;
-//				}
-//				
-//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-//			}
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			float lightTint = tint;
 			
-			float tint = TINT;
-			float lightTint = LIGHT_TINT;
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			}
+			
+//			float tint = TINT;
+//			float lightTint = LIGHT_TINT;
 			
 			if (!L.useLights) {
 				tint = 1f;
@@ -191,21 +189,21 @@ public class LocationPresenter {
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-//			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-//			float lightTint = tint;
-//			
-//			float tileTint = locationInfo.tint;
-//			if (curVisible || prevVisible) {
-//				tileTint = tileTint + L.DARK_FACTOR;
-//				if (tileTint > 1f) {
-//					tileTint = 1f;
-//				}
-//				
-//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-//			} 
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			float lightTint = tint;
 			
-			float tint = TINT;
-			float lightTint = LIGHT_TINT;
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			} 
+			
+//			float tint = TINT;
+//			float lightTint = LIGHT_TINT;
 			
 			if (overlay != null) {
 				overlay.drawTinted(spriteBatch, lightTint, 1f);
