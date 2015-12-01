@@ -115,7 +115,8 @@ public class LocationPresenter {
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			//float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			float tint = 1f;
 			float lightTint = tint;
 			
 //			float tileTint = locationInfo.tint;
@@ -134,7 +135,7 @@ public class LocationPresenter {
 			if (!L.useLights) {
 				tint = 1f;
 			} 
-			
+		
 			if (floorImage != null) {
 				floorImage.drawTinted(spriteBatch, tint, 1f);
 			}
@@ -192,7 +193,8 @@ public class LocationPresenter {
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			//float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			float tint = 1f;
 			float lightTint = tint;
 			
 //			float tileTint = locationInfo.tint;

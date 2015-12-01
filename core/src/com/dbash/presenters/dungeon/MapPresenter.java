@@ -3,6 +3,7 @@ package com.dbash.presenters.dungeon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.dbash.models.Character;
@@ -169,17 +170,20 @@ public class MapPresenter implements IMapPresentationEventListener{
 		// draw the lights to the framebuffer
 		gui.cameraViewPort.use(spriteBatch);
 		spriteBatch.begin();
+		int src = spriteBatch.getBlendSrcFunc();
+		int dest = spriteBatch.getBlendDstFunc();
+		
 		for (Light l : map.permLights) {
 			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x + r.width/2 - viewPos.x + area.width/2, r.y + r.height/2 + viewPos.y - area.height/2);
+			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
 			light.draw(spriteBatch);
 		}
 		for (Light l : map.tempLights) {
-			Rect r = locationPresenter(l.position.x, l.position.x).getScreenArea();
-			light.setPos(r.x + r.width/2, r.y + r.height/2);
+			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
+			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
 			light.draw(spriteBatch);
 		}
-		
+
 		spriteBatch.end(); //flushes lights to the texture
 
 		//now we can unbind the FBO, returning rendering back to the default back buffer (the screen)
@@ -190,11 +194,9 @@ public class MapPresenter implements IMapPresentationEventListener{
 		spriteBatch.begin();
 		
 		//draw our offscreen FBO texture to the screen with the given alpha
-		
-		int src = spriteBatch.getBlendSrcFunc();
-		int dest = spriteBatch.getBlendDstFunc();
 		spriteBatch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		spriteBatch.draw(fbo.getColorBufferTexture(), viewPos.x-area.width/2, viewPos.y-area.height/2);
+		Texture t = fbo.getColorBufferTexture();  // need to flip the y for this, so use huge draw function that has flip params
+		spriteBatch.draw(t, viewPos.x-area.width/2, viewPos.y-area.height/2, t.getWidth(), t.getHeight(), 0, 0, t.getWidth(), t.getHeight(), false, true) ;
 		spriteBatch.setBlendFunction(src, dest);
 	}
 	

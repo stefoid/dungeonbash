@@ -1,11 +1,11 @@
 {
-"monsters" : false,
+"monsters" : true,
 "screen_width" : 1280,
 "screen_height" : 800,
 "walls" : "sw_",
 "new_tiles" : true,
 "lights" : true,
-"level" : 18,
+"level" : 1,
 "floor_shadows" : false,
 "dark_factor" : .17f,
 "anim_speed" : 1,
