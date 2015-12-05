@@ -150,6 +150,25 @@ public class MapPresenter implements IMapPresentationEventListener{
 		}
 		
 		drawLightMap(spriteBatch);
+		
+//		for (int y=minTileY; y<=maxTileY;y++) {
+//			
+//			if (y < currentShadowMap.centerPos.y) {
+//				isBelowCenter = true;
+//			} else {
+//				isBelowCenter = false;
+//			}
+//			
+//			for (int x=minTileX; x<=maxTileX; x++) {
+//	
+//				// draw the current shadowmap details
+//				LocationPresenter loc = locationPresenter(x,y);
+//				
+//				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+//				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+//				loc.drawOutOfLOSTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+//			}
+//		}
 	}
 	
 	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are
@@ -173,14 +192,16 @@ public class MapPresenter implements IMapPresentationEventListener{
 		int src = spriteBatch.getBlendSrcFunc();
 		int dest = spriteBatch.getBlendDstFunc();
 		
+		spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		
 		for (Light l : map.permLights) {
 			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
+			light.setPos(r.x  - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
 			light.draw(spriteBatch);
 		}
 		for (Light l : map.tempLights) {
 			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
+			light.setPos(r.x - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
 			light.draw(spriteBatch);
 		}
 

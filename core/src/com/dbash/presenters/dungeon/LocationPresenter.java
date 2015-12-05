@@ -115,19 +115,19 @@ public class LocationPresenter {
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			//float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-			float tint = 1f;
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+//			float tint = 1f;
 			float lightTint = tint;
 			
-//			float tileTint = locationInfo.tint;
-//			if (curVisible || prevVisible) {
-//				tileTint = tileTint + L.DARK_FACTOR;
-//				if (tileTint > 1f) {
-//					tileTint = 1f;
-//				}
-//				
-//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-//			}
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			}
 			
 //			float tint = TINT;
 //			float lightTint = LIGHT_TINT;
@@ -158,10 +158,41 @@ public class LocationPresenter {
 			
 			fog = null;
 		} else {
-			drawFog(spriteBatch);
+			//drawFog(spriteBatch);
 			drawCreature(spriteBatch, alpha, prevVisible, curVisible, isBelowCentre);
 		}
 	}
+	
+	public void drawOutOfLOSTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+		
+		float r = .4f;
+		float g = .4f;
+		float b = .4f;
+		float a = 1f;
+		
+		if (curVisible == false) {
+			if (floorImage != null) {
+				floorImage.drawTinted(spriteBatch, r, g, b, a);
+			}
+			
+			if (tile != null) {
+				tile.drawTinted(spriteBatch, r, g, b, a);
+			} 
+			
+			if (L.floorShadows && shadow != null) {
+				shadow.drawTinted(spriteBatch, r, g, b, a);
+			}
+			
+			if (roughTerrain != null) {
+				roughTerrain.drawTinted(spriteBatch, r, g, b, a);
+			}
+			
+			if (overlay != null) {
+				overlay.drawTinted(spriteBatch, r, g, b, a);
+			}
+		}
+	}
+
 	
 	// draw a tile according to its visibility in the passed in shadowmap and alpha
 	public void drawFog(SpriteBatch spriteBatch) {
@@ -193,19 +224,19 @@ public class LocationPresenter {
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			//float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
-			float tint = 1f;
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+			//float tint = 1f;
 			float lightTint = tint;
 			
-//			float tileTint = locationInfo.tint;
-//			if (curVisible || prevVisible) {
-//				tileTint = tileTint + L.DARK_FACTOR;
-//				if (tileTint > 1f) {
-//					tileTint = 1f;
-//				}
-//				
-//				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
-//			} 
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			} 
 			
 //			float tint = TINT;
 //			float lightTint = LIGHT_TINT;
