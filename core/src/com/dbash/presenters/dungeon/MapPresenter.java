@@ -69,7 +69,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
 		model.presenterDungeon.onMapEvent(this);
-		lightArea = new Rect(area, .6f);
+		lightArea = new Rect(area, .17f);
 		light = new ImageView(gui, "ILLUMINATION", lightArea);
 		fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
 	}
@@ -151,24 +151,24 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		drawLightMap(spriteBatch);
 		
-//		for (int y=minTileY; y<=maxTileY;y++) {
-//			
-//			if (y < currentShadowMap.centerPos.y) {
-//				isBelowCenter = true;
-//			} else {
-//				isBelowCenter = false;
-//			}
-//			
-//			for (int x=minTileX; x<=maxTileX; x++) {
-//	
-//				// draw the current shadowmap details
-//				LocationPresenter loc = locationPresenter(x,y);
-//				
-//				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
-//				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-//				loc.drawOutOfLOSTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
-//			}
-//		}
+		for (int y=minTileY; y<=maxTileY;y++) {
+			
+			if (y < currentShadowMap.centerPos.y) {
+				isBelowCenter = true;
+			} else {
+				isBelowCenter = false;
+			}
+			
+			for (int x=minTileX; x<=maxTileX; x++) {
+	
+				// draw the current shadowmap details
+				LocationPresenter loc = locationPresenter(x,y);
+				
+				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+				loc.drawOutOfLOSTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+			}
+		}
 	}
 	
 	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are
@@ -183,11 +183,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		fbo.begin();
 		
 		//... clear the FBO color with transparent black ...
-		Gdx.gl20.glClearColor(0f, 0f, 0f, .67f); //transparent black
+		Gdx.gl20.glClearColor(0f, 0f, 0f, 0.67f); //transparent black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// draw the lights to the framebuffer
-		gui.cameraViewPort.use(spriteBatch);
 		spriteBatch.begin();
 		int src = spriteBatch.getBlendSrcFunc();
 		int dest = spriteBatch.getBlendDstFunc();
@@ -196,15 +195,26 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		for (Light l : map.permLights) {
 			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x  - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
+			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
 			light.draw(spriteBatch);
 		}
 		for (Light l : map.tempLights) {
 			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
+			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
 			light.draw(spriteBatch);
 		}
 
+//		spriteBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE);
+//		
+//		for (int y=minTileY; y<=maxTileY;y++) {
+//			for (int x=minTileX; x<=maxTileX; x++) {
+//	
+//				// draw the current shadowmap details
+//				LocationPresenter loc = locationPresenter(x,y);
+//				loc.drawCreature(spriteBatch, 1f, true, true, true);
+//			}
+//		}
+		
 		spriteBatch.end(); //flushes lights to the texture
 
 		//now we can unbind the FBO, returning rendering back to the default back buffer (the screen)

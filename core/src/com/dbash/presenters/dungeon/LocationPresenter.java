@@ -193,8 +193,6 @@ public class LocationPresenter {
 		}
 	}
 
-	
-	// draw a tile according to its visibility in the passed in shadowmap and alpha
 	public void drawFog(SpriteBatch spriteBatch) {
 		fog.draw(spriteBatch, 1f);
 	}
