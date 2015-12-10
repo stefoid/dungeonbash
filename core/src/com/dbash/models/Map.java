@@ -10,6 +10,7 @@ import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.models.Location.TileType;
 import com.dbash.models.Location.TorchType;
+import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
 import com.dbash.util.Rect;
@@ -49,6 +50,8 @@ public class Map implements IPresenterMap {
 	protected boolean lightingChanged;
 	protected final int border = 2; // how thick the enclosing rock wall is
 	protected Rect validRect;
+	
+	protected MapPresenter mapPresenter;
 
 	public String statueName = "statue";
 
@@ -56,7 +59,7 @@ public class Map implements IPresenterMap {
 	public class MapException extends Exception {
 	}
 
-	public Map(int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery) {
+	public Map(int level, IDungeonEvents dungeonEvents, IDungeonQuery dungeonQuery, MapPresenter mapPresenter) {
 		
 		String prefix = L.STRING_PREFIX;
 		
@@ -67,9 +70,10 @@ public class Map implements IPresenterMap {
 		boolean dungeonNotCompleted = true;
 		width = 13 + level + border * 2 - 2;
 		height = width;
-		validRect = new Rect(border, border, width - border * 2, height
-				- border * 2);
+		validRect = new Rect(border, border, width - border * 2, height - border * 2);
 		this.dungeonQuery = dungeonQuery;
+		this.mapPresenter = mapPresenter;
+		
 		while (dungeonNotCompleted) {
 			try {
 				rooms = new ArrayList<Room>();
@@ -706,6 +710,7 @@ public class Map implements IPresenterMap {
 			if (permLights.contains(light) == false) {
 				clearTempLighting();
 				light.setMap(this);
+				setLightDepend(light);
 				permLights.add(light);
 				light.applyLight(); // permanent lights apply their effects once
 									// only and it sticks.
@@ -714,12 +719,19 @@ public class Map implements IPresenterMap {
 		} else {
 			if (tempLights.contains(light) == false) {
 				light.setMap(this);
+				setLightDepend(light);
 				tempLights.add(light);
 				lightingChanged();
 			}
 		}
 	}
 
+	private void setLightDepend(Light light) {
+		if (mapPresenter != null && location != null) {
+			light.setMapPresenter(mapPresenter);
+		}
+	}
+	
 	public void moveLight(Light light, DungeonPosition newPosition) {
 		if (tempLights.contains(light) == false) {
 			tempLights.add(light);

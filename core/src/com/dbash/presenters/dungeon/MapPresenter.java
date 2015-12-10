@@ -21,6 +21,7 @@ import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
+import com.dbash.presenters.widgets.AnimQueue;
 import com.dbash.presenters.widgets.MapAnim;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
@@ -45,7 +46,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected int minTileY;
 	protected int maxTileX;
 	protected int maxTileY;
-	protected UIDepend gui;
+	public UIDepend gui;
 	protected PresenterDepend model;
 	protected Rect area;
 	protected float tileSize;
@@ -53,10 +54,9 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected ShadowMap previousShadowMap;
 	protected Tween currentShadowMapTween;
 	
-	protected ImageView light;
-	protected Rect lightArea;
+	protected FrameBuffer fbo; 
+	public AnimQueue lightAnimQueue;
 	
-	FrameBuffer fbo; 
 	
 	public MapPresenter(UIDepend gui, PresenterDepend model, TouchEventProvider touchEventProvider, Rect area) {
 		super();  // AnimOp allows to place itself on the Anim queue when scrolling.
@@ -69,9 +69,8 @@ public class MapPresenter implements IMapPresentationEventListener{
 		tileSize = area.width / (2*Map.RANGE+1);
 		currentShadowMapTween = new Tween();
 		model.presenterDungeon.onMapEvent(this);
-		lightArea = new Rect(area, .17f);
-		light = new ImageView(gui, "ILLUMINATION", lightArea);
 		fbo = new FrameBuffer(Format.RGBA8888, (int)area.width, (int)area.height, false);
+		lightAnimQueue = new AnimQueue();
 	}
 	
 	//	1) work out prev and cur visibility
@@ -151,24 +150,24 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		drawLightMap(spriteBatch);
 		
-		for (int y=minTileY; y<=maxTileY;y++) {
-			
-			if (y < currentShadowMap.centerPos.y) {
-				isBelowCenter = true;
-			} else {
-				isBelowCenter = false;
-			}
-			
-			for (int x=minTileX; x<=maxTileX; x++) {
-	
-				// draw the current shadowmap details
-				LocationPresenter loc = locationPresenter(x,y);
-				
-				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
-				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
-				loc.drawOutOfLOSTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
-			}
-		}
+//		for (int y=minTileY; y<=maxTileY;y++) {
+//			
+//			if (y < currentShadowMap.centerPos.y) {
+//				isBelowCenter = true;
+//			} else {
+//				isBelowCenter = false;
+//			}
+//			
+//			for (int x=minTileX; x<=maxTileX; x++) {
+//	
+//				// draw the current shadowmap details
+//				LocationPresenter loc = locationPresenter(x,y);
+//				
+//				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+//				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+//				loc.drawOutOfLOSTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+//			}
+//		}
 	}
 	
 	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are
@@ -194,14 +193,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		
 		for (Light l : map.permLights) {
-			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
-			light.draw(spriteBatch);
+			l.draw(spriteBatch);
 		}
 		for (Light l : map.tempLights) {
-			Rect r = locationPresenter(l.position.x, l.position.y).getScreenArea();
-			light.setPos(r.x + r.width/2 - light.getArea().width/2, r.y + r.height/2 - light.getArea().height/2);
-			light.draw(spriteBatch);
+			l.draw(spriteBatch);
 		}
 
 //		spriteBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE);
@@ -214,6 +209,9 @@ public class MapPresenter implements IMapPresentationEventListener{
 //				loc.drawCreature(spriteBatch, 1f, true, true, true);
 //			}
 //		}
+		
+		// animations
+		lightAnimQueue.draw(spriteBatch);
 		
 		spriteBatch.end(); //flushes lights to the texture
 
@@ -240,7 +238,6 @@ public class MapPresenter implements IMapPresentationEventListener{
 		// extra ring of tiles around the center point to show partial tiles in any direction without thinking about it too much.
 		viewPos.x = x;
 		viewPos.y = y;
-		light.setPos(x-lightArea.width/2, y-lightArea.width/2);
 		int centerTileX = (int) (x / tileSize);
 		int centerTileY = (int) (y / tileSize);
 		
@@ -263,6 +260,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		
 		// move the dungeon camera
 		gui.cameraViewPort.moveCamera(viewPos.x, viewPos.y);		
+	}
+	
+	public Rect getAreaForLocation(DungeonPosition position) {
+		return new Rect(position.x*tileSize, position.y*tileSize, tileSize, tileSize);
 	}
 	
 	// When a map is set, we subscribe to changes at its locations
@@ -291,6 +292,13 @@ public class MapPresenter implements IMapPresentationEventListener{
 				tileArea.y += tileSize;
 			}
 			tileArea.x += tileSize;
+		}
+		
+		for (Light l : map.permLights) {
+			l.setMapPresenter(this);
+		}
+		for (Light l : map.tempLights) {
+			l.setMapPresenter(this);
 		}
 	}
 	

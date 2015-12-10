@@ -16,6 +16,7 @@ import com.dbash.models.Ability.AbilityType;
 import com.dbash.models.Creature.StealthStatus;
 import com.dbash.models.IDungeonPresentationEventListener.DeathType;
 import com.dbash.models.Location.RoughTerrainType;
+import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.presenters.root.tutorial.TutorialPresenter;
 import com.dbash.util.EventBus;
 import com.dbash.util.L;
@@ -194,7 +195,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 		}
 
 		// will create a map of Locations all ready to use.
-		map = new Map(currentLevel, this, this);
+		map = new Map(currentLevel, this, this, (MapPresenter) mapEventListener);
 		initLevel();
 		// If its the last currentLevel, put nashkur at the exit instead of an
 		// exit.

@@ -1,6 +1,10 @@
 package com.dbash.models;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.platform.ImageView;
+import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.util.L;
+import com.dbash.util.Rect;
 
 public class Light {
 	public static final boolean LOG = false && L.DEBUG;
@@ -21,6 +25,10 @@ public class Light {
 	protected Map map;
 	public boolean permanent;
 	public float alpha;
+	protected MapPresenter mapPresenter;
+	
+	protected Rect area;
+	protected ImageView lightImage;
 	
 	public Light (DungeonPosition position, int range, float strength, boolean permanent) {
 		this.position = new DungeonPosition(position);
@@ -59,6 +67,26 @@ public class Light {
 	// Shine its light on the Locations it can see, according to their distance.
 	public void applyLight() {
 		applyLight(alpha);
+	}
+	
+	// This is called when the light is added to the map.  At this point it can use the map presenter to calculate a rect based
+	// on DungeonPosition and strength
+	public void setMapPresenter(MapPresenter mapPresenter) {
+		this.mapPresenter = mapPresenter;
+		this.area = calculateRect(position, fStrength);
+		this.lightImage = new ImageView(mapPresenter.gui, "ILLUMINATION", area);
+	}
+	
+	private Rect calculateRect(DungeonPosition position, float strength) {
+		Rect tileArea = mapPresenter.getAreaForLocation(position);
+		Rect area = new Rect(tileArea, strength * 2f);
+		return area;
+	}
+	
+	public void draw(SpriteBatch spriteBatch) {
+		if (lightImage != null) {
+			lightImage.draw(spriteBatch);
+		}
 	}
 	
 	private void applyLight(float alpha) {
