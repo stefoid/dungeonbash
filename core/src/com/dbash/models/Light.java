@@ -29,6 +29,7 @@ public class Light {
 	
 	protected Rect area;
 	protected ImageView lightImage;
+	protected boolean animating;
 	
 	public Light (DungeonPosition position, int range, float strength, boolean permanent) {
 		this.position = new DungeonPosition(position);
@@ -37,6 +38,7 @@ public class Light {
 		this.shadowMap = new ShadowMap();
 		this.permanent = permanent;
 		this.alpha = 1f;
+		this.animating = false;
 	}
 	
 	public Light(Light parent) {
@@ -83,10 +85,27 @@ public class Light {
 		return area;
 	}
 	
+	// draw if static but if animating defer to aniamtion queue.
 	public void draw(SpriteBatch spriteBatch) {
-		if (lightImage != null) {
+		if (!animating && lightImage != null) {
 			lightImage.draw(spriteBatch);
 		}
+	}
+	
+	public void addAnimated() {
+		
+	}
+	
+	public void moveAnimated(DungeonPosition toPosition, float period) {
+		
+	}
+	
+	public void removeAnimated() {
+		
+	}
+	
+	public void changeStrengthAnimated(float newStrength) {
+		
 	}
 	
 	private void applyLight(float alpha) {
