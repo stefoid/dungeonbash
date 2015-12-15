@@ -19,7 +19,6 @@ import com.dbash.models.ShadowMap;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.models.UILocationInfoListener;
 import com.dbash.platform.AnimationView;
-import com.dbash.platform.ImageView;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.widgets.AnimQueue;
 import com.dbash.presenters.widgets.MapAnim;
@@ -402,17 +401,17 @@ public class MapPresenter implements IMapPresentationEventListener{
 		moveView(newViewPos.x, newViewPos.y);
 	}
 
-	public void addLight(Light light) {
-		map.addLight(light);
+	public void addLight(Light light, boolean animate) {
+		map.addLight(light, animate);
 	}
 	
-	public void moveLight(Light light, DungeonPosition newPosition) {
-		map.moveLight(light, newPosition);
+	public void moveLight(Light light, DungeonPosition newPosition, boolean animate) {
+		map.moveLight(light, newPosition, animate);
 		updateMapPresentation();
 	}
 	
-	public void removeLight(Light light) {
-		map.removeLight(light);
+	public void removeLight(Light light, boolean animate) {
+		map.removeLight(light, animate);
 		updateMapPresentation();
 	}
 
@@ -428,9 +427,9 @@ public class MapPresenter implements IMapPresentationEventListener{
 		//currentShadowMap.refresh();
 	}
 	
-	public void removeCreatureLightFromMap(Light light) {
+	public void removeCreatureLightFromMap(Light light, boolean animate) {
 		if (light != null) {
-			removeLight(light);
+			removeLight(light, animate);
 		}
 		refreshLighting();
 		updateMapPresentation();

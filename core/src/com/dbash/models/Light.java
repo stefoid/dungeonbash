@@ -1,7 +1,9 @@
 package com.dbash.models;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dbash.platform.AnimationView;
 import com.dbash.platform.ImageView;
+import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.util.L;
 import com.dbash.util.Rect;
@@ -93,19 +95,47 @@ public class Light {
 	}
 	
 	public void addAnimated() {
-		
+		Rect fromRect = new Rect(area, 0.05f);
+		AnimationView anim = new AnimationView(mapPresenter.gui, "ILLUMINATION", fromRect, area, 1f, 1f, DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
+			public void animEvent() {
+				animating = false;
+			}
+		});
+		animating = true;
+		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 	
 	public void moveAnimated(DungeonPosition toPosition, float period) {
-		
+		Rect toRect = calculateRect(toPosition, fStrength);
+		AnimationView anim = new AnimationView(mapPresenter.gui, "ILLUMINATION", area, toRect, 1f, 1f, DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
+			public void animEvent() {
+				animating = false;
+			}
+		});
+		animating = true;
+		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 	
 	public void removeAnimated() {
-		
+		Rect toRect = new Rect(area, 0.05f);
+		AnimationView anim = new AnimationView(mapPresenter.gui, "ILLUMINATION", area, toRect, 1f, 1f, DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
+			public void animEvent() {
+				animating = false;
+			}
+		});
+		animating = true;
+		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 	
 	public void changeStrengthAnimated(float newStrength) {
-		
+		Rect toRect = calculateRect(position, newStrength);
+		AnimationView anim = new AnimationView(mapPresenter.gui, "ILLUMINATION", area, toRect, 1f, 1f, DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
+			public void animEvent() {
+				animating = false;
+			}
+		});
+		animating = true;
+		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 	
 	private void applyLight(float alpha) {

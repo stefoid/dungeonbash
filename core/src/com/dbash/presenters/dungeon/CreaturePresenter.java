@@ -87,7 +87,7 @@ public class CreaturePresenter {
 			this.visualState = VisualState.SHOW_STATIC; 
 			light = creature.getLight();
 			if (light != null) {
-				mapPresenter.addLight(light);
+				mapPresenter.addLight(light, false);
 			}
 		}
 		this.area = new Rect(0,0,0,0);
@@ -176,11 +176,9 @@ public class CreaturePresenter {
 		animView.onStart(new IAnimListener() {
 			public void animEvent() {
 				visualState = VisualState.SHOW_ANIMATION;
-//				if (light != null) {
-//					toLight = new Light(light);  // moving light is moving to the new spot.  'Light' stays in the old spot'
-//					toLight.setPositionOnly(toPosition);
-//					mapPresenter.addLight(toLight);
-//				}
+				if (light != null) {
+					mapPresenter.moveLight(light, toPosition, true);
+				}
 			}
 		});
 		
@@ -220,11 +218,6 @@ public class CreaturePresenter {
 				}
 				if (adjustHighlightLocation) {
 					updateHighlightAnimation(currentVisualPosition);
-				}
-				if (light != null) {
-//					mapPresenter.removeLight(toLight);
-//					light.alpha = 1f;
-					mapPresenter.moveLight(light, animEndPosition);
 				}	
 			}
 		});
@@ -378,7 +371,7 @@ public class CreaturePresenter {
 	// This is an indication to the creaturePresenter of a move event that cant be seen
 	public void creatureMovedOutOfLOS(int sequenceNumber, DungeonPosition fromPosition, final DungeonPosition toPosition, int direction, MoveType moveType) {
 		if (light != null) {
-			mapPresenter.moveLight(light, toPosition);
+			mapPresenter.moveLight(light, toPosition, false);
 		}
 		currentVisualPosition = toPosition;
 		updateStaticImageArea();
@@ -430,7 +423,7 @@ public class CreaturePresenter {
 				if (completeListener != null) {
 					completeListener.animEvent(); // tell anyone who cares
 				}
-				mapPresenter.removeCreatureLightFromMap(light);
+				mapPresenter.removeCreatureLightFromMap(light, true);
 			}
 		});
 		downAnim.setRotation(0, 360*3, 1);  // rotate 3 times
@@ -520,7 +513,7 @@ public class CreaturePresenter {
 		toRect.y += fromRect.height*.8f;
 		AnimationView skullAnim = new AnimationView(gui, "DEATH", fromRect, toRect, 1f, 0f, DungeonAreaPresenter.skullPeriod, 1, new IAnimListener() {
 			public void animEvent() {
-				mapPresenter.removeCreatureLightFromMap(light);
+				mapPresenter.removeCreatureLightFromMap(light, true);
 				if (completeListener != null) {
 					completeListener.animEvent(); // tell anyone who cares
 				}
@@ -728,10 +721,10 @@ public class CreaturePresenter {
 	}
 	
 	private void processLight() {
-		mapPresenter.removeCreatureLightFromMap(light);
+		mapPresenter.removeCreatureLightFromMap(light, false);
 		light = creature.getLight();
 		if (light != null) {
-			mapPresenter.addLight(light);
+			mapPresenter.addLight(light, false);
 		}
 	}
 	

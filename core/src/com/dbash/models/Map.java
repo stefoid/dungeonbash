@@ -238,7 +238,7 @@ public class Map implements IPresenterMap {
 	protected void addExitLight() {
 		Light exitLight = new Light(exitPoint, 0, .4f, true); // low level light
 																// - permanent
-		addLight(exitLight);
+		addLight(exitLight, false);
 	}
 
 	// Called by Locations - the dungeonmap is one such subscriber and it posts
@@ -705,7 +705,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 
-	public void addLight(Light light) {
+	public void addLight(Light light, boolean animate) { 
 		if (light.permanent) {
 			if (permLights.contains(light) == false) {
 				clearTempLighting();
@@ -732,7 +732,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 	
-	public void moveLight(Light light, DungeonPosition newPosition) {
+	public void moveLight(Light light, DungeonPosition newPosition, boolean animate) {
 		if (tempLights.contains(light) == false) {
 			tempLights.add(light);
 			light.setPosition(newPosition);
@@ -745,7 +745,7 @@ public class Map implements IPresenterMap {
 
 	// remove the effects of temp lighting, returning tile to its base level of
 	// permanent lighting.
-	public void removeLight(Light light) {
+	public void removeLight(Light light, boolean animate) {
 		// if (tempLights.contains(light)) {
 		// light.clearLight();
 		// tempLights.remove(light);

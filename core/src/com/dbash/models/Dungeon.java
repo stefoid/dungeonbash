@@ -627,7 +627,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 					});
 		} else {
 			map.location(deader.getPosition()).setCreatureAndUpdatePresenter(null);
-			map.removeLight(deader.light);
+			map.removeLight(deader.light, false);
 			processCreaturePositions();
 			mapEventListener.updateMapPresentation();
 		}

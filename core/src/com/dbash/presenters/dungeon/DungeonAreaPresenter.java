@@ -66,6 +66,7 @@ public class DungeonAreaPresenter implements  TouchEventListener, IDungeonPresen
 	public  static float knockbackPeriod = 0.55f * multiplier;
 	public  static float shudderPeriod = 0.34f * multiplier;
 	public  static float effectMsgPeriod = 1f * multiplier;
+	public  static float torchChangePeriod = 0.5f * multiplier;
 	
 	private UIDepend				gui;
 	private PresenterDepend 		model;
