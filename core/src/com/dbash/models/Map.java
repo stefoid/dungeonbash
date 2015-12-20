@@ -10,6 +10,7 @@ import com.dbash.models.Location.LocationType;
 import com.dbash.models.Location.RoughTerrainType;
 import com.dbash.models.Location.TileType;
 import com.dbash.models.Location.TorchType;
+import com.dbash.presenters.dungeon.DungeonAreaPresenter;
 import com.dbash.presenters.dungeon.MapPresenter;
 import com.dbash.util.L;
 import com.dbash.util.Randy;
@@ -733,13 +734,19 @@ public class Map implements IPresenterMap {
 	}
 	
 	public void moveLight(Light light, DungeonPosition newPosition, boolean animate) {
+		
+		if (animate == false) {
+			light.setPosition(newPosition);
+		} 
+		
 		if (tempLights.contains(light) == false) {
 			tempLights.add(light);
-			light.setPosition(newPosition);
+
 			light.setMap(this);
-		} else {
-			// light.clearLight();
-			light.setPosition(newPosition);
+		} 
+		
+		if (animate) {
+			light.moveAnimated(newPosition, DungeonAreaPresenter.walkPeriod);
 		}
 	}
 
