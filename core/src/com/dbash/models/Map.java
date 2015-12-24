@@ -192,9 +192,8 @@ public class Map implements IPresenterMap {
 		return true;
 	}
 
-	public Map(ObjectInputStream in, IDungeonControl dungeon,
-			AllCreatures allCreatures, IDungeonEvents dungeonEvents,
-			IDungeonQuery dungeonQuery) throws IOException,
+	public Map(ObjectInputStream in, IDungeonControl dungeon, AllCreatures allCreatures, IDungeonEvents dungeonEvents,
+			IDungeonQuery dungeonQuery , MapPresenter mapPresenter) throws IOException,
 			ClassNotFoundException {
 		retainFocusBag = new UIInfoListenerBag();
 		this.dungeonQuery = dungeonQuery;
@@ -204,7 +203,8 @@ public class Map implements IPresenterMap {
 		startPoint = (DungeonPosition) in.readObject();
 		exitPoint = (DungeonPosition) in.readObject();
 		location = new Location[width][height];
-
+		this.mapPresenter = mapPresenter;
+		
 		setupLighting();
 
 		// read the locations
@@ -706,7 +706,7 @@ public class Map implements IPresenterMap {
 		}
 	}
 
-	public void addLight(Light light, boolean animate) { 
+	public void addLight(final Light light, boolean animate) { 
 		if (light.permanent) {
 			if (permLights.contains(light) == false) {
 				clearTempLighting();
@@ -718,18 +718,30 @@ public class Map implements IPresenterMap {
 				shineTempLighting();
 			}
 		} else {
-			if (tempLights.contains(light) == false) {
-				light.setMap(this);
-				setLightDepend(light);
-				tempLights.add(light);
-				lightingChanged();
+			light.setMap(this);
+			setLightDepend(light);
+			
+			if (animate == false) { 
+				addTempLight(light);
+			} else {
+				light.addAnimated(new IAnimListener() {
+					@Override
+					public void animEvent() {
+						addTempLight(light);
+					}
+				});
 			}
 		}
 	}
 
 	private void setLightDepend(Light light) {
-		if (mapPresenter != null && location != null) {
-			light.setMapPresenter(mapPresenter);
+		light.setMapPresenter(mapPresenter);
+	}
+	
+	protected void addTempLight(Light light) {
+		if (tempLights.contains(light) == false) {
+			tempLights.add(light);
+			lightingChanged();
 		}
 	}
 	
@@ -746,21 +758,25 @@ public class Map implements IPresenterMap {
 		} 
 		
 		if (animate) {
-			light.moveAnimated(newPosition, DungeonAreaPresenter.walkPeriod);
+			light.moveAnimated(newPosition, DungeonAreaPresenter.walkPeriod, null);
 		}
 	}
 
 	// remove the effects of temp lighting, returning tile to its base level of
 	// permanent lighting.
-	public void removeLight(Light light, boolean animate) {
-		// if (tempLights.contains(light)) {
-		// light.clearLight();
-		// tempLights.remove(light);
-		// lightingChanged();
-		// }
-		if (light != null) {
+	public void removeLight(final Light light, boolean animate) {
+
+		if (animate == false) {
 			tempLights.remove(light);
 			lightingChanged();
+		} else {
+			light.removeAnimated(new IAnimListener() {
+				@Override
+				public void animEvent() {
+					tempLights.remove(light);
+					lightingChanged();
+				}
+			});
 		}
 	}
 

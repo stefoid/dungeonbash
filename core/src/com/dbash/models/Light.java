@@ -100,53 +100,63 @@ public class Light {
 		}
 	}
 
-	public void addAnimated() {
+	public void addAnimated(final IAnimListener completeListener) {
 		Rect fromRect = new Rect(area, 0.05f);
 		AnimationView anim = new AnimationView(mapPresenter.gui,
 				"ILLUMINATION", fromRect, area, 1f, 1f,
 				DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
 					public void animEvent() {
 						animating = false;
+						if (completeListener != null) {
+							completeListener.animEvent();
+						}
 					}
 				});
 		animating = true;
 		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 
-	public void moveAnimated(final DungeonPosition toPosition, float period) {
+	public void moveAnimated(final DungeonPosition toPosition, float period, final IAnimListener completeListener) {
 		Rect toRect = calculateRect(toPosition, fStrength);
-		AnimationView anim = new AnimationView(mapPresenter.gui,
-				"ILLUMINATION", area, toRect, 1f, 1f,
-				period, 1, new IAnimListener() {
+		AnimationView anim = new AnimationView(mapPresenter.gui, "ILLUMINATION", area, toRect, 1f, 1f, period, 1, new IAnimListener() {
 					public void animEvent() {
 						animating = false;
 						setPosition(toPosition);
+						if (completeListener != null) {
+							completeListener.animEvent();
+						}
 					}
 				});
 		animating = true;
 		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 
-	public void removeAnimated() {
+	public void removeAnimated(final IAnimListener completeListener) {
 		Rect toRect = new Rect(area, 0.05f);
 		AnimationView anim = new AnimationView(mapPresenter.gui,
 				"ILLUMINATION", area, toRect, 1f, 1f,
 				DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
 					public void animEvent() {
 						animating = false;
+						if (completeListener != null) {
+							completeListener.animEvent();
+						}
 					}
 				});
 		animating = true;
 		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 
-	public void changeStrengthAnimated(float newStrength) {
+	public void changeStrengthAnimated(float newStrength, final IAnimListener completeListener) {
 		Rect toRect = calculateRect(position, newStrength);
 		AnimationView anim = new AnimationView(mapPresenter.gui,
 				"ILLUMINATION", area, toRect, 1f, 1f,
 				DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
 					public void animEvent() {
 						animating = false;
+						if (completeListener != null) {
+							completeListener.animEvent();
+						}
 					}
 				});
 		animating = true;

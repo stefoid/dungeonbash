@@ -87,7 +87,7 @@ public class CreaturePresenter {
 			this.visualState = VisualState.SHOW_STATIC; 
 			light = creature.getLight();
 			if (light != null) {
-				mapPresenter.addLight(light, false);
+				mapPresenter.addLight(light, true);
 			}
 		}
 		this.area = new Rect(0,0,0,0);
@@ -721,10 +721,10 @@ public class CreaturePresenter {
 	}
 	
 	private void processLight() {
-		mapPresenter.removeCreatureLightFromMap(light, false);
+		mapPresenter.removeCreatureLightFromMap(light, true);
 		light = creature.getLight();
 		if (light != null) {
-			mapPresenter.addLight(light, false);
+			mapPresenter.addLight(light, true);
 		}
 	}
 	

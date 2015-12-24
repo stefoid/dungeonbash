@@ -98,7 +98,7 @@ public class Dungeon implements IDungeonControl, IDungeonEvents, IDungeonQuery,
 		currentFocus = (DungeonPosition) in.readObject();
 
 		// Load the map info with Locationtypes.
-		map = new Map(in, this, allCreatures, this, this);
+		map = new Map(in, this, allCreatures, this, this, (MapPresenter) mapEventListener);
 
 		// must set the map now so that it can observe changes to Locations as
 		// monsters are added to the level.
