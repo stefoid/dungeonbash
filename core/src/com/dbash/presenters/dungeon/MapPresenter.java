@@ -401,6 +401,10 @@ public class MapPresenter implements IMapPresentationEventListener{
 		moveView(newViewPos.x, newViewPos.y);
 	}
 
+	public void changeLightStrength(Light light, float newLightStrength) {
+		map.changeLightStrength(light, newLightStrength);
+	}
+	
 	public void addLight(Light light, boolean animate) {
 		map.addLight(light, animate);
 	}

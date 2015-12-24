@@ -720,6 +720,10 @@ public class CreaturePresenter {
 		processLight();
 	}
 	
+	public void lightStrengthChanged(float newLightStrength) {
+		mapPresenter.changeLightStrength(light, newLightStrength);
+	}
+	
 	private void processLight() {
 		mapPresenter.removeCreatureLightFromMap(light, true);
 		light = creature.getLight();

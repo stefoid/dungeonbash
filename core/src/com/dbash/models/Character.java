@@ -1198,9 +1198,11 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 				lightStrength = Light.CLOSEST_CHARCTER_LIGHT_STRENGTH;
 			} 
 			
-			if (light == null || light.getStrength() != lightStrength) {
+			if (light == null) {
 				light = new Light(mapPosition, Light.WALL_TORCH_RANGE, lightStrength, false);
 				creaturePresenter.lightChanged();
+			} else if (light.getStrength() != lightStrength) {
+				creaturePresenter.lightStrengthChanged(lightStrength);
 			}
 		} else {
 			if (light != null) {

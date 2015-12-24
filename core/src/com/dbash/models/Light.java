@@ -149,8 +149,7 @@ public class Light {
 
 	public void changeStrengthAnimated(float newStrength, final IAnimListener completeListener) {
 		Rect toRect = calculateRect(position, newStrength);
-		AnimationView anim = new AnimationView(mapPresenter.gui,
-				"ILLUMINATION", area, toRect, 1f, 1f,
+		AnimationView anim = new AnimationView(mapPresenter.gui, "ILLUMINATION", area, toRect, 1f, 1f,
 				DungeonAreaPresenter.torchChangePeriod, 1, new IAnimListener() {
 					public void animEvent() {
 						animating = false;
@@ -160,6 +159,10 @@ public class Light {
 					}
 				});
 		animating = true;
+		fStrength = newStrength;
+		this.area = calculateRect(position, fStrength);
+		this.lightImage = new ImageView(mapPresenter.gui, "ILLUMINATION", area);
+		map.lightingChanged();
 		mapPresenter.lightAnimQueue.chainPlayImmediate(anim, false);
 	}
 

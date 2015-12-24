@@ -762,6 +762,10 @@ public class Map implements IPresenterMap {
 		}
 	}
 
+	public void changeLightStrength(Light light, float newLightStrength) {
+		light.changeStrengthAnimated(newLightStrength, null);
+	}
+	
 	// remove the effects of temp lighting, returning tile to its base level of
 	// permanent lighting.
 	public void removeLight(final Light light, boolean animate) {
