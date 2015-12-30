@@ -11,6 +11,7 @@ import com.dbash.util.Rect;
 public class Light {
 	public static final boolean LOG = false && L.DEBUG;
 
+	public static float LIGHT_AREA_MULTIPLIER = 4f;
 	public static float MAX_CREATURE_LIGHT_STRENGTH = 2.5f;
 	public static float SPOTTED_CHARCTER_LIGHT_STRENGTH = 1.0f;
 	public static float MIN_DETECT_LIGHT = 0.8f;
@@ -89,7 +90,7 @@ public class Light {
 
 	private Rect calculateRect(DungeonPosition position, float strength) {
 		Rect tileArea = mapPresenter.getAreaForLocation(position);
-		Rect area = new Rect(tileArea, strength * 2.5f);
+		Rect area = new Rect(tileArea, strength * LIGHT_AREA_MULTIPLIER);
 		return area;
 	}
 

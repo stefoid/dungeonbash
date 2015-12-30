@@ -37,6 +37,8 @@ import com.dbash.util.Tween;
 public class MapPresenter implements IMapPresentationEventListener{
 	public static final boolean LOG = false && L.DEBUG;
 	
+	public static final float BLACK_PERCENTAGE = .8f;
+	
 	private Map map;
 	protected LocationPresenter[][] locationPresenters;
 	protected DungeonPosition focusPosition;
@@ -181,7 +183,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 		fbo.begin();
 		
 		//... clear the FBO color with transparent black ...
-		Gdx.gl20.glClearColor(0f, 0f, 0f, 0.67f); //transparent black
+		Gdx.gl20.glClearColor(0f, 0f, .07f, BLACK_PERCENTAGE); //transparent black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// draw the lights to the framebuffer
