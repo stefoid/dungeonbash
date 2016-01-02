@@ -11,5 +11,6 @@
 "anim_speed" : 1,
 "hard_area_name" : null,
 "normal_tile_probability" : 30,
-"stand_alone" : true
+"stand_alone" : false,
+"shadow_opacity" : .83f,
 }

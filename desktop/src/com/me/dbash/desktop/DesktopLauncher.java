@@ -99,6 +99,7 @@ public class DesktopLauncher {
 	public static String LEVEL = "level";
 	public static String FLOOR_SHADOWS = "floor_shadows";
 	public static String DARK_FACTOR = "dark_factor";
+	public static String SHADOW_OPACITY = "shadow_opacity";
 	public static String NEW_TILES = "new_tiles";
 	public static String ANIM_SPEED = "anim_speed";
 	public static String HARD_ROOM_NAME = "hard_area_name";
@@ -136,6 +137,9 @@ public class DesktopLauncher {
 				}
 				if (json.has(DARK_FACTOR)) {
 					L.DARK_FACTOR = json.getFloat(DARK_FACTOR);
+				}
+				if (json.has(SHADOW_OPACITY)) {
+					L.SHADOW_OPACITY = json.getFloat(SHADOW_OPACITY);
 				}
 				if (json.has(NEW_TILES)) {
 					L.NEW_TILES = json.getBoolean(NEW_TILES);
