@@ -80,19 +80,21 @@ public class LocationPresenter {
 //			cur_tint = Location.minNotVisibleTint;
 //		}
 		
-		cur_tint = Location.maxVisibileTint;
+//		cur_tint = Location.maxVisibileTint;
+//		
+//		if (prev && !current) {       // fade out
+//			tint = cur_tint + (Location.minNotVisibleTint - cur_tint) * alpha;
+//		} else if (!prev && current) {// fade in;
+//			tint = Location.minNotVisibleTint + (cur_tint - Location.minNotVisibleTint) * alpha;
+//		} else if (prev && current) { // still visible
+//			tint = cur_tint;
+//		} else {                      //  still not visible
+//			tint = Location.minNotVisibleTint;
+//		}	
+//		
+//		return tint;
 		
-		if (prev && !current) {       // fade out
-			tint = cur_tint + (Location.minNotVisibleTint - cur_tint) * alpha;
-		} else if (!prev && current) {// fade in;
-			tint = Location.minNotVisibleTint + (cur_tint - Location.minNotVisibleTint) * alpha;
-		} else if (prev && current) { // still visible
-			tint = cur_tint;
-		} else {                      //  still not visible
-			tint = Location.minNotVisibleTint;
-		}	
-		
-		return tint;
+		return Location.maxVisibileTint;
 	}
 	
 	private float calcAlpha(float theAlpha, boolean prev, boolean current) {
