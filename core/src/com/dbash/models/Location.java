@@ -179,10 +179,7 @@ public class Location {
 		itemList = new Vector<Ability>();  // no items
 		creature = null;   // no creature;
 		tileType = null;  // cant be worked out yet
-		isDiscovered = true;
-		if (x==0 || y==0 || x==map.width-1 || y==map.height-1) {
-			isDiscovered = false;
-		}
+		isDiscovered = false;
 		tileName = "CLEAR_FLOOR_IMAGE";
 		permTint = minVisibleTint;  // starts off at the base lowest light level.  Permanent lights will permanently raise this level.
 		updateLocationInfo();
@@ -354,6 +351,14 @@ public class Location {
 		if (isDiscovered == false) {
 			isDiscovered = true;
 			updatePresenter();
+		}
+	}
+	
+	private void setDiscoveredArea() {
+		for (int h=x-1;h <= (x+1); h++) {
+			for (int v=y-1;v <= (y+1); v++) {
+				map.safeLocation(h, v).isDiscovered = true;
+			}
 		}
 	}
 	
@@ -920,6 +925,7 @@ public class Location {
 				break;
 				
 			case FLOOR:
+				setDiscoveredArea();
 			default:
 				break;
 		}

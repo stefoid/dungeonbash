@@ -13,6 +13,7 @@ import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
 import com.dbash.platform.AnimationView;
+import com.dbash.platform.GreyShader;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
@@ -117,6 +118,10 @@ public class LocationPresenter {
 	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
+			if (!curVisible) {
+				spriteBatch.setShader(GreyShader.grayscaleShader);
+			}
+			
 			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 //			float tint = 1f;
 			float lightTint = tint;
@@ -163,6 +168,8 @@ public class LocationPresenter {
 			//drawFog(spriteBatch);
 			drawCreature(spriteBatch, alpha, prevVisible, curVisible, isBelowCentre);
 		}
+		
+		spriteBatch.setShader(null);
 	}
 	
 	public void drawOutOfLOSTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
@@ -173,6 +180,9 @@ public class LocationPresenter {
 		float a = 1f;
 		
 		if (curVisible == false) {
+			
+			spriteBatch.setShader(GreyShader.grayscaleShader);
+
 			if (floorImage != null) {
 				floorImage.drawTinted(spriteBatch, r, g, b, a);
 			}
@@ -192,6 +202,8 @@ public class LocationPresenter {
 			if (overlay != null) {
 				overlay.drawTinted(spriteBatch, r, g, b, a);
 			}
+			
+			spriteBatch.setShader(null);
 		}
 	}
 
@@ -224,6 +236,10 @@ public class LocationPresenter {
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
+			if (!curVisible) {
+				spriteBatch.setShader(GreyShader.grayscaleShader);
+			}
+			
 			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 			//float tint = 1f;
 			float lightTint = tint;
@@ -254,6 +270,8 @@ public class LocationPresenter {
 			if (drawEye) {
 				eyeAnimation.draw(spriteBatch);
 			}
+			
+			spriteBatch.setShader(null);
 		} 
 	}
 	

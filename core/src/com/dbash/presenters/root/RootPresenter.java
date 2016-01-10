@@ -10,6 +10,7 @@ import com.dbash.models.TouchEvent.TouchType;
 import com.dbash.models.TouchEventListener;
 import com.dbash.models.TouchEventProvider;
 import com.dbash.platform.CameraViewPort;
+import com.dbash.platform.GreyShader;
 import com.dbash.platform.SizeCalculator;
 import com.dbash.platform.UIDepend;
 import com.dbash.presenters.dungeon.DungeonAreaPresenter;

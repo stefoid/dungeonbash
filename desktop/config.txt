@@ -1,5 +1,5 @@
 {
-"monsters" : true,
+"monsters" : false,
 "screen_width" : 1280,
 "screen_height" : 800,
 "walls" : "sw_",
