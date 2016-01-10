@@ -6,7 +6,8 @@ public class L {
 
 	public static boolean DEBUG = false;
 	
-	public static boolean JARFILE = false;
+	public static boolean JARFILE = false;  // setting the config file 'standalone' stes this to true therfore
+	// for anything but desktop, it will always be false.
 	public static JsonValue json = null;
 	
 	public static boolean TESTCHARS = true;
