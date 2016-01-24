@@ -12,5 +12,5 @@
 "hard_area_name" : null,
 "normal_tile_probability" : 30,
 "stand_alone" : true,
-"shadow_opacity" : .80f,
+"shadow_opacity" : .65f,
 }

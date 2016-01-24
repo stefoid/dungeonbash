@@ -52,6 +52,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 	protected ShadowMap currentShadowMap;
 	protected ShadowMap previousShadowMap;
 	protected Tween currentShadowMapTween;
+	private Texture savedShadowTextue;
 	
 	protected FrameBuffer fbo; 
 	public AnimQueue lightAnimQueue;
@@ -97,6 +98,28 @@ public class MapPresenter implements IMapPresentationEventListener{
 		}
 		
 		boolean isBelowCenter;
+		
+		// draw the floor tiles only
+		for (int y=minTileY; y<=maxTileY;y++) {
+			
+			if (y < currentShadowMap.centerPos.y) {
+				isBelowCenter = true;
+			} else {
+				isBelowCenter = false;
+			}
+			
+			for (int x=minTileX; x<=maxTileX; x++) {
+	
+				// draw the current shadowmap details
+				LocationPresenter loc = locationPresenter(x,y);
+				
+				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+				loc.drawFloorTile(spriteBatch, curAlpha, prevLocVisibile, curLocVisibile, isBelowCenter);
+			}
+		}
+		
+		createAndDrawLightMap(spriteBatch);
 		
 		// draw the tiles that could be visible (pre-calculated when moveView is called)
 		for (int y=minTileY; y<=maxTileY;y++) {
@@ -147,7 +170,11 @@ public class MapPresenter implements IMapPresentationEventListener{
 			}
 		}
 		
-		drawLightMap(spriteBatch);
+		int src = spriteBatch.getBlendSrcFunc();
+		int dest = spriteBatch.getBlendDstFunc();
+		drawLightMapTexture(spriteBatch, 1f, src, dest);
+		
+		//drawLightMap(spriteBatch);
 		
 //		for (int y=minTileY; y<=maxTileY;y++) {
 //			
@@ -172,7 +199,7 @@ public class MapPresenter implements IMapPresentationEventListener{
 	/* render the darkness (a black tint) to a framebuffer texture and poke holes in it where the lights are
 	 * then render that texture on top of the map
 	 */
-	protected void drawLightMap(SpriteBatch spriteBatch) {
+	protected void createAndDrawLightMap(SpriteBatch spriteBatch) {
 		
 		// flush the map drawing to the screen
 		spriteBatch.end();
@@ -222,10 +249,18 @@ public class MapPresenter implements IMapPresentationEventListener{
 		spriteBatch.begin();
 		
 		//draw our offscreen FBO texture to the screen with the given alpha
+		savedShadowTextue = fbo.getColorBufferTexture();  // need to flip the y for this, so use huge draw function that has flip params
+		drawLightMapTexture(spriteBatch, 1f, src, dest);
+	}
+	
+	private void drawLightMapTexture(SpriteBatch spriteBatch, float alpha, int srcBlend, int destBlend) {
 		spriteBatch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Texture t = fbo.getColorBufferTexture();  // need to flip the y for this, so use huge draw function that has flip params
-		spriteBatch.draw(t, viewPos.x-area.width/2, viewPos.y-area.height/2, t.getWidth(), t.getHeight(), 0, 0, t.getWidth(), t.getHeight(), false, true) ;
-		spriteBatch.setBlendFunction(src, dest);
+		
+		spriteBatch.draw(savedShadowTextue, viewPos.x-area.width/2, viewPos.y-area.height/2, 
+				savedShadowTextue.getWidth(), savedShadowTextue.getHeight(), 0, 0, 
+				savedShadowTextue.getWidth(), savedShadowTextue.getHeight(), false, true) ;
+		
+		spriteBatch.setBlendFunction(srcBlend, destBlend);
 	}
 	
 	public void addCreatureAnim(AnimationView anim, DungeonPosition posi) {

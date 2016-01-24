@@ -114,13 +114,12 @@ public class LocationPresenter {
 		return alpha;
 	}
 	
-	// draw a tile according to its visibility in the passed in shadowmap and alpha
-	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+	public void drawFloorTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			if (!curVisible) {
-				spriteBatch.setShader(GreyShader.grayscaleShader);
-			}
+//			if (!curVisible) {
+//				spriteBatch.setShader(GreyShader.grayscaleShader);
+//			}
 			
 			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 //			float tint = 1f;
@@ -146,6 +145,43 @@ public class LocationPresenter {
 			if (floorImage != null) {
 				floorImage.drawTinted(spriteBatch, tint, 1f);
 			}
+		} 
+		
+		//spriteBatch.setShader(null);
+	}
+	
+	// draw a tile according to its visibility in the passed in shadowmap and alpha
+	public void drawTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+		
+		if (locationInfo.isDiscovered) {
+//			if (!curVisible) {
+//				spriteBatch.setShader(GreyShader.grayscaleShader);
+//			}
+			
+			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
+//			float tint = 1f;
+			float lightTint = tint;
+			
+			float tileTint = locationInfo.tint;
+			if (curVisible || prevVisible) {
+				tileTint = tileTint + L.DARK_FACTOR;
+				if (tileTint > 1f) {
+					tileTint = 1f;
+				}
+				
+				lightTint = calcTint(tileTint , alpha, prevVisible, curVisible, isBelowCentre);
+			}
+			
+//			float tint = TINT;
+//			float lightTint = LIGHT_TINT;
+			
+			if (!L.useLights) {
+				tint = 1f;
+			} 
+		
+//			if (floorImage != null) {
+//				floorImage.drawTinted(spriteBatch, tint, 1f);
+//			}
 			
 			if (tile != null) {
 				tile.drawTinted(spriteBatch, lightTint, 1f);
@@ -169,7 +205,7 @@ public class LocationPresenter {
 			drawCreature(spriteBatch, alpha, prevVisible, curVisible, isBelowCentre);
 		}
 		
-		spriteBatch.setShader(null);
+		//spriteBatch.setShader(null);
 	}
 	
 	public void drawOutOfLOSTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
@@ -181,7 +217,7 @@ public class LocationPresenter {
 		
 		if (curVisible == false) {
 			
-			spriteBatch.setShader(GreyShader.grayscaleShader);
+			//spriteBatch.setShader(GreyShader.grayscaleShader);
 
 			if (floorImage != null) {
 				floorImage.drawTinted(spriteBatch, r, g, b, a);
@@ -203,7 +239,7 @@ public class LocationPresenter {
 				overlay.drawTinted(spriteBatch, r, g, b, a);
 			}
 			
-			spriteBatch.setShader(null);
+			//spriteBatch.setShader(null);
 		}
 	}
 
@@ -236,9 +272,9 @@ public class LocationPresenter {
 	public void drawOverlays(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		if (locationInfo.isDiscovered) {
-			if (!curVisible) {
-				spriteBatch.setShader(GreyShader.grayscaleShader);
-			}
+//			if (!curVisible) {
+//				spriteBatch.setShader(GreyShader.grayscaleShader);
+//			}
 			
 			float tint = calcTint(locationInfo.tint, alpha, prevVisible, curVisible, isBelowCentre);
 			//float tint = 1f;
@@ -271,7 +307,7 @@ public class LocationPresenter {
 				eyeAnimation.draw(spriteBatch);
 			}
 			
-			spriteBatch.setShader(null);
+			//spriteBatch.setShader(null);
 		} 
 	}
 	

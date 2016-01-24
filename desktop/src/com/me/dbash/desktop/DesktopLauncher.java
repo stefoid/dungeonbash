@@ -83,13 +83,10 @@ public class DesktopLauncher {
 	private static void packTextures() {
 		String packedDir;
 		String pngDir;
-//		if (L.JARFILE) {
-			pngDir = "pngs";
-			packedDir = "pngs-packed";
-//		} else {
-//			pngDir = "pngs";
-//			packedDir = "bin/res/dbash2/pngs-packed";
-//		}
+
+		pngDir = "pngs";
+		packedDir = "pngs-packed";
+
 		TexturePacker.process(new TexturePackerSettings(), pngDir, packedDir, "pack");
 	}
 	
