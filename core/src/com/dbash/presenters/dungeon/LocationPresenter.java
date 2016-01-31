@@ -6,14 +6,12 @@ import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dbash.models.AbilityInfo;
-import com.dbash.models.Light;
 import com.dbash.models.Location;
 import com.dbash.models.Location.TorchType;
 import com.dbash.models.LocationInfo;
 import com.dbash.models.PresenterDepend;
 import com.dbash.models.ShadowMap;
 import com.dbash.platform.AnimationView;
-import com.dbash.platform.GreyShader;
 import com.dbash.platform.ImageView;
 import com.dbash.platform.TextImageView;
 import com.dbash.platform.UIDepend;
@@ -49,6 +47,8 @@ public class LocationPresenter {
 	private TextImageView[] tileInfo = null;
 	private ImageView fog = null;
 	private ArrayList<AnimationView> moveAnims;
+	
+	private TextImageView stealthNumberImage = null;
 	
 	public LocationPresenter(UIDepend gui, PresenterDepend model, Rect area, MapPresenter mapPresenter) {
 		this.area = new Rect(area);
@@ -266,6 +266,7 @@ public class LocationPresenter {
 		    	animOp.draw(spriteBatch);
 		    }
 		} 
+		
 	}
 	
 	// Draw the creature either statically, or animated, and the island.  In the appropriate order.
@@ -309,7 +310,21 @@ public class LocationPresenter {
 			
 			//spriteBatch.setShader(null);
 		} 
+		
+		if (stealthNumberImage != null) {
+			stealthNumberImage.draw(spriteBatch);
+		}
+		
+		if (L.SHOW_STEALTH_NUMBERS && L.DEBUG) {
+			int newValue = (int)(locationInfo.location.tint*100);
+			if (newValue != oldValue) {
+				oldValue = newValue;
+			}
+			this.stealthNumberImage = new TextImageView(gui, gui.numberFont, String.valueOf(newValue), new Rect(area, 0.4f));
+		}
 	}
+	
+	static int oldValue;
 	
 	public void setLocationInfo(LocationInfo locationInfo) {
 		this.locationInfo = locationInfo;
@@ -423,6 +438,7 @@ public class LocationPresenter {
 		}
 		
 		setItemImages();
+	
 	}
 	
 

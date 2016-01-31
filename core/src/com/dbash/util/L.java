@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class L {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	public static boolean JARFILE = false;  // setting the config file 'standalone' stes this to true therfore
 	// for anything but desktop, it will always be false.
@@ -43,6 +43,8 @@ public class L {
 	public static float PPI = 100;
 	public static int SCREENX = 1024;
 	public static int SCREENY = 768;
+	
+	public static boolean SHOW_STEALTH_NUMBERS = true;
 	
 	public static final int STACK_LEVEL = 3;
 	

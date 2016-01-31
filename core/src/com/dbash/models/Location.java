@@ -502,6 +502,7 @@ public class Location {
 		if (tileType != TileType.ISLAND) {
 			if (map.safeLocation(x,y).isClear()) {
 				tileType =  TileType.CLEAR;
+				setDiscoveredArea();
 			} else if (map.safeLocation(x,y-1).isClear()) {
 				tileType =  TileType.FRONT_FACE;
 			} else if (map.safeLocation(x,y+1).isClear()) {
@@ -925,7 +926,6 @@ public class Location {
 				break;
 				
 			case FLOOR:
-				setDiscoveredArea();
 			default:
 				break;
 		}
