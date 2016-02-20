@@ -46,6 +46,7 @@ public class LocationPresenter {
 	private ImageView roughTerrain = null;
 	private TextImageView[] tileInfo = null;
 	private ImageView fog = null;
+	private ImageView darkness = null;
 	private ArrayList<AnimationView> moveAnims;
 	
 	private TextImageView stealthNumberImage = null;
@@ -208,6 +209,11 @@ public class LocationPresenter {
 		//spriteBatch.setShader(null);
 	}
 	
+	public void drawOOLOS(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
+		if (darkness != null && curVisible == false) {
+			darkness.draw(spriteBatch);
+		}
+	}
 	public void drawOutOfLOSTile(SpriteBatch spriteBatch, float alpha, boolean prevVisible, boolean curVisible, boolean isBelowCentre) {
 		
 		float r = .4f;
@@ -344,6 +350,8 @@ public class LocationPresenter {
 			if (locationInfo.tileName != null) {
 				tile = new ImageView(gui, locationInfo.tileName, area);
 			}
+			
+			darkness = new ImageView(gui, "DARKNESS_IMAGE", area);
 			
 			// island image is bigger than normal.
 			Rect overlayArea = area;

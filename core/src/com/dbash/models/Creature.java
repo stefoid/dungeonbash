@@ -1749,7 +1749,7 @@ public abstract class Creature implements IPresenterCreature
 		if (lightStrength < Light.MIN_DETECT_LIGHT) {
 			lightStrength = Light.MIN_DETECT_LIGHT;
 		}
-		light = new Light(getPosition(), Light.CHAR_LIGHT_RANGE, lightStrength, false); 
+		light = new Light(getPosition(), Light.CHAR_LIGHT_RANGE, lightStrength, false, true, true); 
 		return light;
 	}
 	

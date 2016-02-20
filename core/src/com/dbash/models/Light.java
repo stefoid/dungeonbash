@@ -33,9 +33,10 @@ public class Light {
 	protected Rect area;
 	protected ImageView lightImage;
 	protected boolean animating;
+	protected boolean visibleOnLightMap;
+	protected boolean affectsStealth;
 
-	public Light(DungeonPosition position, int range, float strength,
-			boolean permanent) {
+	public Light(DungeonPosition position, int range, float strength, boolean permanent, boolean visibleOnLightMap, boolean affectsStealth) {
 		this.position = new DungeonPosition(position);
 		this.range = range;
 		this.fStrength = strength;
@@ -53,6 +54,8 @@ public class Light {
 		this.permanent = parent.permanent;
 		this.map = parent.map;
 		this.alpha = parent.alpha;
+		this.visibleOnLightMap = parent.visibleOnLightMap;
+		this.affectsStealth = parent.affectsStealth;
 	}
 
 	// Work out a shadowmap for this light, and then illuminate the Locations in
@@ -90,7 +93,8 @@ public class Light {
 
 	private Rect calculateRect(DungeonPosition position, float strength) {
 		Rect tileArea = mapPresenter.getAreaForLocation(position);
-		Rect area = new Rect(tileArea, strength * LIGHT_AREA_MULTIPLIER);
+		float multiplier = strength * LIGHT_AREA_MULTIPLIER;
+		Rect area = new Rect(tileArea, multiplier);
 		return area;
 	}
 

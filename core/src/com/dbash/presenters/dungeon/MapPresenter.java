@@ -224,20 +224,23 @@ public class MapPresenter implements IMapPresentationEventListener{
 		for (Light l : map.tempLights) {
 			l.draw(spriteBatch);
 		}
-
-//		spriteBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE);
-//		
-//		for (int y=minTileY; y<=maxTileY;y++) {
-//			for (int x=minTileX; x<=maxTileX; x++) {
-//	
-//				// draw the current shadowmap details
-//				LocationPresenter loc = locationPresenter(x,y);
-//				loc.drawCreature(spriteBatch, 1f, true, true, true);
-//			}
-//		}
 		
 		// animations
 		lightAnimQueue.draw(spriteBatch);
+		
+		spriteBatch.setBlendFunction(src, dest);
+		
+		for (int y=minTileY; y<=maxTileY;y++) {
+			for (int x=minTileX; x<=maxTileX; x++) {
+	
+				// draw the current shadowmap details
+				LocationPresenter loc = locationPresenter(x,y);
+				boolean prevLocVisibile = loc.isVisibile(previousShadowMap);
+				boolean curLocVisibile = loc.isVisibile(currentShadowMap);
+				//loc.drawOOLOS(spriteBatch, 1f, prevLocVisibile, curLocVisibile, false);
+			}
+		}
+		
 		
 		spriteBatch.end(); //flushes lights to the texture
 
