@@ -1199,7 +1199,7 @@ public static final String STEALTH_LIST_CHANGED = "STEALTH_LIST_CHANGED";
 			} 
 			
 			if (light == null) {
-				light = new Light(mapPosition, Light.WALL_TORCH_RANGE, lightStrength, false, true, true);
+				light = new Light(mapPosition, Light.TORCH_RANGE, lightStrength, false, true, true);
 				creaturePresenter.lightChanged();
 			} else if (light.getStrength() != lightStrength) {
 				creaturePresenter.lightStrengthChanged(lightStrength);

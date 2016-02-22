@@ -44,7 +44,7 @@ public class L {
 	public static int SCREENX = 1024;
 	public static int SCREENY = 768;
 	
-	public static boolean SHOW_STEALTH_NUMBERS = false;
+	public static boolean SHOW_STEALTH_NUMBERS = true;
 	
 	public static final int STACK_LEVEL = 3;
 	

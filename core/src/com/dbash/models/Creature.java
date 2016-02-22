@@ -1743,13 +1743,13 @@ public abstract class Creature implements IPresenterCreature
 	
 	public Light getLight() {
 		float lightStrength = (float) detect / 6f;
-		if (lightStrength > Light.MAX_CREATURE_LIGHT_STRENGTH) {
-			lightStrength = Light.MAX_CREATURE_LIGHT_STRENGTH;
+		if (lightStrength > Light.MAX_DETECT_LIGHT) {
+			lightStrength = Light.MAX_DETECT_LIGHT;
 		}
 		if (lightStrength < Light.MIN_DETECT_LIGHT) {
 			lightStrength = Light.MIN_DETECT_LIGHT;
 		}
-		light = new Light(getPosition(), Light.CHAR_LIGHT_RANGE, lightStrength, false, true, true); 
+		light = new Light(getPosition(), Light.TORCH_RANGE, lightStrength, false, true, true); 
 		return light;
 	}
 	

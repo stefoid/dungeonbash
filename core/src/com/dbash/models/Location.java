@@ -219,16 +219,16 @@ public class Location {
 	public void addCentralLight(DungeonPosition thePosition) {
 		DungeonPosition torchPosition = new DungeonPosition(thePosition);
 		
-		map.addLight(new Light(torchPosition, 1, Light.CENTRAL_TORCH_STRENGTH, true, false, true), false);
+		map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.CENTRAL_TORCH_STRENGTH, true, false, true), false);
 		torchPosition.y--;
-		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true, false, true), false);
+		map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.PERIPHERAL_TORCH_STRENGTH, true, false, true), false);
 		torchPosition.y += 2;
-		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true, false, true), false);
+		map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.PERIPHERAL_TORCH_STRENGTH, true, false, true), false);
 		torchPosition.y--;
 		torchPosition.x--;
-		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true, false, true), false);
+		map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.PERIPHERAL_TORCH_STRENGTH, true, false, true), false);
 		torchPosition.x +=2;
-		map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE-1, Light.CENTRAL_TORCH_STRENGTH, true, false, true), false);
+		map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.PERIPHERAL_TORCH_STRENGTH, true, false, true), false);
 	}
 	
 	public void addTorch(TorchType torch) {
@@ -240,17 +240,17 @@ public class Location {
 			addCentralLight(torchPosition);
 		} else if (torch == TorchType.FRONT ) {
 			torchPosition.y--;
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true, true, true), false);
+			map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true, true, true), false);
 		} else if (torch == TorchType.WEST || torch == TorchType.WEST_DOUBLE) {
 			if (L.NEW_TILES) {
 				torchPosition.x--;
 			} 
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true, true, true), false);
+			map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true, true, true), false);
  		} else if (torch == TorchType.EAST || torch == TorchType.EAST_DOUBLE) {
 			if (L.NEW_TILES) {
 				torchPosition.x++;
 			} 
-			map.addLight(new Light(torchPosition, Light.WALL_TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true, true, true), false);
+			map.addLight(new Light(torchPosition, Light.TORCH_RANGE, Light.WALL_TORCH_STRENGTH, true, true, true), false);
  		} 
 		updateLocationInfo();
 	}
