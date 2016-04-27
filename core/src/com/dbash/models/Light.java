@@ -11,7 +11,7 @@ import com.dbash.util.Rect;
 public class Light {
 	public static final boolean LOG = false && L.DEBUG;
 
-	public static float LIGHT_AREA_MULTIPLIER = 6f;
+	public static float LIGHT_AREA_MULTIPLIER = 5f;
 	
 	public static int TORCH_RANGE = Map.RANGE;
 	
@@ -78,8 +78,8 @@ public class Light {
 	public void setPosition(DungeonPosition position) {
 		this.position = new DungeonPosition(position);
 		if (this.visibleOnLightMap) {
-			this.lightImage = new ImageView(mapPresenter.gui, "ILLUMINATION", area);
 			this.area = calculateRect(position, fStrength);
+			this.lightImage = new ImageView(mapPresenter.gui, "ILLUMINATION", area);
 		}
 
 		shadowMap.setMap(map, position, (int) range);
@@ -97,8 +97,8 @@ public class Light {
 	public void setMapPresenter(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 		if (this.visibleOnLightMap) {
-			this.lightImage = new ImageView(mapPresenter.gui, "ILLUMINATION", area);
 			this.area = calculateRect(position, fStrength);
+			this.lightImage = new ImageView(mapPresenter.gui, "ILLUMINATION", area);
 		}
 	}
 

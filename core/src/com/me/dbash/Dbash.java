@@ -1,9 +1,11 @@
 package com.me.dbash;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.dbash.models.AllCreatures;
 import com.dbash.models.Dungeon;
@@ -69,7 +72,9 @@ public class Dbash implements ApplicationListener {
 //                }
 //            }
 //        });
+		
 	}
+
 
 	
 	protected void initEverything() {
@@ -218,9 +223,35 @@ public class Dbash implements ApplicationListener {
 			gameState = GameState.INIT;
 			break;
 		case INIT:
+			readConfig();
 			initEverything();
 			gameState = GameState.PLAYING;
 			break;
+		}
+	}
+	
+	protected void readConfig() {
+		String MONSTER = "monster";
+		if (Gdx.files.isExternalStorageAvailable() == false) {
+			return;
+		}
+		
+		FileHandle handle = Gdx.files.external("monster.txt");
+		File fl = handle.file();
+		String jsonString = null;
+		JsonValue json = null;
+		
+		if (fl.exists() == true) {
+			try {
+				Scanner scanner = new Scanner(fl).useDelimiter("\\Z");
+				jsonString = scanner.next();
+				json = new JsonReader().parse(jsonString);
+				if (json.has(MONSTER)) {
+					L.FIRST_MONSTER = json.getString(MONSTER);
+				}
+			} catch (Exception e) {
+				System.out.printf("Exception %s", e.toString());
+			}
 		}
 	}
 	

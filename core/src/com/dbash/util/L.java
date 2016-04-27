@@ -6,10 +6,12 @@ public class L {
 
 	public static boolean DEBUG = true;
 	
-	public static boolean JARFILE = false;  // setting the config file 'standalone' stes this to true therfore
+	public static boolean JARFILE = false;  // setting the config file 'standalone' sets this to true therefore
 	// for anything but desktop, it will always be false.
 	public static JsonValue json = null;
 	
+	public static boolean SD_CARD = false;
+	public static boolean SHOW_STEALTH_NUMBERS = false;
 	public static boolean TESTCHARS = true;
 	public static String c1 = "giant";
 	public static String c2 = "red dragon";
@@ -43,8 +45,6 @@ public class L {
 	public static float PPI = 100;
 	public static int SCREENX = 1024;
 	public static int SCREENY = 768;
-	
-	public static boolean SHOW_STEALTH_NUMBERS = true;
 	
 	public static final int STACK_LEVEL = 3;
 	
