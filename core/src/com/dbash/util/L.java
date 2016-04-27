@@ -4,13 +4,13 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class L {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
 	public static boolean JARFILE = false;  // setting the config file 'standalone' sets this to true therefore
 	// for anything but desktop, it will always be false.
 	public static JsonValue json = null;
 	
-	public static boolean SD_CARD = false;
+	public static boolean SD_CARD = true;
 	public static boolean SHOW_STEALTH_NUMBERS = false;
 	public static boolean TESTCHARS = true;
 	public static String c1 = "giant";

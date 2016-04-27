@@ -240,14 +240,14 @@ public class Dbash implements ApplicationListener {
 		File fl = handle.file();
 		String jsonString = null;
 		JsonValue json = null;
-		
+	
 		if (fl.exists() == true) {
 			try {
 				Scanner scanner = new Scanner(fl).useDelimiter("\\Z");
 				jsonString = scanner.next();
 				json = new JsonReader().parse(jsonString);
 				if (json.has(MONSTER)) {
-					L.FIRST_MONSTER = json.getString(MONSTER);
+					L.c1 = json.getString(MONSTER);
 				}
 			} catch (Exception e) {
 				System.out.printf("Exception %s", e.toString());
