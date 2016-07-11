@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.dbash.util.L;
-import com.badlogic.gdx.files.*;
 
 public class CachedSpriteManager implements SpriteManager {
 

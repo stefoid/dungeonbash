@@ -10,12 +10,12 @@ public class L {
 	// for anything but desktop, it will always be false.
 	public static JsonValue json = null;
 	
-	public static boolean SD_CARD = true;
+	public static boolean SD_CARD = false;
 	public static boolean SHOW_STEALTH_NUMBERS = false;
 	public static boolean TESTCHARS = true;
-	public static String c1 = "giant";
-	public static String c2 = "red dragon";
-	public static String c3 = "greater demon";
+	public static String c1 = "plate beatle";
+	public static String c2 = "giant python";
+	public static String c3 = "web shooter";
 	
 	public static boolean TUTORIAL_MODE = false;
 	
